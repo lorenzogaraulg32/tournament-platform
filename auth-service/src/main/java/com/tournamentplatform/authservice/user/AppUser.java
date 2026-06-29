@@ -1,16 +1,18 @@
 package com.tournamentplatform.authservice.user;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
+
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @Table(name = "users")
+@NoArgsConstructor
+@AllArgsConstructor
 public class AppUser {
 
     @Id
@@ -27,10 +29,13 @@ public class AppUser {
     private String username;
 
     @Column(nullable = false)
-    private boolean enabled = true;
+    private boolean enabled;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private GlobalRole globalRole;
 
+
+    public AppUser(String email, String password, String username, boolean b, GlobalRole globalRole) {
+    }
 }

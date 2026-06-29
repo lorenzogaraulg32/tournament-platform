@@ -1,6 +1,6 @@
 package com.tournamentplatform.authservice.user;
 
 public enum GlobalRole {
-    PLATFORM_ADMIN,
-    PLATFORM_USER
+    ROLE_ADMIN,
+    ROLE_USER
 }
