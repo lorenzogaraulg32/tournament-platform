@@ -2,7 +2,6 @@ package com.tournamentplatform.authservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -17,15 +16,16 @@ public class SecurityConfig {
     //questo bean rappresenta la filter chain, ovvero // catena di filtri che Spring Security applica alle richieste HTTP prima che arrivino ai controller,
     //se non è valida parte eccezione
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) //dato che usiamo il JWT non serve una sessione attiva, è tutto stateless
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll() //le richieste di Login e registrazione sono tutte accettate
+                        .requestMatchers("/auth/register").permitAll() //le richieste di Login e registrazione sono tutte accettate
                         .requestMatchers("/actuator/health").permitAll()
+                        .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated() //le altre richieste invece vengono accettate solo se si è autenticati
                 )
                 .httpBasic(AbstractHttpConfigurer::disable)
