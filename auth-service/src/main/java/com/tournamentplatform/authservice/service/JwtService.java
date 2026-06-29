@@ -1,6 +1,6 @@
 package com.tournamentplatform.authservice.service;
 
-import com.tournamentplatform.authservice.user.AppUser;
+import com.tournamentplatform.authservice.user.User;
 import com.tournamentplatform.authservice.user.GlobalRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -30,7 +30,7 @@ public class JwtService {
     }
 
 
-    public String generateJwtToken(AppUser user) {
+    public String generateJwtToken(User user) {
         /*
          * Come viene generato il JWT:
          * Calcolare la data di scadenza usando expiration
@@ -72,11 +72,7 @@ public class JwtService {
 
     }
 
-    /*
-     * Estrae tutti i claims dal token dopo aver verificato la firma.
-     * Se il token è malformato, scaduto o firmato con una chiave non valida,
-     * viene lanciata un'eccezione.
-     */
+
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
                 .verifyWith(secretKey)

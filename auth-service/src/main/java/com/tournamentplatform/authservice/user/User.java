@@ -13,7 +13,7 @@ import lombok.Setter;
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
-public class AppUser {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +36,6 @@ public class AppUser {
     private GlobalRole globalRole;
 
 
-    public AppUser(String email, String password, String username, boolean b, GlobalRole globalRole) {
+    public User(String email, String password, String username, boolean b, GlobalRole globalRole) {
     }
 }

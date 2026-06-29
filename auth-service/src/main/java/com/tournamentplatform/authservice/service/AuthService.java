@@ -3,8 +3,8 @@ package com.tournamentplatform.authservice.service;
 import com.tournamentplatform.authservice.dto.AuthResponse;
 import com.tournamentplatform.authservice.dto.RegisterRequest;
 import com.tournamentplatform.authservice.dto.UserResponse;
-import com.tournamentplatform.authservice.user.AppUser;
-import com.tournamentplatform.authservice.user.AppUserRepository;
+import com.tournamentplatform.authservice.user.User;
+import com.tournamentplatform.authservice.user.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,45 +14,40 @@ import static com.tournamentplatform.authservice.user.GlobalRole.ROLE_USER;
 public class AuthService {
 
     private final JwtService jwtService;
-    private final AppUserRepository appUserRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthService(JwtService jwtService, AppUserRepository appUserRepository, PasswordEncoder passwordEncoder) {
+    public AuthService(JwtService jwtService, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.jwtService = jwtService;
-        this.appUserRepository = appUserRepository;
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
 
     public AuthResponse register(RegisterRequest request) throws IllegalArgumentException {
-        if (appUserRepository.existsByEmail(request.email())) {
+        if (userRepository.existsByEmail(request.email())) {
             throw new IllegalArgumentException("Email già registrata");
         }
-        if (appUserRepository.existsByUsername(request.username())) {
+        if (userRepository.existsByUsername(request.username())) {
             throw new IllegalArgumentException("Username già registrato");
         }
 
-        //hashing della password
         String passwordHash = passwordEncoder.encode(request.password());
 
-        //salvataggio utente nel db e generazione ID
-        AppUser user = appUserRepository.save(new AppUser(request.email(), passwordHash, request.username(), true, ROLE_USER));
+        User user = userRepository.save(new User(request.email(), passwordHash, request.username(), true, ROLE_USER));
 
-        //creazione userResponse
-        UserResponse userResponse = new UserResponse(
-                user.getId(),
-                user.getUsername(),
-                user.getEmail(),
-                user.isEnabled(),
-                user.getGlobalRole()
-        );
 
-        //creazione auth response
         return new AuthResponse(
                 jwtService.generateJwtToken(user),
                 "Bearer",
                 jwtService.getExpiration() / 1000,
-                userResponse
+                new UserResponse(
+                        user.getId(),
+                        user.getUsername(),
+                        user.getEmail(),
+                        user.isEnabled(),
+                        user.getGlobalRole()
+                )
         );
     }
 
