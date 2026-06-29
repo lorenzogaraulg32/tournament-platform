@@ -1,2 +1,9 @@
-package com.tournamentplatform.authservice.DTO;public class AuthResponse {
+package com.tournamentplatform.authservice.dto;
+
+public record AuthResponse(
+        String accessToken,
+        String tokenType,
+        Long expiresIn,
+        UserResponse userResponse
+) {
 }

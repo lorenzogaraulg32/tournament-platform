@@ -9,13 +9,12 @@ import lombok.ToString;
 @Entity
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Table(name = "users")
-public class User {
+public class AppUser {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -24,7 +23,14 @@ public class User {
     @Column(nullable = false)
     private String passwordHash;
 
+    @Column(nullable = false, unique = true)
+    private String username;
+
     @Column(nullable = false)
     private boolean enabled = true;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private GlobalRole globalRole;
 
 }
