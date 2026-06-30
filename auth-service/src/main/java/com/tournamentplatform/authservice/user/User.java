@@ -36,6 +36,11 @@ public class User {
     private GlobalRole globalRole;
 
 
-    public User(String email, String password, String username, boolean b, GlobalRole globalRole) {
+    public User(String email, String passwordHash, String username, boolean enabled, GlobalRole globalRole) {
+        this.email = email;
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.enabled = enabled;
+        this.globalRole = globalRole;
     }
 }

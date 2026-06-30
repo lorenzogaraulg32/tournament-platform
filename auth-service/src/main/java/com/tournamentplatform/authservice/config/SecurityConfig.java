@@ -23,7 +23,7 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) //dato che usiamo il JWT non serve una sessione attiva, è tutto stateless
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/register").permitAll() //le richieste di Login e registrazione sono tutte accettate
+                        .requestMatchers("/auth/register", "/auth/login").permitAll() //le richieste di Login e registrazione sono tutte accettate
                         .requestMatchers("/actuator/health").permitAll()
                         .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated() //le altre richieste invece vengono accettate solo se si è autenticati

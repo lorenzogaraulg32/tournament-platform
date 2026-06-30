@@ -1,10 +1,10 @@
 package com.tournamentplatform.authservice.service;
 
-import com.tournamentplatform.authservice.dto.AuthResponse;
-import com.tournamentplatform.authservice.dto.RegisterRequest;
-import com.tournamentplatform.authservice.dto.UserResponse;
+import com.tournamentplatform.authservice.dto.*;
+import com.tournamentplatform.authservice.excpetion.LoginException;
 import com.tournamentplatform.authservice.user.User;
 import com.tournamentplatform.authservice.user.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ public class AuthService {
     }
 
 
-    public AuthResponse register(RegisterRequest request) throws IllegalArgumentException {
+    public RegisterResponse register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.email())) {
             throw new IllegalArgumentException("Email già registrata");
         }
@@ -34,8 +34,28 @@ public class AuthService {
 
         String passwordHash = passwordEncoder.encode(request.password());
 
-        User user = userRepository.save(new User(request.email(), passwordHash, request.username(), true, ROLE_USER));
+        userRepository.save(new User(request.email(), passwordHash, request.username(), true, ROLE_USER));
 
+        return new RegisterResponse("Utente registrato correttamente");
+
+    }
+
+    public AuthResponse login(LoginRequest request) {
+
+        User user = userRepository.findByEmail(request.email())
+                .orElseThrow(() -> new LoginException(
+                        HttpStatus.UNAUTHORIZED,
+                        "Dati di accesso non validi"
+                ));
+
+
+        if (!passwordEncoder.matches(request.password(), user.getPasswordHash())) {
+            throw new LoginException(HttpStatus.UNAUTHORIZED, "Dati di accesso non validi");
+        }
+
+        if (!user.isEnabled()) {
+            throw new LoginException(HttpStatus.UNAUTHORIZED, "Utente non abilitato");
+        }
 
         return new AuthResponse(
                 jwtService.generateJwtToken(user),
@@ -50,5 +70,4 @@ public class AuthService {
                 )
         );
     }
-
 }
