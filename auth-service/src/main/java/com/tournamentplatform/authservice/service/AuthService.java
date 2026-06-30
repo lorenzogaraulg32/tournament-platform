@@ -60,14 +60,25 @@ public class AuthService {
         return new AuthResponse(
                 jwtService.generateJwtToken(user),
                 "Bearer",
-                jwtService.getExpiration() / 1000,
-                new UserResponse(
-                        user.getId(),
-                        user.getUsername(),
-                        user.getEmail(),
-                        user.isEnabled(),
-                        user.getGlobalRole()
-                )
+                jwtService.getExpiration() / 1000
         );
     }
+
+    public UserResponse getUserInfo(Long userId) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Nessun utente associato all'id")
+                );
+
+        return new UserResponse(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.isEnabled(),
+                user.getGlobalRole()
+        );
+    }
+
+
 }

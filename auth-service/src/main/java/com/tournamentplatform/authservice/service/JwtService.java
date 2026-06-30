@@ -1,8 +1,9 @@
 package com.tournamentplatform.authservice.service;
 
-import com.tournamentplatform.authservice.user.User;
 import com.tournamentplatform.authservice.user.GlobalRole;
+import com.tournamentplatform.authservice.user.User;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,7 +45,7 @@ public class JwtService {
 
         return Jwts.builder()
                 .subject(String.valueOf(user.getId()))
-                .claim("role", user.getGlobalRole())
+                .claim("role", user.getGlobalRole().name())
                 .issuedAt(now)
                 .expiration(expirationDate)
                 .signWith(secretKey)
@@ -61,15 +62,11 @@ public class JwtService {
      */
     public boolean isTokenValid(String token) {
         try {
-            Long id = extractId(token);
-            GlobalRole role = extractRole(token);
-            Date expiration = extractExpiration(token);
+            extractAllClaims(token);
             return true;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
-
     }
 
 
@@ -81,11 +78,11 @@ public class JwtService {
                 .getPayload();
     }
 
-    private GlobalRole extractRole(String token) {
-        return extractAllClaims(token).get("role", GlobalRole.class);
+    public GlobalRole extractRole(String token) {
+        return GlobalRole.valueOf(extractAllClaims(token).get("role", String.class));
     }
 
-    private Long extractId(String token) {
+    public Long extractId(String token) {
         return (Long.valueOf(extractAllClaims(token).getSubject()));
     }
 
