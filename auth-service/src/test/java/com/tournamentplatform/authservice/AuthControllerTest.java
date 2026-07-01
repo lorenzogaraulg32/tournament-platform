@@ -7,7 +7,6 @@ import com.tournamentplatform.authservice.dto.LoginRequest;
 import com.tournamentplatform.authservice.dto.RegisterRequest;
 import com.tournamentplatform.authservice.dto.RegisterResponse;
 import com.tournamentplatform.authservice.service.AuthService;
-import com.tournamentplatform.authservice.service.JwtService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -34,8 +33,6 @@ public class AuthControllerTest {
     @MockitoBean
     private AuthService authService;
 
-    @MockitoBean
-    private JwtService jwtService;
 
     @Test
     void register_success_returns201() throws Exception {

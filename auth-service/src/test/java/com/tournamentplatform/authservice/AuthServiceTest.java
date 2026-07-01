@@ -54,12 +54,11 @@ public class AuthServiceTest {
         when(passwordEncoder.matches("Password123", "hashed-password"))
                 .thenReturn(true);
 
-        when(jwtService.generateJwtToken(user))
+        when(jwtService.generateToken(user))
                 .thenReturn("fake-jwt-token");
 
-        when(jwtService.getExpiration())
+        when(jwtService.getExpiresIn())
                 .thenReturn(3600000L);
-
 
         AuthResponse response = authService.login(loginRequest);
 
@@ -89,7 +88,7 @@ public class AuthServiceTest {
 
         assertThrows(LoginException.class, () -> authService.login(loginRequest));
 
-        verify(jwtService, never()).generateJwtToken(any());
+        verify(jwtService, never()).generateToken(any());
 
     }
 
@@ -103,7 +102,7 @@ public class AuthServiceTest {
 
         assertThrows(LoginException.class, () -> authService.login(loginRequest));
 
-        verify(jwtService, never()).generateJwtToken(any());
+        verify(jwtService, never()).generateToken(any());
 
     }
 

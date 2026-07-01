@@ -31,7 +31,7 @@ public class AuthController {
 
     @GetMapping("/me")
     public ResponseEntity<UserResponse> getUserInfo(Authentication authentication) {
-        Long userId = (Long) authentication.getPrincipal();
+        Long userId = Long.valueOf(authentication.getName());
         UserResponse response = authService.getUserInfo(userId);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

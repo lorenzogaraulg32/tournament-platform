@@ -20,7 +20,10 @@ eureka:
     register-with-eureka: false
     fetch-registry: false
 
+
 security:
   jwt:
-    secret: "MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDE="
-    expiration: 3600000
+    issuer: "http://localhost:8081"
+    key-id: "auth-service-key-1"
+    private-key: "classpath:keys/private.pem"
+    public-key: "classpath:keys/public.pem"

@@ -58,9 +58,9 @@ public class AuthService {
         }
 
         return new AuthResponse(
-                jwtService.generateJwtToken(user),
+                jwtService.generateToken(user),
                 "Bearer",
-                jwtService.getExpiration() / 1000
+                jwtService.getExpiresIn() / 1000
         );
     }
 

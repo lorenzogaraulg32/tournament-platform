@@ -1,94 +1,57 @@
 package com.tournamentplatform.authservice.service;
 
-import com.tournamentplatform.authservice.user.GlobalRole;
 import com.tournamentplatform.authservice.user.User;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import java.util.Base64;
-import java.util.Date;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
+
 
 @Service
 public class JwtService {
 
-    private final SecretKey secretKey;
+    private final JwtEncoder jwtEncoder;
+
     @Getter
-    private final long expiration;
+    private final long expiresIn = 3600000;
 
-    public JwtService(
-            @Value("${security.jwt.secret}") String encodedKey,
-            @Value("${security.jwt.expiration}") long expiration
-    ) {
-        byte[] decodedKey = Base64.getDecoder().decode(encodedKey);
-        this.secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "HmacSHA256");
-        this.expiration = expiration;
+
+    @Value("${security.jwt.issuer}")
+    private String issuer;
+
+    @Value("${security.jwt.key-id}")
+    private String keyId;
+
+    public JwtService(JwtEncoder jwtEncoder) {
+        this.jwtEncoder = jwtEncoder;
     }
 
+    public String generateToken(User user) {
+        Instant now = Instant.now();
 
-    public String generateJwtToken(User user) {
-        /*
-         * Come viene generato il JWT:
-         * Calcolare la data di scadenza usando expiration
-         * Inserire email come subject
-         * Inserire userId come claim
-         * Firmare il token con secretKey
-         * Restituire il token come String
-         */
-        Date now = new Date();
-        Date expirationDate = new Date(now.getTime() + expiration);
-
-        return Jwts.builder()
-                .subject(String.valueOf(user.getId()))
-                .claim("role", user.getGlobalRole().name())
+        JwtClaimsSet claims = JwtClaimsSet.builder()
+                .issuer(issuer)
                 .issuedAt(now)
-                .expiration(expirationDate)
-                .signWith(secretKey)
-                .compact();
+                .expiresAt(now.plus(Duration.ofHours(1)))
+                .subject(user.getId().toString())
+                .claim("email", user.getEmail())
+                .claim("roles", List.of("ROLE_USER"))
+                .build();
+
+        JwsHeader header = JwsHeader.with(SignatureAlgorithm.RS256)
+                .keyId(keyId)
+                .build();
+
+        return jwtEncoder.encode(
+                JwtEncoderParameters.from(header, claims)
+        ).getTokenValue();
     }
-
-    /*
-     * L'utente viene recuperato dal DB solo quando servono dati completi
-     * o controlli aggiornati. Per autorizzazioni semplici bastano i claims del token (il ruolo quindi).
-     */
-
-    /**
-     * @return {@code true} se il token è valido, {@code false} altrimenti
-     */
-    public boolean isTokenValid(String token) {
-        try {
-            extractAllClaims(token);
-            return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
-        }
-    }
-
-
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser()
-                .verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
-    }
-
-    public GlobalRole extractRole(String token) {
-        return GlobalRole.valueOf(extractAllClaims(token).get("role", String.class));
-    }
-
-    public Long extractId(String token) {
-        return (Long.valueOf(extractAllClaims(token).getSubject()));
-    }
-
-    private Date extractExpiration(String token) {
-        return extractAllClaims(token).getExpiration();
-    }
-
-
 }

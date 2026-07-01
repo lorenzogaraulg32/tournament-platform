@@ -34,3 +34,7 @@ build/
 
 ### Enviroment ###
 application.yml
+
+### Keys ###
+private.pem
+public.pem

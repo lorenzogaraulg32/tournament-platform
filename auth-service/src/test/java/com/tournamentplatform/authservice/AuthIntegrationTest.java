@@ -74,5 +74,17 @@ class AuthIntegrationTest {
 
     }
 
+    @Test
+    void jwksEndpoint_returnsPublicKey() throws Exception {
+        mockMvc.perform(get("/.well-known/jwks.json"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.keys").isArray())
+                .andExpect(jsonPath("$.keys[0].kty").value("RSA"))
+                .andExpect(jsonPath("$.keys[0].use").value("sig"))
+                .andExpect(jsonPath("$.keys[0].kid").exists())
+                .andExpect(jsonPath("$.keys[0].n").exists())
+                .andExpect(jsonPath("$.keys[0].e").exists())
+                .andExpect(jsonPath("$.keys[0].d").doesNotExist());
+    }
 
 }
