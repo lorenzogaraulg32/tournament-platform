@@ -2,7 +2,9 @@ package com.tournamentplatform.tournament.service;
 
 import com.tournamentplatform.tournament.DTO.TournamentCreationRequest;
 import com.tournamentplatform.tournament.DTO.TournamentCreationResponse;
+import com.tournamentplatform.tournament.DTO.TournamentGetResponse;
 import com.tournamentplatform.tournament.entity.Tournament;
+import com.tournamentplatform.tournament.errorHandling.ResourceNotFoundException;
 import com.tournamentplatform.tournament.repository.TournamentRepository;
 import com.tournamentplatform.tournament.security.CurrentUserProvider;
 import org.springframework.stereotype.Service;
@@ -25,7 +27,7 @@ public class TournamentService {
     public TournamentCreationResponse createTournament(TournamentCreationRequest request) {
 
 
-        String userId = currentUserProvider.getcurretUserId();
+        String userId = currentUserProvider.getCurretUserId();
 
 
         ArrayList<String> admins = new ArrayList<>();
@@ -48,4 +50,21 @@ public class TournamentService {
     }
 
 
+    public TournamentGetResponse getTournamentById(String id) {
+        Tournament tournament = tournamentRepository.findById(
+                        Long.valueOf(id))
+                .orElseThrow(() -> new ResourceNotFoundException("Nessun torneo trovato con id:" + id));
+        return new TournamentGetResponse(
+                tournament.getName(),
+                tournament.getDescription(),
+                tournament.getStartDate(),
+                tournament.getEndDate(),
+                tournament.getCreatedAt(),
+                tournament.getUpdatedAt(),
+                tournament.getMinTeams(),
+                tournament.getMaxTeams(),
+                tournament.getFormat().name(),
+                tournament.getStatus().name()
+        );
+    }
 }
