@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CurrentUserProvider {
 
-    public String getCurretUserId(){
+    public String getCurrentUserId(){
 
         Authentication authentication = SecurityContextHolder
                 .getContext()

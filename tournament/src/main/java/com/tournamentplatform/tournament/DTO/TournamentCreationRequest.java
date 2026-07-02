@@ -15,11 +15,11 @@ public class TournamentCreationRequest {
 
 
     @NotBlank(message = "Nome obbligatorio")
-    String name;
+    private String name;
 
     @NotBlank(message = "Descrizione obbligatoria")
     @Size(max = 1000, message = "La descrizione può avere al massimo 1000 caratteri")
-    String description;
+    private String description;
 
     @NotNull(message = "Il torneo deve avere una data di inizio")
     private LocalDate startDate;
