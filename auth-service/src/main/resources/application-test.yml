@@ -15,6 +15,9 @@ spring:
       enabled: false
 
 eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
   client:
     enabled: false
     register-with-eureka: false
