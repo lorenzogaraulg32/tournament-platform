@@ -1,0 +1,28 @@
+package com.tournamentplatform.tournament.security;
+
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.stereotype.Component;
+
+
+
+@Component
+public class CurrentUserProvider {
+
+    public String getcurretUserId(){
+
+        Authentication authentication = SecurityContextHolder
+                .getContext()
+                .getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new AccessDeniedException("Utente non autorizzato per l'operazione");
+        }
+
+        return authentication.getName();
+
+
+    }
+}
