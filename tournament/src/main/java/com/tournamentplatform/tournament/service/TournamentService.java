@@ -6,6 +6,7 @@ import com.tournamentplatform.tournament.dto.tournaments.TournamentCreationRespo
 import com.tournamentplatform.tournament.dto.tournaments.TournamentGetResponse;
 import com.tournamentplatform.tournament.dto.tournaments.TournamentPatchRequest;
 import com.tournamentplatform.tournament.entity.Tournament;
+import com.tournamentplatform.tournament.entity.TournamentStatus;
 import com.tournamentplatform.tournament.errorHandling.ResourceNotFoundException;
 import com.tournamentplatform.tournament.repository.TournamentRepository;
 import org.springframework.stereotype.Service;
@@ -90,4 +91,17 @@ public class TournamentService {
     }
 
 
+    public void deleteTournament(String id) {
+        Tournament tournament = tournamentRepository.findById(
+                        Long.valueOf(id))
+                .orElseThrow(() -> new ResourceNotFoundException("Nessun torneo trovato con id: " + id));
+
+        tournamentAuthorizationHelper.checkTournamentCreator(tournament);
+
+        if (tournamentHelper.canBeDeleted(tournament)) {
+            tournamentRepository.delete(tournament);
+        } else {
+            tournament.setStatus(TournamentStatus.CANCELLED);
+        }
+    }
 }

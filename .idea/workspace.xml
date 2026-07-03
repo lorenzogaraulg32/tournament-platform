@@ -4,22 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="TournamentService - Patch endpoint added">
-      <change afterPath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/controller/AdminController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/dto/admin/AdminAddingRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/dto/admin/AdminGetResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/service/TournamentAdminService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/service/TournamentAuthorizationHelper.java" afterDir="false" />
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Added Admin managment and endpoints&#10;Refractor for better responsability separation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/Controller/TournamentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/controller/TournamentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/DTO/ErrorResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/dto/ErrorResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/DTO/TournamentCreationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/dto/tournaments/TournamentCreationRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/DTO/TournamentCreationResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/dto/tournaments/TournamentCreationResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/DTO/TournamentGetResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/dto/tournaments/TournamentGetResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/DTO/TournamentPatchRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/dto/tournaments/TournamentPatchRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/errorHandling/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/errorHandling/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-gateway/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service-registry/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/service-registry/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/controller/TournamentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/controller/TournamentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/service/TournamentHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/service/TournamentHelper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/service/TournamentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/service/TournamentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/service/TournamentServiceHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/main/java/com/tournamentplatform/tournament/service/TournamentHelper.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -189,7 +182,7 @@
       <workItem from="1782767157194" duration="5672000" />
       <workItem from="1782813699181" duration="12574000" />
       <workItem from="1782894736626" duration="11611000" />
-      <workItem from="1782991641261" duration="19541000" />
+      <workItem from="1782991641261" duration="20294000" />
     </task>
     <task id="LOCAL-00001" summary="Exception handling and controller with register endpoint">
       <option name="closed" value="true" />
@@ -271,7 +264,15 @@
       <option name="project" value="LOCAL" />
       <updated>1783010194842</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Added Admin managment and endpoints&#10;Refractor for better responsability separation">
+      <option name="closed" value="true" />
+      <created>1783085539544</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1783085539544</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -299,7 +300,8 @@
     <MESSAGE value="Tournament Service init&#10;Create new tournament enpoint added&#10;Security config added for jwt validation" />
     <MESSAGE value="TournamentService - Get endpoint added, global exception handling added, custom exception added" />
     <MESSAGE value="TournamentService - Patch endpoint added" />
-    <option name="LAST_COMMIT_MESSAGE" value="TournamentService - Patch endpoint added" />
+    <MESSAGE value="Added Admin managment and endpoints&#10;Refractor for better responsability separation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Admin managment and endpoints&#10;Refractor for better responsability separation" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

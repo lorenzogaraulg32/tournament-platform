@@ -3,7 +3,7 @@ package com.tournamentplatform.tournament.service;
 import com.tournamentplatform.tournament.dto.tournaments.TournamentGetResponse;
 import com.tournamentplatform.tournament.dto.tournaments.TournamentPatchRequest;
 import com.tournamentplatform.tournament.entity.Tournament;
-
+import com.tournamentplatform.tournament.entity.TournamentStatus;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -84,4 +84,7 @@ public class TournamentHelper {
         }
     }
 
+    public boolean canBeDeleted(Tournament tournament) {
+        return tournament.getStatus().equals(TournamentStatus.CREATED) || tournament.getStatus().equals(TournamentStatus.REG_OPEN);
+    }
 }
