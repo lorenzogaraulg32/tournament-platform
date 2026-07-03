@@ -38,3 +38,6 @@ application.yml
 ### Keys ###
 private.pem
 public.pem
+
+### Uploads ###
+uploads/

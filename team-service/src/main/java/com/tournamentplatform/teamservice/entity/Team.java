@@ -44,5 +44,13 @@ public class Team {
     @Column(name = "admin_id")
     private Set<String> adminIds = new HashSet<>();
 
+    public Team(String name, String logoUrl, String creatorId, Set<String> playerIds, Set<String> adminIds) {
+        this.name = name;
+        this.logoUrl = logoUrl;
+        this.creatorId = creatorId;
+        this.playerIds = playerIds;
+        this.adminIds = adminIds;
+    }
+
 
 }
