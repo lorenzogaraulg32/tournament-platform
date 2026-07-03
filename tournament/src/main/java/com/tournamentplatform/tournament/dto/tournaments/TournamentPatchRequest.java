@@ -1,4 +1,4 @@
-package com.tournamentplatform.tournament.DTO;
+package com.tournamentplatform.tournament.dto.tournaments;
 
 import com.tournamentplatform.tournament.entity.TournamentFormat;
 import com.tournamentplatform.tournament.entity.TournamentStatus;

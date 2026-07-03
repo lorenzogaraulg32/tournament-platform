@@ -1,17 +1,20 @@
 package com.tournamentplatform.tournament.service;
 
-import com.tournamentplatform.tournament.DTO.TournamentGetResponse;
-import com.tournamentplatform.tournament.DTO.TournamentPatchRequest;
+import com.tournamentplatform.tournament.dto.tournaments.TournamentGetResponse;
+import com.tournamentplatform.tournament.dto.tournaments.TournamentPatchRequest;
 import com.tournamentplatform.tournament.entity.Tournament;
-import lombok.NoArgsConstructor;
+
 import org.springframework.stereotype.Component;
 
 @Component
-@NoArgsConstructor
-public class TournamentServiceHelper {
+public class TournamentHelper {
+
+
+    //TournamentHelper
 
     public TournamentGetResponse toTournamentGetResponse(Tournament tournament) {
         return new TournamentGetResponse(
+                tournament.getId(),
                 tournament.getName(),
                 tournament.getDescription(),
                 tournament.getStartDate(),

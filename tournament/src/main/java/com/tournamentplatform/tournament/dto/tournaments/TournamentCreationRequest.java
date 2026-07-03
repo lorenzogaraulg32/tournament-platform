@@ -1,4 +1,4 @@
-package com.tournamentplatform.tournament.DTO;
+package com.tournamentplatform.tournament.dto.tournaments;
 
 import com.tournamentplatform.tournament.entity.TournamentFormat;
 import jakarta.validation.constraints.NotBlank;
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Getter
 public class TournamentCreationRequest {
 
-    //nota, l'id viene preso dal jwt, non va messo qua
+    //nota, l'adminId viene preso dal jwt, non va messo qua
 
 
     @NotBlank(message = "Nome obbligatorio")

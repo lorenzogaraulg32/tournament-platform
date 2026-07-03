@@ -1,14 +1,16 @@
-package com.tournamentplatform.tournament.Controller;
+package com.tournamentplatform.tournament.controller;
 
-import com.tournamentplatform.tournament.DTO.TournamentCreationRequest;
-import com.tournamentplatform.tournament.DTO.TournamentCreationResponse;
-import com.tournamentplatform.tournament.DTO.TournamentGetResponse;
-import com.tournamentplatform.tournament.DTO.TournamentPatchRequest;
+import com.tournamentplatform.tournament.dto.tournaments.TournamentCreationRequest;
+import com.tournamentplatform.tournament.dto.tournaments.TournamentCreationResponse;
+import com.tournamentplatform.tournament.dto.tournaments.TournamentGetResponse;
+import com.tournamentplatform.tournament.dto.tournaments.TournamentPatchRequest;
 import com.tournamentplatform.tournament.service.TournamentService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -35,11 +37,21 @@ public class TournamentController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping()
+    public ResponseEntity<List<TournamentGetResponse>> getAllTournaments() {
+        List<TournamentGetResponse> response = tournamentService.getAllTournaments();
+        return ResponseEntity.ok(response);
+    }
+
     //restituisce il torneo aggiornato come fosse una get
     @PatchMapping("/{id}")
-    public ResponseEntity<TournamentGetResponse> patchTournament(@PathVariable String id , @RequestBody @Valid TournamentPatchRequest patchRequest) {
+    public ResponseEntity<TournamentGetResponse> patchTournament(@PathVariable String id, @RequestBody @Valid TournamentPatchRequest patchRequest) {
         TournamentGetResponse response = tournamentService.patchTournament(id, patchRequest);
         return ResponseEntity.ok(response);
 
     }
+
+
+
+
 }

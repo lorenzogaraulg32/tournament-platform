@@ -1,7 +1,7 @@
 package com.tournamentplatform.tournament.errorHandling;
 
 
-import com.tournamentplatform.tournament.DTO.ErrorResponse;
+import com.tournamentplatform.tournament.dto.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

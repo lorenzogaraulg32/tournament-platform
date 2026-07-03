@@ -1,4 +1,4 @@
-package com.tournamentplatform.tournament.DTO;
+package com.tournamentplatform.tournament.dto;
 
 import java.time.LocalDateTime;
 import java.util.Map;

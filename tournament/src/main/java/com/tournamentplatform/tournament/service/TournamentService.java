@@ -1,44 +1,41 @@
 package com.tournamentplatform.tournament.service;
 
-import com.tournamentplatform.tournament.DTO.TournamentCreationRequest;
-import com.tournamentplatform.tournament.DTO.TournamentCreationResponse;
-import com.tournamentplatform.tournament.DTO.TournamentGetResponse;
-import com.tournamentplatform.tournament.DTO.TournamentPatchRequest;
+
+import com.tournamentplatform.tournament.dto.tournaments.TournamentCreationRequest;
+import com.tournamentplatform.tournament.dto.tournaments.TournamentCreationResponse;
+import com.tournamentplatform.tournament.dto.tournaments.TournamentGetResponse;
+import com.tournamentplatform.tournament.dto.tournaments.TournamentPatchRequest;
 import com.tournamentplatform.tournament.entity.Tournament;
 import com.tournamentplatform.tournament.errorHandling.ResourceNotFoundException;
 import com.tournamentplatform.tournament.repository.TournamentRepository;
-import com.tournamentplatform.tournament.security.CurrentUserProvider;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class TournamentService {
 
     private final TournamentRepository tournamentRepository;
-    private final CurrentUserProvider currentUserProvider;
-    private final TournamentServiceHelper helper;
+    private final TournamentHelper tournamentHelper;
+    private final TournamentAuthorizationHelper tournamentAuthorizationHelper;
 
-    public TournamentService(TournamentRepository tournamentRepository, CurrentUserProvider currentUserProvider, TournamentServiceHelper helper) {
+    public TournamentService(TournamentRepository tournamentRepository, TournamentHelper tournamentHelper, TournamentAuthorizationHelper tournamentAuthorizationHelper) {
         this.tournamentRepository = tournamentRepository;
-        this.currentUserProvider = currentUserProvider;
-        this.helper = helper;
+        this.tournamentHelper = tournamentHelper;
+        this.tournamentAuthorizationHelper = tournamentAuthorizationHelper;
     }
 
 
     //creazione del torneo
     public TournamentCreationResponse createTournament(TournamentCreationRequest request) {
 
-
-        String userId = currentUserProvider.getCurrentUserId();
-
+        String userId = tournamentAuthorizationHelper.getCurrentUserId();
 
         ArrayList<String> admins = new ArrayList<>();
         admins.add(userId);
 
-
-        Tournament tournament = tournamentRepository.save(new Tournament(
+        Tournament tournament = new Tournament(
                 request.getName(),
                 request.getDescription(),
                 userId,
@@ -48,37 +45,49 @@ public class TournamentService {
                 request.getMinTeams(),
                 request.getMaxTeams(),
                 request.getFormat()
-        ));
+        );
 
-        return new TournamentCreationResponse(String.valueOf(tournament.getId()));
+        tournamentHelper.validateTournament(tournament);
+
+        Tournament savedTournament = tournamentRepository.save(tournament);
+
+        return new TournamentCreationResponse(String.valueOf(savedTournament.getId()));
     }
 
 
     public TournamentGetResponse getTournament(String id) {
         Tournament tournament = tournamentRepository.findById(
                         Long.valueOf(id))
-                .orElseThrow(() -> new ResourceNotFoundException("Nessun torneo trovato con id:" + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Nessun torneo trovato con id: " + id));
 
-        return helper.toTournamentGetResponse(tournament);
+        return tournamentHelper.toTournamentGetResponse(tournament);
+    }
+
+    public List<TournamentGetResponse> getAllTournaments() {
+        List<Tournament> tournaments = tournamentRepository.findAll();
+        List<TournamentGetResponse> tournamentsResponse = new ArrayList<>();
+        for (Tournament tournament : tournaments) {
+            tournamentsResponse.add(tournamentHelper.toTournamentGetResponse(tournament));
+        }
+        return tournamentsResponse;
     }
 
     public TournamentGetResponse patchTournament(String id, TournamentPatchRequest patchRequest) {
 
-        String currentUserId = currentUserProvider.getCurrentUserId();
         Tournament tournament = tournamentRepository.findById(
                         Long.valueOf(id))
-                .orElseThrow(() -> new ResourceNotFoundException("Nessun torneo trovato con id:" + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Nessun torneo trovato con id: " + id));
 
-        if (!tournament.getAdminsById().contains(currentUserId)) {
-            throw new AccessDeniedException("Non sei autorizzato a modificare questo torneo");
-        }
+        tournamentAuthorizationHelper.checkTournamentAdmin(tournament);
 
-        helper.applyTournamentPatch(tournament, patchRequest);
+        tournamentHelper.applyTournamentPatch(tournament, patchRequest);
 
-        helper.validateTournament(tournament);
+        tournamentHelper.validateTournament(tournament);
 
         Tournament savedTournament = tournamentRepository.save(tournament);
 
-        return helper.toTournamentGetResponse(savedTournament);
+        return tournamentHelper.toTournamentGetResponse(savedTournament);
     }
+
+
 }
