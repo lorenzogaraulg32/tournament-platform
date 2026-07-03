@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.tournamentplatform</groupId>
-    <artifactId>tournament</artifactId>
+    <artifactId>tournament-service</artifactId>
     <version>1.0</version>
     <name>tournament</name>
     <description>tournament</description>

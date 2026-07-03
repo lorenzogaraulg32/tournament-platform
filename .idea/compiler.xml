@@ -9,7 +9,8 @@
         <outputRelativeToContentRoot value="true" />
         <module name="api-gateway" />
         <module name="auth-service" />
-        <module name="tournament" />
+        <module name="tournament-service" />
+        <module name="team-service" />
         <module name="service-registry" />
       </profile>
     </annotationProcessing>
@@ -23,7 +24,8 @@
       <module name="api-gateway" options="-parameters" />
       <module name="auth-service" options="-parameters" />
       <module name="service-registry" options="-parameters" />
-      <module name="tournament" options="-parameters" />
+      <module name="team-service" options="-parameters" />
+      <module name="tournament-service" options="-parameters" />
     </option>
   </component>
 </project>
