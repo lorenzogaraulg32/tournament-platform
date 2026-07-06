@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Team basic endpoints added&#10;Team admin management added">
-      <change afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/controller/TeamPlayersController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamPlayerService.java" afterDir="false" />
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Team players endpoint added">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -86,6 +84,7 @@
     "project.structure.side.proportion": "0.35632184",
     "run.configurations.included.in.services": "true",
     "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
+    "ts.external.directory.path": "C:\\Users\\Lombax\\Desktop\\Progetto Gestione Tornei Calcetto\\mobile-app\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -197,7 +196,7 @@
       <workItem from="1782767157194" duration="5672000" />
       <workItem from="1782813699181" duration="12574000" />
       <workItem from="1782894736626" duration="11611000" />
-      <workItem from="1782991641261" duration="33270000" />
+      <workItem from="1782991641261" duration="34970000" />
     </task>
     <task id="LOCAL-00001" summary="Exception handling and controller with register endpoint">
       <option name="closed" value="true" />
@@ -327,7 +326,15 @@
       <option name="project" value="LOCAL" />
       <updated>1783353240601</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Team players endpoint added">
+      <option name="closed" value="true" />
+      <created>1783355335224</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1783355335224</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -360,7 +367,8 @@
     <MESSAGE value="Team service init and renaming tournament-service module" />
     <MESSAGE value="Team creation endpoint added" />
     <MESSAGE value="Team basic endpoints added&#10;Team admin management added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Team basic endpoints added&#10;Team admin management added" />
+    <MESSAGE value="Team players endpoint added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Team players endpoint added" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
