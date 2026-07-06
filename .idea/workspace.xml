@@ -4,19 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Team creation endpoint added">
-      <change afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/controller/TeamAdminController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/dto/ErrorResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/dto/TeamNamePatchRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/errorHandling/GlobalExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/errorHandling/ResourceNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/LogoStorageService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/ServicesHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamAdminService.java" afterDir="false" />
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Team basic endpoints added&#10;Team admin management added">
+      <change afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/controller/TeamPlayersController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamPlayerService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/controller/TeamController.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/controller/TeamController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamService.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -206,7 +197,7 @@
       <workItem from="1782767157194" duration="5672000" />
       <workItem from="1782813699181" duration="12574000" />
       <workItem from="1782894736626" duration="11611000" />
-      <workItem from="1782991641261" duration="32044000" />
+      <workItem from="1782991641261" duration="33270000" />
     </task>
     <task id="LOCAL-00001" summary="Exception handling and controller with register endpoint">
       <option name="closed" value="true" />
@@ -328,7 +319,15 @@
       <option name="project" value="LOCAL" />
       <updated>1783092086377</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Team basic endpoints added&#10;Team admin management added">
+      <option name="closed" value="true" />
+      <created>1783353240601</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1783353240601</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -360,7 +359,8 @@
     <MESSAGE value="Tournament-service base completed:&#10;tournament crud cycle completed and admin managment completed" />
     <MESSAGE value="Team service init and renaming tournament-service module" />
     <MESSAGE value="Team creation endpoint added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Team creation endpoint added" />
+    <MESSAGE value="Team basic endpoints added&#10;Team admin management added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Team basic endpoints added&#10;Team admin management added" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
