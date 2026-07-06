@@ -4,8 +4,38 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Team players endpoint added">
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="FrontEnd Started">
+      <change afterPath="$PROJECT_DIR$/mobile-app/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/assets/images/partial-react-logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/eslint.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/app/login.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/app/register.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/AppBackground.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/constants/theme.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/assets/expo.icon/Assets/expo-symbol 2.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/assets/expo.icon/Assets/grid.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/assets/expo.icon/icon.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/assets/images/expo-badge-white.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/assets/images/expo-badge.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/assets/images/expo-logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/assets/images/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/assets/images/icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/assets/images/logo-glow.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/assets/images/splash-icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/assets/images/splash-icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/assets/images/tabIcons/explore.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/assets/images/tabIcons/explore@2x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/assets/images/tabIcons/explore@3x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/assets/images/tabIcons/home.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/assets/images/tabIcons/home@2x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/assets/images/tabIcons/home@3x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/assets/images/tutorial-web.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/_layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,6 +65,8 @@
         <option value="Enum" />
         <option value="Record" />
         <option value="Class" />
+        <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -73,7 +105,7 @@
     "Spring Boot.TournamentApplication.executor": "Run",
     "jdk.selected.JAVA_MODULE": "21",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Lombax/Desktop/Progetto Gestione Tornei Calcetto/team-service/src/main/java/com/tournamentplatform/teamservice",
+    "last_opened_file_path": "C:/Users/Lombax/Desktop/Progetto Gestione Tornei Calcetto/mobile-app",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -104,11 +136,11 @@
       <recent name="com.tournamentplatform.tournament.DTO" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app" />
+      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\assets\images" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\team-service\src\main\java\com\tournamentplatform\teamservice" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\team-service\src\main\resources" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\tournament\src\main\resources" />
-      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\auth-service\src\main\resources" />
-      <recent name="C:\Users\Lombax\Desktop\Progetto Gesitone Tornei Calcetto\service-registry\src\main\resources" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\team-service\uploads\team-logos" />
@@ -131,7 +163,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.ApiGatewayApplication">
+  <component name="RunManager" selected="Spring Boot.TeamServiceApplication">
     <configuration name="ApiGatewayApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="api-gateway" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.tournamentplatform.apigateway.ApiGatewayApplication" />
@@ -196,7 +228,8 @@
       <workItem from="1782767157194" duration="5672000" />
       <workItem from="1782813699181" duration="12574000" />
       <workItem from="1782894736626" duration="11611000" />
-      <workItem from="1782991641261" duration="34970000" />
+      <workItem from="1782991641261" duration="39917000" />
+      <workItem from="1783428935096" duration="731000" />
     </task>
     <task id="LOCAL-00001" summary="Exception handling and controller with register endpoint">
       <option name="closed" value="true" />
@@ -334,7 +367,23 @@
       <option name="project" value="LOCAL" />
       <updated>1783355335224</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="FrontEnd Started">
+      <option name="closed" value="true" />
+      <created>1783357167274</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1783357167274</updated>
+    </task>
+    <task id="LOCAL-00019" summary="FrontEnd Started">
+      <option name="closed" value="true" />
+      <created>1783357177556</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1783357177556</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -368,7 +417,8 @@
     <MESSAGE value="Team creation endpoint added" />
     <MESSAGE value="Team basic endpoints added&#10;Team admin management added" />
     <MESSAGE value="Team players endpoint added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Team players endpoint added" />
+    <MESSAGE value="FrontEnd Started" />
+    <option name="LAST_COMMIT_MESSAGE" value="FrontEnd Started" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

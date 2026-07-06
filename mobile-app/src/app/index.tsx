@@ -1,17 +1,12 @@
 import { Text, View, StyleSheet } from "react-native";
+import AppBackground from "../components/AppBackground";
+
 
 export default function Index() {
   return (
-    <View style={styles.container}>
-      <Text>Edit src/app/index.tsx to edit this screen.</Text>
-    </View>
+    <AppBackground >
+      <Text>Tournament Platform</Text>
+    </AppBackground>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
