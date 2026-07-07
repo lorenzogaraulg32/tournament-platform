@@ -2,9 +2,11 @@ import {StyleSheet, Text, TextProps} from "react-native";
 import {colors, fontSizes, fontWeights} from "@/src/constants/theme";
 import {ReactNode} from "react";
 
+type ApptextVariant = "title" | "subtitle" | "body" | "caption" | "buttonRegister" | "buttonLogin";
+
 type AppTextProps = TextProps & {
     children: ReactNode;
-    variant?: "title" | "subtitle" | "body" | "caption" | "buttonRegister" | "buttonLogin";
+    variant?: ApptextVariant;
 };
 
 export default function AppText({
