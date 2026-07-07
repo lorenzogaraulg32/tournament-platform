@@ -1,12 +1,21 @@
 export const colors = {
 
-    backgroundStart: "#0B5D1E",
-    backgroundMiddle: "#1FA463",
-    backgroundEnd: "#EAFBF0",
+    backgroundStart: "#00A859",
+    backgroundEnd: "#004B23",
 
+    textPrimary: "#ffffff",
+    textSecondary: "#F2FFF8",
+    textThird: "#D8F5E3",
 
-    textPrimary: "#1F2937",
-    textSecondary: "#6B7280",
+    buttonPrimary: "#FFFFFF",
+    buttonPrimaryText: "#00572B",
+    buttonPrimaryPressed: "#EAFBF0",
+
+    buttonSecondaryBorder: "rgba(255, 255, 255, 0.65)",
+    buttonSecondaryText: "#FFFFFF",
+
+    surface: "rgba(255, 255, 255, 0.92)",
+    surfaceText: "#102016",
 
     danger: "#E53935",
     success: "#43A047",

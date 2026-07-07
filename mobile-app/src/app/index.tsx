@@ -1,12 +1,13 @@
-import { Text, View, StyleSheet } from "react-native";
-import AppBackground from "../components/AppBackground";
+import WelcomeScreen from "@/src/components/welcomePage/welcome";
 
 
 export default function Index() {
-  return (
-    <AppBackground >
-      <Text>Tournament Platform</Text>
-    </AppBackground>
-  );
+    return (
+        <WelcomeScreen />
+    );
 }
+
+
+
+
 
