@@ -20,8 +20,9 @@ public class JwtService {
 
     private final JwtEncoder jwtEncoder;
 
+    //1 giorno
     @Getter
-    private final long expiresIn = 3600000;
+    private final long expiresIn = 86400000;
 
 
     @Value("${security.jwt.issuer}")
@@ -40,7 +41,7 @@ public class JwtService {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer(issuer)
                 .issuedAt(now)
-                .expiresAt(now.plus(Duration.ofHours(1)))
+                .expiresAt(now.plus(Duration.ofHours(24)))
                 .subject(user.getId().toString())
                 .claim("email", user.getEmail())
                 .claim("roles", List.of("ROLE_USER"))

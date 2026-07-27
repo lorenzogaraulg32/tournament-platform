@@ -1,23 +1,30 @@
 import {StyleSheet, Text, TextProps} from "react-native";
 import {colors, fontSizes, fontWeights} from "@/src/constants/theme";
-import {ReactNode} from "react";
 
-type ApptextVariant = "title" | "subtitle" | "body" | "caption" | "buttonRegister" | "buttonLogin";
+type ApptextVariant =
+    "title"
+    | "subtitle"
+    | "body"
+    | "caption"
+    | "buttonRegisterText"
+    | "buttonLoginText"
+    | "fieldLabel"
+    | "errorLabelInput";
 
 type AppTextProps = TextProps & {
-    children: ReactNode;
+    text: string;
     variant?: ApptextVariant;
 };
 
-export default function AppText({
-                                    children,
+export default function AuthText({
+                                    text,
                                     variant = "body",
                                     style,
                                     ...props
                                 }: AppTextProps) {
     return (
         <Text style={[styles.base, styles[variant], style]} {...props}>
-            {children}
+            {text}
         </Text>
     );
 }
@@ -25,9 +32,9 @@ export default function AppText({
 
 const styles = StyleSheet.create({
     base: {
-        color: colors.textPrimary,
         textAlign: "center"
     },
+
     title: {
         fontSize: fontSizes.xxl,
         fontWeight: fontWeights.bold,
@@ -49,17 +56,38 @@ const styles = StyleSheet.create({
         color: colors.textSecondary,
     },
 
-    buttonRegister: {
+    buttonRegisterText: {
         fontSize: fontSizes.md,
         fontWeight: fontWeights.bold,
-        color: "#007B43",
+        color: colors.orangeButtonText,
         textAlign: "center",
     },
 
-    buttonLogin: {
+    buttonLoginText: {
         fontSize: fontSizes.md,
         fontWeight: fontWeights.bold,
-        color: "#FFFFFF",
+        color: colors.whiteButtonText,
         textAlign: "center",
     },
+
+    fieldLabel: {
+        fontSize: fontSizes.md,
+        lineHeight: 20,
+        fontWeight: fontWeights.semiBold,
+        color: colors.textPrimary,
+        marginLeft: 10,
+        marginBottom: 8,
+        textAlign: "left"
+    },
+
+    errorLabelInput: {
+        marginTop: 6,
+        marginLeft: 10,
+        fontSize: fontSizes.sm,
+        lineHeight: 18,
+        fontWeight: fontWeights.medium,
+        color: colors.error,
+        textAlign: "left",
+    }
+
 });

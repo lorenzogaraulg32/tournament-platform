@@ -1,6 +1,6 @@
 package com.tournamentplatform.teamservice.service;
 
-import com.tournamentplatform.teamservice.dto.TeamGetResponse;
+import com.tournamentplatform.teamservice.dto.TeamGetDetailsResponse;
 import com.tournamentplatform.teamservice.entity.Team;
 import com.tournamentplatform.teamservice.repository.TeamsRepository;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class TeamAdminService {
     }
 
 
-    public TeamGetResponse addAdmin(String teamId, String userId) {
+    public TeamGetDetailsResponse addAdmin(String teamId, String userId) {
 
         Team team = servicesHelper.getTeamEntityOrThrow(teamId);
         teamAuthorizationHelper.checkTeamCreator(team);
@@ -34,11 +34,11 @@ public class TeamAdminService {
 
         Team savedTeam = teamsRepository.save(team);
 
-        return servicesHelper.toTeamGetResponse(savedTeam);
+        return servicesHelper.toTeamGetDeatilsResponse(savedTeam);
 
     }
 
-    public TeamGetResponse removeAdmin(String teamId, String userId) {
+    public TeamGetDetailsResponse removeAdmin(String teamId, String userId) {
 
         Team team = servicesHelper.getTeamEntityOrThrow(teamId);
         teamAuthorizationHelper.checkTeamCreator(team);
@@ -51,7 +51,7 @@ public class TeamAdminService {
 
         Team savedTeam = teamsRepository.save(team);
 
-        return servicesHelper.toTeamGetResponse(savedTeam);
+        return servicesHelper.toTeamGetDeatilsResponse(savedTeam);
 
     }
 

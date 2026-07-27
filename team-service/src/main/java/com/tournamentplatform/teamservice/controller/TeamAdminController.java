@@ -1,6 +1,6 @@
 package com.tournamentplatform.teamservice.controller;
 
-import com.tournamentplatform.teamservice.dto.TeamGetResponse;
+import com.tournamentplatform.teamservice.dto.TeamGetDetailsResponse;
 import com.tournamentplatform.teamservice.service.TeamAdminService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,20 +27,20 @@ public class TeamAdminController {
 
 
     @PostMapping("/{teamId}/admins/{userId}")
-    public ResponseEntity<TeamGetResponse> addAdmin(
+    public ResponseEntity<TeamGetDetailsResponse> addAdmin(
             @PathVariable String teamId,
             @PathVariable String userId
     ) {
-        TeamGetResponse response = teamAdminService.addAdmin(teamId, userId);
+        TeamGetDetailsResponse response = teamAdminService.addAdmin(teamId, userId);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{teamId}/admins/{userId}")
-    public ResponseEntity<TeamGetResponse> removeAdmin(
+    public ResponseEntity<TeamGetDetailsResponse> removeAdmin(
             @PathVariable String teamId,
             @PathVariable String userId
     ) {
-        TeamGetResponse response = teamAdminService.removeAdmin(teamId, userId);
+        TeamGetDetailsResponse response = teamAdminService.removeAdmin(teamId, userId);
         return ResponseEntity.ok(response);
     }
 
