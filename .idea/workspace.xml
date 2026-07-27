@@ -4,60 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Buig Update, now frontend is connected, forgot to commit before&#10;&#10;User registration and login is working (backend-frontend)&#10;&#10;Now frontend fetches and displays the user teams&#10;&#10;Now working on the teams section">
-      <change afterPath="$PROJECT_DIR$/mobile-app/assets/images/badgeBackground.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/assets/images/bar_bkg.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/assets/images/full_bkg.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/assets/images/placeholder for teams.webp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/assets/images/profilePlaceholder.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/assets/images/user_info_section_ckg.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/profile.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/tournaments.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/app/(auth)/_layout.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/app/(auth)/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/app/TitleHeader.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/app/profile/UserInfoSection.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/app/teams/TeamCardSmall.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/auth/AuthContainer.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/auth/AuthContentSection.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/auth/AuthHeader.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/auth/AuthTextField.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/auth/LogoBox.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/common/Background.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/common/SectionBadge.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/constants/animations.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/services/authService.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/services/teamService.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/services/userService.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/dto/TeamGetDetailsResponse.java" afterDir="false" />
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Team details fronted - backend  &#10;Now you can click on a team card from /teams and get routed to the team details page wich shows team details etc. WIP">
+      <change afterPath="$PROJECT_DIR$/mobile-app/assets/images/teaminfoSectionBkg.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/app/teams/[teamId].tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/app/infoSectionContainer.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/app/teams/TeamInfoSection.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/excpetion/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/excpetion/GlobalExceptionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/excpetion/LoginException.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/excpetion/LoginException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/service/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/service/JwtService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(auth)/login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(auth)/login.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(auth)/register.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(auth)/register.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(tabs)/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/_layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/assets/images/user_info_section_ckg.png" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/assets/images/userInfoSectionBkg.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/profile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/profile.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/app/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/_layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/AppButtons.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/auth/AuthButton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/AppText.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/auth/AuthText.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/welcomePage/WelcomeBackground.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/welcomePage/welcome.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/constants/theme.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/constants/theme.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/controller/TeamAdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/controller/TeamAdminController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/controller/TeamController.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/controller/TeamController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/controller/TeamPlayersController.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/controller/TeamPlayersController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/dto/TeamGetResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/dto/TeamGetResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/repository/TeamsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/repository/TeamsRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/ServicesHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/ServicesHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamAdminService.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamAdminService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamPlayerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamPlayerService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamService.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/app/TitleHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/app/TitleHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/app/profile/UserInfoSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/app/profile/UserInfoSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/app/teams/TeamCardSmall.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/app/teams/TeamCardSmall.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/Background.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/Background.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/SectionBadge.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/SectionBadge.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/teamService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/teamService.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -293,7 +255,7 @@
       <workItem from="1784886754297" duration="7612000" />
       <workItem from="1784905506369" duration="11398000" />
       <workItem from="1784984874799" duration="11016000" />
-      <workItem from="1785138985225" duration="7223000" />
+      <workItem from="1785138985225" duration="15846000" />
     </task>
     <task id="LOCAL-00001" summary="Exception handling and controller with register endpoint">
       <option name="closed" value="true" />
@@ -471,7 +433,23 @@
       <option name="project" value="LOCAL" />
       <updated>1783448288512</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Buig Update, now frontend is connected, forgot to commit before&#10;&#10;User registration and login is working (backend-frontend)&#10;&#10;Now frontend fetches and displays the user teams&#10;&#10;Now working on the teams section">
+      <option name="closed" value="true" />
+      <created>1785146676395</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1785146676395</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Big Update, now frontend is connected, forgot to commit before&#10;&#10;User registration and login is working (backend-frontend)&#10;&#10;Now frontend fetches and displays the user teams&#10;&#10;Now working on the teams section">
+      <option name="closed" value="true" />
+      <created>1785146692090</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1785146692090</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -510,7 +488,9 @@
     <MESSAGE value="Small fixes" />
     <MESSAGE value="Buig Update, now frontend is connected, forgot to commit before&#10;&#10;User registration and login is working (backend-frontend)&#10;&#10;Now working on the teams section" />
     <MESSAGE value="Buig Update, now frontend is connected, forgot to commit before&#10;&#10;User registration and login is working (backend-frontend)&#10;&#10;Now frontend fetches and displays the user teams&#10;&#10;Now working on the teams section" />
-    <option name="LAST_COMMIT_MESSAGE" value="Buig Update, now frontend is connected, forgot to commit before&#10;&#10;User registration and login is working (backend-frontend)&#10;&#10;Now frontend fetches and displays the user teams&#10;&#10;Now working on the teams section" />
+    <MESSAGE value="Big Update, now frontend is connected, forgot to commit before&#10;&#10;User registration and login is working (backend-frontend)&#10;&#10;Now frontend fetches and displays the user teams&#10;&#10;Now working on the teams section" />
+    <MESSAGE value="Team details fronted - backend  &#10;Now you can click on a team card from /teams and get routed to the team details page wich shows team details etc. WIP" />
+    <option name="LAST_COMMIT_MESSAGE" value="Team details fronted - backend  &#10;Now you can click on a team card from /teams and get routed to the team details page wich shows team details etc. WIP" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

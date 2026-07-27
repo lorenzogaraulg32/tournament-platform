@@ -1,26 +1,19 @@
-import {
-    ActivityIndicator, ImageBackground,
-    StyleSheet,
-    Text,
-    View
-} from "react-native";
+import {ActivityIndicator, ImageBackground, StyleSheet, Text, View} from "react-native";
 import {useEffect, useState} from "react";
-import {UserInfo} from "@/src/services/userService";
 import * as UserServices from "@/src/services/userService";
+import {UserInfo} from "@/src/services/userService";
+import SectionContainer from "../infoSectionContainer";
 
 export default function UserInfoSection() {
     return (
-        <View >
-            <ImageBackground
-                source={require("../../../../assets/images/user_info_section_ckg.png")}
-                style={styles.card}
-                imageStyle={styles.cardImage}
-                resizeMode="cover"
-            >
-                <View style={styles.cardOverlay}/>
-                <DataSection/>
-            </ImageBackground>
-        </View>
+        <SectionContainer
+            backgroundSource={require("../../../../assets/images/userInfoSectionBkg.png")}
+            overlayColor="rgba(0, 24, 14, 0.30)"
+            borderColor="rgba(112, 255, 162, 0.22)"
+        >
+            <DataSection/>
+        </SectionContainer>
+
     );
 }
 
@@ -121,8 +114,23 @@ export function ProfileImage() {
 
 const styles = StyleSheet.create({
 
+    shadowContainer: {
+        width: "100%",
+        borderRadius: 28,
+
+        shadowColor: "#000000",
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.16,
+        shadowRadius: 9,
+
+        elevation: 5,
+    },
+
     card: {
-        minHeight: 148,
+        minHeight: 120,
         borderRadius: 28,
         overflow: "hidden",
         borderWidth: 1,
@@ -147,7 +155,7 @@ const styles = StyleSheet.create({
     },
 
     feedbackContainer: {
-        minHeight: 148,
+        minHeight: 120,
         alignItems: "center",
         justifyContent: "center",
         padding: 20,

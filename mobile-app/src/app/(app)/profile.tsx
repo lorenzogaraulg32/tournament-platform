@@ -4,14 +4,17 @@ import {ScrollView, StyleSheet, View} from "react-native";
 import UserInfoSection from "@/src/components/app/profile/UserInfoSection";
 import * as UserServices from "@/src/services/userService";
 import Ionicons from "@expo/vector-icons/Ionicons";
-
+import TitleApp from "@/src/components/app/TitleHeader";
 
 
 export default function ProfilePage() {
 
 
     return (
-        <Background headerText="Profilo">
+        <Background
+            header={
+                <TitleApp text={"Profilo"}/>
+            }>
             <ScrollView
                 style={styles.scrollView}
                 contentContainerStyle={styles.scrollContent}
@@ -34,7 +37,7 @@ export default function ProfilePage() {
                             name="log-out-outline"
                             size={26}
                             color="#ffffff"
-                            style={{ transform: [{ translateX: +3 }] }}
+                            style={{transform: [{translateX: +3}]}}
                         />
                     </AuthButton>
 
@@ -52,7 +55,6 @@ const styles = StyleSheet.create({
 
     scrollContent: {
         flexGrow: 1,
-        paddingTop: 24,
     },
 
     profileContent: {
@@ -62,9 +64,9 @@ const styles = StyleSheet.create({
     logoutContainer: {
         width: "100%",
         alignItems: "flex-end",
-        paddingTop:  6,
+        paddingTop: 6,
         paddingRight: 6,
-        paddingBottom:  6,
+        paddingBottom: 6,
     },
 
 

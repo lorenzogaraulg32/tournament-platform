@@ -1,18 +1,16 @@
 import {ReactNode} from "react";
 import {ScrollView, StyleSheet, View} from "react-native";
 
-import TitleApp from "@/src/components/app/TitleHeader";
-
 type BackgroundContainerProps = {
     children: ReactNode,
-    headerText: String
+    header: ReactNode
 }
 
-export default function Background({children, headerText}: BackgroundContainerProps) {
+export default function Background({children, header}: BackgroundContainerProps) {
     return (
 
             <View style={styles.container}>
-                <TitleApp text={headerText}/>
+                {header}
                 <ScrollView
                     style={styles.scrollView}
                     contentContainerStyle={styles.scrollContent}
@@ -38,7 +36,7 @@ const styles = StyleSheet.create({
 
     scrollContent: {
         flexGrow: 1,
-        paddingHorizontal: 15,
+        paddingHorizontal: 8,
         paddingVertical: 15
     },
 })

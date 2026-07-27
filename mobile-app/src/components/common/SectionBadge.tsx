@@ -13,7 +13,7 @@ export default function SectionBadge({
 
     return (
         <ImageBackground
-            source={require("../../../assets/images/badgeBackground.png")}
+            source={require("../../../assets/images/teaminfoSectionBkg.png")}
             style={styles.container}
             imageStyle={styles.backgroundImage}
         >

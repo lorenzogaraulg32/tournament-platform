@@ -4,6 +4,7 @@ import SectionBadge from "@/src/components/common/SectionBadge";
 import {useEffect, useState} from "react";
 import {getUserTeams, TeamInfo} from "@/src/services/teamService";
 import TeamCardSmall from "@/src/components/app/teams/TeamCardSmall";
+import TitleApp from "@/src/components/app/TitleHeader";
 
 /*
 * 1) Fetch team dell'utente
@@ -111,7 +112,10 @@ export default function TeamsPage() {
 
 
     return (
-        <Background headerText="Squadre">
+        <Background
+            header={
+            <TitleApp text={"Squadre"}/>
+        }>
 
             <View style={styles.sectionShadow}>
                 <View style={styles.sectionContainer}>

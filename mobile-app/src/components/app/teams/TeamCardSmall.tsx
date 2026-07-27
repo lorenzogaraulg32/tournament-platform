@@ -1,7 +1,7 @@
 import {Image, Pressable, StyleSheet, Text, View} from "react-native";
 import {teamCardBlueColors} from "@/src/constants/theme"
 import Ionicons from "@expo/vector-icons/Ionicons";
-
+import {router} from "expo-router";
 
 type TeamCardSmallProps = {
     id: number
@@ -19,20 +19,22 @@ export default function TeamCardSmall({
                                       }: TeamCardSmallProps) {
     async function handlePress() {
         console.log("Sqauadra con id " + id + " Premuta!")
-        /*
-        * 1) Recupero dati squadra dal db
-        * 2) Route a pagina della squadra singola
-        * */
+        router.push({
+            pathname: "/teams/[teamId]",
+            params: {
+                teamId: id,
+            },
+        })
     }
 
 
     return (
         <Pressable
-            onPress={handlePress}
             style={({pressed}) => [
                 styles.card,
                 pressed && styles.cardPressed,
             ]}
+            onPress={handlePress}
         >
             <View pointerEvents="none" style={styles.background}>
                 <View style={styles.glowLeft}/>
