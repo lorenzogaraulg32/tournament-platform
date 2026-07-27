@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 @Setter
 public class LoginException extends RuntimeException {
+
     HttpStatus code;
     String msg;
 

@@ -1,9 +1,6 @@
 package com.tournamentplatform.teamservice.service;
 
-import com.tournamentplatform.teamservice.dto.TeamCreationRequest;
-import com.tournamentplatform.teamservice.dto.TeamCreationResponse;
-import com.tournamentplatform.teamservice.dto.TeamGetResponse;
-import com.tournamentplatform.teamservice.dto.TeamNamePatchRequest;
+import com.tournamentplatform.teamservice.dto.*;
 import com.tournamentplatform.teamservice.entity.Team;
 import com.tournamentplatform.teamservice.repository.TeamsRepository;
 import jakarta.validation.Valid;
@@ -11,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -54,15 +52,15 @@ public class TeamService {
 
     }
 
-    public TeamGetResponse getTeam(String id) {
+    public TeamGetDetailsResponse getTeam(String id) {
 
         Team team = servicesHelper.getTeamEntityOrThrow(id);
 
-        return servicesHelper.toTeamGetResponse(team);
+        return servicesHelper.toTeamGetDeatilsResponse(team);
     }
 
 
-    public TeamGetResponse patchTeamName(String id, @Valid TeamNamePatchRequest request) {
+    public TeamGetDetailsResponse patchTeamName(String id, @Valid TeamNamePatchRequest request) {
 
         Team team = servicesHelper.getTeamEntityOrThrow(id);
 
@@ -72,10 +70,10 @@ public class TeamService {
 
         Team savedTeam = teamsRepository.save(team);
 
-        return servicesHelper.toTeamGetResponse(savedTeam);
+        return servicesHelper.toTeamGetDeatilsResponse(savedTeam);
     }
 
-    public TeamGetResponse patchTeamLogo(String id, MultipartFile file) {
+    public TeamGetDetailsResponse patchTeamLogo(String id, MultipartFile file) {
 
         Team team = servicesHelper.getTeamEntityOrThrow(id);
 
@@ -87,7 +85,7 @@ public class TeamService {
 
         Team savedTeam = teamsRepository.save(team);
 
-        return servicesHelper.toTeamGetResponse(savedTeam);
+        return servicesHelper.toTeamGetDeatilsResponse(savedTeam);
     }
 
     public void deleteTeam(String id) {
@@ -101,4 +99,14 @@ public class TeamService {
     }
 
 
+    public List<TeamGetResponse> getPlayerTeams() {
+
+        String playerId = teamAuthorizationHelper.getCurrentUserId();
+
+        return teamsRepository
+                .findAllByPlayerIds(playerId)
+                .stream()
+                .map(servicesHelper::toTeamGetResponse)
+                .toList();
+    }
 }

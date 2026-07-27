@@ -24,10 +24,14 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(LoginException.class)
-    public ResponseEntity<ErrorResponse> handleLoginException(LoginException ex) {
-        return ResponseEntity.status(ex.getCode()).body(
-                new ErrorResponse(ex.getMessage(), null)
-        );
+    public ResponseEntity<ErrorResponse> handleLoginException(
+            LoginException ex
+    ) {
+        return ResponseEntity.status(ex.getCode())
+                .body(new ErrorResponse(
+                        ex.getMsg(),
+                        null
+                ));
     }
 
 

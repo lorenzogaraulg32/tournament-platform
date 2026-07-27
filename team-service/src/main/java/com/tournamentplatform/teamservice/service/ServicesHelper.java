@@ -1,5 +1,6 @@
 package com.tournamentplatform.teamservice.service;
 
+import com.tournamentplatform.teamservice.dto.TeamGetDetailsResponse;
 import com.tournamentplatform.teamservice.dto.TeamGetResponse;
 import com.tournamentplatform.teamservice.entity.Team;
 import com.tournamentplatform.teamservice.errorHandling.ResourceNotFoundException;
@@ -20,14 +21,23 @@ public class ServicesHelper {
                 .orElseThrow(() -> new ResourceNotFoundException("Team non trovato con id: " + id));
     }
 
-    public TeamGetResponse toTeamGetResponse(Team team) {
-        return new TeamGetResponse(
+    public TeamGetDetailsResponse toTeamGetDeatilsResponse(Team team) {
+        return new TeamGetDetailsResponse(
                 team.getId(),
                 team.getName(),
                 team.getLogoUrl(),
                 team.getCreatorId(),
                 team.getPlayerIds(),
                 team.getAdminIds()
+        );
+    }
+
+    public TeamGetResponse toTeamGetResponse(Team team) {
+        return new TeamGetResponse(
+                team.getId(),
+                team.getName(),
+                team.getLogoUrl(),
+                team.getPlayerIds().size()
         );
     }
 
