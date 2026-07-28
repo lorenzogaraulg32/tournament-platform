@@ -5,21 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Team details fronted - backend  &#10;Now you can click on a team card from /teams and get routed to the team details page wich shows team details etc. WIP">
-      <change afterPath="$PROJECT_DIR$/mobile-app/assets/images/teaminfoSectionBkg.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/app/teams/[teamId].tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/app/infoSectionContainer.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/app/teams/TeamInfoSection.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/assets/images/user_info_section_ckg.png" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/assets/images/userInfoSectionBkg.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/profile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/profile.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/_layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/app/TitleHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/app/TitleHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/app/profile/UserInfoSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/app/profile/UserInfoSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/app/teams/TeamCardSmall.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/app/teams/TeamCardSmall.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/Background.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/Background.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/SectionBadge.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/SectionBadge.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/teamService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/teamService.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -255,7 +242,7 @@
       <workItem from="1784886754297" duration="7612000" />
       <workItem from="1784905506369" duration="11398000" />
       <workItem from="1784984874799" duration="11016000" />
-      <workItem from="1785138985225" duration="15846000" />
+      <workItem from="1785138985225" duration="18532000" />
     </task>
     <task id="LOCAL-00001" summary="Exception handling and controller with register endpoint">
       <option name="closed" value="true" />
@@ -449,7 +436,15 @@
       <option name="project" value="LOCAL" />
       <updated>1785146692090</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Team details fronted - backend  &#10;Now you can click on a team card from /teams and get routed to the team details page wich shows team details etc. WIP">
+      <option name="closed" value="true" />
+      <created>1785162710902</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1785162710902</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

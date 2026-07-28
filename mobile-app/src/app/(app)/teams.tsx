@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
 
     sectionShadow: {
         width: "100%",
-        borderRadius: 26,
+        borderRadius: 16,
 
         // Ombra iOS
         shadowColor: "#0B1F17",
@@ -155,11 +155,13 @@ const styles = StyleSheet.create({
     sectionContainer: {
         backgroundColor: "#FAFAF7",
 
-        borderRadius: 26,
+        borderRadius: 16,
         overflow: "hidden",
 
         borderWidth: 1,
         borderColor: "rgba(18, 55, 42, 0.14)",
+
+        borderTopWidth: 0,
 
         paddingBottom: 12,
     },
