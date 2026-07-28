@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Team details fronted - backend  &#10;Now you can click on a team card from /teams and get routed to the team details page wich shows team details etc. WIP">
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="little graphical fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/SectionBadge.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/SectionBadge.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -242,7 +243,7 @@
       <workItem from="1784886754297" duration="7612000" />
       <workItem from="1784905506369" duration="11398000" />
       <workItem from="1784984874799" duration="11016000" />
-      <workItem from="1785138985225" duration="18532000" />
+      <workItem from="1785138985225" duration="19634000" />
     </task>
     <task id="LOCAL-00001" summary="Exception handling and controller with register endpoint">
       <option name="closed" value="true" />
@@ -444,7 +445,15 @@
       <option name="project" value="LOCAL" />
       <updated>1785162710902</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="little graphical fix">
+      <option name="closed" value="true" />
+      <created>1785230630269</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1785230630269</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -485,7 +494,8 @@
     <MESSAGE value="Buig Update, now frontend is connected, forgot to commit before&#10;&#10;User registration and login is working (backend-frontend)&#10;&#10;Now frontend fetches and displays the user teams&#10;&#10;Now working on the teams section" />
     <MESSAGE value="Big Update, now frontend is connected, forgot to commit before&#10;&#10;User registration and login is working (backend-frontend)&#10;&#10;Now frontend fetches and displays the user teams&#10;&#10;Now working on the teams section" />
     <MESSAGE value="Team details fronted - backend  &#10;Now you can click on a team card from /teams and get routed to the team details page wich shows team details etc. WIP" />
-    <option name="LAST_COMMIT_MESSAGE" value="Team details fronted - backend  &#10;Now you can click on a team card from /teams and get routed to the team details page wich shows team details etc. WIP" />
+    <MESSAGE value="little graphical fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="little graphical fix" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

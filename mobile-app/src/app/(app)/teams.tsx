@@ -19,7 +19,7 @@ export default function TeamsPage() {
     const [userTeams, setUserTeams] = useState<TeamInfo[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
+    const [collapsedYourTeamsSection, setCollapsedYourTeamsSection] = useState(false)
 
     async function loadUserTeams() {
         try {
@@ -114,13 +114,23 @@ export default function TeamsPage() {
     return (
         <Background
             header={
-            <TitleApp text={"Squadre"}/>
-        }>
+                <TitleApp text={"Squadre"}/>
+            }>
 
             <View style={styles.sectionShadow}>
                 <View style={styles.sectionContainer}>
-                    <SectionBadge title={"Le Mie Squadre"}/>
-                    <ScrollView style={styles.yourTeamsScroll}
+                    <SectionBadge
+                        title={"Le Mie Squadre"}
+                        src={require("../../../assets/images/teaminfoSectionBkg.png")}
+                        collapsed={collapsedYourTeamsSection}
+                        onPress={() => {
+                            setCollapsedYourTeamsSection(!collapsedYourTeamsSection)
+                        }}/>
+                    <ScrollView  style={[styles.yourTeamsScroll,
+                        collapsedYourTeamsSection
+                            ? styles.yourTeamsScrollCollapsed
+                            : styles.yourTeamsScrollExpanded,
+                    ]}
                                 contentContainerStyle={styles.yourTeamsContent}
                                 showsVerticalScrollIndicator={true}
                                 persistentScrollbar={true}>
@@ -154,24 +164,30 @@ const styles = StyleSheet.create({
 
     sectionContainer: {
         backgroundColor: "#FAFAF7",
-
         borderRadius: 16,
         overflow: "hidden",
 
         borderWidth: 1,
         borderColor: "rgba(18, 55, 42, 0.14)",
-
         borderTopWidth: 0,
-
-        paddingBottom: 12,
     },
 
+
     yourTeamsScroll: {
-        minHeight: 76,
-        maxHeight: 192,
         flexGrow: 0,
         overflow: "hidden",
     },
+
+    yourTeamsScrollExpanded: {
+        minHeight: 76,
+        maxHeight: 192,
+    },
+
+    yourTeamsScrollCollapsed: {
+        minHeight: 0,
+        maxHeight: 0,
+    },
+
 
     yourTeamsContent: {
         paddingHorizontal: 2,
