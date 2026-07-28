@@ -1,11 +1,4 @@
-import {
-    ActivityIndicator,
-    Image,
-    ImageBackground,
-    StyleSheet,
-    Text,
-    View,
-} from "react-native";
+import {ActivityIndicator, Image, ImageBackground, Pressable, StyleSheet, Text, View,} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import SectionContainer from "../infoSectionContainer";
 
@@ -15,22 +8,25 @@ export type TeamDetails = {
     logoUrl?: string | null;
     creatorId: string;
     playerIds: string[];
+    adminIds: string[];
 };
 
 type TeamInfoSectionProps = {
     team: TeamDetails | null;
     isLoading?: boolean;
     error?: string | null;
+    onPlayersPress: () => void;
+    onAdminsPress: () => void;
 };
 
-const TEAM_BACKGROUND = require(
-    "../../../../assets/images/teaminfoSectionBkg.png"
-);
+const TEAM_BACKGROUND = require("../../../../assets/images/teaminfoSectionBkg.png");
 
 export default function TeamInfoSection({
                                             team,
                                             isLoading = false,
                                             error = null,
+                                            onPlayersPress,
+                                            onAdminsPress,
                                         }: TeamInfoSectionProps) {
     return (
         <SectionContainer
@@ -68,7 +64,10 @@ export default function TeamInfoSection({
                     </Text>
                 </FeedbackContent>
             ) : (
-                <TeamData team={team}/>
+                <TeamData team={team}
+                          onPlayersPress={onPlayersPress}
+                          onAdminsPress={onAdminsPress}
+                />
             )}
         </SectionContainer>
     );
@@ -76,10 +75,17 @@ export default function TeamInfoSection({
 
 type TeamDataProps = {
     team: TeamDetails;
+    onPlayersPress: () => void;
+    onAdminsPress: () => void;
 };
 
-function TeamData({team}: TeamDataProps) {
+export function TeamData({
+                             team,
+                             onPlayersPress,
+                             onAdminsPress,
+                         }: TeamDataProps) {
     const playersCount = team.playerIds?.length ?? 0;
+    const adminsCount = team.adminIds?.length ?? 0;
 
     return (
         <View style={styles.dataContainer}>
@@ -95,22 +101,81 @@ function TeamData({team}: TeamDataProps) {
                     {team.name.toUpperCase()}
                 </Text>
 
-                <View style={styles.infoBadge}>
-                    <Ionicons
-                        name="people"
-                        size={15}
-                        color="#FFFFFF"
+                <View style={styles.badgesContainer}>
+
+                    <InfoBadge
+                        icon="shield-checkmark"
+                        label={`${adminsCount} ${
+                            adminsCount === 1
+                                ? "Admin"
+                                : "Admin"
+                        }`}
+                        onPress={onAdminsPress}
                     />
 
-                    <Text style={styles.infoBadgeText}>
-                        {playersCount}{" "}
-                        {playersCount === 1
-                            ? "giocatore"
-                            : "giocatori"}
-                    </Text>
+
+                    <InfoBadge
+                        icon="people"
+                        label={`${playersCount} ${
+                            playersCount === 1
+                                ? "Giocatore"
+                                : "Giocatori"
+                        }`}
+                        onPress={onPlayersPress}
+                    />
+
+
                 </View>
             </View>
         </View>
+    );
+}
+
+type InfoBadgeProps = {
+    icon: keyof typeof Ionicons.glyphMap;
+    label: string;
+    onPress: () => void;
+};
+
+function InfoBadge({
+                       icon,
+                       label,
+                       onPress,
+                   }: InfoBadgeProps) {
+    return (
+        <Pressable
+            onPress={onPress}
+            hitSlop={4}
+            accessibilityRole="button"
+            accessibilityLabel={`Apri ${label}`}
+            style={({ pressed }) => [
+                styles.infoBadge,
+                pressed && styles.infoBadgePressed,
+            ]}
+        >
+            <View style={styles.infoBadgeIcon}>
+                <Ionicons
+                    name={icon}
+                    size={16}
+                    color="#FFFFFF"
+                />
+            </View>
+
+            <Text
+                style={styles.infoBadgeText}
+                numberOfLines={1}
+            >
+                {label}
+            </Text>
+
+            <View style={styles.infoBadgeArrow}>
+                <Ionicons
+                    name="chevron-forward"
+                    size={14}
+                    color="#FFFFFF"
+                />
+            </View>
+        </Pressable>
     );
 }
 
@@ -200,28 +265,74 @@ const styles = StyleSheet.create({
         letterSpacing: 0.2,
     },
 
+    badgesContainer: {
+        marginTop: 14,
+        gap: 8,
+    },
+
     infoBadge: {
-        alignSelf: "flex-start",
+        minWidth: 0,
         flexDirection: "row",
         alignItems: "center",
 
-        marginTop: 14,
-        paddingHorizontal: 11,
-        paddingVertical: 6,
+        paddingLeft: 8,
+        paddingRight: 7,
+        paddingVertical: 8,
 
-        borderRadius: 18,
-        gap: 6,
+        borderRadius: 14,
+        gap: 7,
 
-        backgroundColor: "rgba(255, 255, 255, 0.14)",
+        backgroundColor: "rgba(255, 255, 255, 0.40)",
 
         borderWidth: 1,
-        borderColor: "rgba(255, 255, 255, 0.18)",
+        borderColor: "rgba(255, 255, 255, 0.38)",
+
+        shadowColor: "#000000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.12,
+        shadowRadius: 3,
+
+        elevation: 2,
+    },
+
+    infoBadgeIcon: {
+        width: 24,
+        height: 24,
+        borderRadius: 9,
+
+        alignItems: "center",
+        justifyContent: "center",
+
+        backgroundColor: "rgba(255, 255, 255, 0.16)",
     },
 
     infoBadgeText: {
+        flex: 1,
+        minWidth: 0,
+        flexShrink: 1,
+
         color: "#FFFFFF",
-        fontSize: 13,
-        fontWeight: "700",
+        fontSize: 11,
+        fontWeight: "800",
+    },
+
+    infoBadgeArrow: {
+        width: 20,
+        height: 20,
+        borderRadius: 10,
+
+        alignItems: "center",
+        justifyContent: "center",
+
+        backgroundColor: "rgba(255, 255, 255, 0.16)",
+    },
+
+    infoBadgePressed: {
+        opacity: 0.78,
+        transform: [{ scale: 0.97 }],
     },
 
     feedbackContainer: {

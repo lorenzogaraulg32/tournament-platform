@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {getTeamDetails} from "@/src/services/teamService";
 import {ScrollView, StyleSheet, View} from "react-native";
 import TitleApp from "@/src/components/app/TitleHeader";
-import {useLocalSearchParams} from "expo-router";
+import {router, useLocalSearchParams} from "expo-router";
 import TeamInfoSection, {TeamDetails} from "@/src/components/app/teams/TeamInfoSection";
 
 export default function teamId() {
@@ -13,6 +13,26 @@ export default function teamId() {
     const [currentTeam, setCurrentTeam] = useState<TeamDetails | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    function handlePlayersPress() {
+        router.push({
+            pathname: "/teams/[teamId]/members",
+            params: {
+                teamId,
+                section: "players",
+            },
+        });
+    }
+
+    function handleAdminsPress() {
+        router.push({
+            pathname: "/teams/[teamId]/members",
+            params: {
+                teamId,
+                section: "admins",
+            },
+        });
+    }
 
 
     async function loadTeamInfo() {
@@ -41,10 +61,7 @@ export default function teamId() {
 
 
     useEffect(() => {
-
         loadTeamInfo()
-
-
     }, [teamId]);
 
 
@@ -61,7 +78,8 @@ export default function teamId() {
                         team={currentTeam}
                         isLoading={isLoading}
                         error={error}
-                    />
+                        onAdminsPress={handleAdminsPress}
+                        onPlayersPress={handlePlayersPress}/>
                 </ScrollView>
             </View>
 

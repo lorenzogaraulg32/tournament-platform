@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Your team section is now collapsable">
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Added animation for expand/collapse section">
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/app/teams/[teamId]/members.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/teams/[teamId].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/teams/[teamId].tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/app/teams/TeamInfoSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/app/teams/TeamInfoSection.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,6 +49,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/mobile-app/node_modules/expo-image/src/ImageBackground.tsx" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/mobile-app/src/app/(app)/index.tsx" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/mobile-app/src/components/app/teams/TeamInfoSection.tsx" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
@@ -242,7 +245,7 @@
       <workItem from="1784886754297" duration="7612000" />
       <workItem from="1784905506369" duration="11398000" />
       <workItem from="1784984874799" duration="11016000" />
-      <workItem from="1785138985225" duration="20056000" />
+      <workItem from="1785138985225" duration="21720000" />
     </task>
     <task id="LOCAL-00001" summary="Exception handling and controller with register endpoint">
       <option name="closed" value="true" />
@@ -460,7 +463,15 @@
       <option name="project" value="LOCAL" />
       <updated>1785231739470</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Added animation for expand/collapse section">
+      <option name="closed" value="true" />
+      <created>1785232188209</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1785232188209</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -478,7 +489,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Exception handling and controller with register endpoint" />
     <MESSAGE value="Better expection handling" />
     <MESSAGE value="Improved exception handling and added Login endpoint" />
     <MESSAGE value="Auth microservice version 1 completed with unit tests and integration tests" />
@@ -503,7 +513,8 @@
     <MESSAGE value="Team details fronted - backend  &#10;Now you can click on a team card from /teams and get routed to the team details page wich shows team details etc. WIP" />
     <MESSAGE value="little graphical fix" />
     <MESSAGE value="Your team section is now collapsable" />
-    <option name="LAST_COMMIT_MESSAGE" value="Your team section is now collapsable" />
+    <MESSAGE value="Added animation for expand/collapse section" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added animation for expand/collapse section" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
