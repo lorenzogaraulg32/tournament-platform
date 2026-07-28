@@ -1,10 +1,11 @@
 import Background from "@/src/components/common/Background";
-import {ActivityIndicator, ScrollView, StyleSheet, Text, View} from "react-native";
+import {ActivityIndicator, Animated, Easing, ScrollView, StyleSheet, Text, View} from "react-native";
 import SectionBadge from "@/src/components/common/SectionBadge";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {getUserTeams, TeamInfo} from "@/src/services/teamService";
 import TeamCardSmall from "@/src/components/app/teams/TeamCardSmall";
 import TitleApp from "@/src/components/app/TitleHeader";
+
 
 /*
 * 1) Fetch team dell'utente
@@ -19,7 +20,9 @@ export default function TeamsPage() {
     const [userTeams, setUserTeams] = useState<TeamInfo[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
     const [collapsedYourTeamsSection, setCollapsedYourTeamsSection] = useState(false)
+    const collapseAnimation = useRef(new Animated.Value(1)).current;
 
     async function loadUserTeams() {
         try {
@@ -110,6 +113,30 @@ export default function TeamsPage() {
 
     }, []);
 
+    function toggleYourTeamsSection() {
+        setCollapsedYourTeamsSection(previous => {
+            const nextCollapsed = !previous;
+
+            Animated.timing(collapseAnimation, {
+                toValue: nextCollapsed ? 0 : 1,
+                duration: 280,
+                easing: Easing.out(Easing.cubic),
+                useNativeDriver: false,
+            }).start();
+
+            return nextCollapsed;
+        });
+    }
+
+    const animatedMaxHeight = collapseAnimation.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, 192],
+    });
+
+    const animatedOpacity = collapseAnimation.interpolate({
+        inputRange: [0, 0.3, 1],
+        outputRange: [0, 0, 1],
+    });
 
     return (
         <Background
@@ -123,19 +150,26 @@ export default function TeamsPage() {
                         title={"Le Mie Squadre"}
                         src={require("../../../assets/images/teaminfoSectionBkg.png")}
                         collapsed={collapsedYourTeamsSection}
-                        onPress={() => {
-                            setCollapsedYourTeamsSection(!collapsedYourTeamsSection)
-                        }}/>
-                    <ScrollView  style={[styles.yourTeamsScroll,
-                        collapsedYourTeamsSection
-                            ? styles.yourTeamsScrollCollapsed
-                            : styles.yourTeamsScrollExpanded,
-                    ]}
-                                contentContainerStyle={styles.yourTeamsContent}
-                                showsVerticalScrollIndicator={true}
-                                persistentScrollbar={true}>
-                        {renderUserTeams()}
-                    </ScrollView>
+                        onPress={toggleYourTeamsSection}/>
+                    <Animated.View
+                        pointerEvents={collapsedYourTeamsSection ? "none" : "auto"}
+                        style={[
+                            styles.animatedSection,
+                            {
+                                maxHeight: animatedMaxHeight,
+                                opacity: animatedOpacity,
+                            },
+                        ]}
+                    >
+                        <ScrollView
+                            style={styles.yourTeamsScroll}
+                            contentContainerStyle={styles.yourTeamsContent}
+                            showsVerticalScrollIndicator
+                            persistentScrollbar
+                        >
+                            {renderUserTeams()}
+                        </ScrollView>
+                    </Animated.View>
                 </View>
             </View>
         </Background>
@@ -172,20 +206,14 @@ const styles = StyleSheet.create({
         borderTopWidth: 0,
     },
 
-
-    yourTeamsScroll: {
-        flexGrow: 0,
+    animatedSection: {
         overflow: "hidden",
     },
 
-    yourTeamsScrollExpanded: {
+    yourTeamsScroll: {
         minHeight: 76,
         maxHeight: 192,
-    },
-
-    yourTeamsScrollCollapsed: {
-        minHeight: 0,
-        maxHeight: 0,
+        flexGrow: 0,
     },
 
 
