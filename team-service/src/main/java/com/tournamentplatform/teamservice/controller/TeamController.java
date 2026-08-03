@@ -7,6 +7,7 @@ import com.tournamentplatform.teamservice.dto.teamCreation.TeamCreationRequest;
 import com.tournamentplatform.teamservice.dto.teamCreation.TeamCreationResponse;
 import com.tournamentplatform.teamservice.service.TeamService;
 import jakarta.validation.Valid;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -57,6 +58,13 @@ public class TeamController {
     public ResponseEntity<TeamGetDetailsResponse> getTeam(@PathVariable String id) {
         TeamGetDetailsResponse response = teamService.getTeam(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/{id}/logo")
+    public ResponseEntity<Resource> getTeamLogo(
+            @PathVariable String id
+    ) {
+        return teamService.getTeamLogo(id);
     }
 
     @PatchMapping("/name/{id}")

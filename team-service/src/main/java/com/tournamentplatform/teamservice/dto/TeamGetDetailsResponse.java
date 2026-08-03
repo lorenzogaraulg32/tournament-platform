@@ -20,7 +20,6 @@ public class TeamGetDetailsResponse {
 
     private String creatorId;
 
-
     private Set<String> playerIds = new HashSet<>();
 
     //L'id dell'admin è anche nei players

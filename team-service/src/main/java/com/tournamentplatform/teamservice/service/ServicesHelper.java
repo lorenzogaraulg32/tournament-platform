@@ -25,7 +25,7 @@ public class ServicesHelper {
         return new TeamGetDetailsResponse(
                 team.getId(),
                 team.getName(),
-                team.getLogoUrl(),
+                buildPublicLogoUrl(team),
                 team.getCreatorId(),
                 team.getPlayerIds(),
                 team.getAdminIds()
@@ -36,9 +36,21 @@ public class ServicesHelper {
         return new TeamGetResponse(
                 team.getId(),
                 team.getName(),
-                team.getLogoUrl(),
+                buildPublicLogoUrl(team),
                 team.getPlayerIds().size()
         );
+    }
+
+
+    private String buildPublicLogoUrl(Team team) {
+        if (
+                team.getLogoUrl() == null ||
+                        team.getLogoUrl().isBlank()
+        ) {
+            return null;
+        }
+
+        return "/teams/" + team.getId() + "/logo";
     }
 
 }

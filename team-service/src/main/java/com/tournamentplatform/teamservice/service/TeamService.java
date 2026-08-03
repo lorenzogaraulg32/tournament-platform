@@ -8,6 +8,11 @@ import com.tournamentplatform.teamservice.dto.teamCreation.TeamCreationResponse;
 import com.tournamentplatform.teamservice.entity.Team;
 import com.tournamentplatform.teamservice.repository.TeamsRepository;
 import jakarta.validation.Valid;
+import org.springframework.core.io.Resource;
+import org.springframework.http.CacheControl;
+import org.springframework.http.MediaType;
+import org.springframework.http.MediaTypeFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
 
 @Service
 public class TeamService {
@@ -81,6 +88,28 @@ public class TeamService {
         return servicesHelper.toTeamGetDeatilsResponse(team);
     }
 
+    public ResponseEntity<Resource> getTeamLogo(String teamId) {
+
+        Team team =
+                servicesHelper.getTeamEntityOrThrow(teamId);
+
+        teamAuthorizationHelper.checkTeamPlayer(team);
+
+        Resource logo =
+                logoStorageService.loadTeamLogo(
+                        team.getLogoUrl()
+                );
+
+        MediaType contentType = MediaTypeFactory
+                .getMediaType(logo)
+                .orElse(APPLICATION_OCTET_STREAM);
+
+        return ResponseEntity
+                .ok()
+                .contentType(contentType)
+                .cacheControl(CacheControl.noStore())
+                .body(logo);
+    }
 
     public TeamGetDetailsResponse patchTeamName(String id, @Valid TeamNamePatchRequest request) {
 
@@ -137,4 +166,6 @@ public class TeamService {
                 .map(servicesHelper::toTeamGetResponse)
                 .toList();
     }
+
+
 }
