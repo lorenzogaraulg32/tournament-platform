@@ -1,6 +1,7 @@
 package com.tournamentplatform.teamservice.controller;
 
 import com.tournamentplatform.teamservice.dto.*;
+import com.tournamentplatform.teamservice.dto.teamCreation.TeamCreationRequest;
 import com.tournamentplatform.teamservice.service.TeamService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

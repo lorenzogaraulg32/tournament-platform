@@ -64,7 +64,6 @@ const styles = StyleSheet.create({
         minHeight: 120,
         borderRadius: 28,
         overflow: "hidden",
-
         borderWidth: 1,
     },
 

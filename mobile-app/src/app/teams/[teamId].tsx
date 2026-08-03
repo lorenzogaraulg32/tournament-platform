@@ -1,6 +1,6 @@
 import Background from "@/src/components/common/Background";
 import {useEffect, useState} from "react";
-import {getTeamDetails} from "@/src/services/teamService";
+import {getTeamDetails} from "@/src/services/teams/teamGetService";
 import {ScrollView, StyleSheet, View} from "react-native";
 import TitleApp from "@/src/components/app/TitleHeader";
 import {router, useLocalSearchParams} from "expo-router";

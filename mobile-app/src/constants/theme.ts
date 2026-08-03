@@ -6,7 +6,7 @@ export const colors = {
     whiteButtonBackground: "#ffffff",
     whiteButtonText: "#007B43",
 
-    orangeButtonBackground: "#FB8C00",
+    orangeButtonBackground: "#FB8C00", /*"#C8480A"*/ /*"#FB8C00"*/
     orangeButtonText: "#ffffff",
 
     textPrimary: "#ffffff",

@@ -5,6 +5,7 @@ import UserInfoSection from "@/src/components/app/profile/UserInfoSection";
 import * as UserServices from "@/src/services/userService";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import TitleApp from "@/src/components/app/TitleHeader";
+import MyTeamsTab from "@/src/app/teams/MyTeamsTab";
 
 
 export default function ProfilePage() {
@@ -25,24 +26,25 @@ export default function ProfilePage() {
 
 
                 <View style={styles.profileContent}>
-
                 </View>
-                <View style={styles.logoutContainer}>
 
-                    <AuthButton
-                        variant="logout"
-                        onPress={UserServices.handleLogout}
-                    >
-                        <Ionicons
-                            name="log-out-outline"
-                            size={26}
-                            color="#ffffff"
-                            style={{transform: [{translateX: +3}]}}
-                        />
-                    </AuthButton>
-
-                </View>
             </ScrollView>
+
+            <View style={styles.logoutContainer}>
+
+                <AuthButton
+                    variant="logout"
+                    onPress={UserServices.handleLogout}
+                >
+                    <Ionicons
+                        name="log-out-outline"
+                        size={28}
+                        color="#ffffff"
+                        style={{transform: [{translateX: +3}]}}
+                    />
+                </AuthButton>
+
+            </View>
         </Background>
     );
 }
@@ -55,6 +57,7 @@ const styles = StyleSheet.create({
 
     scrollContent: {
         flexGrow: 1,
+        gap: 10,
     },
 
     profileContent: {
@@ -62,12 +65,13 @@ const styles = StyleSheet.create({
     },
 
     logoutContainer: {
-        width: "100%",
-        alignItems: "flex-end",
-        paddingTop: 6,
-        paddingRight: 6,
-        paddingBottom: 6,
+        position: "absolute",
+        bottom: 15,
+        right: 15,
+        width: 58,
     },
-
-
+    /*
+    borderWidth: 1,
+    borderColor: "#000000",
+*/
 });

@@ -29,7 +29,7 @@ public class TournamentAuthorizationHelper {
         }
     }
 
-    public String getCurrentUserId(){
+    public String getCurrentUserId() {
         return currentUserProvider.getCurrentUserId();
     }
 

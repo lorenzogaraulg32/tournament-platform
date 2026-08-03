@@ -1,7 +1,8 @@
 import {useEffect, useState} from "react";
 import * as SecureStore from "expo-secure-store";
-import {ImageBackground, ScrollView, StyleSheet, Text, View} from "react-native";
+import {ScrollView, StyleSheet, Text} from "react-native";
 import TitleApp from "@/src/components/app/TitleHeader";
+import Background from "@/src/components/common/Background";
 
 export default function Homepage() {
 
@@ -19,36 +20,24 @@ export default function Homepage() {
     }, [])
 
     return (
-        <View style={styles.container}>
 
-            <ImageBackground
-                source={require("../../../assets/images/full_bkg.png")}
-                style={StyleSheet.absoluteFill}
-                imageStyle={StyleSheet.absoluteFill}
+        <Background header={<TitleApp text={"Home"}/>}>
 
+            <ScrollView
+                style={styles.scrollView}
+                contentContainerStyle={styles.scrollContent}
+                showsVerticalScrollIndicator={false}
             >
-                <TitleApp text={"HOME"}/>
-                <ScrollView
-                    style={styles.scrollView}
-                    contentContainerStyle={styles.scrollContent}
-                    showsVerticalScrollIndicator={false}
-                >
+                <Text style={styles.homeTitle}>{"Login effettuato!"}</Text>
 
+            </ScrollView>
+        </Background>
 
-                    <Text style={styles.homeTitle}>{"Login effettuato!"}</Text>
-
-                </ScrollView>
-            </ImageBackground>
-        </View>
     )
 }
 
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#ffffff"
-    },
     scrollView: {
         flex: 1,
 

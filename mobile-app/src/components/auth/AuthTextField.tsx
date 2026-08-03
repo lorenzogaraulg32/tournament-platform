@@ -4,11 +4,11 @@ import {colors} from "@/src/constants/theme";
 import AuthText from "@/src/components/auth/AuthText";
 import {useState} from "react";
 
+
 type AuthTextFieldProps = TextInputProps & {
     label: string;
     errorMessage?: string;
 };
-
 
 
 export default function AuthTextField({

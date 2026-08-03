@@ -29,11 +29,13 @@ export default function AuthContainer({header, content}: AuthContainerProps) {
                 <KeyboardAvoidingView
                     style={styles.keyboardContainer}
                     behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    keyboardVerticalOffset={Platform.OS === "ios" ? 20 : 0}
                 >
                     <ScrollView
                         contentContainerStyle={styles.scrollContent}
-                        keyboardShouldPersistTaps="handled"
                         showsVerticalScrollIndicator={false}
+                        keyboardShouldPersistTaps="handled"
+                        automaticallyAdjustKeyboardInsets
                     >
                         <View style={styles.headerSlot}>
                             {header}

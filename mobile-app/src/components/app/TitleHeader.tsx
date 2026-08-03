@@ -57,10 +57,9 @@ const styles = StyleSheet.create({
     headerContainer: {
         flexDirection: "row",
         alignItems: "center",
-        minHeight: 115,
 
-        paddingTop: 53,
-        paddingBottom: 10,
+        paddingTop: 55,
+        paddingBottom: 12,
         paddingHorizontal: 22,
 
         backgroundColor: colors.background,

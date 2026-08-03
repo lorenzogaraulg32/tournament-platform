@@ -1,25 +1,28 @@
 import {ReactNode} from "react";
 import {ScrollView, StyleSheet, View} from "react-native";
+import {inspect} from "node:util";
+import {colors} from "@/src/constants/theme"
 
 type BackgroundContainerProps = {
     children: ReactNode,
-    header: ReactNode
+    header?: ReactNode,
+    style?: any
 }
 
-export default function Background({children, header}: BackgroundContainerProps) {
+export default function Background({children, header, style}: BackgroundContainerProps) {
     return (
 
-            <View style={styles.container}>
-                {header}
-                <ScrollView
-                    style={styles.scrollView}
-                    contentContainerStyle={styles.scrollContent}
-                    showsVerticalScrollIndicator={false}
-                >
-                    {children}
-                </ScrollView>
+        <View style={styles.container}>
+            {header}
+            <ScrollView
+                style={styles.scrollView}
+                contentContainerStyle={styles.scrollContent}
+                showsVerticalScrollIndicator={false}
+            >
+                {children}
+            </ScrollView>
 
-            </View>
+        </View>
 
     )
 }
@@ -28,7 +31,7 @@ export default function Background({children, header}: BackgroundContainerProps)
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#ffffff"
+        backgroundColor: colors.background,
     },
     scrollView: {
         flex: 1,
@@ -37,6 +40,5 @@ const styles = StyleSheet.create({
     scrollContent: {
         flexGrow: 1,
         paddingHorizontal: 8,
-        paddingVertical: 15
     },
 })

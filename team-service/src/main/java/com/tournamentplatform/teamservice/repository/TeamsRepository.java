@@ -12,13 +12,15 @@ import java.util.List;
 public interface TeamsRepository extends JpaRepository<Team, Long> {
 
     @Query("""
-            SELECT DISTINCT team
-            FROM Team team
-            JOIN team.playerIds playerId
-            WHERE playerId = :userId
+                SELECT DISTINCT team
+                FROM Team team
+                LEFT JOIN team.playerIds playerId
+                LEFT JOIN team.adminIds adminId
+                WHERE team.creatorId = :userId
+                   OR playerId = :userId
+                   OR adminId = :userId
             """)
     List<Team> findAllByPlayerIds(@Param("userId") String userId);
-
 
 
 }

@@ -1,6 +1,10 @@
 package com.tournamentplatform.teamservice.service;
 
-import com.tournamentplatform.teamservice.dto.*;
+import com.tournamentplatform.teamservice.dto.TeamCreationResponse;
+import com.tournamentplatform.teamservice.dto.TeamGetDetailsResponse;
+import com.tournamentplatform.teamservice.dto.TeamGetResponse;
+import com.tournamentplatform.teamservice.dto.TeamNamePatchRequest;
+import com.tournamentplatform.teamservice.dto.teamCreation.TeamCreationRequest;
 import com.tournamentplatform.teamservice.entity.Team;
 import com.tournamentplatform.teamservice.repository.TeamsRepository;
 import jakarta.validation.Valid;
@@ -31,18 +35,23 @@ public class TeamService {
 
         String currentUserId = teamAuthorizationHelper.getCurrentUserId();
 
-        Set<String> players = new HashSet<>(request.getPlayerIds());
+        Set<String> players = new HashSet<>();
         players.add(currentUserId);
 
         Set<String> admins = new HashSet<>();
         admins.add(currentUserId);
 
+
         Team team = new Team(
                 request.getName(),
-                DEFAULT_TEAM_LOGO_URL,
+                request.getDescription(),
                 currentUserId,
                 players,
-                admins
+                admins,
+                request.getStatus(),
+                request.getLocation().getLabel(),
+                request.getLocation().getLatitude(),
+                request.getLocation().getLongitude()
         );
 
         Team savedTeam = teamsRepository.save(team);

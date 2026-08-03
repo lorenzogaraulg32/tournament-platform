@@ -1,175 +1,94 @@
 import Background from "@/src/components/common/Background";
-import {ActivityIndicator, Animated, Easing, ScrollView, StyleSheet, Text, View} from "react-native";
-import SectionBadge from "@/src/components/common/SectionBadge";
-import {useEffect, useRef, useState} from "react";
-import {getUserTeams, TeamInfo} from "@/src/services/teamService";
-import TeamCardSmall from "@/src/components/app/teams/TeamCardSmall";
 import TitleApp from "@/src/components/app/TitleHeader";
+import {ImageBackground, Pressable, StyleSheet, Text, View} from "react-native";
+import {useState} from "react";
+import MyTeamsTab from "@/src/components/app/teams/MyTeamsTab";
+import ButtonBG from "@/src/components/common/ButtonBG";
+import {router} from "expo-router";
 
-
-/*
-* 1) Fetch team dell'utente
-* 2) fetch teams in ricerca max 20
-* Per ogni team voglio: Nome, logo, numero partecipanti, id
-* */
+type TeamsTab = "myTeams" | "findTeam";
 
 export default function TeamsPage() {
 
-    let componentIsMounted = true;
-
-    const [userTeams, setUserTeams] = useState<TeamInfo[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-
-    const [collapsedYourTeamsSection, setCollapsedYourTeamsSection] = useState(false)
-    const collapseAnimation = useRef(new Animated.Value(1)).current;
-
-    async function loadUserTeams() {
-        try {
-            setIsLoading(true)
-            setError(null)
-
-            const loadedTeams = await getUserTeams()
-
-            if (componentIsMounted) {
-                setUserTeams(loadedTeams);
-            }
-
-        } catch (error: unknown) {
-            if (!componentIsMounted) {
-                return;
-            }
-            setUserTeams([]);
-
-            if (error instanceof Error) {
-                setError(error.message);
-            } else {
-                setError(
-                    "Errore durante il recupero delle squadre"
-                );
-            }
-        } finally {
-            if (componentIsMounted) {
-                setIsLoading(false);
-            }
-        }
-
-
-    }
-
-    function renderUserTeams() {
-        if (isLoading) {
-            return (
-                <View style={styles.messageContainer}>
-                    <ActivityIndicator size={"small"}/>
-                    <Text style={styles.messageText}>
-                        Caricamento squadre...
-                    </Text>
-                </View>
-            )
-        }
-
-        if (error) {
-            return (
-                <View style={styles.messageContainer}>
-                    <Text style={styles.errorText}>
-                        {error}
-                    </Text>
-                </View>
-            )
-        }
-
-        if (userTeams.length === 0) {
-            return (
-                <View style={styles.messageContainer}>
-                    <Text style={styles.messageText}>
-                        Non sei iscritto a nessuna squadra
-                    </Text>
-                </View>
-            )
-        }
-
-
-        return userTeams.map((team) => (
-            <TeamCardSmall
-                key={team.id}
-                id={team.id}
-                name={team.name}
-                logoUrl={team.logoUrl ?? undefined}
-                playersCount={team.numberOfPlayers}
-            />
-        ));
-    }
-
-    useEffect(() => {
-
-        componentIsMounted = true;
-
-        loadUserTeams()
-
-        return () => {
-            componentIsMounted = false;
-        };
-
-    }, []);
-
-    function toggleYourTeamsSection() {
-        setCollapsedYourTeamsSection(previous => {
-            const nextCollapsed = !previous;
-
-            Animated.timing(collapseAnimation, {
-                toValue: nextCollapsed ? 0 : 1,
-                duration: 280,
-                easing: Easing.out(Easing.cubic),
-                useNativeDriver: false,
-            }).start();
-
-            return nextCollapsed;
-        });
-    }
-
-    const animatedMaxHeight = collapseAnimation.interpolate({
-        inputRange: [0, 1],
-        outputRange: [0, 192],
-    });
-
-    const animatedOpacity = collapseAnimation.interpolate({
-        inputRange: [0, 0.3, 1],
-        outputRange: [0, 0, 1],
-    });
+    const [activeTab, setActiveTab] = useState<TeamsTab>("myTeams");
 
     return (
         <Background
             header={
-                <TitleApp text={"Squadre"}/>
-            }>
+                <TitleApp text="Squadre"/>
+            }
+        >
 
-            <View style={styles.sectionShadow}>
-                <View style={styles.sectionContainer}>
-                    <SectionBadge
-                        title={"Le Mie Squadre"}
-                        src={require("../../../assets/images/teaminfoSectionBkg.png")}
-                        collapsed={collapsedYourTeamsSection}
-                        onPress={toggleYourTeamsSection}/>
-                    <Animated.View
-                        pointerEvents={collapsedYourTeamsSection ? "none" : "auto"}
-                        style={[
-                            styles.animatedSection,
-                            {
-                                maxHeight: animatedMaxHeight,
-                                opacity: animatedOpacity,
-                            },
-                        ]}
+            <View style={styles.panelShadow}>
+                <View style={styles.container}>
+
+                    <ImageBackground
+                        source={require("../../../assets/images/teaminfoSectionBkg.png")}
+                        style={styles.tabsContainer}
+                        imageStyle={styles.backgroundImage}
                     >
-                        <ScrollView
-                            style={styles.yourTeamsScroll}
-                            contentContainerStyle={styles.yourTeamsContent}
-                            showsVerticalScrollIndicator
-                            persistentScrollbar
+                        <Pressable
+                            accessibilityRole="button"
+                            accessibilityState={{
+                                selected: activeTab === "myTeams",
+                            }}
+                            onPress={() => setActiveTab("myTeams")}
+                            style={({pressed}) => [
+                                styles.tab,
+                                activeTab === "myTeams" && styles.activeTab,
+                                pressed && styles.pressedTab,
+                            ]}
                         >
-                            {renderUserTeams()}
-                        </ScrollView>
-                    </Animated.View>
+                            <Text
+                                style={[
+                                    styles.tabText,
+                                    activeTab === "myTeams" && styles.activeTabText,
+                                ]}
+                            >
+                                Le mie squadre
+                            </Text>
+                        </Pressable>
+
+                        <Pressable
+                            accessibilityRole="button"
+                            accessibilityState={{
+                                selected: activeTab === "findTeam",
+                            }}
+                            onPress={() => setActiveTab("findTeam")}
+                            style={({pressed}) => [
+                                styles.tab,
+                                activeTab === "findTeam" && styles.activeTab,
+                                pressed && styles.pressedTab,
+                            ]}
+                        >
+                            <Text
+                                style={[
+                                    styles.tabText,
+                                    activeTab === "findTeam" && styles.activeTabText,
+                                ]}
+                            >
+                                Trova squadra
+                            </Text>
+                        </Pressable>
+                    </ImageBackground>
+                    <View style={styles.content}>
+                        {activeTab === "myTeams" ? (
+                            <View style={styles.myTeamsContent}>
+
+                                <MyTeamsTab/>
+
+                                <ButtonBG
+                                    text={"Crea nuova squadra"}
+                                    onPress={() => router.push("/teams/create")
+                                }/>
+                            </View>
+                        ) : (
+                            <View>
+
+                            </View>
+                        )}
+                    </View>
+
                 </View>
             </View>
         </Background>
@@ -177,70 +96,113 @@ export default function TeamsPage() {
 }
 
 
+const PANEL_RADIUS = 18;
+
 const styles = StyleSheet.create({
 
-    sectionShadow: {
-        width: "100%",
-        borderRadius: 16,
+    panelShadow: {
+        flex: 1,
 
-        // Ombra iOS
-        shadowColor: "#0B1F17",
+        borderTopLeftRadius: PANEL_RADIUS,
+        borderTopRightRadius: PANEL_RADIUS,
+
+        shadowColor: "#000000",
         shadowOffset: {
             width: 0,
-            height: 5,
+            height: -2,
         },
         shadowOpacity: 0.12,
-        shadowRadius: 10,
-
-        // Ombra Android
-        elevation: 5,
+        shadowRadius: 6,
+        elevation: 4,
     },
 
-    sectionContainer: {
-        backgroundColor: "#FAFAF7",
-        borderRadius: 16,
-        overflow: "hidden",
+    container: {
+        flex: 1,
+        backgroundColor: "#FFFFFF",
 
-        borderWidth: 1,
-        borderColor: "rgba(18, 55, 42, 0.14)",
-        borderTopWidth: 0,
-    },
+        borderColor: "#FFFFFF",
+        borderWidth: 0.5,
 
-    animatedSection: {
+        borderTopLeftRadius: PANEL_RADIUS,
+        borderTopRightRadius: PANEL_RADIUS,
         overflow: "hidden",
     },
 
-    yourTeamsScroll: {
-        minHeight: 76,
-        maxHeight: 192,
-        flexGrow: 0,
-    },
-
-
-    yourTeamsContent: {
-        paddingHorizontal: 2,
-        paddingTop: 6,
-        paddingBottom: 6,
+    tabsContainer: {
+        flexDirection: "row",
         gap: 6,
+        padding: 4,
+
+        alignItems: "center",
+
+        minHeight: 50,
+
+        borderTopLeftRadius: PANEL_RADIUS,
+        borderTopRightRadius: PANEL_RADIUS,
+
+        overflow: "hidden",
     },
 
-    messageContainer: {
-        minHeight: 64,
+    backgroundImage: {
+        borderTopLeftRadius: PANEL_RADIUS,
+        borderTopRightRadius: PANEL_RADIUS,
+    },
+
+    tab: {
+        flex: 1,
+        height: 38,
         alignItems: "center",
         justifyContent: "center",
-        gap: 8,
-        paddingHorizontal: 20,
+        borderRadius: 14,
+        paddingHorizontal: 8,
     },
 
-    messageText: {
-        fontSize: 14,
-        color: "#666666",
+    activeTab: {
+        backgroundColor: "rgba(255, 255, 255, 0.12)",
+        borderColor: "rgba(255, 255, 255, 0.75)",
+        borderWidth: 1,
+        opacity: 2.0,
+    },
+
+    pressedTab: {
+        opacity: 0.8,
+    },
+
+    tabText: {
+        color: "rgba(255, 255, 255, 0.68)",
+        fontSize: 16,
+        fontWeight: "700",
         textAlign: "center",
     },
 
-    errorText: {
-        fontSize: 14,
-        color: "#B42318",
-        textAlign: "center",
+    activeTabText: {
+        color: "#FFFFFF",
     },
+
+    content: {
+        flex: 1,
+        paddingTop: 12,
+        paddingHorizontal: 5
+    },
+
+    myTeamsContent: {
+        flex: 1,
+        minHeight: 0,
+    },
+
+    findTeamContent: {
+        flex: 1,
+    },
+
+
+
+
+
+
+
+
+
+
+
+
 });
