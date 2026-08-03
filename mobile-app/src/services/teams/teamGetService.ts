@@ -15,7 +15,7 @@ export type TeamInfo = {
 export type teamInfoDetail = {
     id: number,
     name: string,
-    logoUrl?: string
+    logoUrl: string | null;
     creatorId : string
     playerIds: Array<string>
     adminIds: Array<string>

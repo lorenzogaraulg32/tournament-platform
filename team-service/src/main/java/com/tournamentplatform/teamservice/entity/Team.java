@@ -40,8 +40,8 @@ public class Team {
     private String description;
 
 
-    @Column(name = "logo_url", length = 500, nullable = false)
-    private String logoUrl = DEFAULT_TEAM_LOGO_URL;
+    @Column(name = "logo_url", length = 500)
+    private String logoUrl = null;
 
     @Column(name = "creator_id")
     private String creatorId;

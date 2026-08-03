@@ -1,17 +1,17 @@
 package com.tournamentplatform.teamservice.service;
 
+import com.tournamentplatform.teamservice.entity.Team;
+import jakarta.ws.rs.NotFoundException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
 import java.util.Locale;
 import java.util.Set;
 
@@ -106,6 +106,40 @@ public class LogoStorageService {
         }
     }
 
+    public Resource loadTeamLogo(String filename) {
+        if (filename == null || filename.isBlank()) {
+            throw new IllegalArgumentException(
+                    "Il nome del logo è obbligatorio"
+            );
+        }
+
+        String safeFilename = Path
+                .of(filename)
+                .getFileName()
+                .toString();
+
+        Path filePath = uploadDir
+                .resolve(safeFilename)
+                .normalize();
+
+        if (!filePath.startsWith(uploadDir)) {
+            throw new IllegalArgumentException(
+                    "Percorso del logo non valido"
+            );
+        }
+
+        if (
+                !Files.exists(filePath) ||
+                        !Files.isRegularFile(filePath)
+        ) {
+            throw new NotFoundException(
+                    "Logo non trovato"
+            );
+        }
+
+        return new FileSystemResource(filePath);
+    }
+
     public void deleteTeamLogo(Long teamId) {
         if (teamId == null) {
             return;
@@ -132,6 +166,8 @@ public class LogoStorageService {
             );
         }
     }
+
+
 
     private void validateFile(MultipartFile file) {
         if (file == null || file.isEmpty()) {

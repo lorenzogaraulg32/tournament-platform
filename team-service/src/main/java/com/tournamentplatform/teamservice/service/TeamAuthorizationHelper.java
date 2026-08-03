@@ -16,16 +16,24 @@ public class TeamAuthorizationHelper {
         this.currentUserProvider = currentUserProvider;
     }
 
-    public void checkTeamAdmin(Team tournament) {
+    public void checkTeamAdmin(Team team) {
         String currentUserId = currentUserProvider.getCurrentUserId();
-        if (!tournament.getAdminIds().contains(currentUserId)) {
+        if (!team.getAdminIds().contains(currentUserId)) {
             throw new AccessDeniedException("Non sei autorizzato per questa modifica");
         }
     }
 
-    public void checkTeamCreator(Team tournament) {
+
+    public void checkTeamPlayer(Team team) {
         String currentUserId = currentUserProvider.getCurrentUserId();
-        if (!tournament.getCreatorId().equals(currentUserId)) {
+        if (!team.getPlayerIds().contains(currentUserId)) {
+            throw new AccessDeniedException("Non sei autorizzato per questa modifica");
+        }
+    }
+
+    public void checkTeamCreator(Team team) {
+        String currentUserId = currentUserProvider.getCurrentUserId();
+        if (!team.getCreatorId().equals(currentUserId)) {
             throw new AccessDeniedException("Non sei autorizzato per questa modifica");
         }
     }
