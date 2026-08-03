@@ -4,19 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Now User can upload a logo when creating a team. TODO: fetching and showing the real logo">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/app/teams/TeamLogo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/app/teams/TeamLogo.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/teams/teamGetService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/teams/teamGetService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/config/WebConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/controller/TeamController.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/controller/TeamController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/dto/TeamGetDetailsResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/dto/TeamGetDetailsResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/entity/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/entity/Team.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/LogoStorageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/LogoStorageService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/ServicesHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/ServicesHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamAuthorizationHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamAuthorizationHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamService.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamService.java" afterDir="false" />
-    </list>
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Logo Fetch Implemented" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -256,7 +244,7 @@
       <workItem from="1785138985225" duration="44458000" />
       <workItem from="1785413342292" duration="20000" />
       <workItem from="1785415865874" duration="3504000" />
-      <workItem from="1785752133501" duration="14362000" />
+      <workItem from="1785752133501" duration="14913000" />
     </task>
     <task id="LOCAL-00001" summary="Exception handling and controller with register endpoint">
       <option name="closed" value="true" />
@@ -514,7 +502,31 @@
       <option name="project" value="LOCAL" />
       <updated>1785772724198</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="Logo Fetch Implemented">
+      <option name="closed" value="true" />
+      <created>1785774961436</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1785774961436</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Logo Fetch Implemented">
+      <option name="closed" value="true" />
+      <created>1785775191889</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1785775191889</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Logo Fetch Implemented">
+      <option name="closed" value="true" />
+      <created>1785775196693</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1785775196693</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -532,7 +544,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Migration of auth service from symmetric key to asymmetric ones, updated tests and created an endpoint for public key exposure" />
     <MESSAGE value="Api gateway first version" />
     <MESSAGE value="Merge remote-tracking branch 'origin/main'&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml" />
     <MESSAGE value="Tournament Service init&#10;Create new tournament enpoint added&#10;Security config added for jwt validation" />
@@ -557,7 +568,8 @@
     <MESSAGE value="Added in TeamInfoSection.tsx 2 badges one for admin and one for players, so on the click the user can check them out. Routes not yet implemented" />
     <MESSAGE value="Fixed team Deletion" />
     <MESSAGE value="Now User can upload a logo when creating a team. TODO: fetching and showing the real logo" />
-    <option name="LAST_COMMIT_MESSAGE" value="Now User can upload a logo when creating a team. TODO: fetching and showing the real logo" />
+    <MESSAGE value="Logo Fetch Implemented" />
+    <option name="LAST_COMMIT_MESSAGE" value="Logo Fetch Implemented" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
