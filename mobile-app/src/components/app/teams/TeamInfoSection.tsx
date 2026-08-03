@@ -1,6 +1,7 @@
-import {ActivityIndicator, Image, ImageBackground, Pressable, StyleSheet, Text, View,} from "react-native";
+import {ActivityIndicator, Pressable, StyleSheet, Text, View,} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import SectionContainer from "../infoSectionContainer";
+import TeamLogo from "@/src/components/app/teams/TeamLogo";
 
 export type TeamDetails = {
     id: number;
@@ -89,7 +90,12 @@ export function TeamData({
 
     return (
         <View style={styles.dataContainer}>
-            <TeamLogo logoUrl={team.logoUrl}/>
+            <View style={styles.imageContainer}>
+                <TeamLogo
+                    logoUrl={team.logoUrl}
+                    style={styles.logo}
+                />
+            </View>
 
             <View style={styles.verticalSeparator}/>
 
@@ -179,31 +185,6 @@ function InfoBadge({
     );
 }
 
-type TeamLogoProps = {
-    logoUrl?: string | null;
-};
-
-function TeamLogo({logoUrl}: TeamLogoProps) {
-    return (
-        <View style={styles.imageContainer}>
-            {logoUrl ? (
-                <Image
-                    source={{uri: logoUrl}}
-                    style={styles.logo}
-                    resizeMode="cover"
-                />
-            ) : (
-                <ImageBackground
-                    source={require(
-                        "../../../../assets/images/placeholder for teams.webp"
-                    )}
-                    style={styles.logo}
-                    resizeMode="cover"
-                />
-            )}
-        </View>
-    );
-}
 
 type FeedbackContentProps = {
     children: React.ReactNode;

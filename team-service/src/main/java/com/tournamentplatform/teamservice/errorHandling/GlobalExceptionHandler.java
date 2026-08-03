@@ -141,22 +141,20 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGenericException(
-            Exception ex,
-            HttpServletRequest request
+    public ResponseEntity<?> handleGenericException(
+            Exception exception
     ) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
-                "Errore interno del server",
-                request.getRequestURI(),
-                null
+        System.out.println(
+                "Errore non gestito durante la richiesta " +
+                        exception
         );
 
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(errorResponse);
+                .body(Map.of(
+                        "message",
+                        "Errore interno del server"
+                ));
     }
 
 

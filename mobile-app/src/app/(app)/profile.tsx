@@ -5,7 +5,6 @@ import UserInfoSection from "@/src/components/app/profile/UserInfoSection";
 import * as UserServices from "@/src/services/userService";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import TitleApp from "@/src/components/app/TitleHeader";
-import MyTeamsTab from "@/src/app/teams/MyTeamsTab";
 
 
 export default function ProfilePage() {

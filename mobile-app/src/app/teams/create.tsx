@@ -1,23 +1,13 @@
-import {
-    ActivityIndicator,
-    Pressable,
-    StyleSheet,
-    Text,
-    View,
-} from "react-native";
+import {ActivityIndicator, Pressable, StyleSheet, Text, View,} from "react-native";
 import Container from "@/src/components/app/teams/createTeam/Container";
 import Switch from "@/src/components/app/teams/createTeam/Switch";
 import Fields from "@/src/components/app/teams/createTeam/Fields";
-import PositionField, {
-    TeamLocation,
-} from "@/src/components/app/teams/createTeam/PositionField";
-import {
-    createTeam,
-    RecruitmentStatus,
-} from "@/src/services/teams/teamCreationService";
+import PositionField, {TeamLocation,} from "@/src/components/app/teams/createTeam/PositionField";
+import {createTeam, RecruitmentStatus, TeamLogoUpload,} from "@/src/services/teams/teamCreationService";
 import {useState} from "react";
 import {router} from "expo-router";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import LogoField from "@/src/components/app/teams/createTeam/LogoField";
 
 export default function CreateTeamPage() {
     const [name, setName] = useState("");
@@ -29,10 +19,16 @@ export default function CreateTeamPage() {
     const [location, setLocation] =
         useState<TeamLocation | null>(null);
 
+    const [logo, setLogo] =
+        useState<TeamLogoUpload | null>(null);
+
     const [nameError, setNameError] =
         useState<string | undefined>();
 
     const [locationError, setLocationError] =
+        useState<string | undefined>();
+
+    const [logoError, setLogoError] =
         useState<string | undefined>();
 
     const [submitError, setSubmitError] =
@@ -46,6 +42,7 @@ export default function CreateTeamPage() {
 
         setNameError(undefined);
         setLocationError(undefined);
+        setLogoError(undefined)
         setSubmitError(null);
 
         const trimmedName = name.trim();
@@ -64,6 +61,18 @@ export default function CreateTeamPage() {
             isValid = false;
         }
 
+        if (logo) {
+            if (
+                logo.fileSize !== undefined &&
+                logo.fileSize > 2 * 1024 * 1024
+            ) {
+                setLogoError(
+                    "Il logo non può superare i 2 MB"
+                );
+                isValid = false;
+            }
+        }
+
         return isValid;
     }
 
@@ -76,16 +85,18 @@ export default function CreateTeamPage() {
             setIsSubmitting(true);
 
             const response = await createTeam({
-                name: name.trim(),
-                description:
-                    description.trim() || undefined,
-                status,
-                location: {
-                    label: location.label,
-                    latitude: location.latitude,
-                    longitude: location.longitude,
+                    name: name.trim(),
+                    description:
+                        description.trim() || undefined,
+                    status,
+                    location: {
+                        label: location.label,
+                        latitude: location.latitude,
+                        longitude: location.longitude,
+                    },
                 },
-            });
+                logo
+            );
 
             router.replace(`/teams/${response.id}`);
         } catch (error) {
@@ -94,6 +105,7 @@ export default function CreateTeamPage() {
                     ? error.message
                     : "Errore durante la creazione"
             );
+            console.error(error)
         } finally {
             setIsSubmitting(false);
         }
@@ -102,6 +114,7 @@ export default function CreateTeamPage() {
     return (
         <Container>
             <View style={styles.formContainer}>
+
                 <Fields
                     label="Nome squadra"
                     labelIconName="shield-outline"
@@ -145,6 +158,16 @@ export default function CreateTeamPage() {
                         }
                     }}
                     errorMessage={locationError}
+                />
+
+                <LogoField
+                    value={logo}
+                    onChange={(newLogo) => {
+                        setLogo(newLogo);
+                        setLogoError(undefined);
+                    }}
+                    disabled={isSubmitting}
+                    errorMessage={logoError}
                 />
 
                 {submitError && (

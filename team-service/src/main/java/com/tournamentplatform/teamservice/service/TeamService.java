@@ -1,14 +1,15 @@
 package com.tournamentplatform.teamservice.service;
 
-import com.tournamentplatform.teamservice.dto.TeamCreationResponse;
 import com.tournamentplatform.teamservice.dto.TeamGetDetailsResponse;
 import com.tournamentplatform.teamservice.dto.TeamGetResponse;
 import com.tournamentplatform.teamservice.dto.TeamNamePatchRequest;
 import com.tournamentplatform.teamservice.dto.teamCreation.TeamCreationRequest;
+import com.tournamentplatform.teamservice.dto.teamCreation.TeamCreationResponse;
 import com.tournamentplatform.teamservice.entity.Team;
 import com.tournamentplatform.teamservice.repository.TeamsRepository;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashSet;
@@ -18,7 +19,6 @@ import java.util.Set;
 @Service
 public class TeamService {
 
-    private static final String DEFAULT_TEAM_LOGO_URL = "/uploads/team-logos/default_team_logo.png";
     private final TeamsRepository teamsRepository;
     private final TeamAuthorizationHelper teamAuthorizationHelper;
     private final LogoStorageService logoStorageService;
@@ -31,7 +31,8 @@ public class TeamService {
         this.servicesHelper = servicesHelper;
     }
 
-    public TeamCreationResponse createTeam(TeamCreationRequest request) {
+    @Transactional
+    public TeamCreationResponse createTeam(TeamCreationRequest request, MultipartFile logo) {
 
         String currentUserId = teamAuthorizationHelper.getCurrentUserId();
 
@@ -55,6 +56,18 @@ public class TeamService {
         );
 
         Team savedTeam = teamsRepository.save(team);
+
+        if (logo != null && !logo.isEmpty()) {
+            String logoUrl = logoStorageService.storeTeamLogo(
+                    savedTeam.getId(),
+                    logo
+            );
+
+            savedTeam.setLogoUrl(logoUrl);
+        } else {
+            System.out.println("Il logo è nullo o vuoto!");
+        }
+
 
         return new TeamCreationResponse(String.valueOf(savedTeam.getId()));
 
@@ -88,7 +101,7 @@ public class TeamService {
 
         teamAuthorizationHelper.checkTeamAdmin(team);
 
-        String logoUrl = logoStorageService.storeTeamLogo(String.valueOf(team.getId()), file);
+        String logoUrl = logoStorageService.storeTeamLogo(team.getId(), file);
 
         team.setLogoUrl(logoUrl);
 
@@ -97,14 +110,20 @@ public class TeamService {
         return servicesHelper.toTeamGetDeatilsResponse(savedTeam);
     }
 
+    @Transactional
     public void deleteTeam(String id) {
 
         Team team = servicesHelper.getTeamEntityOrThrow(id);
 
-
         teamAuthorizationHelper.checkTeamCreator(team);
 
+        Long teamId = team.getId();
+
         teamsRepository.delete(team);
+
+        teamsRepository.flush();
+
+        logoStorageService.deleteTeamLogo(teamId);
     }
 
 

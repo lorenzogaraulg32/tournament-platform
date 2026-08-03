@@ -1,7 +1,10 @@
 package com.tournamentplatform.teamservice.controller;
 
-import com.tournamentplatform.teamservice.dto.*;
+import com.tournamentplatform.teamservice.dto.TeamGetDetailsResponse;
+import com.tournamentplatform.teamservice.dto.TeamGetResponse;
+import com.tournamentplatform.teamservice.dto.TeamNamePatchRequest;
 import com.tournamentplatform.teamservice.dto.teamCreation.TeamCreationRequest;
+import com.tournamentplatform.teamservice.dto.teamCreation.TeamCreationResponse;
 import com.tournamentplatform.teamservice.service.TeamService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -23,10 +26,25 @@ public class TeamController {
     }
 
 
-    @PostMapping()
-    public ResponseEntity<TeamCreationResponse> createTeam(@RequestBody @Valid TeamCreationRequest request) {
-        TeamCreationResponse response = teamService.createTeam(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    @PostMapping(
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
+    public ResponseEntity<TeamCreationResponse> createTeam(
+            @RequestPart("team")
+            @Valid
+            TeamCreationRequest request,
+
+            @RequestPart(
+                    value = "logo",
+                    required = false
+            )
+            MultipartFile logo
+    ) {
+        TeamCreationResponse response = teamService.createTeam(request, logo);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
     }
 
     @GetMapping("/my-teams")
