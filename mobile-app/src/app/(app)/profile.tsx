@@ -1,12 +1,9 @@
-import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
 import Background from "@/src/components/common/Background";
 import {Pressable, ScrollView, StyleSheet, View} from "react-native";
 import ProfileHeader from "@/src/components/app/profile/ProfileHeader";
 import * as UserServices from "@/src/services/userService";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import TitleApp from "@/src/components/common/headers/HeaderMain";
-import {useState} from "react";
-import {inspect} from "node:util";
 import {colors} from "@/src/constants/theme"
 
 export default function ProfilePage() {

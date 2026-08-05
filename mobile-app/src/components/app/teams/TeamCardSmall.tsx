@@ -1,4 +1,4 @@
-import {Image, Pressable, StyleSheet, Text, View} from "react-native";
+import {Pressable, StyleSheet, Text, View} from "react-native";
 import {teamCardBlueColors} from "@/src/constants/theme"
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {router} from "expo-router";

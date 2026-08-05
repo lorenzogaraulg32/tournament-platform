@@ -1,7 +1,5 @@
 import {ImageBackground, Pressable, StyleSheet, Text, View} from "react-native";
 import {FontAwesome6} from "@expo/vector-icons";
-import {colors} from "@/src/constants/theme";
-
 
 type ButtonBGProps = {
     text: string

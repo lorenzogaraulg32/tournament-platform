@@ -1,4 +1,3 @@
-import AuthText from "@/src/components/auth/AuthText";
 import {StyleSheet} from "react-native";
 import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
 import {router} from "expo-router";
