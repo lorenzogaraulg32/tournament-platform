@@ -11,7 +11,7 @@ type ButtonBGProps = {
 }
 
 
-export default function ButtonBG({text, onPress}: ButtonBGProps) {
+export default function ButtonBackground({text, onPress}: ButtonBGProps) {
 
     return (
         <Pressable
@@ -38,7 +38,7 @@ export default function ButtonBG({text, onPress}: ButtonBGProps) {
                     />
                 </View>
 
-                <Text style={styles.btnText}>
+                <Text style={[styles.btnText]}>
                     {text}
                 </Text>
             </ImageBackground>

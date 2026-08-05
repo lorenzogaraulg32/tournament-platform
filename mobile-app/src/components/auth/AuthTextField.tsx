@@ -1,7 +1,5 @@
-import {StyleSheet, TextInput, TextInputProps, View} from "react-native";
+import {StyleSheet, Text, TextInput, TextInputProps, View} from "react-native";
 import {colors} from "@/src/constants/theme";
-
-import AuthText from "@/src/components/auth/AuthText";
 import {useState} from "react";
 
 
@@ -27,11 +25,11 @@ export default function AuthTextField({
     return (
         <View style={[styles.fieldsContainer]}>
 
-            <AuthText variant="fieldLabel" text={label}/>
+            <Text style={styles.label}>{label}</Text>
 
             <TextInput
                 placeholderTextColor={colors.inputPlaceholder}
-                selectionColor={colors.contrastColor}
+                selectionColor={colors.orangeDefault}
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}
                 style={[
@@ -44,10 +42,7 @@ export default function AuthTextField({
             />
 
             {errorMessage ? (
-                <AuthText
-                    variant="errorLabelInput"
-                    text={errorMessage}
-                />
+                <Text style={styles.errorLabel}>{errorMessage}</Text>
             ) : null}
         </View>
     );
@@ -55,11 +50,32 @@ export default function AuthTextField({
 
 
 const styles = StyleSheet.create({
+
     fieldsContainer: {
         width: "100%",
         marginBottom: 22,
     },
 
+    label: {
+        fontSize: 16,
+        lineHeight: 20,
+        fontWeight: 800,
+        color: colors.textPrimary,
+        marginLeft: 10,
+        marginBottom: 8,
+        textAlign: "left"
+    },
+
+
+    errorLabel: {
+        marginTop: 6,
+        marginLeft: 10,
+        fontSize: 12,
+        lineHeight: 18,
+        fontWeight: 500,
+        color: colors.error,
+        textAlign: "left",
+    },
 
     fieldInput: {
         width: "100%",
@@ -75,7 +91,7 @@ const styles = StyleSheet.create({
     },
 
     fieldInputFocused: {
-        borderColor: colors.contrastColor,
+        borderColor: colors.orangeDefault,
         backgroundColor: colors.inputBackgroundFocused,
     },
 

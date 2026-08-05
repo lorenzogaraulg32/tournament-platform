@@ -1,13 +1,7 @@
 export const colors = {
-    backgroundStart: "#00A859",
-    backgroundEnd: "#004B23",
+    orangeDefault: "#C8480A",
+
     background:"#012613",
-
-    whiteButtonBackground: "#ffffff",
-    whiteButtonText: "#007B43",
-
-    orangeButtonBackground: "#FB8C00", /*"#C8480A"*/ /*"#FB8C00"*/
-    orangeButtonText: "#ffffff",
 
     textPrimary: "#ffffff",
     textSecondary: "#F2FFF8",
@@ -17,18 +11,13 @@ export const colors = {
     error: "#FF4D4D",
     success: "#43A047",
 
-    contrastColor: "#FB8C00",
-    contrastColorLight: "#ffe1be",
-
-    surfacePrimary: "#ffffff",
-    shadow: "#000000",
-    logoIcon: "#00A85A",
-
     inputBackground: "rgba(255,255,255,0.30)",
     inputBackgroundFocused:"rgba(255,255,255,0.40)",
     inputBorder: "rgba(255,255,255,0.35)",
     inputPlaceholder: "rgba(255,255,255,0.50)",
 };
+
+/*
 export const fontSizes = {
     xs: 12,
     sm: 14,
@@ -60,7 +49,7 @@ export const borderRadius = {
     lg: 20,
     full: 999,
 };
-
+*/
 
 export const teamCardBlueColors = {
     background: "#071D35",

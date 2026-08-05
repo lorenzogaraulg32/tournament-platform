@@ -1,10 +1,10 @@
-import {StyleSheet} from "react-native";
+import {StyleSheet, Text} from "react-native";
 import AuthTextField from "@/src/components/auth/AuthTextField";
 import AuthHeader from "@/src/components/auth/AuthHeader";
 import AuthContainer from "@/src/components/auth/AuthContainer";
-import AuthContentSection from "@/src/components/auth/AuthContentSection";
-import AuthButton from "@/src/components/auth/AuthButton";
-import AuthText from "@/src/components/auth/AuthText";
+import AuthContent from "@/src/components/auth/AuthContent";
+import ButtonSolid from "@/src/components/common/ButtonSolid";
+import {colors} from "@/src/constants/theme";
 import {router} from "expo-router";
 import {useState} from "react";
 import {ApiRequestError, loginUser} from "@/src/services/authService";
@@ -102,7 +102,7 @@ export default function LoginPage() {
 
         } catch (error) {
             if (error instanceof ApiRequestError) {
-               console.log(error.fieldErrors)
+                console.log(error.fieldErrors)
                 setApiError(error.message)
 
                 setFieldErrors((current) => ({
@@ -136,7 +136,7 @@ export default function LoginPage() {
                 />
             }
             content={
-                <AuthContentSection style={styles.inputFieldsContainer}>
+                <AuthContent style={styles.inputFieldsContainer}>
                     <AuthTextField
                         label="Email"
                         placeholder="Inserisci la tua email"
@@ -164,24 +164,20 @@ export default function LoginPage() {
                     />
 
                     {apiError ? (
-                        <AuthText
-                            text={apiError}
-                            variant="errorLabelInput"
-                            style={styles.apiError}
-                        />
+                        <Text style={styles.apiError}>{apiError}</Text>
                     ) : null}
 
-                    <AuthButton
+                    <ButtonSolid
                         variant="buttonRegister"
+                        textVariant={"textRegister"}
                         style={styles.loginBtn}
                         disabled={isLoading}
-                        onPress={handleLogin}><AuthText text={isLoading
-                        ? "Accesso in corso..."
-                        : "Accedi"} variant={"buttonRegisterText"}/>
-                    </AuthButton>
+                        onPress={handleLogin}
+                        text={isLoading ? "Accesso in corso..." : "Accedi"}>
+                    </ButtonSolid>
 
 
-                </AuthContentSection>
+                </AuthContent>
             }
         />
 
@@ -200,7 +196,12 @@ const styles = StyleSheet.create({
     },
 
     apiError: {
-        marginTop: 4,
+        marginTop: 6,
+        marginLeft: 10,
+        fontSize: 14,
+        lineHeight: 18,
+        fontWeight: 400,
+        color: colors.error,
         textAlign: "center",
     },
 

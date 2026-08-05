@@ -4,7 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Logo Fetch Implemented" />
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Logo Fetch Implemented">
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/common/ButtonBackground.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/common/ButtonSolid.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/profile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/profile.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(auth)/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(auth)/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(auth)/login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(auth)/login.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(auth)/register.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(auth)/register.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/auth/AuthButton.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/auth/AuthContentSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/auth/AuthContent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/auth/AuthHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/auth/AuthHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/auth/AuthText.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/auth/AuthTextField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/auth/AuthTextField.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/auth/LogoBox.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/auth/AuthLogoBox.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/ButtonBG.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/constants/animations.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/constants/theme.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/constants/theme.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -124,11 +142,11 @@
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\app\(tabs)" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\common" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\team-service\uploads\team-logos" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\team-service" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\assets\images\teamPlaceholders" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\app\teams" />
-      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\assets\images\logoPlaceholder" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.tournamentplatform.teamservice.dto" />
@@ -245,6 +263,7 @@
       <workItem from="1785413342292" duration="20000" />
       <workItem from="1785415865874" duration="3504000" />
       <workItem from="1785752133501" duration="14913000" />
+      <workItem from="1785934796181" duration="3818000" />
     </task>
     <task id="LOCAL-00001" summary="Exception handling and controller with register endpoint">
       <option name="closed" value="true" />

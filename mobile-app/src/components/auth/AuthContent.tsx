@@ -8,7 +8,7 @@ type AuthContentSectionProps = {
 }
 
 
-export default function AuthContentSection({children, style}: AuthContentSectionProps) {
+export default function AuthContent({children, style}: AuthContentSectionProps) {
     return (
         <View style={[styles, style]}>
             {children}

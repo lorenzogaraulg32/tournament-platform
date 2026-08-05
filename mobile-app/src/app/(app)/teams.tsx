@@ -3,7 +3,7 @@ import TitleApp from "@/src/components/app/TitleHeader";
 import {ImageBackground, Pressable, StyleSheet, Text, View} from "react-native";
 import {useState} from "react";
 import MyTeamsTab from "@/src/components/app/teams/MyTeamsTab";
-import ButtonBG from "@/src/components/common/ButtonBG";
+import ButtonBackground from "@/src/components/common/ButtonBackground";
 import {router} from "expo-router";
 
 type TeamsTab = "myTeams" | "findTeam";
@@ -77,7 +77,7 @@ export default function TeamsPage() {
 
                                 <MyTeamsTab/>
 
-                                <ButtonBG
+                                <ButtonBackground
                                     text={"Crea nuova squadra"}
                                     onPress={() => router.push("/teams/create")
                                 }/>

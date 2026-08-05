@@ -1,9 +1,9 @@
 import AuthText from "@/src/components/auth/AuthText";
 import {StyleSheet} from "react-native";
-import AuthButton from "@/src/components/auth/AuthButton";
+import ButtonSolid from "@/src/components/common/ButtonSolid";
 import {router} from "expo-router";
 import AuthHeader from "@/src/components/auth/AuthHeader";
-import AuthContentSection from "@/src/components/auth/AuthContentSection";
+import AuthContent from "@/src/components/auth/AuthContent";
 import AuthContainer from "@/src/components/auth/AuthContainer";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 
@@ -24,20 +24,25 @@ export default function WelcomeScreen() {
             }
 
             content={
-                <AuthContentSection style={[styles.btnContainer, {paddingBottom: Math.max(insets.bottom, 24)}]}>
-                    <AuthButton variant="buttonRegister" onPress={() => {
+                <AuthContent style={[styles.btnContainer, {paddingBottom: Math.max(insets.bottom, 24)}]}>
+                    <ButtonSolid
+                        variant="buttonRegister"
+                        textVariant="textRegister"
+                        onPress={() => {
                         router.push("/(auth)/register")
                     }}
-                    >
-                        <AuthText variant="buttonRegisterText" text={"Registrati"}/>
-                    </AuthButton>
+                                 text={"Registrati"}>
+                    </ButtonSolid>
 
-                    <AuthButton variant="buttonLogin" onPress={() => {
+                    <ButtonSolid
+                        variant="buttonLogin"
+                        textVariant="textLogin"
+                        onPress={() => {
                         router.push("/(auth)/login")
-                    }}>
-                        <AuthText variant="buttonLoginText" text={"Accedi"}/>
-                    </AuthButton>
-                </AuthContentSection>
+                    }}
+                        text={"Accedi"}>
+                    </ButtonSolid>
+                </AuthContent>
             }
         />
 
@@ -51,7 +56,7 @@ const styles = StyleSheet.create({
 
     btnContainer: {
         width: "100%",
-        gap:20
+        gap: 20
     },
 
 })

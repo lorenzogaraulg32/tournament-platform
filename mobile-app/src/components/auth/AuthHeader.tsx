@@ -1,7 +1,5 @@
-import {StyleSheet, View} from "react-native";
-import LogoBox from "@/src/components/auth/LogoBox";
-import AuthText from "@/src/components/auth/AuthText";
-import {colors, fontWeights} from "@/src/constants/theme";
+import {StyleSheet, Text, View} from "react-native";
+import AuthLogoBox from "@/src/components/auth/AuthLogoBox";
 
 
 type AuthHeaderProps = {
@@ -14,10 +12,10 @@ type AuthHeaderProps = {
 export default function AuthHeader({title, headline, subtitle}: AuthHeaderProps) {
     return (
         <View style={styles.introContainer}>
-            <LogoBox/>
-            <AuthText variant={"title"} style={styles.title} text={title}/>
-            <AuthText variant={"subtitle"} style={styles.headline} text={headline}/>
-            <AuthText variant={"body"} style={styles.subtitle} text={subtitle}/>
+            <AuthLogoBox/>
+            <Text style={[styles.textBase, styles.title]}>{title}</Text>
+            <Text style={[styles.textBase, styles.headline]}>{headline}</Text>
+            <Text style={[styles.textBase, styles.subtitle]}>{subtitle}</Text>
         </View>
     );
 }
@@ -29,24 +27,31 @@ const styles = StyleSheet.create({
         gap: 10
     },
 
+    textBase: {
+        textAlign: "center",
+        maxWidth: 310,
+    },
+
+
     title: {
-        color: colors.textPrimary,
+        color: "#ffffff",
         fontSize: 48,
-        letterSpacing: -1,
-        fontWeight: fontWeights.extraBold
+        fontWeight: 800,
+        letterSpacing: -1
     },
 
     headline: {
-        textAlign: "center",
-        color: colors.textThird
+        color: "#D8F5E3",
+        fontSize: 24,
+        fontWeight: 700,
     },
 
     subtitle: {
-        fontSize: 17,
+        fontSize: 16,
         lineHeight: 25,
-        color: colors.textSecondary,
-        textAlign: "center",
-        maxWidth: 310,
+        fontWeight: 400,
+        color: "#F2FFF8",
+
     }
 })
 

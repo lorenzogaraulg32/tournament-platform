@@ -1,13 +1,13 @@
-import {StyleSheet} from "react-native";
+import {StyleSheet, Text} from "react-native";
 import AuthTextField from "@/src/components/auth/AuthTextField";
 import AuthHeader from "@/src/components/auth/AuthHeader";
 import AuthContainer from "@/src/components/auth/AuthContainer";
-import AuthContentSection from "@/src/components/auth/AuthContentSection";
+import AuthContent from "@/src/components/auth/AuthContent";
 import {useState} from "react";
 import {ApiRequestError, registerUser} from "@/src/services/authService";
 import {router} from "expo-router";
-import AuthText from "@/src/components/auth/AuthText";
-import AuthButton from "@/src/components/auth/AuthButton";
+import ButtonSolid from "@/src/components/common/ButtonSolid";
+import {colors} from "@/src/constants/theme";
 
 
 type RegisterFieldError = {
@@ -65,41 +65,7 @@ export default function RegisterPage() {
         return Object.keys(errors).length === 0;
     }
 
-    function handleEmailChange(value: string) {
-        setEmail(value);
-        setApiError("");
 
-        if (fieldErrors.email) {
-            setFieldErrors((current) => ({
-                ...current,
-                email: undefined,
-            }));
-        }
-    }
-
-    function handleUsernameChange(value: string) {
-        setUsername(value);
-        setApiError("");
-
-        if (fieldErrors.username) {
-            setFieldErrors((current) => ({
-                ...current,
-                username: undefined,
-            }));
-        }
-    }
-
-    function handlePasswordChange(value: string) {
-        setPassword(value);
-        setApiError("");
-
-        if (fieldErrors.password) {
-            setFieldErrors((current) => ({
-                ...current,
-                password: undefined,
-            }));
-        }
-    }
 
 
     async function handleRegister() {
@@ -156,6 +122,41 @@ export default function RegisterPage() {
         }
     }
 
+    function handleEmailChange(value: string) {
+        setEmail(value);
+        setApiError("");
+
+        if (fieldErrors.email) {
+            setFieldErrors((current) => ({
+                ...current,
+                email: undefined,
+            }));
+        }
+    }
+
+    function handleUsernameChange(value: string) {
+        setUsername(value);
+        setApiError("");
+
+        if (fieldErrors.username) {
+            setFieldErrors((current) => ({
+                ...current,
+                username: undefined,
+            }));
+        }
+    }
+
+    function handlePasswordChange(value: string) {
+        setPassword(value);
+        setApiError("");
+
+        if (fieldErrors.password) {
+            setFieldErrors((current) => ({
+                ...current,
+                password: undefined,
+            }));
+        }
+    }
 
     return (
         <AuthContainer
@@ -166,7 +167,7 @@ export default function RegisterPage() {
                 />
             }
             content={
-                <AuthContentSection style={styles.inputFieldsContainer}>
+                <AuthContent style={styles.inputFieldsContainer}>
                     <AuthTextField
                         label="Email"
                         placeholder="Inserisci la tua email"
@@ -183,7 +184,7 @@ export default function RegisterPage() {
 
                     <AuthTextField
                         label="Username"
-                        placeholder="Inserisci l'Username"
+                        placeholder="Inserisci l'username"
                         value={username}
                         onChangeText={handleUsernameChange}
                         errorMessage={fieldErrors.username}
@@ -206,24 +207,22 @@ export default function RegisterPage() {
                     />
 
                     {apiError ? (
-                        <AuthText
-                            text={apiError}
-                            variant="errorLabelInput"
-                            style={styles.apiError}
-                        />
+                        <Text style={styles.apiError}>{apiError}</Text>
                     ) : null}
 
-                    <AuthButton
+                    <ButtonSolid
                         variant="buttonRegister"
+                        textVariant={"textRegister"}
                         style={styles.registerBtn}
                         disabled={isLoading}
-                        onPress={handleRegister}><AuthText text={isLoading
-                        ? "Registrazione in corso..."
-                        : "Registrati"} variant={"buttonRegisterText"}/>
-                    </AuthButton>
+                        onPress={handleRegister}
+                        text={isLoading
+                            ? "Registrazione in corso..."
+                            : "Registrati"}>
+                    </ButtonSolid>
 
 
-                </AuthContentSection>
+                </AuthContent>
             }
         />
 
@@ -241,6 +240,12 @@ const styles = StyleSheet.create({
     },
 
     apiError: {
+        marginTop: 6,
+        marginLeft: 10,
+        fontSize: 14,
+        lineHeight: 18,
+        fontWeight: 400,
+        color: colors.error,
         textAlign: "center",
     },
 

@@ -1,13 +1,16 @@
-import AuthButton from "@/src/components/auth/AuthButton";
+import ButtonSolid from "@/src/components/common/ButtonSolid";
 import Background from "@/src/components/common/Background";
-import {ScrollView, StyleSheet, View} from "react-native";
+import {Pressable, ScrollView, StyleSheet, View} from "react-native";
 import UserInfoSection from "@/src/components/app/profile/UserInfoSection";
 import * as UserServices from "@/src/services/userService";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import TitleApp from "@/src/components/app/TitleHeader";
-
+import {useState} from "react";
+import {inspect} from "node:util";
+import {colors} from "@/src/constants/theme"
 
 export default function ProfilePage() {
+
 
 
     return (
@@ -31,17 +34,20 @@ export default function ProfilePage() {
 
             <View style={styles.logoutContainer}>
 
-                <AuthButton
-                    variant="logout"
-                    onPress={UserServices.handleLogout}
-                >
+                <Pressable
+                    style={({pressed})=> [
+                        styles.logoutBtn,
+                        pressed && styles.logoutBtnPressed
+                    ]}
+
+                    onPress={UserServices.handleLogout}>
                     <Ionicons
                         name="log-out-outline"
                         size={28}
                         color="#ffffff"
                         style={{transform: [{translateX: +3}]}}
                     />
-                </AuthButton>
+                </Pressable>
 
             </View>
         </Background>
@@ -69,8 +75,26 @@ const styles = StyleSheet.create({
         right: 15,
         width: 58,
     },
-    /*
-    borderWidth: 1,
-    borderColor: "#000000",
-*/
+
+    logoutBtn:{
+        width: 58,
+        height: 58,
+        borderRadius: 28,
+        backgroundColor: colors.orangeDefault,
+        borderWidth: 2,
+        borderColor: "rgba(255, 255, 255, 0.16)",
+        alignItems: "center",
+        justifyContent: "center",
+        shadowColor: "#000",
+        shadowOffset: {width: 0, height: 8},
+        shadowOpacity: 0.20,
+        shadowRadius: 12,
+        elevation: 8,
+    },
+
+    logoutBtnPressed: {
+        transform: [{scale: 0.98}],
+        opacity: 0.9,
+    },
+
 });
