@@ -1,12 +1,12 @@
 import {Pressable, PressableProps, StyleProp, StyleSheet, Text, ViewStyle} from "react-native";
-import {colors} from "../../constants/theme"
+import {colors} from "../../../constants/theme"
 
 type Variant = "base" | "buttonRegister" | "buttonLogin"
 
 type TextVariant = "textBase" | "textRegister" | "textLogin"
 
 
-type AppButtonProps = Omit<PressableProps, "style"> & {
+type ButtonSolidProps = Omit<PressableProps, "style"> & {
     text: string;
     variant?: Variant;
     textVariant?: TextVariant;
@@ -28,7 +28,7 @@ export default function ButtonSolid({
                                         textVariant = "textBase",
                                         style,
                                         ...props
-                                    }: AppButtonProps) {
+                                    }: ButtonSolidProps) {
     return (
         <Pressable
             style={({pressed}) => [

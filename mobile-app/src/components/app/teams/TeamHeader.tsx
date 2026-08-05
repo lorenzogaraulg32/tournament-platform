@@ -1,18 +1,10 @@
 import {ActivityIndicator, Pressable, StyleSheet, Text, View,} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import SectionContainer from "../infoSectionContainer";
-import TeamLogo from "@/src/components/app/teams/TeamLogo";
+import HeaderEntity from "../../common/headers/HeaderEntity";
+import TeamLogo from "@/src/components/common/logo/TeamLogo";
+import type {TeamDetails} from "@/src/services/teams/teamGetService";
 
-export type TeamDetails = {
-    id: number;
-    name: string;
-    logoUrl?: string | null;
-    creatorId: string;
-    playerIds: string[];
-    adminIds: string[];
-};
-
-type TeamInfoSectionProps = {
+type TeamHeaderProps = {
     team: TeamDetails | null;
     isLoading?: boolean;
     error?: string | null;
@@ -22,21 +14,35 @@ type TeamInfoSectionProps = {
 
 const TEAM_BACKGROUND = require("../../../../assets/images/teaminfoSectionBkg.png");
 
-export default function TeamInfoSection({
-                                            team,
-                                            isLoading = false,
-                                            error = null,
-                                            onPlayersPress,
-                                            onAdminsPress,
-                                        }: TeamInfoSectionProps) {
+
+/**
+ *
+ * @param team la squadra selezionata
+ * @param isLoading se la squadra sta caricando
+ * @param error se c'è stato un errore nel caricamento della squadra
+ * @param onPlayersPress
+ * @param onAdminsPress
+ * @constructor
+ */
+export default function TeamHeader({
+                                       team,
+                                       isLoading = false,
+                                       error = null,
+                                       onPlayersPress,
+                                       onAdminsPress,
+                                   }: TeamHeaderProps) {
+
+    const playersCount = team ? (team.playerIds?.length ?? 0) : 0;
+    const adminsCount = team ? (team.adminIds?.length ?? 0) : 0;
+
     return (
-        <SectionContainer
+        <HeaderEntity
             backgroundSource={TEAM_BACKGROUND}
             overlayColor="rgba(31, 10, 2, 0.25)"
             borderColor="rgba(255, 154, 72, 0.25)"
         >
             {isLoading ? (
-                <FeedbackContent>
+                <View style={styles.feedbackContainer}>
                     <ActivityIndicator
                         size="large"
                         color="#FFFFFF"
@@ -45,9 +51,9 @@ export default function TeamInfoSection({
                     <Text style={styles.feedbackText}>
                         Caricamento squadra...
                     </Text>
-                </FeedbackContent>
+                </View>
             ) : error ? (
-                <FeedbackContent>
+                <View style={styles.feedbackContainer}>
                     <Ionicons
                         name="alert-circle-outline"
                         size={30}
@@ -57,83 +63,61 @@ export default function TeamInfoSection({
                     <Text style={styles.feedbackText}>
                         {error}
                     </Text>
-                </FeedbackContent>
+                </View>
             ) : !team ? (
-                <FeedbackContent>
+                <View style={styles.feedbackContainer}>
                     <Text style={styles.feedbackText}>
                         Squadra non disponibile
                     </Text>
-                </FeedbackContent>
-            ) : (
-                <TeamData team={team}
-                          onPlayersPress={onPlayersPress}
-                          onAdminsPress={onAdminsPress}
-                />
-            )}
-        </SectionContainer>
-    );
-}
-
-type TeamDataProps = {
-    team: TeamDetails;
-    onPlayersPress: () => void;
-    onAdminsPress: () => void;
-};
-
-export function TeamData({
-                             team,
-                             onPlayersPress,
-                             onAdminsPress,
-                         }: TeamDataProps) {
-    const playersCount = team.playerIds?.length ?? 0;
-    const adminsCount = team.adminIds?.length ?? 0;
-
-    return (
-        <View style={styles.dataContainer}>
-            <View style={styles.imageContainer}>
-                <TeamLogo
-                    logoUrl={team.logoUrl}
-                    style={styles.logo}
-                />
-            </View>
-
-            <View style={styles.verticalSeparator}/>
-
-            <View style={styles.textContainer}>
-                <Text
-                    style={styles.teamName}
-                    numberOfLines={2}
-                >
-                    {team.name.toUpperCase()}
-                </Text>
-
-                <View style={styles.badgesContainer}>
-
-                    <InfoBadge
-                        icon="shield-checkmark"
-                        label={`${adminsCount} ${
-                            adminsCount === 1
-                                ? "Admin"
-                                : "Admin"
-                        }`}
-                        onPress={onAdminsPress}
-                    />
-
-
-                    <InfoBadge
-                        icon="people"
-                        label={`${playersCount} ${
-                            playersCount === 1
-                                ? "Giocatore"
-                                : "Giocatori"
-                        }`}
-                        onPress={onPlayersPress}
-                    />
-
-
                 </View>
-            </View>
-        </View>
+            ) : (
+                <View style={styles.dataContainer}>
+                    <View style={styles.imageContainer}>
+                        <TeamLogo
+                            logoUrl={team.logoUrl}
+                            style={styles.logo}
+                        />
+                    </View>
+
+                    <View style={styles.verticalSeparator}/>
+
+                    <View style={styles.textContainer}>
+                        <Text
+                            style={styles.teamName}
+                            numberOfLines={2}
+                        >
+                            {team.name.toUpperCase()}
+                        </Text>
+
+                        <View style={styles.badgesContainer}>
+
+                            <InfoBadge
+                                icon="shield-checkmark"
+                                label={`${adminsCount} ${
+                                    adminsCount === 1
+                                        ? "Admin"
+                                        : "Admin"
+                                }`}
+                                onPress={onAdminsPress}
+                            />
+
+
+                            <InfoBadge
+                                icon="people"
+                                label={`${playersCount} ${
+                                    playersCount === 1
+                                        ? "Giocatore"
+                                        : "Giocatori"
+                                }`}
+                                onPress={onPlayersPress}
+                            />
+
+
+                        </View>
+                    </View>
+                </View>
+            )}
+        </HeaderEntity>
     );
 }
 
@@ -154,7 +138,7 @@ function InfoBadge({
             hitSlop={4}
             accessibilityRole="button"
             accessibilityLabel={`Apri ${label}`}
-            style={({ pressed }) => [
+            style={({pressed}) => [
                 styles.infoBadge,
                 pressed && styles.infoBadgePressed,
             ]}
@@ -185,20 +169,6 @@ function InfoBadge({
     );
 }
 
-
-type FeedbackContentProps = {
-    children: React.ReactNode;
-};
-
-function FeedbackContent({
-                             children,
-                         }: FeedbackContentProps) {
-    return (
-        <View style={styles.feedbackContainer}>
-            {children}
-        </View>
-    );
-}
 
 const styles = StyleSheet.create({
     dataContainer: {
@@ -313,7 +283,7 @@ const styles = StyleSheet.create({
 
     infoBadgePressed: {
         opacity: 0.78,
-        transform: [{ scale: 0.97 }],
+        transform: [{scale: 0.97}],
     },
 
     feedbackContainer: {

@@ -6,7 +6,7 @@ import AuthContent from "@/src/components/auth/AuthContent";
 import {useState} from "react";
 import {ApiRequestError, registerUser} from "@/src/services/authService";
 import {router} from "expo-router";
-import ButtonSolid from "@/src/components/common/ButtonSolid";
+import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
 import {colors} from "@/src/constants/theme";
 
 

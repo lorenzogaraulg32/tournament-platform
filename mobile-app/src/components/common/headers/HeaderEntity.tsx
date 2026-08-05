@@ -13,7 +13,7 @@ type SectionContainerProps = {
     borderColor: string;
 };
 
-export default function SectionContainer({
+export default function HeaderEntity({
                               children,
                               backgroundSource,
                               overlayColor,

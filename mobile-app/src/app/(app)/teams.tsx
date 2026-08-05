@@ -1,9 +1,9 @@
 import Background from "@/src/components/common/Background";
-import TitleApp from "@/src/components/app/TitleHeader";
+import TitleApp from "@/src/components/common/headers/HeaderMain";
 import {ImageBackground, Pressable, StyleSheet, Text, View} from "react-native";
 import {useState} from "react";
-import MyTeamsTab from "@/src/components/app/teams/MyTeamsTab";
-import ButtonBackground from "@/src/components/common/ButtonBackground";
+import MyTeams from "@/src/app/teams/myTeams";
+import ButtonBackground from "@/src/components/common/buttons/ButtonBackground";
 import {router} from "expo-router";
 
 type TeamsTab = "myTeams" | "findTeam";
@@ -75,7 +75,7 @@ export default function TeamsPage() {
                         {activeTab === "myTeams" ? (
                             <View style={styles.myTeamsContent}>
 
-                                <MyTeamsTab/>
+                                <MyTeams/>
 
                                 <ButtonBackground
                                     text={"Crea nuova squadra"}

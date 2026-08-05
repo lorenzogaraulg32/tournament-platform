@@ -1,8 +1,8 @@
 import {ImageBackground, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View} from "react-native";
 import Background from "@/src/components/common/Background";
-import BackBtn from "@/src/components/app/teams/createTeam/BackBtn";
+import ButtonBack from "@/src/components/common/buttons/ButtonBack";
 import {ReactNode} from "react";
-import TeamLogo from "@/src/components/app/teams/TeamLogo";
+import TeamLogo from "@/src/components/common/logo/TeamLogo";
 
 type CreateTeamContainerProps = {
     children: ReactNode
@@ -31,7 +31,7 @@ export default function Container({children}: CreateTeamContainerProps) {
                         style={styles.hero}
                         imageStyle={styles.heroBackground}
                     >
-                        <BackBtn/>
+                        <ButtonBack/>
 
                         <View style={styles.heroImageContainer}>
                             <TeamLogo logoUrl={""} style={styles.logo}/>

@@ -28,7 +28,7 @@ export default function AuthTextField({
             <Text style={styles.label}>{label}</Text>
 
             <TextInput
-                placeholderTextColor={colors.inputPlaceholder}
+                placeholderTextColor={"rgba(255,255,255,0.50)"}
                 selectionColor={colors.orangeDefault}
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         lineHeight: 20,
         fontWeight: 800,
-        color: colors.textPrimary,
+        color: "#ffffff",
         marginLeft: 10,
         marginBottom: 8,
         textAlign: "left"
@@ -82,17 +82,17 @@ const styles = StyleSheet.create({
         height: 58,
         borderRadius: 18,
         paddingHorizontal: 18,
-        backgroundColor: colors.inputBackground,
+        backgroundColor:  "rgba(255,255,255,0.30)",
         borderWidth: 1.5,
-        borderColor: colors.inputBorder,
-        color: colors.textPrimary,
+        borderColor: "rgba(255,255,255,0.35)",
+        color: "#ffffff",
         fontSize: 17,
         fontWeight: "500",
     },
 
     fieldInputFocused: {
         borderColor: colors.orangeDefault,
-        backgroundColor: colors.inputBackgroundFocused,
+        backgroundColor: "rgba(255,255,255,0.40)",
     },
 
     fieldInputError: {

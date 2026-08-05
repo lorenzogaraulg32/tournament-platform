@@ -12,14 +12,14 @@ export type TeamInfo = {
 }
 
 
-export type teamInfoDetail = {
-    id: number,
-    name: string,
-    logoUrl: string | null;
-    creatorId : string
-    playerIds: Array<string>
-    adminIds: Array<string>
-}
+export type TeamDetails = {
+    id: number;
+    name: string;
+    logoUrl?: string | null;
+    creatorId: string;
+    playerIds: string[];
+    adminIds: string[];
+};
 
 
 export async function getUserTeams(): Promise<TeamInfo[]> {
@@ -64,7 +64,7 @@ export async function getUserTeams(): Promise<TeamInfo[]> {
 }
 
 
-export async function getTeamDetails(id : string): Promise<teamInfoDetail> {
+export async function getTeamDetails(id : string): Promise<TeamDetails> {
 
     const accessToken =
         await SecureStore.getItemAsync("accessToken");
@@ -101,6 +101,6 @@ export async function getTeamDetails(id : string): Promise<teamInfoDetail> {
         );
     }
 
-    return await response.json() as teamInfoDetail;
+    return await response.json() as TeamDetails;
 
 }

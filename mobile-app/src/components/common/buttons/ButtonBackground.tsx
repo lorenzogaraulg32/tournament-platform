@@ -4,8 +4,6 @@ import {colors} from "@/src/constants/theme";
 
 
 type ButtonBGProps = {
-
-
     text: string
     onPress: () => void
 }
@@ -25,7 +23,7 @@ export default function ButtonBackground({text, onPress}: ButtonBGProps) {
         >
             <ImageBackground
                 source={require(
-                    "../../../assets/images/teaminfoSectionBkg.png"
+                    "../../../../assets/images/teaminfoSectionBkg.png"
                 )}
                 style={styles.btn}
                 imageStyle={styles.btnBg}
@@ -64,7 +62,7 @@ const styles = StyleSheet.create({
         borderRadius: RADIUS,
         borderWidth: 1,
         borderColor: "#ffffff",
-        backgroundColor: colors.orangeButtonBackground,
+
 
         shadowColor: "#000000",
         shadowOffset: {
@@ -118,7 +116,7 @@ const styles = StyleSheet.create({
     },
 
     btnText: {
-        color: colors.orangeButtonText,
+        color: "#ffffff",
         fontSize: 16,
         fontWeight: "700",
     },

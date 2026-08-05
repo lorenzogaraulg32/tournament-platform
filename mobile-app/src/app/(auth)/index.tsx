@@ -1,6 +1,6 @@
 import AuthText from "@/src/components/auth/AuthText";
 import {StyleSheet} from "react-native";
-import ButtonSolid from "@/src/components/common/ButtonSolid";
+import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
 import {router} from "expo-router";
 import AuthHeader from "@/src/components/auth/AuthHeader";
 import AuthContent from "@/src/components/auth/AuthContent";

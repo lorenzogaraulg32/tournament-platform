@@ -3,7 +3,6 @@ export const colors = {
 
     background:"#012613",
 
-    textPrimary: "#ffffff",
     textSecondary: "#F2FFF8",
     textThird: "#D8F5E3",
     textFourth: "#102016",
@@ -11,45 +10,8 @@ export const colors = {
     error: "#FF4D4D",
     success: "#43A047",
 
-    inputBackground: "rgba(255,255,255,0.30)",
-    inputBackgroundFocused:"rgba(255,255,255,0.40)",
-    inputBorder: "rgba(255,255,255,0.35)",
-    inputPlaceholder: "rgba(255,255,255,0.50)",
 };
 
-/*
-export const fontSizes = {
-    xs: 12,
-    sm: 14,
-    md: 16,
-    lg: 20,
-    xl: 24,
-    xxl: 32,
-};
-
-export const fontWeights = {
-    regular: "400" as const,
-    medium: "500" as const,
-    semiBold: "600" as const,
-    bold: "700" as const,
-    extraBold: "800" as const,
-};
-
-export const spacing = {
-    xs: 4,
-    sm: 8,
-    md: 16,
-    lg: 24,
-    xl: 32,
-};
-
-export const borderRadius = {
-    sm: 8,
-    md: 12,
-    lg: 20,
-    full: 999,
-};
-*/
 
 export const teamCardBlueColors = {
     background: "#071D35",

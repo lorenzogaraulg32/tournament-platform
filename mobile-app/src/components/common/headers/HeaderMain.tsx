@@ -8,7 +8,7 @@ type TitleProps = {
     backBtn?: boolean
 }
 
-export default function TitleHeader({
+export default function HeaderMain({
                                         text,
                                         backBtn = false,
                                     }: TitleProps) {

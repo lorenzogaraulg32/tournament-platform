@@ -4,7 +4,11 @@ import TeamCardSmall from "@/src/components/app/teams/TeamCardSmall";
 import {useCallback, useState} from "react";
 import {useFocusEffect} from "expo-router";
 
-export default function MyTeamsTab() {
+
+/**
+ * Sezione che rappresenta i team a cui un utente partecipa
+ */
+export default function MyTeams() {
 
     //states
     const [userTeams, setUserTeams] = useState<TeamInfo[]>([]);

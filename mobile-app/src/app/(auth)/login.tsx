@@ -3,7 +3,7 @@ import AuthTextField from "@/src/components/auth/AuthTextField";
 import AuthHeader from "@/src/components/auth/AuthHeader";
 import AuthContainer from "@/src/components/auth/AuthContainer";
 import AuthContent from "@/src/components/auth/AuthContent";
-import ButtonSolid from "@/src/components/common/ButtonSolid";
+import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
 import {colors} from "@/src/constants/theme";
 import {router} from "expo-router";
 import {useState} from "react";

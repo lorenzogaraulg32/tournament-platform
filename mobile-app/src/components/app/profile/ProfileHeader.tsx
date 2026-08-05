@@ -2,22 +2,18 @@ import {ActivityIndicator, ImageBackground, StyleSheet, Text, View} from "react-
 import {useEffect, useState} from "react";
 import * as UserServices from "@/src/services/userService";
 import {UserInfo} from "@/src/services/userService";
-import SectionContainer from "../infoSectionContainer";
+import HeaderEntity from "../../common/headers/HeaderEntity";
 
-export default function UserInfoSection() {
-    return (
-        <SectionContainer
-            backgroundSource={require("../../../../assets/images/userInfoSectionBkg.png")}
-            overlayColor="rgba(0, 24, 14, 0.30)"
-            borderColor="rgba(112, 255, 162, 0.22)"
-        >
-            <DataSection/>
-        </SectionContainer>
 
-    );
-}
+/**
+ * Mostra le principali informazioni dell'utente, quali:
+ * - Username
+ * - Email
+ * - Subscription Plan
+ */
 
-export function DataSection() {
+export default function ProfileHeader() {
+
     const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -40,66 +36,65 @@ export function DataSection() {
     }
 
     useEffect(() => {
-        loadProfile();
-    }, []);
-
-    if (isLoading) {
-        return (
-            <View style={styles.feedbackContainer}>
-                <ActivityIndicator color="#FFFFFF" size="large"/>
-            </View>
-        );
-    }
-
-    if (error) {
-        return (
-            <View style={styles.feedbackContainer}>
-                <Text style={styles.feedbackText}>{error}</Text>
-            </View>
-        );
-    }
-
-    if (!userInfo) {
-        return (
-            <View style={styles.feedbackContainer}>
-                <Text style={styles.feedbackText}>
-                    Utente non disponibile
-                </Text>
-            </View>
-        );
-    }
+        void loadProfile()
+    }, [])
 
     return (
-        <View style={styles.dataContainer}>
-            <ProfileImage/>
-
-            <View style={styles.verticalSeparator}/>
-
-            <View style={styles.textContainer}>
-                <Text
-                    style={styles.username}
-                    numberOfLines={1}
-                >
-                    {userInfo.username.toUpperCase()}
-                </Text>
-
-                <Text
-                    style={styles.email}
-                    numberOfLines={1}
-                >
-                    {userInfo.email}
-                </Text>
-
-                <View style={styles.subscriptionBadge}>
-                    <Text style={styles.subscriptionText}>
-                        Piano gratuito
+        <HeaderEntity
+            backgroundSource={require("../../../../assets/images/userInfoSectionBkg.png")}
+            overlayColor="rgba(0, 24, 14, 0.30)"
+            borderColor="rgba(112, 255, 162, 0.22)"
+        >
+            {isLoading ? (
+                <View style={styles.feedbackContainer}>
+                    <ActivityIndicator color="#FFFFFF" size="large"/>
+                </View>
+            ) : error ? (
+                <View style={styles.feedbackContainer}>
+                    <Text style={styles.feedbackText}>{error}</Text>
+                </View>
+            ) : !userInfo ? (
+                <View style={styles.feedbackContainer}>
+                    <Text style={styles.feedbackText}>
+                        Utente non disponibile
                     </Text>
                 </View>
-            </View>
-        </View>
+            ) : (
+                <View style={styles.dataContainer}>
+                    <ProfileImage/>
+
+                    <View style={styles.verticalSeparator}/>
+
+                    <View style={styles.textContainer}>
+                        <Text
+                            style={styles.username}
+                            numberOfLines={1}
+                        >
+                            {userInfo.username.toUpperCase()}
+                        </Text>
+
+                        <Text
+                            style={styles.email}
+                            numberOfLines={1}
+                        >
+                            {userInfo.email}
+                        </Text>
+
+                        <View style={styles.subscriptionBadge}>
+                            <Text style={styles.subscriptionText}>
+                                Piano gratuito
+                            </Text>
+                        </View>
+                    </View>
+                </View>
+            )}
+        </HeaderEntity>
+
     );
 }
 
+
+//Placeholder per foto del profilo
 export function ProfileImage() {
     return (
         <View style={styles.imageContainer}>
@@ -133,8 +128,6 @@ const styles = StyleSheet.create({
         minHeight: 120,
         borderRadius: 28,
         overflow: "hidden",
-        borderWidth: 1,
-        borderColor: "rgba(112, 255, 162, 0.22)",
     },
 
     cardImage: {

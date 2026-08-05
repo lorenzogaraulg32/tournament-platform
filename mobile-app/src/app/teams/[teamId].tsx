@@ -1,10 +1,10 @@
 import Background from "@/src/components/common/Background";
 import {useEffect, useState} from "react";
-import {getTeamDetails} from "@/src/services/teams/teamGetService";
+import {getTeamDetails, TeamDetails} from "@/src/services/teams/teamGetService";
 import {ScrollView, StyleSheet, View} from "react-native";
-import TitleApp from "@/src/components/app/TitleHeader";
+import TitleApp from "@/src/components/common/headers/HeaderMain";
 import {router, useLocalSearchParams} from "expo-router";
-import TeamInfoSection, {TeamDetails} from "@/src/components/app/teams/TeamInfoSection";
+import TeamHeader from "@/src/components/app/teams/TeamHeader";
 
 export default function teamId() {
 
@@ -53,28 +53,25 @@ export default function teamId() {
         } finally {
 
             setIsLoading(false);
-
         }
-
-
     }
 
 
     useEffect(() => {
-        loadTeamInfo()
+       void loadTeamInfo()
     }, [teamId]);
 
 
     return (
         <Background header={
             <TitleApp
-                text={"Dettaglio Squadra"}
+                text={""}
                 backBtn={true}
             />
         }>
             <View>
                 <ScrollView>
-                    <TeamInfoSection
+                    <TeamHeader
                         team={currentTeam}
                         isLoading={isLoading}
                         error={error}
