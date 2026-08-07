@@ -1,11 +1,16 @@
 export const colors = {
     orangeDefault: "#C8480A",
 
+
+
+
     background:"#012613",
 
     textSecondary: "#F2FFF8",
     textThird: "#D8F5E3",
     textFourth: "#102016",
+    textOffWhite:"#dedede",
+
 
     error: "#FF4D4D",
     success: "#43A047",

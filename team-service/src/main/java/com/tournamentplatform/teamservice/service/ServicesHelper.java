@@ -25,6 +25,8 @@ public class ServicesHelper {
         return new TeamGetDetailsResponse(
                 team.getId(),
                 team.getName(),
+                team.getDescription(),
+                team.getLocationLabel(),
                 buildPublicLogoUrl(team),
                 team.getCreatorId(),
                 team.getPlayerIds(),

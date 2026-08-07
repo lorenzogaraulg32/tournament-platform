@@ -19,7 +19,6 @@ export default function TeamCardSmall({
                                           playersCount,
                                       }: TeamCardSmallProps) {
     async function handlePress() {
-        console.log("Sqauadra con id " + id + " Premuta!")
         router.push({
             pathname: "/teams/[teamId]",
             params: {

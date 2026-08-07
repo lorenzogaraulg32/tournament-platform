@@ -3,13 +3,14 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import HeaderEntity from "../../common/headers/HeaderEntity";
 import TeamLogo from "@/src/components/common/logo/TeamLogo";
 import type {TeamDetails} from "@/src/services/teams/teamGetService";
+import {colors} from "@/src/constants/theme";
+
 
 type TeamHeaderProps = {
     team: TeamDetails | null;
     isLoading?: boolean;
     error?: string | null;
-    onPlayersPress: () => void;
-    onAdminsPress: () => void;
+    onInviteFriendPress: () => void
 };
 
 const TEAM_BACKGROUND = require("../../../../assets/images/teaminfoSectionBkg.png");
@@ -20,20 +21,22 @@ const TEAM_BACKGROUND = require("../../../../assets/images/teaminfoSectionBkg.pn
  * @param team la squadra selezionata
  * @param isLoading se la squadra sta caricando
  * @param error se c'è stato un errore nel caricamento della squadra
- * @param onPlayersPress
- * @param onAdminsPress
+ * @param onInviteFriendPress
  * @constructor
  */
 export default function TeamHeader({
                                        team,
                                        isLoading = false,
                                        error = null,
-                                       onPlayersPress,
-                                       onAdminsPress,
+                                       onInviteFriendPress,
                                    }: TeamHeaderProps) {
 
-    const playersCount = team ? (team.playerIds?.length ?? 0) : 0;
-    const adminsCount = team ? (team.adminIds?.length ?? 0) : 0;
+
+    function formatLocationLabel(location: string): string {
+        const parts = location.split(",")
+        return parts[0] + "  · " + parts[1] + "  · " + parts[2]
+    }
+
 
     return (
         <HeaderEntity
@@ -71,49 +74,42 @@ export default function TeamHeader({
                     </Text>
                 </View>
             ) : (
-                <View style={styles.dataContainer}>
-                    <View style={styles.imageContainer}>
-                        <TeamLogo
-                            logoUrl={team.logoUrl}
-                            style={styles.logo}
-                        />
+                <View style={styles.container}>
+                    <View style={styles.leftContainer}>
+                        <View style={styles.imageContainer}>
+                            <TeamLogo
+                                logoUrl={team.logoUrl}
+                                style={styles.logo}
+                            />
+                        </View>
                     </View>
-
                     <View style={styles.verticalSeparator}/>
 
-                    <View style={styles.textContainer}>
+                    <View style={styles.rightContainer}>
                         <Text
                             style={styles.teamName}
-                            numberOfLines={2}
+                            numberOfLines={1}
                         >
                             {team.name.toUpperCase()}
                         </Text>
 
+                        <Text
+                            style={styles.teamLocation}
+                            numberOfLines={1}
+                        >
+                            {formatLocationLabel(team.locationLabel)}
+                        </Text>
+
+
                         <View style={styles.badgesContainer}>
 
-                            <InfoBadge
-                                icon="shield-checkmark"
-                                label={`${adminsCount} ${
-                                    adminsCount === 1
-                                        ? "Admin"
-                                        : "Admin"
-                                }`}
-                                onPress={onAdminsPress}
+                            <InviteFriendBadge
+                                label={"Invita nella squadra"}
+                                onPress={onInviteFriendPress}
                             />
-
-
-                            <InfoBadge
-                                icon="people"
-                                label={`${playersCount} ${
-                                    playersCount === 1
-                                        ? "Giocatore"
-                                        : "Giocatori"
-                                }`}
-                                onPress={onPlayersPress}
-                            />
-
-
                         </View>
+
+
                     </View>
                 </View>
             )}
@@ -121,17 +117,15 @@ export default function TeamHeader({
     );
 }
 
-type InfoBadgeProps = {
-    icon: keyof typeof Ionicons.glyphMap;
+type inviteFriendBadgeProps = {
     label: string;
     onPress: () => void;
 };
 
-function InfoBadge({
-                       icon,
-                       label,
-                       onPress,
-                   }: InfoBadgeProps) {
+function InviteFriendBadge({
+                               label,
+                               onPress,
+                           }: inviteFriendBadgeProps) {
     return (
         <Pressable
             onPress={onPress}
@@ -145,7 +139,7 @@ function InfoBadge({
         >
             <View style={styles.infoBadgeIcon}>
                 <Ionicons
-                    name={icon}
+                    name="share-social-outline"
                     size={16}
                     color="#FFFFFF"
                 />
@@ -170,21 +164,34 @@ function InfoBadge({
 }
 
 
+//!! L'altezza della card in realtà è legata all'altezza del vertical separator
 const styles = StyleSheet.create({
-    dataContainer: {
-        minHeight: 128,
+
+    container: {
         flexDirection: "row",
-        alignItems: "center",
-        paddingHorizontal: 18,
-        paddingVertical: 18,
+        paddingHorizontal: 14,
+        paddingVertical: 10,
+    },
+
+    rightContainer: {
+        flex: 1,
+        minWidth: 0,
+        justifyContent: "center",
+        flexDirection: "column",
+    },
+
+    leftContainer: {
+        flex: 1,
+        maxWidth: 95,
+        justifyContent: "center",
+        flexDirection: "column",
     },
 
     imageContainer: {
-        width: 88,
-        height: 88,
-        borderRadius: 44,
+        width: 95,
+        height: 95,
+        borderRadius: 1000,
         overflow: "hidden",
-
         borderWidth: 3,
         borderColor: "#FFFFFF",
         backgroundColor: "#D9D9D9",
@@ -197,27 +204,29 @@ const styles = StyleSheet.create({
 
     verticalSeparator: {
         width: 1,
-        height: 76,
-        marginHorizontal: 18,
+        height: 120,
+        marginHorizontal: 14,
         backgroundColor: "rgba(255, 255, 255, 0.24)",
     },
 
-    textContainer: {
-        flex: 1,
-        minWidth: 0,
-        justifyContent: "center",
-    },
 
     teamName: {
         color: "#FFFFFF",
-        fontSize: 22,
+        fontSize: 19,
         lineHeight: 27,
         fontWeight: "800",
-        letterSpacing: 0.2,
+        letterSpacing: 0.1,
     },
 
+    teamLocation: {
+        marginVertical: 6,
+        color: colors.textOffWhite,
+        fontSize: 12,
+    },
+
+
     badgesContainer: {
-        marginTop: 14,
+        marginTop: 16,
         gap: 8,
     },
 
@@ -233,7 +242,7 @@ const styles = StyleSheet.create({
         borderRadius: 14,
         gap: 7,
 
-        backgroundColor: "rgba(255, 255, 255, 0.40)",
+        backgroundColor: "rgba(255, 255, 255, 0.30)",
 
         borderWidth: 1,
         borderColor: "rgba(255, 255, 255, 0.38)",
@@ -286,6 +295,7 @@ const styles = StyleSheet.create({
         transform: [{scale: 0.97}],
     },
 
+
     feedbackContainer: {
         minHeight: 120,
         alignItems: "center",
@@ -300,4 +310,6 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         textAlign: "center",
     },
+
+
 });

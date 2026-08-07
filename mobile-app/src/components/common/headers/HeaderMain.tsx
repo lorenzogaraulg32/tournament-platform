@@ -4,16 +4,20 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import {router} from "expo-router";
 
 type TitleProps = {
-    text: string
-    backBtn?: boolean
+    text: string,
+    backBtn?: boolean,
+    optionsBtn?: boolean,
+    onOptionsPress?: () => void
 }
 
 export default function HeaderMain({
-                                        text,
-                                        backBtn = false,
-                                    }: TitleProps) {
+                                       text,
+                                       backBtn = false,
+                                       optionsBtn,
+                                       onOptionsPress
+                                   }: TitleProps) {
 
-    const onPress = () => {
+    const onBackPress = () => {
         router.back()
     }
 
@@ -23,8 +27,7 @@ export default function HeaderMain({
 
             {backBtn && (
                 <Pressable
-                    onPress={onPress}
-                    disabled={!onPress}
+                    onPress={onBackPress}
                     accessibilityRole="button"
                     accessibilityLabel="Torna indietro"
                     hitSlop={12}
@@ -45,6 +48,31 @@ export default function HeaderMain({
                     )}
                 </Pressable>
             )}
+
+
+            {optionsBtn && (
+                <Pressable
+                    onPress={onOptionsPress}
+                    accessibilityRole="button"
+                    accessibilityLabel="Modifica"
+                    hitSlop={12}
+                    android_ripple={{
+                        color: "rgba(255, 255, 255, 0.20)",
+                    }}
+                    style={({pressed}) => [
+                        styles.optionsBtn,
+                        pressed && styles.onOptionsPressed,
+                    ]}
+                >
+                    {({pressed}) => (
+                        <Ionicons
+                            name="ellipsis-horizontal"
+                            size={25}
+                            color={pressed ? "rgba(255, 255, 255, 0.75)" : "#FFFFFF"}
+                        />
+                    )}
+                </Pressable>
+            )}
             <Text style={styles.title}>{text}</Text>
         </View>
 
@@ -57,6 +85,7 @@ const styles = StyleSheet.create({
     headerContainer: {
         flexDirection: "row",
         alignItems: "center",
+
 
         paddingTop: 55,
         paddingBottom: 12,
@@ -85,11 +114,41 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "rgba(255, 255, 255, 0.18)",
 
-        // Necessario per contenere il ripple Android
         overflow: "hidden",
     },
 
     backButtonPressed: {
+        backgroundColor: "rgba(255, 255, 255, 0.24)",
+        borderColor: "rgba(255, 255, 255, 0.35)",
+
+        opacity: 0.85,
+
+        transform: [
+            {scale: 0.92},
+        ],
+    },
+
+    optionsBtn: {
+        position: "absolute",
+        right: 22,
+        top: 55,
+        width: 38,
+        height: 38,
+
+        borderRadius: 21,
+
+        alignItems: "center",
+        justifyContent: "center",
+
+        backgroundColor: "rgba(255, 255, 255, 0.12)",
+
+        borderWidth: 1,
+        borderColor: "rgba(255, 255, 255, 0.18)",
+
+        overflow: "hidden",
+    },
+
+    onOptionsPressed: {
         backgroundColor: "rgba(255, 255, 255, 0.24)",
         borderColor: "rgba(255, 255, 255, 0.35)",
 

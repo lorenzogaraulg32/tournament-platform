@@ -15,6 +15,8 @@ export type TeamInfo = {
 export type TeamDetails = {
     id: number;
     name: string;
+    description: string,
+    locationLabel: string,
     logoUrl?: string | null;
     creatorId: string;
     playerIds: string[];

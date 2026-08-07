@@ -16,6 +16,10 @@ public class TeamGetDetailsResponse {
 
     private String name;
 
+    private String description;
+
+    private String locationLabel;
+
     private String logoUrl;
 
     private String creatorId;
