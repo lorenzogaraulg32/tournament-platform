@@ -171,6 +171,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         paddingHorizontal: 14,
         paddingVertical: 10,
+        height: 160,
+
     },
 
     rightContainer: {

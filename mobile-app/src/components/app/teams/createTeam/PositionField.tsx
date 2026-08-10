@@ -2,6 +2,7 @@ import {ActivityIndicator, Alert, Pressable, StyleSheet, Text, TextInput, View,}
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {useEffect, useState} from "react";
 import * as Location from "expo-location";
+import LabelType1 from "@/src/components/common/LabelType1";
 
 export type TeamLocation = {
     label: string;
@@ -243,20 +244,10 @@ export default function TeamLocationSection({
 
     return (
         <View style={styles.container}>
-            <View style={styles.labelContainer}>
-                <View style={styles.iconContainer}>
-                    <Ionicons
-                        name="location-outline"
-                        size={22}
-                        color="#C8480A"
-                    />
-                </View>
-
-                <Text style={styles.label}>
-                    Posizione
-                </Text>
-            </View>
-
+            <LabelType1
+                text={"Posizione"}
+                optional={true}
+                labelIconName={"location-outline"}/>
             <View
                 style={[
                     styles.inputContainer,

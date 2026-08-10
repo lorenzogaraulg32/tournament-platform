@@ -131,7 +131,7 @@ export default function CreateTeamPage() {
                     label="Descrizione"
                     optional
                     labelIconName="chatbubble-ellipses-outline"
-                    placeholder="Racconta qualcosa sulla tua squadra..."
+                    placeholder="Racconta qualcosa della tua squadra..."
                     value={description}
                     onChangeText={setDescription}
                     multiline

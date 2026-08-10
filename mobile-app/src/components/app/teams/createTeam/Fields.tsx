@@ -1,6 +1,8 @@
 import {StyleProp, StyleSheet, Text, TextInput, TextInputProps, TextStyle, View} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {useState} from "react";
+import {fonts} from "@/src/constants/theme";
+import LabelType1 from "@/src/components/common/LabelType1";
 
 type CreateTeamFieldProps = TextInputProps & {
     label: string;
@@ -12,6 +14,7 @@ type CreateTeamFieldProps = TextInputProps & {
     maxLength?: number;
 };
 
+//DOppio container, perchè external consente di posizionare icone/info aggiuntive a destra
 
 export default function Fields({
                                    label,
@@ -31,28 +34,10 @@ export default function Fields({
     return (
         <View style={styles.container}>
 
-            <View style={styles.externalLabelContainer}>
-
-                <View style={styles.labelContainer}>
-                    <View style={styles.iconContainer}>
-                        <Ionicons
-                            name={labelIconName}
-                            size={22}
-                            color="#C8480A"
-                        />
-                    </View>
-
-                    <Text style={styles.fieldLabel}>
-                        {label}
-                    </Text>
-                </View>
-                {optional && (
-                    <Text style={styles.optionalText}>
-                        Opzionale
-                    </Text>
-
-                )}
-            </View>
+            <LabelType1
+                text={label}
+                optional={optional}
+                labelIconName={labelIconName}/>
 
             <TextInput
                 placeholderTextColor="#929292"
@@ -139,7 +124,7 @@ const styles = StyleSheet.create({
 
     fieldLabel: {
         color: "#1C1C1C",
-        fontSize: 17,
+        fontSize: fonts.label,
         fontWeight: "800",
     },
 

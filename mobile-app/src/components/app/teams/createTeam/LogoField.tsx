@@ -4,6 +4,7 @@ import {Image} from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {TeamLogoUpload} from "@/src/services/teams/teamCreationService";
+import LabelType1 from "@/src/components/common/LabelType1";
 
 const MAX_LOGO_SIZE = 2 * 1024 * 1024;
 
@@ -105,26 +106,10 @@ export default function LogoField({
 
     return (
         <View style={styles.container}>
-            <View style={styles.externalLabelContainer}>
-
-                <View style={styles.labelContainer}>
-                    <View style={styles.iconContainer}>
-                        <Ionicons
-                            name="image-outline"
-                            size={18}
-                            color="#C8480A"
-                        />
-                    </View>
-                    <Text style={styles.label}>
-                        Logo squadra
-                    </Text>
-                </View>
-
-                <Text style={styles.optional}>
-                    Opzionale
-                </Text>
-
-            </View>
+            <LabelType1
+                text={"Logo squadra"}
+                optional={true}
+                labelIconName={"image-outline"}/>
             <View
                 style={[
                     styles.pickerContainer,

@@ -1,5 +1,6 @@
-import {Alert, Pressable, StyleSheet, Text, View} from "react-native";
+import {Pressable, StyleSheet, Text, View} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import LabelType1 from "@/src/components/common/LabelType1";
 
 export type RecruitmentStatus = "OPEN" | "CLOSED";
 
@@ -11,39 +12,14 @@ type RecruitmentStatusSectionProps = {
 export default function Switch({value, onChange,}: RecruitmentStatusSectionProps) {
     return (
         <View style={styles.container}>
-            <View style={styles.labelContainer}>
-                <View style={styles.iconContainer}>
-                    <Ionicons
-                        name="people-outline"
-                        size={22}
-                        color="#C8480A"
-                    />
-                </View>
 
-                <Text style={styles.label}>
-                    Ricerca giocatori
-                </Text>
-
-                <Pressable
-                    onPress={() =>
-                        Alert.alert(
-                            "Ricerca giocatori",
-                            "Se la ricerca è aperta, la squadra sarà visibile agli utenti che cercano una squadra. Se è chiusa, sarà possibile entrare solo tramite invito.",
-                            [{text: "Ho capito"}]
-                        )
-                    }
-                    hitSlop={10}
-                    accessibilityRole="button"
-                    accessibilityLabel="Informazioni sulla ricerca giocatori"
-                >
-                    <Ionicons
-                        name="information-circle-outline"
-                        size={20}
-                        color="#9A9A9A"
-                    />
-                </Pressable>
-            </View>
-
+            <LabelType1
+                text={"Ricerca giocatori"}
+                optional={true}
+                infoTitle={"Ricerca giocatori"}
+                infoMessage={"Se la ricerca è aperta, la squadra sarà visibile agli utenti che cercano una squadra. Se è chiusa, sarà possibile entrare solo tramite invito."}
+                labelIconName={"people-outline"}
+            />
             <View
                 style={styles.optionsContainer}
             >
@@ -137,7 +113,6 @@ const styles = StyleSheet.create({
     optionsContainer: {
         height: 35,
         flexDirection: "row",
-
 
 
         borderRadius: 18,
