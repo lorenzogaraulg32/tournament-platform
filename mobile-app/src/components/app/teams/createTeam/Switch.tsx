@@ -1,6 +1,6 @@
 import {Pressable, StyleSheet, Text, View} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import LabelType1 from "@/src/components/common/LabelType1";
+import FormLabel from "@/src/components/common/labels/formLabel";
 
 export type RecruitmentStatus = "OPEN" | "CLOSED";
 
@@ -13,7 +13,7 @@ export default function Switch({value, onChange,}: RecruitmentStatusSectionProps
     return (
         <View style={styles.container}>
 
-            <LabelType1
+            <FormLabel
                 text={"Ricerca giocatori"}
                 optional={true}
                 infoTitle={"Ricerca giocatori"}

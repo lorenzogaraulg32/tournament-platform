@@ -2,7 +2,7 @@ import {StyleProp, StyleSheet, Text, TextInput, TextInputProps, TextStyle, View}
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {useState} from "react";
 import {fonts} from "@/src/constants/theme";
-import LabelType1 from "@/src/components/common/LabelType1";
+import FormLabel from "@/src/components/common/labels/formLabel";
 
 type CreateTeamFieldProps = TextInputProps & {
     label: string;
@@ -34,7 +34,7 @@ export default function Fields({
     return (
         <View style={styles.container}>
 
-            <LabelType1
+            <FormLabel
                 text={label}
                 optional={optional}
                 labelIconName={labelIconName}/>

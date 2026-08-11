@@ -1,14 +1,15 @@
 import Background from "@/src/components/common/Background";
 import {useEffect, useState} from "react";
 import {getTeamDetails, TeamDetails} from "@/src/services/teams/teamGetService";
-import {ScrollView, StyleSheet, Text, View} from "react-native";
+import {Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import TitleApp from "@/src/components/common/headers/HeaderMain";
 import {useLocalSearchParams} from "expo-router";
 import {loadCurrentUserId} from "@/src/services/userService";
 import TeamHeader from "@/src/components/app/teams/TeamHeader";
 import {colors} from "@/src/constants/theme";
-import LabelType2 from "@/src/components/common/LabelType2";
+import InfoLabel from "@/src/components/common/labels/infoLabel";
 import {LinearGradient} from "expo-linear-gradient";
+import TeamPlayerCardSmall from "@/src/components/app/teams/TeamPlayerCardSmall";
 
 
 export default function teamId() {
@@ -67,6 +68,14 @@ export default function teamId() {
     }, [teamId]);
 
 
+    function handleMoreAdminsPress() {
+        return undefined;
+    }
+
+    function handleMorePlayersPress() {
+        return undefined;
+    }
+
     return (
         <Background
             header={
@@ -78,36 +87,101 @@ export default function teamId() {
                 />
             }
         >
+            <TeamHeader
+                team={currentTeam}
+                isLoading={isLoading}
+                error={error}
+                onInviteFriendPress={handleFriendInvitation}/>
+
             <View style={styles.scrollContainer}>
 
-                <TeamHeader
-                    team={currentTeam}
-                    isLoading={isLoading}
-                    error={error}
-                    onInviteFriendPress={handleFriendInvitation}/>
-
                 <ScrollView style={styles.scroll}>
-                    <View>
+                    <View style={styles.scrollContent}>
 
-                        <LabelType2
-                            text={"Bio"}
-                            labelIconName={"information-circle-outline"}
-                        />
+                        <View style={styles.section}>
+                            <InfoLabel
+                                text={"Bio"}
+                                labelIconName={"information-circle-outline"}
+                            />
+                            <LinearGradient
+                                colors={[colors.textThird, "#EAF8EF", "#F7FCF9"]}
+                                start={{x: 0, y: 0}}
+                                end={{x: 1, y: 1}}
+                                style={[styles.gradient, styles.descContainer]}
+                            >
+                                <Text
+                                    numberOfLines={5}
+                                    style={styles.description}>
+                                    {currentTeam?.description || "..."}
+                                </Text>
+                            </LinearGradient>
+                        </View>
 
-                        <LinearGradient
-                            colors={[colors.textThird, "#EAF8EF", "#F7FCF9"]}
-                            start={{x: 0, y: 0}}
-                            end={{x: 1, y: 1}}
-                            style={styles.descContainer}
-                        >
-                            <Text
-                                numberOfLines={5}
-                                style={styles.description}>
-                                {currentTeam?.description || "..."}
-                            </Text>
-                        </LinearGradient>
+                        <View style={styles.section}>
+                            <InfoLabel
+                                text={"Players"}
+                                labelIconName={"people-outline"}
+                            />
+
+
+                            <LinearGradient
+                                colors={[colors.textThird, "#EAF8EF", "#ebfff0"]}
+                                start={{x: 0, y: 0}}
+                                end={{x: 1, y: 1}}
+                                style={[styles.gradient, styles.playersContainer]}
+                            >
+                                <View style={styles.playersCardContainer}>
+                                    <TeamPlayerCardSmall></TeamPlayerCardSmall>
+                                    <TeamPlayerCardSmall></TeamPlayerCardSmall>
+                                    <TeamPlayerCardSmall></TeamPlayerCardSmall>
+                                    <TeamPlayerCardSmall></TeamPlayerCardSmall>
+                                    <TeamPlayerCardSmall></TeamPlayerCardSmall>
+
+                                </View>
+                                <View>
+                                    <Pressable onPress={handleMorePlayersPress()} style={styles.playerCardMore}>
+                                        <Text style={styles.playerCardMoreText}>···</Text>
+                                    </Pressable>
+                                </View>
+                            </LinearGradient>
+
+                        </View>
+
+                        <View style={styles.section}>
+                            <InfoLabel
+                                text={"Admin"}
+                                labelIconName={"shield-checkmark-outline"}
+                            />
+
+
+                            <LinearGradient
+                                colors={[colors.textThird, "#EAF8EF", "#ebfff0"]}
+                                start={{x: 0, y: 0}}
+                                end={{x: 1, y: 1}}
+                                style={[styles.gradient, styles.playersContainer]}
+                            >
+                                <View style={styles.playersCardContainer}>
+                                    <TeamPlayerCardSmall></TeamPlayerCardSmall>
+                                    <TeamPlayerCardSmall></TeamPlayerCardSmall>
+                                    <TeamPlayerCardSmall></TeamPlayerCardSmall>
+                                    <TeamPlayerCardSmall></TeamPlayerCardSmall>
+                                    <TeamPlayerCardSmall></TeamPlayerCardSmall>
+
+                                </View>
+
+                                <View>
+                                    <Pressable style={styles.playerCardMore}
+                                               onPress={handleMoreAdminsPress()}>
+                                        <Text style={styles.playerCardMoreText}>···</Text>
+                                    </Pressable>
+                                </View>
+                                
+                            </LinearGradient>
+
+                        </View>
+
+
                     </View>
-
                 </ScrollView>
             </View>
 
@@ -125,32 +199,31 @@ const styles = StyleSheet.create({
 
     scroll: {
         height: "100%",
-
-        // Fa salire il bianco dietro gli angoli inferiori dell'header
         marginTop: -26,
-        paddingTop: 35,
-
-        paddingHorizontal: 20,
+        paddingTop: 36,
+        paddingHorizontal: 10,
         paddingBottom: 20,
-
         backgroundColor: "#ffffff",
-
-        borderBottomLeftRadius: 24,
-        borderBottomRightRadius: 24,
         zIndex: -1,
     },
 
+    scrollContent: {
+        gap: 12,
+    },
 
-    descContainer: {
-        backgroundColor: "#E7F7ED",
+    section: {
+        gap: 4,
+    },
+
+    gradient: {
         borderRadius: 16,
-
-        paddingHorizontal: 5,
-        paddingVertical: 10,
-
+        paddingVertical: 8,
         borderWidth: 1,
         borderColor: "#D0EBDD",
+    },
 
+    descContainer: {
+        paddingHorizontal: 5,
         borderLeftWidth: 4,
         borderLeftColor: "#00A859",
     },
@@ -161,5 +234,34 @@ const styles = StyleSheet.create({
         color: "#3D4340",
     },
 
+    playersContainer: {
+        paddingHorizontal: 5,
+        justifyContent: "space-between",
+        flexDirection: "row",
+        gap: 5,
+    },
+
+    playersCardContainer: {
+        justifyContent: "space-evenly",
+        flexDirection: "row",
+        gap: 5,
+    },
+
+    playerCardMore: {
+        height: 80,
+        width: 28,
+        borderRadius: 16,
+        borderWidth: 1,
+        borderColor: "#D0EBDD",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#00A859",
+    },
+
+    playerCardMoreText: {
+        fontSize: 20,
+        fontWeight: 900,
+        color: "#ffffff"
+    }
 
 });

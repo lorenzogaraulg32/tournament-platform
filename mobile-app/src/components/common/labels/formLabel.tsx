@@ -1,34 +1,38 @@
 import {Alert, Pressable, StyleSheet, Text, View} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import {colors, fonts} from "@/src/constants/theme";
+import {fonts} from "@/src/constants/theme";
 
 
 type LabelProps = {
     text: string;
+    optional?: boolean,
     infoTitle?: string,
     infoMessage?: string,
     labelIconName?: keyof typeof Ionicons.glyphMap;
 };
 
-export default function LabelType2({
-                                       text,
-                                       infoTitle,
-                                       infoMessage,
-                                       labelIconName = "shield-outline",
-                                   }: LabelProps) {
-    return (
+export default function FormLabel({
+                                  text,
+                                  optional = false,
 
+                                  infoTitle,
+                                  infoMessage,
+                                  labelIconName = "shield-outline",
+                              }: LabelProps) {
+    return (
         <View style={styles.externalLabelContainer}>
+
             <View style={styles.labelContainer}>
-                <Ionicons
-                    style={styles.icon}
-                    name={labelIconName}
-                    size={18}
-                    color={colors.background}
-                />
+                <View style={styles.iconContainer}>
+                    <Ionicons
+                        name={labelIconName}
+                        size={22}
+                        color="#C8480A"
+                    />
+                </View>
 
                 <Text style={styles.label}>
-                    Bio
+                    {text}
                 </Text>
                 {infoTitle && infoMessage && <Pressable
                     onPress={() =>
@@ -49,9 +53,16 @@ export default function LabelType2({
                     />
                 </Pressable>}
             </View>
+
+            {optional && (
+                <Text style={styles.optionalText}>
+                    Opzionale
+                </Text>
+
+            )}
+
+
         </View>
-
-
     );
 
 
@@ -65,7 +76,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        marginBottom: 6,
+        marginBottom: 9,
+
     },
 
     labelContainer: {
@@ -90,14 +102,20 @@ const styles = StyleSheet.create({
         fontWeight: "800",
     },
 
+    optionalText: {
+        color: "#a8a8a8",
+    },
+
+    extraContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-around",
+        gap: 10,
+    },
     infoIcon: {
         marginTop: 3,
         marginLeft: -5
-    },
-
-    icon: {
-        marginTop: 3
-    },
+    }
 
 
 });

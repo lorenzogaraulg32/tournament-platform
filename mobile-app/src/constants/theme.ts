@@ -9,8 +9,8 @@ export const colors = {
     textFourth: "#102016",
     textOffWhite: "#dedede",
 
-    label: "#1C1C1C",
-
+    labelForm: "#1C1C1C",
+    labelInfo:  "#005628",
 
     error: "#FF4D4D",
     success: "#43A047",
@@ -19,6 +19,11 @@ export const colors = {
 
 export const fonts = {
     label: 17,
+}
+
+
+export const corners = {
+    standard: 17,
 }
 
 
