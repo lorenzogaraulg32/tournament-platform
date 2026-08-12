@@ -12,6 +12,10 @@ export const colors = {
     labelForm: "#1C1C1C",
     labelInfo:  "#005628",
 
+
+    textLightGreen: "#8dc00c",
+
+
     error: "#FF4D4D",
     success: "#43A047",
 

@@ -99,7 +99,7 @@ export function ProfileImage() {
     return (
         <View style={styles.imageContainer}>
             <ImageBackground
-                source={require("../../../../assets/images/profilePlaceholder.png")}
+                source={require("../../../../assets/images/teamPlaceholders/profilePlaceholder.png")}
                 style={styles.profileImage}
                 resizeMode="cover"
             />

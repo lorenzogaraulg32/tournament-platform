@@ -10,6 +10,7 @@ import {colors} from "@/src/constants/theme";
 import InfoLabel from "@/src/components/common/labels/infoLabel";
 import {LinearGradient} from "expo-linear-gradient";
 import TeamPlayerCardSmall from "@/src/components/app/teams/TeamPlayerCardSmall";
+import TeamAdminCardSmall from "@/src/components/app/teams/TeamAdminCardSmall";
 
 
 export default function teamId() {
@@ -161,12 +162,9 @@ export default function teamId() {
                                 style={[styles.gradient, styles.playersContainer]}
                             >
                                 <View style={styles.playersCardContainer}>
-                                    <TeamPlayerCardSmall></TeamPlayerCardSmall>
-                                    <TeamPlayerCardSmall></TeamPlayerCardSmall>
-                                    <TeamPlayerCardSmall></TeamPlayerCardSmall>
-                                    <TeamPlayerCardSmall></TeamPlayerCardSmall>
-                                    <TeamPlayerCardSmall></TeamPlayerCardSmall>
-
+                                    <TeamAdminCardSmall player={undefined}/>
+                                    <TeamAdminCardSmall player={undefined}/>
+                                    <TeamAdminCardSmall player={undefined}/>
                                 </View>
 
                                 <View>
@@ -175,7 +173,7 @@ export default function teamId() {
                                         <Text style={styles.playerCardMoreText}>···</Text>
                                     </Pressable>
                                 </View>
-                                
+
                             </LinearGradient>
 
                         </View>
@@ -248,20 +246,20 @@ const styles = StyleSheet.create({
     },
 
     playerCardMore: {
-        height: 80,
+        flex: 1,
         width: 28,
         borderRadius: 16,
         borderWidth: 1,
         borderColor: "#D0EBDD",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#00A859",
+        backgroundColor: "transparent",
     },
 
     playerCardMoreText: {
         fontSize: 20,
         fontWeight: 900,
-        color: "#ffffff"
+        color: colors.textLightGreen,
     }
 
 });

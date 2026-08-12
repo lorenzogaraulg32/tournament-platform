@@ -1,3 +1,5 @@
+import * as SecureStore from "expo-secure-store";
+
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 
@@ -6,7 +8,6 @@ export type RegisterRequest = {
     username: string;
     password: string;
 };
-
 
 export type RegisterResponse = {
     message: string;
@@ -166,3 +167,24 @@ export async function registerUser(
     return body as RegisterResponse;
 }
 
+
+export async function loadAuthorization() {
+
+    const accessToken =
+        await SecureStore.getItemAsync(
+            "accessToken"
+        );
+
+    const tokenType =
+        await SecureStore.getItemAsync(
+            "tokenType"
+        );
+
+
+    if (!accessToken) {
+        return null;
+    }
+
+   return `${tokenType ?? "Bearer"} ${accessToken}`
+
+}

@@ -1,21 +1,25 @@
 import {useEffect, useMemo, useState} from "react";
 import {ImageStyle, StyleProp,} from "react-native";
 import {Image} from "expo-image";
-import * as SecureStore from "expo-secure-store";
+import {loadAuthorization} from "@/src/services/authService";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
-const placeholderLogo = require("../../../../assets/images/teamPlaceholders/logoPlaceholder.webp");
+const placeholderLogoTeam = require("../../../assets/images/teamPlaceholders/logoPlaceholder.webp");
+const placeholderLogoPlayer = require("../../../assets/images/teamPlaceholders/profilePlaceholder.png");
 
-type TeamLogoProps = {
+
+type LogoProps = {
     logoUrl?: string | null;
     style?: StyleProp<ImageStyle>;
+    variant: "player" | "team";
 };
 
-export default function TeamLogo({
-                                     logoUrl,
-                                     style,
-                                 }: TeamLogoProps) {
+export default function Logo({
+                                 logoUrl,
+                                 style,
+                                 variant
+                             }: LogoProps) {
     const [authorization, setAuthorization] =
         useState<string | null>(null);
 
@@ -23,38 +27,13 @@ export default function TeamLogo({
         useState(false);
 
     useEffect(() => {
-        let isMounted = true;
 
-        async function loadAuthorization() {
-            const accessToken =
-                await SecureStore.getItemAsync(
-                    "accessToken"
-                );
-
-            const tokenType =
-                await SecureStore.getItemAsync(
-                    "tokenType"
-                );
-
-            if (!isMounted) {
-                return;
-            }
-
-            if (!accessToken) {
-                setAuthorization(null);
-                return;
-            }
-
-            setAuthorization(
-                `${tokenType ?? "Bearer"} ${accessToken}`
-            );
+        async function loadAuth() {
+            setAuthorization(await loadAuthorization())
         }
 
-        void loadAuthorization();
+        void loadAuth();
 
-        return () => {
-            isMounted = false;
-        };
     }, []);
 
     useEffect(() => {
@@ -87,14 +66,19 @@ export default function TeamLogo({
         !authorization ||
         hasError;
 
+    const placeholder =
+        variant === "team"
+            ? placeholderLogoTeam
+            : placeholderLogoPlayer;
+
+
     if (shouldShowPlaceholder) {
         return (
             <Image
-                source={placeholderLogo}
+                source={placeholder}
                 style={style}
                 contentFit="cover"
-            />
-        );
+            />)
     }
 
     return (

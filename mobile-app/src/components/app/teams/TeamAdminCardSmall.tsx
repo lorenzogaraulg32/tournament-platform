@@ -5,18 +5,18 @@ import {UserInfo} from "@/src/services/userService";
 
 type TeamPlayerCardSmallProps = {
     player?: UserInfo
+    role?: string
 }
 
 
 export default function TeamPlayerCardSmall({
-                                                player
+                                                player,
+                                                role
                                             }: TeamPlayerCardSmallProps
 ) {
 
     const profilePicUrl = player ? player.profilePicUrl : ""
     const name = player ? player.username : "LUCA 404"
-    const role = player ? player.role.toUpperCase() : "LATERALE"
-
 
     return (
         <View style={styles.container}>
@@ -26,13 +26,17 @@ export default function TeamPlayerCardSmall({
                     style={styles.logo}
                     logoUrl={profilePicUrl}/>
             </View>
-            <Text
-                numberOfLines={1}
-                  style={styles.name}>
-                {name}
-            </Text>
+            <View style={styles.userInfoContainer}>
+                <Text
+                    numberOfLines={1}
+                    style={styles.name}>
+                    {name}
+                </Text>
 
-            <Text style={styles.ruolo}>{role}</Text>
+                <View style={styles.roleBadgeContainer}>
+                    <Text style={styles.ruolo}>{role ? (role) : ("OWNER")}</Text>
+                </View>
+            </View>
         </View>
     )
 }
@@ -40,21 +44,21 @@ export default function TeamPlayerCardSmall({
 const styles = StyleSheet.create({
 
     container: {
-        justifyContent: "center",
-        flexDirection: "column",
+        justifyContent: "space-evenly",
+        flexDirection: "row",
         alignItems: "center",
-        height: 85,
-        width: 62,
+        height: 65,
+        width: 106,
         borderRadius: 16,
         borderWidth: 1,
         borderColor: "#D0EBDD",
-        gap: 3,
+
     },
 
 
     logoContainer: {
-        width: 36,
-        height: 36,
+        width: 40,
+        height: 40,
         borderRadius: 20,
 
         alignItems: "center",
@@ -74,7 +78,7 @@ const styles = StyleSheet.create({
     },
 
     name: {
-        fontSize: 9,
+        fontSize: 10,
         fontWeight: 500
     },
 
@@ -82,6 +86,23 @@ const styles = StyleSheet.create({
         fontSize: 10,
         fontWeight: "bold",
         color: colors.textLightGreen
+    },
+
+    userInfoContainer: {
+        height: "100%",
+        justifyContent: "center",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 5,
+
+    },
+    roleBadgeContainer: {
+        backgroundColor: "#ffffff",
+        paddingHorizontal: 6,
+        paddingVertical: 2,
+        borderColor: colors.textLightGreen,
+        borderWidth: 1,
+        borderRadius: 50
     }
 
 

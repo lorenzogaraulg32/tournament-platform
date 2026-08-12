@@ -2,6 +2,7 @@ import * as SecureStore from "expo-secure-store";
 import {router} from "expo-router";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
+//role è da aggiungere al backend, e sarebbe il ruolo in campo, per ora solo calcetto, ma sarà da espandere per tutti i tipi di torneo
 
 export type UserInfo = {
     id: number,
@@ -9,6 +10,8 @@ export type UserInfo = {
     email: string,
     enabled: boolean,
     globalRole: GlobalRole
+    profilePicUrl: string,
+    role: string,
 }
 
 export type GlobalRole = "ROLE_ADMIN" | "ROLE_USER"

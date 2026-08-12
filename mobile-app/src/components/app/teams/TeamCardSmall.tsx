@@ -2,7 +2,7 @@ import {Pressable, StyleSheet, Text, View} from "react-native";
 import {teamCardBlueColors} from "@/src/constants/theme"
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {router} from "expo-router";
-import TeamLogo from "@/src/components/common/logo/TeamLogo";
+import Logo from "@/src/components/common/Logo";
 
 type TeamCardSmallProps = {
     id: number
@@ -48,7 +48,7 @@ export default function TeamCardSmall({
             <View style={styles.accentLine}/>
 
             <View style={styles.logoContainer}>
-                <TeamLogo style={styles.logo} logoUrl={logoUrl}/>
+                <Logo variant={"team"} style={styles.logo} logoUrl={logoUrl}/>
             </View>
 
             <View style={styles.teamInfo}>
