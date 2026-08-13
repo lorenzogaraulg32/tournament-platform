@@ -28,6 +28,9 @@ public class User {
     @Column(name = "user_id", nullable = false, updatable = false)
     private String id;
 
+    @Column(nullable = false, unique = true)
+    private String username;
+
     @Column(nullable = false)
     private String firstName;
 

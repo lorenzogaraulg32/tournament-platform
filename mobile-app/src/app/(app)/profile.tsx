@@ -1,13 +1,12 @@
 import Background from "@/src/components/common/Background";
 import {Pressable, ScrollView, StyleSheet, View} from "react-native";
 import ProfileHeader from "@/src/components/app/profile/ProfileHeader";
-import * as UserServices from "@/src/services/userService";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import TitleApp from "@/src/components/common/headers/HeaderMain";
 import {colors} from "@/src/constants/theme"
+import {handleLogout} from "@/src/services/authService";
 
 export default function ProfilePage() {
-
 
 
     return (
@@ -32,12 +31,12 @@ export default function ProfilePage() {
             <View style={styles.logoutContainer}>
 
                 <Pressable
-                    style={({pressed})=> [
+                    style={({pressed}) => [
                         styles.logoutBtn,
                         pressed && styles.logoutBtnPressed
                     ]}
 
-                    onPress={UserServices.handleLogout}>
+                    onPress={handleLogout}>
                     <Ionicons
                         name="log-out-outline"
                         size={28}
@@ -73,7 +72,7 @@ const styles = StyleSheet.create({
         width: 58,
     },
 
-    logoutBtn:{
+    logoutBtn: {
         width: 58,
         height: 58,
         borderRadius: 28,

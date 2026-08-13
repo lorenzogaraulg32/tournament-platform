@@ -4,11 +4,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import org.checkerframework.common.aliasing.qual.Unique;
 
 public record RegisterRequest(
-
-        @NotBlank(message = "L'username è obbligatorio")
-        @Size(min = 3, max = 30, message = "Lo username deve avere tra 3 e 30 caratteri") String username,
 
         @NotBlank(message = "L'email è obbligatoria")
         @Email(message = "Formato email non valido")

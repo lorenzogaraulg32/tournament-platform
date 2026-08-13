@@ -22,6 +22,7 @@ public final class UserMapper {
         User user = new User();
 
         user.setId(userId);
+        user.setUsername(request.username());
         user.setFirstName(request.firstName());
         user.setLastName(request.lastName());
         user.setBirthDate(request.birthDate());
@@ -55,6 +56,7 @@ public final class UserMapper {
                 user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
+                user.getUsername(),
                 user.getBirthDate(),
                 user.getGender(),
                 user.getSports(),
@@ -124,6 +126,10 @@ public final class UserMapper {
             User user,
             PatchUserRequest request
     ) {
+
+        if (request.username() != null) {
+            user.setUsername(request.username());
+        }
 
         if (request.firstName() != null) {
             user.setFirstName(request.firstName());

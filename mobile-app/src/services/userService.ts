@@ -1,84 +1,75 @@
-import * as SecureStore from "expo-secure-store";
-import {router} from "expo-router";
-
-const API_URL = process.env.EXPO_PUBLIC_API_URL;
-//role è da aggiungere al backend, e sarebbe il ruolo in campo, per ora solo calcetto, ma sarà da espandere per tutti i tipi di torneo
-
-export type UserInfo = {
-    id: number,
-    username: string,
-    email: string,
-    enabled: boolean,
-    globalRole: GlobalRole
-    profilePicUrl: string,
-    role: string,
+export enum Gender {
+    MALE = "MALE",
+    FEMALE = "FEMALE",
+    OTHER = "OTHER",
+    NOT_SPECIFIED = "NOT_SPECIFIED"
 }
 
-export type GlobalRole = "ROLE_ADMIN" | "ROLE_USER"
+export enum Sport {
+    FOOTBALL = "FOOTBALL",
+    BEACH_VOLLEY = "BEACH_VOLLEY",
+    BASKETBALL = "BASKETBALL"
+}
 
-export type UserInfoRequest = {
-    email: string;
+export enum SportRole {
+    GOALKEEPER = "GOALKEEPER",
+    DEFENDER = "DEFENDER",
+    MIDFIELDER = "MIDFIELDER",
+    FORWARD = "FORWARD",
+    FILL_FB = "FILL_FB",
+
+    BLOCKER = "BLOCKER",
+    BEACH_DEFENDER = "BEACH_DEFENDER",
+    FILL_BV = "FILL_BV",
+
+    POINT_GUARD = "POINT_GUARD",
+    SHOOTING_GUARD = "SHOOTING_GUARD",
+    SMALL_FORWARD = "SMALL_FORWARD",
+    POWER_FORWARD = "POWER_FORWARD",
+    CENTER = "CENTER",
+    FILL_BK = "FILL_BK",
+}
+
+export type UserSportRole = {
+    sport: Sport;
+    role: SportRole;
+};
+
+export type GeoLocation = {
+    label: string;
+    latitude: number;
+    longitude: number;
+};
+
+export type UserOnBoardingInfo = {
     username: string;
-    password: string;
+    firstName: string;
+    lastName: string;
+    birthDate: string | null;
+    gender: Gender | null;
+    sports: Sport[];
+    roles: UserSportRole[];
+    location: GeoLocation | null;
 };
 
 
-export async function handleLogout() {
-    await Promise.all([
-        SecureStore.deleteItemAsync("accessToken"),
-        SecureStore.deleteItemAsync("tokenType"),
+export type UserInfo = {
+    username: string;
+    firstName: string;
+    lastName: string;
+    birthDate: string | null;
+    gender: Gender | null;
+    sports: Sport[];
+    roles: UserSportRole[];
+    location: GeoLocation | null;
+    profilePicUrl?: string,
+};
 
-    ]);
-    router.replace("/(auth)");
+/* TODO POST DEL CREATE USER
+export async function createUser(
+    userData: UserOnBoardingInfo
+): Promise<LoginResponse> {
+    // POST /users/me
 }
 
-export async function loadCurrentUserId(): Promise<number> {
-    const userInfo = await loadUserInfo();
-    return userInfo.id;
-}
-
-
-export async function loadUserInfo() {
-    const accessToken =
-        await SecureStore.getItemAsync("accessToken");
-
-    const tokenType =
-        await SecureStore.getItemAsync("tokenType");
-
-    if (!accessToken) {
-        router.replace("/(auth)");
-        throw new Error("Access token non disponibile");
-    }
-
-    const response = await fetch(
-        `${API_URL}/auth/me`,
-        {
-            method: "GET",
-            headers: {
-                Accept: "application/json",
-                Authorization: `${tokenType ?? "Bearer"} ${accessToken}`,
-            },
-        }
-    );
-
-    if (response.status === 401 || response.status === 403) {
-        await Promise.all([
-            SecureStore.deleteItemAsync("accessToken"),
-            SecureStore.deleteItemAsync("tokenType"),
-        ]);
-        router.replace("/(auth)");
-        throw new Error("Sessione scaduta o non autorizzata");
-    }
-
-    if (!response.ok) {
-        const errorBody = await response.text();
-
-        throw new Error(
-            errorBody || `Errore nel recupero utente: ${response.status}`
-        );
-    }
-
-    return await response.json() as UserInfo;
-
-
-}
+*/

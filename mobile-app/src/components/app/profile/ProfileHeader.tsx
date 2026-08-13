@@ -1,8 +1,7 @@
 import {ActivityIndicator, ImageBackground, StyleSheet, Text, View} from "react-native";
 import {useEffect, useState} from "react";
-import * as UserServices from "@/src/services/userService";
-import {UserInfo} from "@/src/services/userService";
 import HeaderEntity from "../../common/headers/HeaderEntity";
+import {AuthInfo, loadCurrentUserAuthInfo} from "@/src/services/authService";
 
 
 /**
@@ -14,7 +13,7 @@ import HeaderEntity from "../../common/headers/HeaderEntity";
 
 export default function ProfileHeader() {
 
-    const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+    const [userInfo, setUserInfo] = useState<AuthInfo | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -22,7 +21,7 @@ export default function ProfileHeader() {
         try {
             setError(null);
 
-            const user = await UserServices.loadUserInfo();
+            const user = await loadCurrentUserAuthInfo();
             setUserInfo(user);
         } catch (error) {
             if (error instanceof Error) {

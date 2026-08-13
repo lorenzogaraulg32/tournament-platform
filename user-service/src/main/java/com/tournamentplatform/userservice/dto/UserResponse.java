@@ -14,6 +14,8 @@ public record UserResponse(
 
         String lastName,
 
+        String username,
+
         LocalDate birthDate,
 
         Gender gender,

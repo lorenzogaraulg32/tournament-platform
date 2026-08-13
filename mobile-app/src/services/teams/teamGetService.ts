@@ -1,5 +1,5 @@
-import {handleLogout} from "@/src/services/userService";
 import * as SecureStore from "expo-secure-store";
+import {handleLogout} from "@/src/services/authService";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -8,7 +8,7 @@ export type TeamInfo = {
     id: number,
     name: string,
     logoUrl: string | null;
-    numberOfPlayers : number
+    numberOfPlayers: number
 }
 
 
@@ -66,7 +66,7 @@ export async function getUserTeams(): Promise<TeamInfo[]> {
 }
 
 
-export async function getTeamDetails(id : string): Promise<TeamDetails> {
+export async function getTeamDetails(id: string): Promise<TeamDetails> {
 
     const accessToken =
         await SecureStore.getItemAsync("accessToken");

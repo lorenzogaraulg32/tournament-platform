@@ -11,13 +11,16 @@ import java.util.Set;
 
 public record CreateUserRequest(
 
+        @NotBlank
+        @Size(max = 20)
+        String username,
 
         @NotBlank
-        @Size(max = 50)
+        @Size(max = 20)
         String firstName,
 
         @NotBlank
-        @Size(max = 50)
+        @Size(max = 20)
         String lastName,
 
         @NotNull
@@ -37,4 +40,5 @@ public record CreateUserRequest(
         @Valid
         GeoLocationRequest location
 
-) {}
+) {
+}

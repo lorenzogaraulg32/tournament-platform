@@ -1,7 +1,7 @@
 import {useEffect, useMemo, useState} from "react";
 import {ImageStyle, StyleProp,} from "react-native";
 import {Image} from "expo-image";
-import {loadAuthorization} from "@/src/services/authService";
+import {getToken} from "@/src/services/authService";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -29,7 +29,7 @@ export default function Logo({
     useEffect(() => {
 
         async function loadAuth() {
-            setAuthorization(await loadAuthorization())
+            setAuthorization(await getToken())
         }
 
         void loadAuth();

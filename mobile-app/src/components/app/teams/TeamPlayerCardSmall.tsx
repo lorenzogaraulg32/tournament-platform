@@ -3,6 +3,7 @@ import Logo from "@/src/components/common/Logo";
 import {colors, teamCardBlueColors} from "@/src/constants/theme";
 import {UserInfo} from "@/src/services/userService";
 
+
 type TeamPlayerCardSmallProps = {
     player?: UserInfo
 }
@@ -15,7 +16,8 @@ export default function TeamPlayerCardSmall({
 
     const profilePicUrl = player ? player.profilePicUrl : ""
     const name = player ? player.username : "LUCA 404"
-    const role = player ? player.role.toUpperCase() : "LATERALE"
+    //todo: aggiornare con il ruolo vero
+    const role = "LATERALE"
 
 
     return (
@@ -28,7 +30,7 @@ export default function TeamPlayerCardSmall({
             </View>
             <Text
                 numberOfLines={1}
-                  style={styles.name}>
+                style={styles.name}>
                 {name}
             </Text>
 

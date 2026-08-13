@@ -4,13 +4,13 @@ import {getTeamDetails, TeamDetails} from "@/src/services/teams/teamGetService";
 import {Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import TitleApp from "@/src/components/common/headers/HeaderMain";
 import {useLocalSearchParams} from "expo-router";
-import {loadCurrentUserId} from "@/src/services/userService";
 import TeamHeader from "@/src/components/app/teams/TeamHeader";
 import {colors} from "@/src/constants/theme";
 import InfoLabel from "@/src/components/common/labels/infoLabel";
 import {LinearGradient} from "expo-linear-gradient";
 import TeamPlayerCardSmall from "@/src/components/app/teams/TeamPlayerCardSmall";
 import TeamAdminCardSmall from "@/src/components/app/teams/TeamAdminCardSmall";
+import {loadCurrentUserId} from "@/src/services/authService";
 
 
 export default function teamId() {

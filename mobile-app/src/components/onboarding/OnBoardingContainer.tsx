@@ -1,17 +1,17 @@
-import {KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View} from "react-native";
+import {KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View} from "react-native";
 import {StatusBar} from "expo-status-bar";
 import {ReactNode} from "react";
 import {ImageBackground} from "expo-image";
+import { colors } from "@/src/constants/theme";
 
 
-type AuthContainerProps = {
-    header?: ReactNode,
-    content?:ReactNode
+type OnBoardingProps = {
+    label?: string
+    content?: ReactNode
 }
 
 
-
-export default function AuthContainer({header, content}: AuthContainerProps) {
+export default function OnBoardingContainer({label, content}: OnBoardingProps) {
     return (
         <View
             collapsable={false}
@@ -37,8 +37,8 @@ export default function AuthContainer({header, content}: AuthContainerProps) {
                         keyboardShouldPersistTaps="handled"
                         automaticallyAdjustKeyboardInsets
                     >
-                        <View style={styles.headerSlot}>
-                            {header}
+                        <View style={styles.labelContainer}>
+                            <Text style={styles.label}>{label}</Text>
                         </View>
 
                         <View style={styles.contentSlot}>
@@ -64,21 +64,25 @@ const styles = StyleSheet.create({
 
     scrollContent: {
         flexGrow: 1,
-        paddingTop: 150,
+        paddingTop: 80,
         paddingBottom: 70,
         paddingHorizontal: 35
-    },
-
-    headerSlot: {
-        height: 400,
-        alignItems: "center",
-        justifyContent: "flex-start",
     },
 
     contentSlot: {
         flex: 1,
         width: "100%",
-        justifyContent: "flex-end",
+        justifyContent: "flex-start",
     },
+
+    labelContainer: {
+        paddingVertical: 20
+    },
+
+    label: {
+        fontSize: 28,
+        fontWeight: 700,
+        color: "#ffffff",
+    }
 
 });

@@ -25,8 +25,6 @@ public class User {
     @Column(nullable = false)
     private String passwordHash;
 
-    @Column(nullable = false, unique = true)
-    private String username;
 
     @Column(nullable = false)
     private boolean enabled;
@@ -36,9 +34,8 @@ public class User {
     private GlobalRole globalRole;
 
 
-    public User(String email, String passwordHash, String username, boolean enabled, GlobalRole globalRole) {
+    public User(String email, String passwordHash, boolean enabled, GlobalRole globalRole) {
         this.email = email;
-        this.username = username;
         this.passwordHash = passwordHash;
         this.enabled = enabled;
         this.globalRole = globalRole;

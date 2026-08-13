@@ -3,7 +3,7 @@ import {Ionicons} from "@expo/vector-icons";
 
 
 type AuthHeaderProps = {
-    title: string
+    title?: string
     headline: string,
     subtitle: string,
 }
@@ -15,7 +15,9 @@ export default function AuthHeader({title, headline, subtitle}: AuthHeaderProps)
             <View style={styles.logoBox}>
                 <Ionicons name="trophy" size={54} color={"#00A85A"}/>
             </View>
-            <Text style={[styles.textBase, styles.title]}>{title}</Text>
+            {title &&
+                <Text style={[styles.textBase, styles.title]}>{title}</Text>
+            }
             <Text style={[styles.textBase, styles.headline]}>{headline}</Text>
             <Text style={[styles.textBase, styles.subtitle]}>{subtitle}</Text>
         </View>

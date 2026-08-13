@@ -7,8 +7,8 @@ import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
 import {colors} from "@/src/constants/theme";
 import {router} from "expo-router";
 import {useState} from "react";
-import {ApiRequestError, loginUser} from "@/src/services/authService";
-import * as SecureStore from "expo-secure-store";
+import {loginUser, saveSession} from "@/src/services/authService";
+import {ApiRequestError} from "@/src/services/errorService";
 
 type LoginFieldErrors = {
     email?: string;
@@ -88,21 +88,16 @@ export default function LoginPage() {
                 email: email.trim().toLowerCase(),
                 password
             });
-            await SecureStore.setItemAsync(
-                "accessToken",
-                response.accessToken,
-            );
 
-            await SecureStore.setItemAsync(
-                "tokenType",
-                response.tokenType,
+            await saveSession(
+                response.accessToken,
+                response.tokenType
             );
 
             router.replace("/(app)");
 
         } catch (error) {
             if (error instanceof ApiRequestError) {
-                console.log(error.fieldErrors)
                 setApiError(error.message)
 
                 setFieldErrors((current) => ({

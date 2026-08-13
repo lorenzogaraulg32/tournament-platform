@@ -4,14 +4,14 @@ import AuthHeader from "@/src/components/auth/AuthHeader";
 import AuthContainer from "@/src/components/auth/AuthContainer";
 import AuthContent from "@/src/components/auth/AuthContent";
 import {useState} from "react";
-import {ApiRequestError, registerUser} from "@/src/services/authService";
 import {router} from "expo-router";
 import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
 import {colors} from "@/src/constants/theme";
-
+import {ApiRequestError} from "@/src/services/errorService";
+import {loginUser, registerUser, saveSession} from "@/src/services/authService";
+import * as SecureStore from "expo-secure-store";
 
 type RegisterFieldError = {
-    username?: string;
     email?: string;
     password?: string;
 };
@@ -19,7 +19,6 @@ type RegisterFieldError = {
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function RegisterPage() {
-    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [fieldErrors, setFieldErrors] = useState<RegisterFieldError>({});
@@ -39,17 +38,6 @@ export default function RegisterPage() {
             errors.email = "Inserisci un'email valida";
         }
 
-        const normalizedUsername = username.trim();
-
-        if (!normalizedUsername) {
-            errors.username = "Inserisci l'email";
-        } else if (normalizedUsername.length < 3) {
-            errors.username = "L'username deve avere minimo 3 caratteri";
-
-        } else if (normalizedUsername.length > 30) {
-            errors.username = "L'username deve avere massimo caratteri";
-        }
-
         const hasNumber = /\d/;
 
         if (!password.trim()) {
@@ -66,8 +54,6 @@ export default function RegisterPage() {
     }
 
 
-
-
     async function handleRegister() {
         if (isLoading) {
             return;
@@ -82,16 +68,28 @@ export default function RegisterPage() {
 
         try {
             setIsLoading(true);
+            const normalizedEmail = email.trim().toLowerCase();
+
             const response = await registerUser({
-                email: email.trim().toLowerCase(),
-                username: username.trim(),
+                email: normalizedEmail,
                 password
             });
 
             if (response.message === "Utente registrato correttamente") {
-                router.replace("/login");
-            }
 
+                const loginResponse = await loginUser({
+                    email: normalizedEmail,
+                    password
+                });
+
+                await saveSession(
+                    loginResponse.accessToken,
+                    loginResponse.tokenType
+                );
+
+
+                router.replace("/(onboarding)");
+            }
 
         } catch (error) {
             if (error instanceof ApiRequestError) {
@@ -100,9 +98,6 @@ export default function RegisterPage() {
 
                 setFieldErrors((current) => ({
                     ...current,
-                    username:
-                        error.fieldErrors.username ??
-                        current.username,
                     email:
                         error.fieldErrors.email ??
                         current.email,
@@ -130,18 +125,6 @@ export default function RegisterPage() {
             setFieldErrors((current) => ({
                 ...current,
                 email: undefined,
-            }));
-        }
-    }
-
-    function handleUsernameChange(value: string) {
-        setUsername(value);
-        setApiError("");
-
-        if (fieldErrors.username) {
-            setFieldErrors((current) => ({
-                ...current,
-                username: undefined,
             }));
         }
     }
@@ -181,17 +164,6 @@ export default function RegisterPage() {
                         editable={!isLoading}
                     />
 
-
-                    <AuthTextField
-                        label="Username"
-                        placeholder="Inserisci l'username"
-                        value={username}
-                        onChangeText={handleUsernameChange}
-                        errorMessage={fieldErrors.username}
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        editable={!isLoading}
-                    />
 
                     <AuthTextField
                         label="Password"

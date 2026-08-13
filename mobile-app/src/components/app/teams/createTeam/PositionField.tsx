@@ -3,6 +3,11 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import {useEffect, useState} from "react";
 import * as Location from "expo-location";
 import FormLabel from "@/src/components/common/labels/formLabel";
+import { colors } from "@/src/constants/theme";
+
+
+type PositionFieldVariant =
+    "createTeam" | "createUser";
 
 export type TeamLocation = {
     label: string;
@@ -16,6 +21,7 @@ type LocationSuggestion = {
 };
 
 type TeamLocationSectionProps = {
+    variant: PositionFieldVariant;
     value: TeamLocation | null;
     onChange: (location: TeamLocation | null) => void;
     errorMessage?: string;
@@ -24,10 +30,14 @@ type TeamLocationSectionProps = {
 const GOOGLE_API_KEY = process.env.EXPO_PUBLIC_GOOGLE_PLACES_API_KEY;
 
 export default function TeamLocationSection({
+                                                variant,
                                                 value,
                                                 onChange,
                                                 errorMessage,
                                             }: TeamLocationSectionProps) {
+
+    const isCreateUser = variant === "createUser";
+
     const [isLocating, setIsLocating] = useState(false);
 
     const [query, setQuery] = useState("");
@@ -244,23 +254,50 @@ export default function TeamLocationSection({
 
     return (
         <View style={styles.container}>
-            <FormLabel
-                text={"Posizione"}
-                optional={true}
-                labelIconName={"location-outline"}/>
+            {isCreateUser ? (
+                <View style={styles.createUserLabelContainer}>
+                    <Text style={styles.createUserLabel}>
+                        Posizione
+                    </Text>
+
+                    <Text style={styles.createUserOptional}>
+                        Opzionale
+                    </Text>
+                </View>
+            ) : (
+                <FormLabel
+                    text="Posizione"
+                    optional
+                    labelIconName="location-outline"
+                />
+            )}
             <View
                 style={[
                     styles.inputContainer,
-                    isFocused && styles.inputContainerFocused,
-                    isError && styles.inputContainerError,
+
+                    isCreateUser &&
+                    styles.inputContainerCreateUser,
+
+                    isFocused &&
+                    (
+                        isCreateUser
+                            ? styles.inputContainerFocusedCreateUser
+                            : styles.inputContainerFocused
+                    ),
+
+                    isError &&
+                    styles.inputContainerError,
                 ]}
             >
                 <Ionicons
                     name="search-outline"
                     size={21}
-                    color="#929292"
+                    color={
+                        isCreateUser
+                            ? "rgba(255,255,255,0.65)"
+                            : "#929292"
+                    }
                 />
-
                 <TextInput
                     value={query}
                     onChangeText={(text) => {
@@ -273,10 +310,16 @@ export default function TeamLocationSection({
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
                     placeholder="Cerca città o zona..."
-                    placeholderTextColor="#929292"
+                    placeholderTextColor={
+                        isCreateUser
+                            ? "rgba(255,255,255,0.50)"
+                            : "#929292"
+                    }
                     selectionColor="#C8480A"
-                    autoCorrect={false}
-                    style={styles.input}
+                    style={[
+                        styles.input,
+                        isCreateUser && styles.inputCreateUser,
+                    ]}
                 />
 
                 {isLoading && (
@@ -288,7 +331,13 @@ export default function TeamLocationSection({
             </View>
 
             {suggestions.length > 0 && (
-                <View style={styles.suggestionsContainer}>
+                <View
+                    style={[
+                        styles.suggestionsContainer,
+                        isCreateUser &&
+                        styles.suggestionsContainerCreateUser,
+                    ]}
+                >
                     {suggestions.map((suggestion) => (
                         <Pressable
                             key={suggestion.placeId}
@@ -299,19 +348,33 @@ export default function TeamLocationSection({
                             }
                             style={({pressed}) => [
                                 styles.suggestion,
+
+                                isCreateUser &&
+                                styles.suggestionCreateUser,
+
                                 pressed &&
-                                styles.suggestionPressed,
+                                (
+                                    isCreateUser
+                                        ? styles.suggestionPressedCreateUser
+                                        : styles.suggestionPressed
+                                ),
                             ]}
                         >
                             <Ionicons
                                 name="location-outline"
                                 size={19}
-                                color="#C8480A"
+                                color={
+                                    isCreateUser
+                                        ? "#FFFFFF"
+                                        : "#C8480A"
+                                }
                             />
-
                             <Text
-                                style={styles.suggestionText}
-                                numberOfLines={2}
+                                style={[
+                                    styles.suggestionText,
+                                    isCreateUser &&
+                                    styles.suggestionTextCreateUser,
+                                ]}
                             >
                                 {suggestion.label}
                             </Text>
@@ -325,8 +388,15 @@ export default function TeamLocationSection({
                 disabled={isLocating}
                 style={({pressed}) => [
                     styles.currentLocationButton,
-                    pressed && styles.currentLocationButtonPressed,
-                    isLocating && styles.currentLocationButtonDisabled,
+
+                    isCreateUser &&
+                    styles.currentLocationButtonCreateUser,
+
+                    pressed &&
+                    styles.currentLocationButtonPressed,
+
+                    isLocating &&
+                    styles.currentLocationButtonDisabled,
                 ]}
             >
                 {isLocating ? (
@@ -338,11 +408,21 @@ export default function TeamLocationSection({
                     <Ionicons
                         name="locate-outline"
                         size={20}
-                        color="#C8480A"
+                        color={
+                            isCreateUser
+                                ? "#FFFFFF"
+                                : "#C8480A"
+                        }
                     />
                 )}
 
-                <Text style={styles.currentLocationText}>
+                <Text
+                    style={[
+                        styles.currentLocationText,
+                        isCreateUser &&
+                        styles.currentLocationTextCreateUser,
+                    ]}
+                >
                     Usa la mia posizione
                 </Text>
             </Pressable>
@@ -350,19 +430,35 @@ export default function TeamLocationSection({
             <View
                 style={[
                     styles.selectedLocation,
+                    isCreateUser &&
+                    styles.selectedLocationCreateUser,
                 ]}
             >
                 <Ionicons
-                    name={value ? "location-sharp" : "location-outline"}
+                    name={
+                        value
+                            ? "location-sharp"
+                            : "location-outline"
+                    }
                     size={24}
-                    color={value ? "#C8480A" : "#A0A0A0"}
+                    color={
+                        isCreateUser
+                            ? value
+                                ? "#FFFFFF"
+                                : "rgba(255,255,255,0.55)"
+                            : value
+                                ? "#C8480A"
+                                : "#A0A0A0"
+                    }
                 />
 
                 <Text
                     style={[
                         styles.selectedLocationText,
+                        isCreateUser &&
+                        styles.selectedLocationTextCreateUser,
                     ]}
-                    numberOfLines={2}
+                    numberOfLines={1}
                 >
                     {value?.label ?? "Nessuna posizione selezionata"}
                 </Text>
@@ -375,13 +471,22 @@ export default function TeamLocationSection({
                         accessibilityLabel="Rimuovi posizione"
                         style={({pressed}) => [
                             styles.clearButton,
-                            pressed && styles.clearButtonPressed,
+
+                            isCreateUser &&
+                            styles.clearButtonCreateUser,
+
+                            pressed &&
+                            styles.clearButtonPressed,
                         ]}
                     >
                         <Ionicons
                             name="close"
                             size={23}
-                            color="#A0A0A0"
+                            color={
+                                isCreateUser
+                                    ? "#FFFFFF"
+                                    : "#A0A0A0"
+                            }
                         />
                     </Pressable>
                 )}
@@ -400,6 +505,7 @@ const styles = StyleSheet.create({
     container: {
         width: "100%",
         marginBottom: 20,
+        gap: 5,
     },
 
     labelContainer: {
@@ -556,4 +662,79 @@ const styles = StyleSheet.create({
         fontSize: 13,
         fontWeight: "500",
     },
+
+    createUserLabelContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 6,
+        marginLeft: 10,
+        marginBottom: 13,
+    },
+
+    createUserLabel: {
+        color: "#FFFFFF",
+        fontSize: 16,
+        lineHeight: 20,
+        fontWeight: "800",
+    },
+
+    createUserOptional: {
+        color: "rgba(255,255,255,0.55)",
+        fontSize: 12,
+    },
+
+    inputContainerCreateUser: {
+        backgroundColor: "rgba(255,255,255,0.30)",
+        borderColor: "rgba(255,255,255,0.35)",
+    },
+
+    inputContainerFocusedCreateUser: {
+        borderColor: "#C8480A",
+        backgroundColor: "rgba(255,255,255,0.40)",
+    },
+
+    inputCreateUser: {
+        color: "#FFFFFF",
+    },
+
+
+    suggestionsContainerCreateUser: {
+        backgroundColor: "rgba(20,60,45,0.95)",
+        borderColor: "rgba(255,255,255,0.25)",
+    },
+
+    suggestionCreateUser: {
+        borderBottomColor: "rgba(255,255,255,0.15)",
+    },
+
+    suggestionPressedCreateUser: {
+        backgroundColor: "rgba(255,255,255,0.12)",
+    },
+
+    suggestionTextCreateUser: {
+        color: "#FFFFFF",
+    },
+
+    currentLocationButtonCreateUser: {
+        borderColor: "rgba(255,255,255,0.28)",
+        backgroundColor: colors.orangeDefault,
+    },
+
+    currentLocationTextCreateUser: {
+        color: "#FFFFFF",
+    },
+
+    clearButtonCreateUser: {
+        backgroundColor: "rgba(255,255,255,0.18)",
+    },
+
+    selectedLocationCreateUser: {
+        borderColor: "rgba(255,255,255,0.25)",
+        backgroundColor: "rgba(255,255,255,0.16)",
+    },
+
+    selectedLocationTextCreateUser: {
+        color: "#FFFFFF",
+    },
+
 });

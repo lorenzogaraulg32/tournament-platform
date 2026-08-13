@@ -20,7 +20,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-
+    //Username deve essere richiesto alla fine
     public UserResponse createUser(
             String userId,
             CreateUserRequest request
@@ -31,6 +31,10 @@ public class UserService {
                     HttpStatus.CONFLICT,
                     "User profile already exists"
             );
+        }
+
+        if (userRepository.existsByUsername(request.username())) {
+            throw new IllegalArgumentException("Username già registrato");
         }
 
         User user = UserMapper.toEntity(userId, request);
@@ -56,6 +60,10 @@ public class UserService {
             String userId,
             PatchUserRequest request
     ) {
+
+        if (userRepository.existsByUsername(request.username())) {
+            throw new IllegalArgumentException("Username già registrato");
+        }
 
         User user = getUserEntity(userId);
 

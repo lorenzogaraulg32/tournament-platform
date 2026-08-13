@@ -1,9 +1,8 @@
-import {useState} from "react";
+import {ComponentProps, useState} from "react";
 import {Pressable, StyleSheet, Text, View,} from "react-native";
 import {Image} from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import {TeamLogoUpload} from "@/src/services/teams/teamCreationService";
 import FormLabel from "@/src/components/common/labels/formLabel";
 
 const MAX_LOGO_SIZE = 2 * 1024 * 1024;
@@ -15,16 +14,33 @@ const ALLOWED_MIME_TYPES = new Set([
     "image/webp",
 ]);
 
+type variant = "createTeam" | "createUser"
+
+export type SelectedLogo = {
+    uri: string;
+    fileName: string;
+    mimeType: string;
+    fileSize?: number;
+};
+
 type LogoFieldProps = {
-    value: TeamLogoUpload | null;
-    onChange: (logo: TeamLogoUpload | null) => void;
+    variant: variant
+    value: SelectedLogo | null;
+    onChange: (logo: SelectedLogo | null) => void;
+    placeholderIcon?: ComponentProps<typeof Ionicons>["name"];
+    label?: string;
+    optional?: boolean;
     disabled?: boolean;
     errorMessage?: string;
 };
 
 export default function LogoField({
+                                      variant,
                                       value,
                                       onChange,
+                                      label = "Logo",
+                                      optional = true,
+                                      placeholderIcon = "image-outline",
                                       disabled = false,
                                       errorMessage,
                                   }: LogoFieldProps) {
@@ -32,6 +48,8 @@ export default function LogoField({
         useState<string | null>(null);
 
     const visibleError = errorMessage ?? pickerError;
+
+    const isCreateUser = variant === "createUser";
 
     async function selectLogo() {
         try {
@@ -86,7 +104,7 @@ export default function LogoField({
                 fileName:
                     asset.fileName ??
                     asset.uri.split("/").pop() ??
-                    "team-logo",
+                    "logo",
                 mimeType:
                     asset.mimeType ??
                     "application/octet-stream",
@@ -106,18 +124,46 @@ export default function LogoField({
 
     return (
         <View style={styles.container}>
-            <FormLabel
-                text={"Logo squadra"}
-                optional={true}
-                labelIconName={"image-outline"}/>
+            {isCreateUser ? (
+                <View style={styles.createUserLabelContainer}>
+                    <Text style={styles.createUserLabel}>
+                        {label}
+                    </Text>
+
+                    {optional && (
+                        <Text style={styles.createUserOptional}>
+                            Opzionale
+                        </Text>
+                    )}
+                </View>
+            ) : (
+                <FormLabel
+                    text={label}
+                    optional={optional}
+                    labelIconName="image-outline"
+                />
+            )}
             <View
                 style={[
                     styles.pickerContainer,
-                    visibleError && styles.pickerContainerError,
-                    disabled && styles.disabled,
+
+                    isCreateUser &&
+                    styles.pickerContainerCreateUser,
+
+                    visibleError &&
+                    styles.pickerContainerError,
+
+                    disabled &&
+                    styles.disabled,
                 ]}
             >
-                <View style={styles.previewContainer}>
+                <View
+                    style={[
+                        styles.previewContainer,
+                        isCreateUser &&
+                        styles.previewContainerCreateUser,
+                    ]}
+                >
                     {value ? (
                         <Image
                             source={{uri: value.uri}}
@@ -126,22 +172,39 @@ export default function LogoField({
                         />
                     ) : (
                         <Ionicons
-                            name="shield-outline"
+                            name={placeholderIcon}
                             size={34}
-                            color="#C8480A"
+                            color={
+                                isCreateUser
+                                    ? "#FFFFFF"
+                                    : "#C8480A"
+                            }
                         />
                     )}
                 </View>
 
                 <View style={styles.content}>
-                    <Text style={styles.title}>
+                    <Text
+                        style={[
+                            styles.title,
+                            isCreateUser && styles.titleCreateUser,
+                        ]}
+                    >
                         {value
-                            ? "Logo selezionato"
-                            : "Aggiungi un logo"}
+                            ? isCreateUser
+                                ? "Foto selezionata"
+                                : "Logo selezionato"
+                            : isCreateUser
+                                ? "Aggiungi una foto"
+                                : "Aggiungi un logo"}
                     </Text>
 
                     <Text
-                        style={styles.description}
+                        style={[
+                            styles.description,
+                            isCreateUser &&
+                            styles.descriptionCreateUser,
+                        ]}
                         numberOfLines={1}
                     >
                         {value
@@ -172,7 +235,9 @@ export default function LogoField({
                             <Text style={styles.selectButtonText}>
                                 {value
                                     ? "Cambia"
-                                    : "Scegli immagine"}
+                                    : isCreateUser
+                                        ? "Scegli foto"
+                                        : "Scegli immagine"}
                             </Text>
                         </Pressable>
 
@@ -212,40 +277,6 @@ const styles = StyleSheet.create({
     container: {
         width: "100%",
         marginBottom: 20,
-    },
-
-    externalLabelContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        marginBottom: 9,
-    },
-
-    labelContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 10,
-    },
-
-    iconContainer: {
-        width: 40,
-        height: 40,
-        alignItems: "center",
-        justifyContent: "center",
-        borderRadius: 20,
-        backgroundColor: "rgba(200, 72, 10, 0.12)",
-    },
-
-
-    label: {
-        color: "#1C1C1C",
-        fontSize: 17,
-        fontWeight: "800",
-    },
-
-
-    optional: {
-        color: "#a8a8a8",
     },
 
     pickerContainer: {
@@ -351,5 +382,47 @@ const styles = StyleSheet.create({
         color: "#B42318",
         fontSize: 12,
         fontWeight: "500",
+    },
+
+    pickerContainerCreateUser: {
+        backgroundColor: "rgba(255,255,255,0.30)",
+
+        borderWidth: 1.5,
+        borderColor: "rgba(255,255,255,0.35)",
+
+        borderRadius: 18,
+    },
+
+    previewContainerCreateUser: {
+        borderColor: "rgba(255,255,255,0.55)",
+        backgroundColor: "rgba(255,255,255,0.16)",
+    },
+
+    titleCreateUser: {
+        color: "#FFFFFF",
+    },
+
+    descriptionCreateUser: {
+        color: "rgba(255,255,255,0.65)",
+    },
+
+    createUserLabelContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginLeft: 10,
+        marginBottom: 8,
+        gap: 6,
+    },
+
+    createUserLabel: {
+        fontSize: 16,
+        lineHeight: 20,
+        fontWeight: "800",
+        color: "#FFFFFF",
+    },
+
+    createUserOptional: {
+        fontSize: 12,
+        color: "rgba(255,255,255,0.55)",
     },
 });

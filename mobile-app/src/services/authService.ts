@@ -1,11 +1,13 @@
 import * as SecureStore from "expo-secure-store";
+import {ApiRequestError, isApiErrorBody} from "@/src/services/errorService";
+import {readResponseBody} from "@/src/services/helperService";
+import {router} from "expo-router";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 
 export type RegisterRequest = {
     email: string;
-    username: string;
     password: string;
 };
 
@@ -25,48 +27,25 @@ export type LoginResponse = {
     expiresIn: number;
 };
 
-type ApiErrorBody = {
-    message?: string;
-    errors?: Record<string, string>;
-};
-
-export class ApiRequestError extends Error {
-    status: number;
-    fieldErrors: Record<string, string>;
-
-    constructor(
-        message: string,
-        status: number,
-        fieldErrors: Record<string, string> = {},
-    ) {
-        super(message);
-
-        this.name = "ApiRequestError";
-        this.status = status;
-        this.fieldErrors = fieldErrors;
-    }
+export type AuthInfo = {
+    id: number,
+    username: string,
+    email: string,
+    enabled: boolean,
+    globalRole: GlobalRole
 }
 
-function isApiErrorBody(body: unknown): body is ApiErrorBody {
-    return typeof body === "object" && body !== null;
+export type GlobalRole = "ROLE_ADMIN" | "ROLE_USER"
+
+export async function saveSession(
+    accessToken: string,
+    tokenType: string
+) {
+    await Promise.all([
+        SecureStore.setItemAsync("accessToken", accessToken),
+        SecureStore.setItemAsync("tokenType", tokenType),
+    ]);
 }
-
-async function readResponseBody(
-    response: Response,
-): Promise<unknown> {
-    const text = await response.text();
-
-    if (!text) {
-        return null;
-    }
-
-    try {
-        return JSON.parse(text);
-    } catch {
-        return text;
-    }
-}
-
 
 export async function loginUser(
     request: LoginRequest,
@@ -168,7 +147,7 @@ export async function registerUser(
 }
 
 
-export async function loadAuthorization() {
+export async function getToken() {
 
     const accessToken =
         await SecureStore.getItemAsync(
@@ -186,5 +165,64 @@ export async function loadAuthorization() {
     }
 
    return `${tokenType ?? "Bearer"} ${accessToken}`
+
+}
+
+export async function handleLogout() {
+    await Promise.all([
+        SecureStore.deleteItemAsync("accessToken"),
+        SecureStore.deleteItemAsync("tokenType"),
+
+    ]);
+    router.replace("/(auth)");
+}
+
+export async function loadCurrentUserId(): Promise<number> {
+    const userInfo = await loadCurrentUserAuthInfo();
+    return userInfo.id;
+}
+
+export async function loadCurrentUserAuthInfo() {
+    const accessToken =
+        await SecureStore.getItemAsync("accessToken");
+
+    const tokenType =
+        await SecureStore.getItemAsync("tokenType");
+
+    if (!accessToken) {
+        router.replace("/(auth)");
+        throw new Error("Access token non disponibile");
+    }
+
+    const response = await fetch(
+        `${API_URL}/auth/me`,
+        {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                Authorization: `${tokenType ?? "Bearer"} ${accessToken}`,
+            },
+        }
+    );
+
+    if (response.status === 401 || response.status === 403) {
+        await Promise.all([
+            SecureStore.deleteItemAsync("accessToken"),
+            SecureStore.deleteItemAsync("tokenType"),
+        ]);
+        router.replace("/(auth)");
+        throw new Error("Sessione scaduta o non autorizzata");
+    }
+
+    if (!response.ok) {
+        const errorBody = await response.text();
+
+        throw new Error(
+            errorBody || `Errore nel recupero utente: ${response.status}`
+        );
+    }
+
+    return await response.json() as AuthInfo;
+
 
 }

@@ -161,6 +161,7 @@ export default function CreateTeamPage() {
                 />
 
                 <LogoField
+                    variant={"createTeam"}
                     value={logo}
                     onChange={(newLogo) => {
                         setLogo(newLogo);

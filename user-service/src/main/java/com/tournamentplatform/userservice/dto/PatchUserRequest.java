@@ -11,10 +11,13 @@ import java.util.Set;
 
 public record PatchUserRequest(
 
-        @Size(max = 50)
+        @Size(max = 20)
+        String username,
+
+        @Size(max = 20)
         String firstName,
 
-        @Size(max = 50)
+        @Size(max = 20)
         String lastName,
 
         @Past

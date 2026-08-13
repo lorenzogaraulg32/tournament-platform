@@ -28,13 +28,9 @@ public class AuthService {
         if (userRepository.existsByEmail(request.email())) {
             throw new IllegalArgumentException("Email già registrata");
         }
-        if (userRepository.existsByUsername(request.username())) {
-            throw new IllegalArgumentException("Username già registrato");
-        }
-
         String passwordHash = passwordEncoder.encode(request.password());
 
-        userRepository.save(new User(request.email(), passwordHash, request.username(), true, ROLE_USER));
+        userRepository.save(new User(request.email(), passwordHash,true, ROLE_USER));
 
         return new RegisterResponse("Utente registrato correttamente");
 
@@ -73,7 +69,6 @@ public class AuthService {
 
         return new UserResponse(
                 user.getId(),
-                user.getUsername(),
                 user.getEmail(),
                 user.isEnabled(),
                 user.getGlobalRole()
