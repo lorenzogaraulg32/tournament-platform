@@ -38,7 +38,7 @@ export default function LogoField({
                                       variant,
                                       value,
                                       onChange,
-                                      label = "Logo",
+                                      label = "Picture",
                                       optional = true,
                                       placeholderIcon = "image-outline",
                                       disabled = false,
@@ -193,7 +193,7 @@ export default function LogoField({
                         {value
                             ? isCreateUser
                                 ? "Foto selezionata"
-                                : "Logo selezionato"
+                                : "Picture selezionato"
                             : isCreateUser
                                 ? "Aggiungi una foto"
                                 : "Aggiungi un logo"}

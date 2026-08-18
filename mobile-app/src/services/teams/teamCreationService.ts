@@ -71,7 +71,7 @@ export async function createTeam(
         if (logo) {
             const logoFile = new File(logo.uri);
 
-            console.log("Logo da inviare:", {
+            console.log("Picture da inviare:", {
                 uri: logoFile.uri,
                 exists: logoFile.exists,
                 size: logoFile.size,

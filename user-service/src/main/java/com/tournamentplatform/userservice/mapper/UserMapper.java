@@ -53,7 +53,6 @@ public final class UserMapper {
                 .collect(Collectors.toSet());
 
         return new UserResponse(
-                user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
                 user.getUsername(),
@@ -62,7 +61,7 @@ public final class UserMapper {
                 user.getSports(),
                 roles,
                 toGeoLocationResponse(user.getLocation()),
-                user.getLogoUrl()
+                user.getProfilePicUrl()
         );
     }
 

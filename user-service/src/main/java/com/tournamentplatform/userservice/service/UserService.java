@@ -8,9 +8,11 @@ import com.tournamentplatform.userservice.entity.utils.UserSportRole;
 import com.tournamentplatform.userservice.mapper.UserMapper;
 import com.tournamentplatform.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
@@ -19,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final ProfilePictureStorageService profilePictureStorageService;
 
     //Username deve essere richiesto alla fine
     public UserResponse createUser(
@@ -114,5 +117,23 @@ public class UserService {
                 );
             }
         }
+    }
+
+    public void uploadProfilePicture(String userId, MultipartFile file) {
+        User user = getUserEntity(userId);
+
+        String profilePicUrl =
+                profilePictureStorageService
+                        .storeProfilePicture(userId, file);
+
+        user.setProfilePicUrl(profilePicUrl);
+
+        userRepository.save(user);
+    }
+
+
+    public Resource getProfilePictureByFilename(String filename) {
+        return profilePictureStorageService
+                .loadProfilePicture(filename);
     }
 }

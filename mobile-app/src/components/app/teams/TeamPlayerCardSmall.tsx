@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View} from "react-native";
-import Logo from "@/src/components/common/Logo";
+import Picture from "@/src/components/common/Picture";
 import {colors, teamCardBlueColors} from "@/src/constants/theme";
 import {UserInfo} from "@/src/services/userService";
 
@@ -23,7 +23,7 @@ export default function TeamPlayerCardSmall({
     return (
         <View style={styles.container}>
             <View style={styles.logoContainer}>
-                <Logo
+                <Picture
                     variant={"player"}
                     style={styles.logo}
                     logoUrl={profilePicUrl}/>

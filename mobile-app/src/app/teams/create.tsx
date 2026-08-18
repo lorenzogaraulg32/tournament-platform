@@ -158,7 +158,7 @@ export default function CreateTeamPage() {
                         }
                     }}
                     errorMessage={locationError}
-                />
+                    variant={"createTeam"}/>
 
                 <LogoField
                     variant={"createTeam"}

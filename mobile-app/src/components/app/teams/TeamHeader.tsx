@@ -1,7 +1,7 @@
 import {ActivityIndicator, Pressable, StyleSheet, Text, View,} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import HeaderEntity from "../../common/headers/HeaderEntity";
-import Logo from "@/src/components/common/Logo";
+import Picture from "@/src/components/common/Picture";
 import type {TeamDetails} from "@/src/services/teams/teamGetService";
 import {colors} from "@/src/constants/theme";
 
@@ -77,7 +77,7 @@ export default function TeamHeader({
                 <View style={styles.container}>
                     <View style={styles.leftContainer}>
                         <View style={styles.imageContainer}>
-                            <Logo
+                            <Picture
                                 variant={"team"}
                                 logoUrl={team.logoUrl}
                                 style={styles.logo}

@@ -2,7 +2,7 @@ import {ImageBackground, KeyboardAvoidingView, Platform, ScrollView, StyleSheet,
 import Background from "@/src/components/common/Background";
 import ButtonBack from "@/src/components/common/buttons/ButtonBack";
 import {ReactNode} from "react";
-import Logo from "@/src/components/common/Logo";
+import Picture from "@/src/components/common/Picture";
 
 type CreateTeamContainerProps = {
     children: ReactNode
@@ -34,7 +34,7 @@ export default function Container({children}: CreateTeamContainerProps) {
                         <ButtonBack/>
 
                         <View style={styles.heroImageContainer}>
-                            <Logo logoUrl={""} style={styles.logo} variant={"team"}/>
+                            <Picture logoUrl={""} style={styles.logo} variant={"team"}/>
                         </View>
 
                         <View style={styles.heroTextContainer}>
