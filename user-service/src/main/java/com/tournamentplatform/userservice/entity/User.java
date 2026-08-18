@@ -8,6 +8,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -19,10 +21,9 @@ import java.util.Set;
 
 @NoArgsConstructor
 @Table(name = "users")
+
+@OnDelete(action = OnDeleteAction.CASCADE)
 public class User {
-
-
-    private static final String DEFAULT_USER_LOGO_URL = "/uploads/user-logos/default_user_logo.png";
 
     @Id
     @Column(name = "user_id", nullable = false, updatable = false)
@@ -79,6 +80,7 @@ public class User {
     })
     private GeoLocation location;
 
-    private String logoUrl;
+    @Column(name = "profile_pic_url")
+    private String profilePicUrl;
 
 }

@@ -9,17 +9,17 @@ const placeholderLogoTeam = require("../../../assets/images/teamPlaceholders/log
 const placeholderLogoPlayer = require("../../../assets/images/teamPlaceholders/profilePlaceholder.png");
 
 
-type LogoProps = {
+type PictureProps = {
     logoUrl?: string | null;
     style?: StyleProp<ImageStyle>;
     variant: "player" | "team";
 };
 
-export default function Logo({
+export default function Picture({
                                  logoUrl,
                                  style,
                                  variant
-                             }: LogoProps) {
+                             }: PictureProps) {
     const [authorization, setAuthorization] =
         useState<string | null>(null);
 
@@ -37,6 +37,7 @@ export default function Logo({
     }, []);
 
     useEffect(() => {
+        console.log(logoUrl)
         setHasError(false);
     }, [logoUrl]);
 

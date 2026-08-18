@@ -28,8 +28,7 @@ export type LoginResponse = {
 };
 
 export type AuthInfo = {
-    id: number,
-    username: string,
+    id: string,
     email: string,
     enabled: boolean,
     globalRole: GlobalRole
@@ -164,7 +163,7 @@ export async function getToken() {
         return null;
     }
 
-   return `${tokenType ?? "Bearer"} ${accessToken}`
+    return `${tokenType ?? "Bearer"} ${accessToken}`
 
 }
 
@@ -177,8 +176,9 @@ export async function handleLogout() {
     router.replace("/(auth)");
 }
 
-export async function loadCurrentUserId(): Promise<number> {
+export async function loadCurrentUserId(): Promise<string> {
     const userInfo = await loadCurrentUserAuthInfo();
+
     return userInfo.id;
 }
 
@@ -188,6 +188,7 @@ export async function loadCurrentUserAuthInfo() {
 
     const tokenType =
         await SecureStore.getItemAsync("tokenType");
+
 
     if (!accessToken) {
         router.replace("/(auth)");
@@ -204,6 +205,7 @@ export async function loadCurrentUserAuthInfo() {
             },
         }
     );
+
 
     if (response.status === 401 || response.status === 403) {
         await Promise.all([

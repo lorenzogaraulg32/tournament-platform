@@ -2,7 +2,7 @@ import {KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View} from
 import {StatusBar} from "expo-status-bar";
 import {ReactNode} from "react";
 import {ImageBackground} from "expo-image";
-import { colors } from "@/src/constants/theme";
+
 
 
 type OnBoardingProps = {
@@ -65,18 +65,16 @@ const styles = StyleSheet.create({
     scrollContent: {
         flexGrow: 1,
         paddingTop: 80,
-        paddingBottom: 70,
         paddingHorizontal: 35
     },
 
     contentSlot: {
-        flex: 1,
         width: "100%",
         justifyContent: "flex-start",
     },
 
     labelContainer: {
-        paddingVertical: 20
+        paddingBottom: 20
     },
 
     label: {

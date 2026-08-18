@@ -8,8 +8,6 @@ import java.util.Set;
 
 public record UserResponse(
 
-        String id,
-
         String firstName,
 
         String lastName,
@@ -26,7 +24,7 @@ public record UserResponse(
 
         GeoLocationResponse location,
 
-        String logoUrl
+        String profilePicUrl
 
 ) {
 }

@@ -1,12 +1,46 @@
 import Background from "@/src/components/common/Background";
-import {Pressable, ScrollView, StyleSheet, View} from "react-native";
+import {ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import ProfileHeader from "@/src/components/app/profile/ProfileHeader";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import TitleApp from "@/src/components/common/headers/HeaderMain";
 import {colors} from "@/src/constants/theme"
-import {handleLogout} from "@/src/services/authService";
+import {AuthInfo, handleLogout, loadCurrentUserAuthInfo} from "@/src/services/authService";
+import {loadUserInfo, UserInfo} from "@/src/services/userService";
+import {useEffect, useState} from "react";
 
 export default function ProfilePage() {
+
+    const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+    const [userAuthInfo, setUserAuthInfo] = useState<AuthInfo | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+
+    async function loadProfile() {
+        try {
+
+            setError(null);
+
+            const authInfo = await loadCurrentUserAuthInfo();
+            const userInfo = await loadUserInfo(authInfo.id);
+
+            setUserAuthInfo(authInfo);
+            setUserInfo(userInfo);
+
+        } catch (error) {
+            if (error instanceof Error) {
+                setError(error.message);
+            } else {
+                setError("Errore durante il caricamento");
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        void loadProfile()
+    }, [])
 
 
     return (
@@ -14,19 +48,33 @@ export default function ProfilePage() {
             header={
                 <TitleApp text={"Profilo"}/>
             }>
-            <ScrollView
-                style={styles.scrollView}
-                contentContainerStyle={styles.scrollContent}
-                showsVerticalScrollIndicator={false}
-            >
-
-                <ProfileHeader/>
-
-
-                <View style={styles.profileContent}>
+            {isLoading ? (
+                <View style={styles.feedbackContainer}>
+                    <ActivityIndicator color="#FFFFFF" size="large"/>
                 </View>
+            ) : !userInfo || !userAuthInfo ? (
+                <View style={styles.feedbackContainer}>
+                    <Text style={styles.feedbackText}>
+                        Utente non disponibile
+                    </Text>
+                </View>
+            ) : (
+                <ScrollView
+                    style={styles.scrollView}
+                    contentContainerStyle={styles.scrollContent}
+                    showsVerticalScrollIndicator={false}
+                >
 
-            </ScrollView>
+                    <ProfileHeader userInfo={userInfo} authInfo={userAuthInfo} isLoading={false}/>
+
+
+                    <View style={styles.profileContent}>
+                    </View>
+
+                </ScrollView>
+
+            )}
+
 
             <View style={styles.logoutContainer}>
 
@@ -46,6 +94,7 @@ export default function ProfilePage() {
                 </Pressable>
 
             </View>
+
         </Background>
     );
 }
@@ -92,5 +141,20 @@ const styles = StyleSheet.create({
         transform: [{scale: 0.98}],
         opacity: 0.9,
     },
+
+    feedbackContainer: {
+        minHeight: 120,
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 20,
+    },
+
+    feedbackText: {
+        color: "#FFFFFF",
+        fontSize: 15,
+        fontWeight: "500",
+        textAlign: "center",
+    },
+
 
 });

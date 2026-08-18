@@ -4,43 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Created a new microservice for managing users outside of auth context">
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/app/(onboarding)/_layout.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/app/(onboarding)/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/onboarding/OnBoardingContainer.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/services/errorService.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/services/helperService.ts" afterDir="false" />
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Onboarding section complete, profile picture is managed correctly">
+      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/service/ProfilePictureStorageService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/dto/RegisterRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/dto/RegisterRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/dto/UserResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/dto/UserResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/service/AuthService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/user/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/user/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/user/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/user/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/profile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/profile.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(auth)/login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(auth)/login.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(auth)/register.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(auth)/register.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/_layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(onboarding)/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(onboarding)/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/app/teams/[teamId].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/teams/[teamId].tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/app/teams/create.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/teams/create.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/components/app/profile/ProfileHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/app/profile/ProfileHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/app/teams/TeamAdminCardSmall.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/app/teams/TeamAdminCardSmall.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/app/teams/TeamCardSmall.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/app/teams/TeamCardSmall.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/app/teams/TeamHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/app/teams/TeamHeader.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/components/app/teams/TeamPlayerCardSmall.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/app/teams/TeamPlayerCardSmall.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/app/teams/createTeam/Container.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/app/teams/createTeam/Container.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/components/app/teams/createTeam/LogoField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/app/teams/createTeam/LogoField.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/app/teams/createTeam/PositionField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/app/teams/createTeam/PositionField.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/auth/AuthContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/auth/AuthContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/auth/AuthHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/auth/AuthHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/Logo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/Logo.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/Logo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/Picture.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/onboarding/OnBoardingContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/onboarding/OnBoardingContainer.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/services/authService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/authService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/teams/teamGetService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/teams/teamGetService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/teams/teamCreationService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/teams/teamCreationService.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/services/userService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/userService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/dto/CreateUserRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/dto/CreateUserRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/dto/PatchUserRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/dto/PatchUserRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/controller/UserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/dto/UserResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/dto/UserResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/entity/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/mapper/UserMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/repository/UserRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/service/UserService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -86,7 +73,7 @@
     <setting file="file://$PROJECT_DIR$/mobile-app/src/components/app/teams/TeamInfoSection.tsx" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
@@ -99,52 +86,52 @@
     <option name="sortByType" value="true" />
     <option name="sortKey" value="BY_TYPE" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "HTTP Request.TournamentApplication | #1.executor": "Run",
-    "JUnit.AuthControllerTest.executor": "Run",
-    "JUnit.AuthIntegrationTest.executor": "Run",
-    "JUnit.AuthServiceTest.executor": "Run",
-    "JUnit.JwtAuthenticationFilterTest.executor": "Run",
-    "JUnit.JwtSeriveTest.executor": "Run",
-    "JUnit.JwtServiceTest.executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Spring Boot.ApiGatewayApplication.executor": "Run",
-    "Spring Boot.AuthServiceApplication.executor": "Run",
-    "Spring Boot.ServiceRegistryApplication.executor": "Run",
-    "Spring Boot.TeamServiceApplication.executor": "Run",
-    "Spring Boot.TournamentApplication.executor": "Run",
-    "Spring Boot.UserServiceApplication.executor": "Run",
-    "jdk.selected.JAVA_MODULE": "21",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Lombax/Desktop/Progetto Gestione Tornei Calcetto/mobile-app/src/components/onboarding",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.35632184",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "run.configurations.included.in.services": "true",
-    "service.view.auto.scroll.to.source": "true",
-    "settings.editor.selected.configurable": "preferences.customizations",
-    "ts.external.directory.path": "C:\\Users\\Lombax\\Desktop\\Progetto Gestione Tornei Calcetto\\mobile-app\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;HTTP Request.TournamentApplication | #1.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AuthControllerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AuthIntegrationTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AuthServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.JwtAuthenticationFilterTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.JwtSeriveTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.JwtServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Spring Boot.ApiGatewayApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.AuthServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.ServiceRegistryApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.TeamServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.TournamentApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.UserServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;21&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Lombax/Desktop/Progetto Gestione Tornei Calcetto/mobile-app/src/components/onboarding&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.35632184&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;service.view.auto.scroll.to.source&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.customizations&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Lombax\\Desktop\\Progetto Gestione Tornei Calcetto\\mobile-app\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
   </component>
@@ -170,11 +157,11 @@
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\team-service\uploads\team-logos" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.tournamentplatform.userservice.service" />
       <recent name="entity" />
       <recent name="com.tournamentplatform.teamservice.dto" />
       <recent name="com.tournamentplatform.teamservice.errorHandling" />
       <recent name="com.tournamentplatform.teamservice.service" />
-      <recent name="com.tournamentplatform.authservice.DTO" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -297,7 +284,9 @@
       <workItem from="1786110342544" duration="12114000" />
       <workItem from="1786371701364" duration="6238000" />
       <workItem from="1786459845798" duration="24919000" />
-      <workItem from="1786611287292" duration="5654000" />
+      <workItem from="1786611287292" duration="5721000" />
+      <workItem from="1787045939665" duration="18084000" />
+      <workItem from="1787072778653" duration="127000" />
     </task>
     <task id="LOCAL-00001" summary="Exception handling and controller with register endpoint">
       <option name="closed" value="true" />
@@ -635,7 +624,15 @@
       <option name="project" value="LOCAL" />
       <updated>1786527632082</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="created the onboarding section for user creation&#10;todo: connect the onboarding with backend">
+      <option name="closed" value="true" />
+      <created>1786621877057</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1786621877057</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -653,8 +650,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Added Admin managment and endpoints&#10;Refractor for better responsability separation" />
-    <MESSAGE value="Tournament-service base completed:&#10;tournament crud cycle completed and admin managment completed" />
     <MESSAGE value="Team service init and renaming tournament-service module" />
     <MESSAGE value="Team creation endpoint added" />
     <MESSAGE value="Team basic endpoints added&#10;Team admin management added" />
@@ -678,7 +673,9 @@
     <MESSAGE value="Rearranged [teamId] header &#10;Added options button to the main Header" />
     <MESSAGE value="Worked on team details page" />
     <MESSAGE value="Created a new microservice for managing users outside of auth context" />
-    <option name="LAST_COMMIT_MESSAGE" value="Created a new microservice for managing users outside of auth context" />
+    <MESSAGE value="created the onboarding section for user creation&#10;todo: connect the onboarding with backend" />
+    <MESSAGE value="Onboarding section complete, profile picture is managed correctly" />
+    <option name="LAST_COMMIT_MESSAGE" value="Onboarding section complete, profile picture is managed correctly" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

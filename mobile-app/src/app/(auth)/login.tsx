@@ -7,8 +7,9 @@ import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
 import {colors} from "@/src/constants/theme";
 import {router} from "expo-router";
 import {useState} from "react";
-import {loginUser, saveSession} from "@/src/services/authService";
+import {loadCurrentUserId, loginUser, saveSession} from "@/src/services/authService";
 import {ApiRequestError} from "@/src/services/errorService";
+import {loadUserInfo} from "@/src/services/userService";
 
 type LoginFieldErrors = {
     email?: string;
@@ -94,22 +95,32 @@ export default function LoginPage() {
                 response.tokenType
             );
 
+            const id = await loadCurrentUserId();
+
+            //caricamento per permettere di controllare se l'utente esiste
+            await loadUserInfo(id);
+
             router.replace("/(app)");
 
         } catch (error) {
             if (error instanceof ApiRequestError) {
-                setApiError(error.message)
+                if (error.status === 404) {
+                    router.replace("/(onboarding)");
+                    return;
+                } else {
+                    setApiError(error.message)
 
-                setFieldErrors((current) => ({
-                    ...current,
-                    email:
-                        error.fieldErrors.email ??
-                        current.email,
-                    password:
-                        error.fieldErrors.password ??
-                        current.password,
-                }));
+                    setFieldErrors((current) => ({
+                        ...current,
+                        email:
+                            error.fieldErrors.email ??
+                            current.email,
+                        password:
+                            error.fieldErrors.password ??
+                            current.password,
+                    }));
 
+                }
                 return;
             }
 

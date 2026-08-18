@@ -1,7 +1,8 @@
-import {ActivityIndicator, ImageBackground, StyleSheet, Text, View} from "react-native";
-import {useEffect, useState} from "react";
+import {ActivityIndicator, StyleSheet, Text, View} from "react-native";
 import HeaderEntity from "../../common/headers/HeaderEntity";
-import {AuthInfo, loadCurrentUserAuthInfo} from "@/src/services/authService";
+import {UserInfo} from "@/src/services/userService";
+import {AuthInfo} from "@/src/services/authService";
+import Picture from "@/src/components/common/Picture";
 
 
 /**
@@ -11,32 +12,20 @@ import {AuthInfo, loadCurrentUserAuthInfo} from "@/src/services/authService";
  * - Subscription Plan
  */
 
-export default function ProfileHeader() {
+export type ProfileHeaderProps = {
+    isLoading: boolean
+    userInfo?: UserInfo
+    authInfo?: AuthInfo,
 
-    const [userInfo, setUserInfo] = useState<AuthInfo | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+}
 
-    async function loadProfile() {
-        try {
-            setError(null);
 
-            const user = await loadCurrentUserAuthInfo();
-            setUserInfo(user);
-        } catch (error) {
-            if (error instanceof Error) {
-                setError(error.message);
-            } else {
-                setError("Errore durante il caricamento");
-            }
-        } finally {
-            setIsLoading(false);
-        }
-    }
+export default function ProfileHeader({
+                                          isLoading,
+                                          userInfo,
+                                          authInfo
+                                      } : ProfileHeaderProps) {
 
-    useEffect(() => {
-        void loadProfile()
-    }, [])
 
     return (
         <HeaderEntity
@@ -48,11 +37,7 @@ export default function ProfileHeader() {
                 <View style={styles.feedbackContainer}>
                     <ActivityIndicator color="#FFFFFF" size="large"/>
                 </View>
-            ) : error ? (
-                <View style={styles.feedbackContainer}>
-                    <Text style={styles.feedbackText}>{error}</Text>
-                </View>
-            ) : !userInfo ? (
+            ) : !userInfo || !authInfo ? (
                 <View style={styles.feedbackContainer}>
                     <Text style={styles.feedbackText}>
                         Utente non disponibile
@@ -60,7 +45,10 @@ export default function ProfileHeader() {
                 </View>
             ) : (
                 <View style={styles.dataContainer}>
-                    <ProfileImage/>
+                    <Picture
+                        logoUrl={userInfo.profilePicUrl}
+                        style={styles.imageContainer}
+                        variant={"player"}/>
 
                     <View style={styles.verticalSeparator}/>
 
@@ -76,7 +64,7 @@ export default function ProfileHeader() {
                             style={styles.email}
                             numberOfLines={1}
                         >
-                            {userInfo.email}
+                            {authInfo.email}
                         </Text>
 
                         <View style={styles.subscriptionBadge}>
@@ -92,19 +80,6 @@ export default function ProfileHeader() {
     );
 }
 
-
-//Placeholder per foto del profilo
-export function ProfileImage() {
-    return (
-        <View style={styles.imageContainer}>
-            <ImageBackground
-                source={require("../../../../assets/images/teamPlaceholders/profilePlaceholder.png")}
-                style={styles.profileImage}
-                resizeMode="cover"
-            />
-        </View>
-    );
-}
 
 const styles = StyleSheet.create({
 
@@ -179,11 +154,6 @@ const styles = StyleSheet.create({
         borderWidth: 3,
         borderColor: "#FFFFFF",
         backgroundColor: "#D9D9D9",
-    },
-
-    profileImage: {
-        width: "100%",
-        height: "100%",
     },
 
     verticalSeparator: {

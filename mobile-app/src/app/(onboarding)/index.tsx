@@ -1,14 +1,23 @@
-import {Pressable, StyleSheet, Text, View} from "react-native";
+import {ActivityIndicator, Pressable, StyleSheet, Text, View} from "react-native";
 import AuthTextField from "@/src/components/auth/AuthTextField";
 import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
 import AuthContent from "@/src/components/auth/AuthContent";
 import {colors} from "@/src/constants/theme";
 import {useState} from "react";
-import {Gender, Sport, SportRole, UserOnBoardingInfo} from "@/src/services/userService";
+import {
+    completeOnBoarding,
+    Gender,
+    Sport,
+    SportRole,
+    uploadProfilePicture,
+    UserOnBoardingInfo
+} from "@/src/services/userService";
 import PositionField from "@/src/components/app/teams/createTeam/PositionField";
 import LogoField, {SelectedLogo} from "@/src/components/app/teams/createTeam/LogoField";
 import DateTimePicker, {DateTimePickerEvent} from "@react-native-community/datetimepicker";
 import OnBoardingContainer from "@/src/components/onboarding/OnBoardingContainer";
+import {ApiRequestError} from "@/src/services/errorService";
+import {router} from "expo-router";
 
 
 type OnBoardingFieldErrors = {
@@ -28,9 +37,8 @@ export default function OnBoarding() {
     const TOTAL_STEPS = 5;
 
     const [fieldErrors, setFieldErrors] = useState<OnBoardingFieldErrors>({});
-
-    const [apiError, setApiError] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
+    const [finalError, setFinalError] = useState("");
+    const [isLoading, setLoading] = useState(false);
 
     const [showBirthDatePicker, setShowBirthDatePicker] = useState(false);
 
@@ -61,9 +69,7 @@ export default function OnBoarding() {
 
     const toggleSport = (sport: Sport) => {
         setUserData(prev => {
-            const isSelected = prev.sports.includes(sport);
-
-            if (isSelected) {
+            if (prev.sports.includes(sport)) {
                 return {
                     ...prev,
                     sports: prev.sports.filter(s => s !== sport),
@@ -146,6 +152,117 @@ export default function OnBoarding() {
         return `${year}-${month}-${day}`;
     }
 
+    //Potenzialmente ridondante, ma controllo aggiuntivo previo invio al backend
+    function validateUserData(): boolean {
+        const errors: OnBoardingFieldErrors = {};
+
+        setFinalError("")
+
+        const firstName = userData.firstName.trim();
+        const lastName = userData.lastName.trim();
+        const username = userData.username.trim();
+
+        // Nome
+        if (!firstName) {
+            errors.firstName = "Il nome è obbligatorio";
+        } else if (firstName.length > 20) {
+            errors.firstName = "Il nome non può superare i 20 caratteri";
+        }
+
+        // Cognome
+        if (!lastName) {
+            errors.lastName = "Il cognome è obbligatorio";
+        } else if (lastName.length > 20) {
+            errors.lastName = "Il cognome non può superare i 20 caratteri";
+        }
+
+        // Username
+        if (!username) {
+            errors.username = "L'username è obbligatorio";
+        } else if (username.length > 20) {
+            errors.username = "Lo username non può superare i 20 caratteri";
+        }
+
+        // Data di nascita
+        if (!userData.birthDate) {
+            errors.birthDate = "La data di nascita è obbligatoria";
+        } else {
+            const birthDate = new Date(userData.birthDate);
+
+            if (
+                Number.isNaN(birthDate.getTime()) ||
+                birthDate >= new Date()
+            ) {
+                errors.birthDate = "La data di nascita non è valida";
+            }
+        }
+
+        // Genere
+        if (userData.gender === null) {
+            errors.gender = "Il genere è obbligatorio";
+        }
+
+        // Sport
+        if (userData.sports.length === 0) {
+            errors.sports = "Seleziona almeno uno sport";
+        }
+
+        // Ogni sport deve avere almeno un ruolo
+        const everySportHasRole = userData.sports.every(
+            sport =>
+                userData.roles.some(
+                    selectedRole =>
+                        selectedRole.sport === sport
+                )
+        );
+
+        if (!everySportHasRole) {
+            errors.roles =
+                "Seleziona almeno un ruolo per ogni sport";
+        }
+
+        // Nessun ruolo deve appartenere a uno sport non selezionato
+        // e il ruolo deve essere valido per quello sport
+        const invalidRole = userData.roles.some(
+            selectedRole =>
+                !userData.sports.includes(selectedRole.sport) ||
+                !SPORT_ROLES[selectedRole.sport]?.includes(
+                    selectedRole.role
+                )
+        );
+
+        if (invalidRole) {
+            errors.roles =
+                "Uno dei ruoli selezionati non è valido";
+        }
+
+        // Location opzionale, ma se presente deve essere valida
+        if (userData.location) {
+            const {label, latitude, longitude} = userData.location;
+
+            if (
+                !label?.trim() ||
+                latitude == null ||
+                longitude == null ||
+                latitude < -90 ||
+                latitude > 90 ||
+                longitude < -180 ||
+                longitude > 180
+            ) {
+                errors.location = "La posizione selezionata non è valida";
+            }
+        }
+
+        setFieldErrors(errors);
+
+        if (Object.keys(errors).length === 0) {
+            return true;
+        } else {
+            setFinalError("Alcuni campi non sono validi")
+            return false;
+        }
+    }
+
 
     function renderStep() {
         switch (step) {
@@ -169,16 +286,54 @@ export default function OnBoarding() {
         }
     }
 
-    const handleNext = () => {
+    const handleNext = async () => {
+        if (isLoading) {
+            return;
+        }
+
         const isValid = validateCurrentStep();
 
         if (!isValid) {
             return;
         }
 
-        setStep(prev => Math.min(prev + 1, TOTAL_STEPS - 1));
-    };
+        const isLastStep = step === TOTAL_STEPS - 1;
 
+        if (isLastStep) {
+            if (!validateUserData()) {
+                return;
+            }
+
+            try {
+                setLoading(true);
+
+                await completeOnBoarding(userData);
+
+                if (profileLogo) {
+                    await uploadProfilePicture(profileLogo);
+                }
+
+                router.replace("/(app)");
+
+            } catch (error) {
+                console.error(error);
+
+                if (error instanceof ApiRequestError) {
+                    setFinalError(error.message);
+                } else {
+                    setFinalError(
+                        "Si è verificato un errore durante il completamento dell'onboarding"
+                    );
+                }
+            } finally {
+                setLoading(false);
+            }
+
+            return;
+        }
+
+        setStep(prev => prev + 1);
+    };
     const handleBack = () => {
         setStep(prev => Math.max(prev - 1, 0));
     };
@@ -213,40 +368,41 @@ export default function OnBoarding() {
                 label={"Completa la registrazione"}
                 content={
                     <AuthContent style={styles.inputFieldsContainer}>
+                        <View>
+                            <AuthTextField
+                                label="Nome"
+                                placeholder="Inserisci il tuo nome"
+                                value={userData.firstName}
+                                onChangeText={(text) =>
+                                    handleFieldChange("firstName", text)
+                                }
+                                autoCapitalize="words"
+                                autoCorrect={false}
+                                errorMessage={fieldErrors.firstName}
+                            />
 
-                        <AuthTextField
-                            label="Nome"
-                            placeholder="Inserisci il tuo nome"
-                            value={userData.firstName}
-                            onChangeText={(text) =>
-                                handleFieldChange("firstName", text)
-                            }
-                            autoCapitalize="words"
-                            autoCorrect={false}
-                            editable={!isLoading}
-                            errorMessage={fieldErrors.firstName}
-                        />
-
-                        <AuthTextField
-                            label="Cognome"
-                            placeholder="Inserisci il tuo cognome"
-                            value={userData.lastName}
-                            onChangeText={(text) =>
-                                handleFieldChange("lastName", text)
-                            }
-                            autoCapitalize="words"
-                            autoCorrect={false}
-                            editable={!isLoading}
-                            errorMessage={fieldErrors.lastName}
-                        />
-
-                        <ButtonSolid
-                            variant={"buttonRegister"}
-                            textVariant={"textRegister"}
-                            onPress={handleNext}
-                            text="Continua"
-                        />
-
+                            <AuthTextField
+                                label="Cognome"
+                                placeholder="Inserisci il tuo cognome"
+                                value={userData.lastName}
+                                onChangeText={(text) =>
+                                    handleFieldChange("lastName", text)
+                                }
+                                autoCapitalize="words"
+                                autoCorrect={false}
+                                errorMessage={fieldErrors.lastName}
+                            />
+                        </View>
+                        <View>
+                            <View style={styles.btnContainer}>
+                                <ButtonSolid
+                                    variant={"buttonRegister"}
+                                    textVariant={"textRegister"}
+                                    onPress={handleNext}
+                                    text="Continua"
+                                />
+                            </View>
+                        </View>
                     </AuthContent>
                 }
             />
@@ -283,36 +439,35 @@ export default function OnBoarding() {
                 label={"Completa la registrazione"}
                 content={
                     <AuthContent style={styles.inputFieldsContainer}>
+                        <View>
+                            <AuthTextField
+                                label="Username"
+                                placeholder="Scegli il tuo username"
+                                value={userData.username}
+                                onChangeText={(text) =>
+                                    handleFieldChange(
+                                        "username",
+                                        text
+                                    )
+                                }
+                                autoCapitalize="none"
+                                autoCorrect={false}
+                                errorMessage={fieldErrors.username}
+                            />
 
-                        <AuthTextField
-                            label="Username"
-                            placeholder="Scegli il tuo username"
-                            value={userData.username}
-                            onChangeText={(text) =>
-                                handleFieldChange(
-                                    "username",
-                                    text
-                                )
-                            }
-                            autoCapitalize="none"
-                            autoCorrect={false}
-                            editable={!isLoading}
-                            errorMessage={fieldErrors.username}
-                        />
-
-                        <LogoField
-                            variant={"createUser"}
-                            label="Foto profilo"
-                            placeholderIcon="person-outline"
-                            optional
-                            value={profileLogo}
-                            onChange={setProfileLogo}
-                            disabled={isLoading}
-                            errorMessage={fieldErrors.profileLogo}
-                        />
-
-                        <NavigationButtons/>
-
+                            <LogoField
+                                variant={"createUser"}
+                                label="Foto profilo"
+                                placeholderIcon="person-outline"
+                                optional
+                                value={profileLogo}
+                                onChange={setProfileLogo}
+                                errorMessage={fieldErrors.profileLogo}
+                            />
+                        </View>
+                        <View>
+                            {NavigationButtons(false)}
+                        </View>
                     </AuthContent>
                 }
             />
@@ -342,110 +497,112 @@ export default function OnBoarding() {
                 label={"Completa la registrazione"}
                 content={
                     <AuthContent style={styles.inputFieldsContainer}>
+                        <View>
+                            <Text style={styles.sectionLabel}>
+                                Data di nascita
+                            </Text>
 
-                        <Text style={styles.sectionLabel}>
-                            Data di nascita
-                        </Text>
-
-                        <Pressable
-                            style={[
-                                styles.dateField,
-                                fieldErrors.birthDate &&
-                                styles.dateFieldError
-                            ]}
-                            onPress={() =>
-                                setShowBirthDatePicker(true)
-                            }
-                        >
-                            <Text
+                            <Pressable
                                 style={[
-                                    styles.dateText,
-                                    !userData.birthDate &&
-                                    styles.datePlaceholder
+                                    styles.dateField,
+                                    fieldErrors.birthDate &&
+                                    styles.dateFieldError
                                 ]}
+                                onPress={() =>
+                                    setShowBirthDatePicker(true)
+                                }
                             >
-                                {userData.birthDate
-                                    ? userData.birthDate
-                                    : "Seleziona la data di nascita"}
-                            </Text>
-                        </Pressable>
+                                <Text
+                                    style={[
+                                        styles.dateText,
+                                        !userData.birthDate &&
+                                        styles.datePlaceholder
+                                    ]}
+                                >
+                                    {userData.birthDate
+                                        ? userData.birthDate
+                                        : "Seleziona la data di nascita"}
+                                </Text>
+                            </Pressable>
 
-                        {fieldErrors.birthDate && (
-                            <Text style={styles.fieldError}>
-                                {fieldErrors.birthDate}
-                            </Text>
-                        )}
+                            {fieldErrors.birthDate && (
+                                <Text style={styles.fieldError}>
+                                    {fieldErrors.birthDate}
+                                </Text>
+                            )}
 
-                        {showBirthDatePicker && (
-                            <DateTimePicker
-                                value={parseBirthDate(
-                                    userData.birthDate
-                                )}
-                                mode="date"
-                                maximumDate={new Date()}
-                                onChange={(
-                                    event: DateTimePickerEvent,
-                                    selectedDate?: Date
-                                ) => {
-                                    setShowBirthDatePicker(false);
+                            {showBirthDatePicker && (
+                                <DateTimePicker
+                                    value={parseBirthDate(
+                                        userData.birthDate
+                                    )}
+                                    mode="date"
+                                    maximumDate={new Date()}
+                                    onChange={(
+                                        event: DateTimePickerEvent,
+                                        selectedDate?: Date
+                                    ) => {
+                                        setShowBirthDatePicker(false);
 
-                                    if (
-                                        event.type === "set" &&
-                                        selectedDate
-                                    ) {
-                                        handleFieldChange(
-                                            "birthDate",
-                                            formatDateForBackend(
-                                                selectedDate
-                                            )
-                                        );
-                                    }
-                                }}
-                            />
-                        )}
-
-                        <Text style={styles.sectionLabel}>
-                            Genere
-                        </Text>
-
-                        <View style={styles.optionsContainer}>
-                            {Object.values(Gender).map(gender => {
-
-                                const selected =
-                                    userData.gender === gender;
-
-                                return (
-                                    <Pressable
-                                        key={gender}
-                                        style={[
-                                            styles.option,
-                                            selected && styles.optionSelected
-                                        ]}
-                                        onPress={() =>
+                                        if (
+                                            event.type === "set" &&
+                                            selectedDate
+                                        ) {
                                             handleFieldChange(
-                                                "gender",
-                                                gender
-                                            )
+                                                "birthDate",
+                                                formatDateForBackend(
+                                                    selectedDate
+                                                )
+                                            );
                                         }
-                                    >
-                                        <Text style={[
-                                            styles.optionText,
-                                            selected && styles.optionTextSelected
-                                        ]}>
-                                            {GENDER_LABELS[gender]}
-                                        </Text>
-                                    </Pressable>
-                                );
-                            })}
-                        </View>
+                                    }}
+                                />
+                            )}
 
-                        {fieldErrors.gender && (
-                            <Text style={styles.fieldError}>
-                                {fieldErrors.gender}
+                            <Text style={styles.sectionLabel}>
+                                Genere
                             </Text>
-                        )}
 
-                        <NavigationButtons/>
+                            <View style={styles.optionsContainer}>
+                                {Object.values(Gender).map(gender => {
+
+                                    const selected =
+                                        userData.gender === gender;
+
+                                    return (
+                                        <Pressable
+                                            key={gender}
+                                            style={[
+                                                styles.option,
+                                                selected && styles.optionSelected
+                                            ]}
+                                            onPress={() =>
+                                                handleFieldChange(
+                                                    "gender",
+                                                    gender
+                                                )
+                                            }
+                                        >
+                                            <Text style={[
+                                                styles.optionText,
+                                                selected && styles.optionTextSelected
+                                            ]}>
+                                                {GENDER_LABELS[gender]}
+                                            </Text>
+                                        </Pressable>
+                                    );
+                                })}
+                            </View>
+
+                            {fieldErrors.gender && (
+                                <Text style={styles.fieldError}>
+                                    {fieldErrors.gender}
+                                </Text>
+                            )}
+                        </View>
+                        <View>
+                            {NavigationButtons(false)}
+                        </View>
                     </AuthContent>
                 }
             />
@@ -476,99 +633,100 @@ export default function OnBoarding() {
                 label={"Completa la registrazione"}
                 content={
                     <AuthContent style={styles.inputFieldsContainer}>
-
-                        <Text style={styles.sectionLabel}>
-                            Quali sport pratichi?
-                        </Text>
-
-                        <View style={styles.optionsContainer}>
-                            {Object.values(Sport).map(sport => {
-
-                                const selected =
-                                    userData.sports.includes(sport);
-
-                                return (
-                                    <Pressable
-                                        key={sport}
-                                        style={[
-                                            styles.option,
-                                            selected && styles.optionSelected
-                                        ]}
-                                        onPress={() =>
-                                            toggleSport(sport)
-                                        }
-                                    >
-                                        <Text style={[
-                                            styles.optionText,
-                                            selected && styles.optionTextSelected
-                                        ]}>
-                                            {SPORT_LABELS[sport]}
-                                        </Text>
-                                    </Pressable>
-                                );
-                            })}
-                        </View>
-
-                        {fieldErrors.sports && (
-                            <Text style={styles.fieldError}>
-                                {fieldErrors.sports}
+                        <View>
+                            <Text style={styles.sectionLabel}>
+                                Quali sport pratichi?
                             </Text>
-                        )}
 
-                        {userData.sports.map(sport => (
-                            <View
-                                key={sport}
-                                style={styles.rolesSection}
-                            >
+                            <View style={styles.optionsContainer}>
+                                {Object.values(Sport).map(sport => {
 
-                                <Text style={styles.sectionLabel}>
-                                    Ruolo · {SPORT_LABELS[sport]}
-                                </Text>
+                                    const selected =
+                                        userData.sports.includes(sport);
 
-                                <View style={styles.rolesContainer}>
-                                    {SPORT_ROLES[sport].map(role => {
-
-                                        const selected =
-                                            userData.roles.some(
-                                                selectedRole =>
-                                                    selectedRole.sport === sport &&
-                                                    selectedRole.role === role
-                                            );
-
-                                        return (
-                                            <Pressable
-                                                key={role}
-                                                style={[
-                                                    styles.roleOption,
-                                                    selected &&
-                                                    styles.optionSelected
-                                                ]}
-                                                onPress={() =>
-                                                    toggleRole(sport, role)
-                                                }
-                                            >
-                                                <Text style={[
-                                                    styles.optionText,
-                                                    selected && styles.optionTextSelected
-                                                ]}>
-                                                    {ROLE_LABELS[role]}
-                                                </Text>
-                                            </Pressable>
-                                        );
-                                    })}
-                                </View>
-
+                                    return (
+                                        <Pressable
+                                            key={sport}
+                                            style={[
+                                                styles.option,
+                                                selected && styles.optionSelected
+                                            ]}
+                                            onPress={() =>
+                                                toggleSport(sport)
+                                            }
+                                        >
+                                            <Text style={[
+                                                styles.optionText,
+                                                selected && styles.optionTextSelected
+                                            ]}>
+                                                {SPORT_LABELS[sport]}
+                                            </Text>
+                                        </Pressable>
+                                    );
+                                })}
                             </View>
-                        ))}
 
-                        {fieldErrors.roles && (
-                            <Text style={styles.fieldError}>
-                                {fieldErrors.roles}
-                            </Text>
-                        )}
+                            {fieldErrors.sports && (
+                                <Text style={styles.fieldError}>
+                                    {fieldErrors.sports}
+                                </Text>
+                            )}
 
-                        <NavigationButtons/>
+                            {userData.sports.map(sport => (
+                                <View
+                                    key={sport}
+                                    style={styles.rolesSection}
+                                >
 
+                                    <Text style={styles.sectionLabel}>
+                                        Ruolo · {SPORT_LABELS[sport]}
+                                    </Text>
+
+                                    <View style={styles.rolesContainer}>
+                                        {SPORT_ROLES[sport].map(role => {
+
+                                            const selected =
+                                                userData.roles.some(
+                                                    selectedRole =>
+                                                        selectedRole.sport === sport &&
+                                                        selectedRole.role === role
+                                                );
+
+                                            return (
+                                                <Pressable
+                                                    key={role}
+                                                    style={[
+                                                        styles.roleOption,
+                                                        selected &&
+                                                        styles.optionSelected
+                                                    ]}
+                                                    onPress={() =>
+                                                        toggleRole(sport, role)
+                                                    }
+                                                >
+                                                    <Text style={[
+                                                        styles.optionText,
+                                                        selected && styles.optionTextSelected
+                                                    ]}>
+                                                        {ROLE_LABELS[role]}
+                                                    </Text>
+                                                </Pressable>
+                                            );
+                                        })}
+                                    </View>
+
+                                </View>
+                            ))}
+
+                            {fieldErrors.roles && (
+                                <Text style={styles.fieldError}>
+                                    {fieldErrors.roles}
+                                </Text>
+                            )}
+                        </View>
+                        <View>
+                            {NavigationButtons(false)}
+                        </View>
                     </AuthContent>
                 }
             />
@@ -578,14 +736,22 @@ export default function OnBoarding() {
     function validateSportsAndRoles(): boolean {
         const errors: OnBoardingFieldErrors = {};
 
-        if (userData.sports.length === 0) {
+        const numOfSports = userData.sports.length
+
+        if (numOfSports === 0) {
             errors.sports =
                 "Seleziona almeno uno sport";
         }
 
-        if (userData.roles.length === 0) {
-            errors.roles =
-                "Seleziona almeno un ruolo";
+        const everySportHasRole = userData.sports.every(
+            sport =>
+                userData.roles.some(
+                    selectedRole => selectedRole.sport === sport
+                )
+        );
+
+        if (!everySportHasRole) {
+            errors.roles = "Seleziona almeno un ruolo per ogni sport";
         }
 
         const invalidRole = userData.roles.some(
@@ -612,20 +778,43 @@ export default function OnBoarding() {
                 label={"Completa la registrazione"}
                 content={
                     <AuthContent style={styles.inputFieldsContainer}>
+                        <View>
+                            <PositionField
+                                variant={"createUser"}
+                                value={userData.location}
+                                onChange={(location) =>
+                                    handleFieldChange(
+                                        "location",
+                                        location
+                                    )
+                                }
+                                errorMessage={fieldErrors.location}
+                            />
+                        </View>
+                        <View>
+                            {finalError && (
+                                <Text style={styles.apiError}>
+                                    {finalError}
+                                </Text>
+                            )}
 
-                        <PositionField
-                            variant={"createUser"}
-                            value={userData.location}
-                            onChange={(location) =>
-                                handleFieldChange(
-                                    "location",
-                                    location
-                                )
-                            }
-                            errorMessage={fieldErrors.location}
-                        />
+                            {isLoading && (
+                                <View style={styles.loadingContainer}>
+                                    <Text
+                                        style={styles.loadingText}
+                                        numberOfLines={1}
+                                    >
+                                        Completamento del processo di onboarding...
+                                    </Text>
 
-                        <NavigationButtons/>
+                                    <ActivityIndicator
+                                        size="large"
+                                        color="#FFFFFF"
+                                    />
+                                </View>
+                            )}
+                            {NavigationButtons(true)}
+                        </View>
                     </AuthContent>
                 }
             />
@@ -635,12 +824,28 @@ export default function OnBoarding() {
     function validateLocation(): boolean {
         const errors: OnBoardingFieldErrors = {};
 
-        setFieldErrors(errors);
+        if (userData.location) {
+            const {label, latitude, longitude} = userData.location;
 
-        return true;
+            if (
+                !label?.trim() ||
+                latitude == null ||
+                longitude == null ||
+                latitude < -90 ||
+                latitude > 90 ||
+                longitude < -180 ||
+                longitude > 180
+            ) {
+                errors.location = "La posizione selezionata non è valida";
+            }
+        }
+
+        setFieldErrors(errors)
+
+        return Object.keys(errors).length === 0;
     }
 
-    function NavigationButtons() {
+    function NavigationButtons(last: boolean) {
         return (
             <View style={styles.btnContainer}>
 
@@ -649,14 +854,13 @@ export default function OnBoarding() {
                     onPress={handleBack}
                     variant={"buttonLogin"}
                     textVariant={"textLogin"}
-
                     text={"Indietro"}/>
 
 
                 <ButtonSolid
                     style={styles.btn}
                     onPress={handleNext}
-                    text="Continua"
+                    text={!last ? "Continua" : "Completa"}
                     variant={"buttonRegister"}
                     textVariant={"textRegister"}
                 />
@@ -676,6 +880,7 @@ const styles = StyleSheet.create({
         gap: 8,
     },
 
+
     apiError: {
         marginTop: 6,
         marginLeft: 10,
@@ -686,18 +891,16 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
 
-    loginBtn: {
-        marginTop: 15,
-    },
-
     sectionLabel: {
         fontSize: 16,
         lineHeight: 20,
         fontWeight: 800,
         color: "#ffffff",
         marginTop: 14,
+        marginBottom: 3,
         marginLeft: 10,
         textAlign: "left"
+
     },
 
     optionsContainer: {
@@ -790,6 +993,18 @@ const styles = StyleSheet.create({
         color: "#8A8A8A",
     },
 
+    loadingContainer: {
+        alignItems: "center",
+        height: 100,
+        justifyContent: "space-evenly"
+    },
+
+    loadingText: {
+        fontWeight: 800,
+        color: "#ffffff",
+        fontSize: 16,
+    }
+
 
 })
 
@@ -850,3 +1065,5 @@ const ROLE_LABELS: Record<SportRole, string> = {
     [SportRole.CENTER]: "Centro",
     [SportRole.FILL_BK]: "Jolly",
 };
+
+

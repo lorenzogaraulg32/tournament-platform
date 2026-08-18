@@ -16,7 +16,7 @@ import {loadCurrentUserId} from "@/src/services/authService";
 export default function teamId() {
 
     const {teamId} = useLocalSearchParams<{ teamId: string }>();
-    const [userId, setUserId] = useState<number | null>(null);
+    const [userId, setUserId] = useState<string | null>(null);
     const [currentTeam, setCurrentTeam] = useState<TeamDetails | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
