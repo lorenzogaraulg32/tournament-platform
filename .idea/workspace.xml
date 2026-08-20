@@ -4,20 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="modified tests after changing entity structure">
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/app/profile/ProfilePage.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/app/teams/TeamCardVertical.tsx" afterDir="false" />
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Restructured Profile page, added the possibility to visualize a generic user teams but blocking current user teams in profile, to limit redundancy">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/controller/AuthController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/profile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/profile.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/[teamId].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/[teamId].tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/myTeams.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/myTeams.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(auth)/login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(auth)/login.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/app/teams/HorizontalCarousel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/HorizontalCarousel.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/app/teams/TeamCardSmall.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/app/teams/TeamCardHorizontal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/teams/teamGetService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/teams/teamGetService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/users/authService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/users/authService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/controller/TeamController.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/controller/TeamController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -277,7 +266,7 @@
       <workItem from="1787045939665" duration="18084000" />
       <workItem from="1787072778653" duration="145000" />
       <workItem from="1787149279725" duration="8888000" />
-      <workItem from="1787227260866" duration="9812000" />
+      <workItem from="1787227260866" duration="10483000" />
     </task>
     <task id="LOCAL-00001" summary="Exception handling and controller with register endpoint">
       <option name="closed" value="true" />
@@ -655,7 +644,15 @@
       <option name="project" value="LOCAL" />
       <updated>1787231072124</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="Restructured Profile page, added the possibility to visualize a generic user teams but blocking current user teams in profile, to limit redundancy">
+      <option name="closed" value="true" />
+      <created>1787238051634</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1787238051634</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -673,7 +670,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Team basic endpoints added&#10;Team admin management added" />
     <MESSAGE value="Team players endpoint added" />
     <MESSAGE value="FrontEnd Started" />
     <MESSAGE value="First design of starting page created. files/directories naming and arrangment is very primitive, need to refractor" />
@@ -698,7 +694,8 @@
     <MESSAGE value="Onboarding section complete, profile picture is managed correctly" />
     <MESSAGE value="Worked on userService and a generic horizontal carousel for reuse" />
     <MESSAGE value="modified tests after changing entity structure" />
-    <option name="LAST_COMMIT_MESSAGE" value="modified tests after changing entity structure" />
+    <MESSAGE value="Restructured Profile page, added the possibility to visualize a generic user teams but blocking current user teams in profile, to limit redundancy" />
+    <option name="LAST_COMMIT_MESSAGE" value="Restructured Profile page, added the possibility to visualize a generic user teams but blocking current user teams in profile, to limit redundancy" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

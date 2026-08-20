@@ -19,7 +19,7 @@ export default function Profile() {
     }
 
     return (
-        <ProfilePage userId={userId} teams/>
+        <ProfilePage userId={userId}/>
     );
 
 
