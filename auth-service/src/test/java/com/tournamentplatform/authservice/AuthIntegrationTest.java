@@ -39,7 +39,7 @@ class AuthIntegrationTest {
     void registerLoginAndMe_success() throws Exception {
 
         //registrazione
-        RegisterRequest registerRequest = new RegisterRequest("testuser", "prova@gmail.com", "Password123");
+        RegisterRequest registerRequest = new RegisterRequest( "prova@gmail.com", "Password123");
 
         mockMvc.perform(post("/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)

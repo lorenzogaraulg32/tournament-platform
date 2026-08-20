@@ -43,7 +43,6 @@ public class AuthServiceTest {
         User user = new User(
                 "prova@gmail.com",
                 "hashed-password",
-                "testuser",
                 true,
                 ROLE_USER
         );
@@ -75,7 +74,6 @@ public class AuthServiceTest {
         User user = new User(
                 "prova@gmail.com",
                 "hashed-password",
-                "testuser",
                 true,
                 ROLE_USER
         );
@@ -115,7 +113,6 @@ public class AuthServiceTest {
         User user = new User(
                 "prova@gmail.com",
                 "hashed-password",
-                "testuser",
                 false,
                 ROLE_USER
         );
@@ -134,13 +131,11 @@ public class AuthServiceTest {
     @Test
     public void registerSuccess() {
 
-        RegisterRequest registerRequest = new RegisterRequest("testuser", "prova@gmail.com", "Password123");
+        RegisterRequest registerRequest = new RegisterRequest("prova@gmail.com", "Password123");
 
         when(userRepository.existsByEmail("prova@gmail.com"))
                 .thenReturn(false);
 
-        when(userRepository.existsByUsername("testuser"))
-                .thenReturn(false);
 
         when(passwordEncoder.encode("Password123"))
                 .thenReturn("hashed-password");
@@ -155,7 +150,7 @@ public class AuthServiceTest {
     @Test
     public void registerUsernameAlreadyExist() {
 
-        RegisterRequest registerRequest = new RegisterRequest("testuser", "prova@gmail.com", "Password123");
+        RegisterRequest registerRequest = new RegisterRequest("prova@gmail.com", "Password123");
 
         when(userRepository.existsByEmail("prova@gmail.com"))
                 .thenReturn(true);
@@ -169,13 +164,11 @@ public class AuthServiceTest {
     @Test
     public void registerEmailAlreadyExist() {
 
-        RegisterRequest registerRequest = new RegisterRequest("testuser", "prova@gmail.com", "Password123");
+        RegisterRequest registerRequest = new RegisterRequest("prova@gmail.com", "Password123");
 
         when(userRepository.existsByEmail("prova@gmail.com"))
                 .thenReturn(false);
 
-        when(userRepository.existsByUsername("testuser"))
-                .thenReturn(true);
 
         assertThrows(IllegalArgumentException.class, () -> authService.register(registerRequest));
 
@@ -190,7 +183,6 @@ public class AuthServiceTest {
         User user = new User(
                 "prova@gmail.com",
                 "hashed-password",
-                "testuser",
                 true,
                 ROLE_USER
         );
@@ -201,7 +193,6 @@ public class AuthServiceTest {
         UserResponse response = authService.getUserInfo(userId);
 
         assertEquals("prova@gmail.com", response.email());
-        assertEquals("testuser", response.username());
         assertTrue(response.enabled());
         assertEquals(ROLE_USER, response.globalRole());
     }

@@ -27,7 +27,6 @@ class JwtServiceTest {
         User user = new User(
                 "prova@gmail.com",
                 "hashed-password",
-                "testuser",
                 true,
                 ROLE_USER
         );
@@ -50,7 +49,6 @@ class JwtServiceTest {
         User user = new User(
                 "prova@gmail.com",
                 "hashed-password",
-                "testuser",
                 true,
                 ROLE_USER
         );
