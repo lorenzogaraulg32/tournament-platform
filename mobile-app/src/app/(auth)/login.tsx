@@ -7,9 +7,9 @@ import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
 import {colors} from "@/src/constants/theme";
 import {router} from "expo-router";
 import {useState} from "react";
-import {loadCurrentUserId, loginUser, saveSession} from "@/src/services/authService";
+import {loadCurrentUserId, loginUser, saveSession} from "@/src/services/users/authService";
 import {ApiRequestError} from "@/src/services/errorService";
-import {loadUserInfo} from "@/src/services/userService";
+import {loadUserInfo} from "@/src/services/users/userService";
 
 type LoginFieldErrors = {
     email?: string;

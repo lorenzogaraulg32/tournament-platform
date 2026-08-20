@@ -6,18 +6,16 @@ import {colors} from "@/src/constants/theme";
 import {useState} from "react";
 import {
     completeOnBoarding,
-    Gender,
-    Sport,
-    SportRole,
     uploadProfilePicture,
     UserOnBoardingInfo
-} from "@/src/services/userService";
+} from "@/src/services/users/userService";
 import PositionField from "@/src/components/app/teams/createTeam/PositionField";
 import LogoField, {SelectedLogo} from "@/src/components/app/teams/createTeam/LogoField";
 import DateTimePicker, {DateTimePickerEvent} from "@react-native-community/datetimepicker";
 import OnBoardingContainer from "@/src/components/onboarding/OnBoardingContainer";
 import {ApiRequestError} from "@/src/services/errorService";
 import {router} from "expo-router";
+import {Gender, ROLE_LABELS, Sport, SPORT_LABELS, SPORT_ROLES, SportRole} from "@/src/services/users/userConstants";
 
 
 type OnBoardingFieldErrors = {
@@ -1016,54 +1014,6 @@ const GENDER_LABELS: Record<Gender, string> = {
     [Gender.NOT_SPECIFIED]: "Preferisco non specificarlo",
 };
 
-const SPORT_LABELS: Record<Sport, string> = {
-    [Sport.FOOTBALL]: "Calcio",
-    [Sport.BEACH_VOLLEY]: "Beach Volley",
-    [Sport.BASKETBALL]: "Basket",
-};
 
-const SPORT_ROLES: Record<Sport, SportRole[]> = {
-    [Sport.FOOTBALL]: [
-        SportRole.GOALKEEPER,
-        SportRole.DEFENDER,
-        SportRole.MIDFIELDER,
-        SportRole.FORWARD,
-        SportRole.FILL_FB,
-    ],
-
-    [Sport.BEACH_VOLLEY]: [
-        SportRole.BLOCKER,
-        SportRole.BEACH_DEFENDER,
-        SportRole.FILL_BV,
-    ],
-
-    [Sport.BASKETBALL]: [
-        SportRole.POINT_GUARD,
-        SportRole.SHOOTING_GUARD,
-        SportRole.SMALL_FORWARD,
-        SportRole.POWER_FORWARD,
-        SportRole.CENTER,
-        SportRole.FILL_BK,
-    ],
-};
-
-const ROLE_LABELS: Record<SportRole, string> = {
-    [SportRole.GOALKEEPER]: "Portiere",
-    [SportRole.DEFENDER]: "Difensore",
-    [SportRole.MIDFIELDER]: "Centrocampista",
-    [SportRole.FORWARD]: "Attaccante",
-    [SportRole.FILL_FB]: "Jolly",
-
-    [SportRole.BLOCKER]: "Blocker",
-    [SportRole.BEACH_DEFENDER]: "Difensore",
-    [SportRole.FILL_BV]: "Jolly",
-
-    [SportRole.POINT_GUARD]: "Playmaker",
-    [SportRole.SHOOTING_GUARD]: "Guardia",
-    [SportRole.SMALL_FORWARD]: "Ala piccola",
-    [SportRole.POWER_FORWARD]: "Ala grande",
-    [SportRole.CENTER]: "Centro",
-    [SportRole.FILL_BK]: "Jolly",
-};
 
 

@@ -2,7 +2,7 @@ import Background from "@/src/components/common/Background";
 import TitleApp from "@/src/components/common/headers/HeaderMain";
 import {ImageBackground, Pressable, StyleSheet, Text, View} from "react-native";
 import {useState} from "react";
-import MyTeams from "@/src/app/teams/myTeams";
+import MyTeams from "@/src/app/(app)/teams/myTeams";
 import ButtonBackground from "@/src/components/common/buttons/ButtonBackground";
 import {router} from "expo-router";
 
@@ -23,7 +23,7 @@ export default function TeamsPage() {
                 <View style={styles.container}>
 
                     <ImageBackground
-                        source={require("../../../assets/images/teaminfoSectionBkg.png")}
+                        source={require("../../../../assets/images/teaminfoSectionBkg.png")}
                         style={styles.tabsContainer}
                         imageStyle={styles.backgroundImage}
                     >

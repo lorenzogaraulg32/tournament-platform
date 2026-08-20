@@ -49,8 +49,14 @@ public class TeamController {
     }
 
     @GetMapping("/my-teams")
-    public ResponseEntity<List<TeamGetResponse>> getPlayerTeams() {
-        List<TeamGetResponse> response = teamService.getPlayerTeams();
+    public ResponseEntity<List<TeamGetResponse>> getCurrentUserTeams() {
+        List<TeamGetResponse> response = teamService.getCurrentUserTeams();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/{user_id}")
+    public ResponseEntity<List<TeamGetResponse>> getUserTeams(@PathVariable String user_id) {
+        List<TeamGetResponse> response = teamService.getUserTeams(user_id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

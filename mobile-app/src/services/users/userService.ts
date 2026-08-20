@@ -5,8 +5,16 @@ import {ApiRequestError, isApiErrorBody} from "@/src/services/errorService";
 import {readResponseBody} from "@/src/services/helperService";
 import {SelectedLogo} from "@/src/components/app/teams/createTeam/LogoField";
 import {router} from "expo-router";
+import {Gender, GeoLocation, Sport, UserSportRole} from "@/src/services/users/userConstants";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
+
+
+export type UserEntity = {
+    id: string
+    userInfo: UserInfo
+}
+
 
 export async function completeOnBoarding(
     userData: UserOnBoardingInfo
@@ -162,48 +170,6 @@ export async function loadUserInfo(
 }
 
 
-export enum Gender {
-    MALE = "MALE",
-    FEMALE = "FEMALE",
-    OTHER = "OTHER",
-    NOT_SPECIFIED = "NOT_SPECIFIED"
-}
-
-export enum Sport {
-    FOOTBALL = "FOOTBALL",
-    BEACH_VOLLEY = "BEACH_VOLLEY",
-    BASKETBALL = "BASKETBALL"
-}
-
-export enum SportRole {
-    GOALKEEPER = "GOALKEEPER",
-    DEFENDER = "DEFENDER",
-    MIDFIELDER = "MIDFIELDER",
-    FORWARD = "FORWARD",
-    FILL_FB = "FILL_FB",
-
-    BLOCKER = "BLOCKER",
-    BEACH_DEFENDER = "BEACH_DEFENDER",
-    FILL_BV = "FILL_BV",
-
-    POINT_GUARD = "POINT_GUARD",
-    SHOOTING_GUARD = "SHOOTING_GUARD",
-    SMALL_FORWARD = "SMALL_FORWARD",
-    POWER_FORWARD = "POWER_FORWARD",
-    CENTER = "CENTER",
-    FILL_BK = "FILL_BK",
-}
-
-export type UserSportRole = {
-    sport: Sport;
-    role: SportRole;
-};
-
-export type GeoLocation = {
-    label: string;
-    latitude: number;
-    longitude: number;
-};
 
 export type UserOnBoardingInfo = {
     username: string;
@@ -228,7 +194,6 @@ export type UserInfo = {
     location: GeoLocation | null;
     profilePicUrl?: string,
 };
-
 
 
 

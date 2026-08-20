@@ -1,7 +1,7 @@
 import {ActivityIndicator, StyleSheet, Text, View} from "react-native";
 import HeaderEntity from "../../common/headers/HeaderEntity";
-import {UserInfo} from "@/src/services/userService";
-import {AuthInfo} from "@/src/services/authService";
+import {UserInfo} from "@/src/services/users/userService";
+import {AuthInfo} from "@/src/services/users/authService";
 import Picture from "@/src/components/common/Picture";
 
 

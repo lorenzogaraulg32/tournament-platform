@@ -37,7 +37,6 @@ public class AuthControllerTest {
     @Test
     void register_success_returns201() throws Exception {
         RegisterRequest request = new RegisterRequest(
-                "testuser",
                 "prova@gmail.com",
                 "Password123"
         );

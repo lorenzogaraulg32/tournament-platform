@@ -1,5 +1,5 @@
 import {ActivityIndicator, ScrollView, StyleSheet, Text, View} from "react-native";
-import {getUserTeams, TeamInfo} from "@/src/services/teams/teamGetService";
+import {getCurrentUserTeams, TeamInfo} from "@/src/services/teams/teamGetService";
 import TeamCardSmall from "@/src/components/app/teams/TeamCardSmall";
 import {useCallback, useState} from "react";
 import {useFocusEffect} from "expo-router";
@@ -21,7 +21,7 @@ export default function MyTeams() {
             setIsLoading(true)
             setError(null)
 
-            const loadedTeams = await getUserTeams()
+            const loadedTeams = await getCurrentUserTeams()
 
             if (isActive) {
                 setUserTeams(loadedTeams);

@@ -1,7 +1,7 @@
 import {useEffect, useMemo, useState} from "react";
 import {ImageStyle, StyleProp,} from "react-native";
 import {Image} from "expo-image";
-import {getToken} from "@/src/services/authService";
+import {getToken} from "@/src/services/users/authService";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -37,7 +37,6 @@ export default function Picture({
     }, []);
 
     useEffect(() => {
-        console.log(logoUrl)
         setHasError(false);
     }, [logoUrl]);
 

@@ -1,5 +1,5 @@
 import * as SecureStore from "expo-secure-store";
-import {handleLogout} from "@/src/services/authService";
+import {handleLogout} from "@/src/services/users/authService";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -24,7 +24,7 @@ export type TeamDetails = {
 };
 
 
-export async function getUserTeams(): Promise<TeamInfo[]> {
+export async function getCurrentUserTeams(): Promise<TeamInfo[]> {
 
     const accessToken =
         await SecureStore.getItemAsync("accessToken");
@@ -38,6 +38,47 @@ export async function getUserTeams(): Promise<TeamInfo[]> {
 
     const response = await fetch(
         `${API_URL}/teams/my-teams`,
+        {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                Authorization: `${tokenType ?? "Bearer"} ${accessToken}`,
+            },
+        }
+    );
+
+    if (response.status === 401 || response.status === 403) {
+        await handleLogout();
+        throw new Error("Sessione scaduta o accesso non autorizzato");
+    }
+
+
+    if (!response.ok) {
+        const errorBody = await response.text();
+
+        throw new Error(
+            errorBody || `Errore nel recupero delle squadre: ${response.status}`
+        );
+    }
+
+    return await response.json() as TeamInfo[];
+
+}
+
+export async function getUserTeams(userId: string): Promise<TeamInfo[]> {
+
+    const accessToken =
+        await SecureStore.getItemAsync("accessToken");
+
+    const tokenType =
+        await SecureStore.getItemAsync("tokenType");
+
+    if (!accessToken) {
+        throw new Error("Access token non disponibile");
+    }
+
+    const response = await fetch(
+        `${API_URL}/teams/${userId}`,
         {
             method: "GET",
             headers: {

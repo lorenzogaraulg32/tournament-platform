@@ -156,9 +156,18 @@ public class TeamService {
     }
 
 
-    public List<TeamGetResponse> getPlayerTeams() {
+    public List<TeamGetResponse> getCurrentUserTeams() {
 
-        String playerId = teamAuthorizationHelper.getCurrentUserId();
+
+        return teamsRepository
+                .findAllByPlayerIds(teamAuthorizationHelper.getCurrentUserId())
+                .stream()
+                .map(servicesHelper::toTeamGetResponse)
+                .toList();
+    }
+
+
+    public List<TeamGetResponse> getUserTeams(String playerId) {
 
         return teamsRepository
                 .findAllByPlayerIds(playerId)

@@ -1,23 +1,39 @@
 import {StyleSheet, Text, View} from "react-native";
 import Picture from "@/src/components/common/Picture";
 import {colors, teamCardBlueColors} from "@/src/constants/theme";
-import {UserInfo} from "@/src/services/userService";
+import { UserEntity} from "@/src/services/users/userService";
+import {ROLE_LABELS, Sport, SportRole} from "@/src/services/users/userConstants";
 
 
-type TeamPlayerCardSmallProps = {
-    player?: UserInfo
+type PlayerCardProps = {
+    player: UserEntity
+    sport: Sport
 }
 
 
-export default function TeamPlayerCardSmall({
-                                                player
-                                            }: TeamPlayerCardSmallProps
+export default function PlayersCard({
+                                        player,
+                                        sport
+                                    }: PlayerCardProps
 ) {
 
-    const profilePicUrl = player ? player.profilePicUrl : ""
-    const name = player ? player.username : "LUCA 404"
-    //todo: aggiornare con il ruolo vero
-    const role = "LATERALE"
+    function getRoleBySport(
+        player: UserEntity,
+        sport: Sport
+    ): SportRole | undefined {
+        return player.userInfo.roles.find(
+            item => item.sport === sport
+        )?.role;
+    }
+
+
+    const profilePicUrl = player.userInfo.profilePicUrl
+    const name = player.userInfo.username
+    const playerRole = getRoleBySport(player, sport);
+
+    const role = playerRole
+        ? ROLE_LABELS[playerRole]
+        : "Jolly";
 
 
     return (

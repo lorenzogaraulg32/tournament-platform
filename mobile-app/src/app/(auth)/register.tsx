@@ -8,7 +8,7 @@ import {router} from "expo-router";
 import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
 import {colors} from "@/src/constants/theme";
 import {ApiRequestError} from "@/src/services/errorService";
-import {loginUser, registerUser, saveSession} from "@/src/services/authService";
+import {loginUser, registerUser, saveSession} from "@/src/services/users/authService";
 import * as SecureStore from "expo-secure-store";
 
 type RegisterFieldError = {

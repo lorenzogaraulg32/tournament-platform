@@ -1,22 +1,25 @@
 import {StyleSheet, Text, View} from "react-native";
 import Picture from "@/src/components/common/Picture";
 import {colors, teamCardBlueColors} from "@/src/constants/theme";
-import {UserInfo} from "@/src/services/userService";
+import {UserEntity} from "@/src/services/users/userService";
+import {TeamDetails} from "@/src/services/teams/teamGetService";
 
-type TeamPlayerCardSmallProps = {
-    player?: UserInfo
-    role?: string
+type AdminsCardProps = {
+    admin: UserEntity
+    team: TeamDetails
 }
 
 
-export default function TeamPlayerCardSmall({
-                                                player,
-                                                role
-                                            }: TeamPlayerCardSmallProps
+export default function AdminsCard({
+                                       admin,
+                                       team
+                                   }: AdminsCardProps
 ) {
 
-    const profilePicUrl = player ? player.profilePicUrl : ""
-    const name = player ? player.username : "LUCA 404"
+    const profilePicUrl = admin.userInfo.profilePicUrl
+    const name = admin.userInfo.username
+    const role = team.creatorId === admin.id ? "Owner" : "Admin"
+
 
     return (
         <View style={styles.container}>

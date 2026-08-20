@@ -228,3 +228,48 @@ export async function loadCurrentUserAuthInfo() {
 
 
 }
+
+export async function loadUserAuthInfo(id : string){
+    const accessToken =
+        await SecureStore.getItemAsync("accessToken");
+
+    const tokenType =
+        await SecureStore.getItemAsync("tokenType");
+
+
+    if (!accessToken) {
+        router.replace("/(auth)");
+        throw new Error("Access token non disponibile");
+    }
+
+    const response = await fetch(
+        `${API_URL}/auth/`,
+        {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                Authorization: `${tokenType ?? "Bearer"} ${accessToken}`,
+            },
+        }
+    );
+
+
+    if (response.status === 401 || response.status === 403) {
+        await Promise.all([
+            SecureStore.deleteItemAsync("accessToken"),
+            SecureStore.deleteItemAsync("tokenType"),
+        ]);
+        router.replace("/(auth)");
+        throw new Error("Sessione scaduta o non autorizzata");
+    }
+
+    if (!response.ok) {
+        const errorBody = await response.text();
+
+        throw new Error(
+            errorBody || `Errore nel recupero utente: ${response.status}`
+        );
+    }
+
+    return await response.json() as AuthInfo;
+}

@@ -4,8 +4,8 @@ import ProfileHeader from "@/src/components/app/profile/ProfileHeader";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import TitleApp from "@/src/components/common/headers/HeaderMain";
 import {colors} from "@/src/constants/theme"
-import {AuthInfo, handleLogout, loadCurrentUserAuthInfo} from "@/src/services/authService";
-import {loadUserInfo, UserInfo} from "@/src/services/userService";
+import {AuthInfo, handleLogout, loadCurrentUserAuthInfo} from "@/src/services/users/authService";
+import {loadUserInfo, UserInfo} from "@/src/services/users/userService";
 import {useEffect, useState} from "react";
 
 export default function ProfilePage() {
