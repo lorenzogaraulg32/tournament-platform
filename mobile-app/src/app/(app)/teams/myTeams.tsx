@@ -1,6 +1,6 @@
 import {ActivityIndicator, ScrollView, StyleSheet, Text, View} from "react-native";
 import {getCurrentUserTeams, TeamInfo} from "@/src/services/teams/teamGetService";
-import TeamCardSmall from "@/src/components/app/teams/TeamCardSmall";
+import TeamCardHorizontal from "@/src/components/app/teams/TeamCardHorizontal";
 import {useCallback, useState} from "react";
 import {useFocusEffect} from "expo-router";
 
@@ -85,7 +85,7 @@ export default function MyTeams() {
 
 
         return userTeams.map((team) => (
-            <TeamCardSmall
+            <TeamCardHorizontal
                 key={team.id}
                 id={team.id}
                 name={team.name}

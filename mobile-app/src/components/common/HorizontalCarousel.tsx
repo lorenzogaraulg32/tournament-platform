@@ -1,26 +1,32 @@
 import {useEffect, useState} from "react";
 import {loadUserInfo, UserEntity} from "@/src/services/users/userService";
 import {getUserTeams, TeamDetails, TeamInfo} from "@/src/services/teams/teamGetService";
-import {ActivityIndicator, ScrollView, StyleSheet, Text, View} from "react-native";
+import {ActivityIndicator, ScrollView, StyleProp, StyleSheet, Text, View, ViewStyle} from "react-native";
 import {LinearGradient} from "expo-linear-gradient";
 import {colors} from "@/src/constants/theme";
 import AdminsCard from "@/src/components/app/teams/AdminsCard";
 import PlayersCard from "@/src/components/app/teams/PlayersCard";
 import {Sport} from "@/src/services/users/userConstants";
+import TeamCardVertical from "@/src/components/app/teams/TeamCardVertical";
+
+type CarouselCommonProps = {
+    style?: StyleProp<ViewStyle>;
+    transparent?: boolean;
+};
 
 type CarouselProps =
-    | {
+    | (CarouselCommonProps & {
     variant: "players";
     inputEntity: TeamDetails;
-}
-    | {
+})
+    | (CarouselCommonProps & {
     variant: "admins";
     inputEntity: TeamDetails;
-}
-    | {
+})
+    | (CarouselCommonProps & {
     variant: "teams";
     inputEntity: UserEntity;
-};
+});
 
 type CarouselEntities =
     | {
@@ -35,7 +41,8 @@ type CarouselEntities =
 
 export default function HorizontalCarousel({
                                                inputEntity,
-                                               variant
+                                               variant,
+                                               style, transparent
                                            }: CarouselProps) {
 
     const [entities, setEntities] = useState<CarouselEntities>(
@@ -142,10 +149,18 @@ export default function HorizontalCarousel({
 
     return (
         <LinearGradient
-            colors={[colors.textThird, "#EAF8EF", "#ebfff0"]}
+            colors={
+                transparent
+                    ? ["transparent", "transparent", "transparent"]
+                    : [colors.textThird, "#EAF8EF", "#ebfff0"]
+            }
             start={{x: 0, y: 0}}
             end={{x: 1, y: 1}}
-            style={[styles.gradient, styles.container]}
+            style={[
+                styles.gradient,
+                styles.container,
+                style
+            ]}
         >
             <ScrollView
                 style={styles.carousel}
@@ -189,9 +204,9 @@ export default function HorizontalCarousel({
                         <Text style={styles.errorText}>Nessuna squadra</Text>
                     ) : (
                         entities.items.map((team) => (
-                            <Text key={team.id}>
-                                {team.name}
-                            </Text>
+                            <TeamCardVertical
+                                key={team.id}
+                                teamDetails={team}/>
                         ))
                     )
                 ) : (

@@ -54,7 +54,7 @@ public class TeamController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @GetMapping("/{user_id}")
+    @GetMapping("/user/{user_id}")
     public ResponseEntity<List<TeamGetResponse>> getUserTeams(@PathVariable String user_id) {
         List<TeamGetResponse> response = teamService.getUserTeams(user_id);
         return ResponseEntity.status(HttpStatus.OK).body(response);

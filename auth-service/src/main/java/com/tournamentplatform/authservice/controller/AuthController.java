@@ -30,9 +30,16 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserResponse> getUserInfo(Authentication authentication) {
+    public ResponseEntity<UserResponse> getCurrentUserInfo(Authentication authentication) {
         Long userId = Long.valueOf(authentication.getName());
         UserResponse response = authService.getUserInfo(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserResponse> getUserInfo(Authentication authentication, @PathVariable String userId) {
+        UserResponse response = authService.getUserInfo(Long.valueOf(userId));
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

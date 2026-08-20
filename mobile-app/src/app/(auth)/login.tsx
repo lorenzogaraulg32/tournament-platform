@@ -78,16 +78,23 @@ export default function LoginPage() {
 
         setApiError("");
 
-
+        /*  /*TODO : USO QUESTO PER SCOPO DI TEST
         if (!validateLoginForm()) {
             return
         }
-
+*/
         try {
             setIsLoading(true);
+            /*TODO : USO QUESTO PER SCOPO DI TEST
             const response = await loginUser({
                 email: email.trim().toLowerCase(),
                 password
+            });
+            */
+
+            const response = await loginUser({
+                email: "lorenzo.garau.lg32@gmail.com",
+                password: "Lombax99"
             });
 
             await saveSession(

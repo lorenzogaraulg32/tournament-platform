@@ -78,7 +78,7 @@ export async function getUserTeams(userId: string): Promise<TeamInfo[]> {
     }
 
     const response = await fetch(
-        `${API_URL}/teams/${userId}`,
+        `${API_URL}/teams/user/${userId}`,
         {
             method: "GET",
             headers: {

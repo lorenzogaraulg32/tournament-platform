@@ -178,7 +178,6 @@ export async function handleLogout() {
 
 export async function loadCurrentUserId(): Promise<string> {
     const userInfo = await loadCurrentUserAuthInfo();
-
     return userInfo.id;
 }
 
@@ -243,7 +242,7 @@ export async function loadUserAuthInfo(id : string){
     }
 
     const response = await fetch(
-        `${API_URL}/auth/`,
+        `${API_URL}/auth/${id}`,
         {
             method: "GET",
             headers: {

@@ -1,28 +1,22 @@
 import {Pressable, StyleSheet, Text, View} from "react-native";
-import {teamCardBlueColors} from "@/src/constants/theme"
-import Ionicons from "@expo/vector-icons/Ionicons";
+import {teamCardBlueColors, teamCardGreenColors} from "@/src/constants/theme"
 import {router} from "expo-router";
 import Picture from "@/src/components/common/Picture";
+import {TeamInfo} from "@/src/services/teams/teamGetService";
 
-type TeamCardSmallProps = {
-    id: number
-    name: string;
-    playersCount: number;
-    logoUrl?: string;
+type TeamCardVerticalProps = {
+    teamDetails: TeamInfo
 }
 
 
-export default function TeamCardSmall({
-                                          id,
-                                          name,
-                                          logoUrl,
-                                          playersCount,
-                                      }: TeamCardSmallProps) {
+export default function TeamCardVertical({
+                                             teamDetails
+                                         }: TeamCardVerticalProps) {
     async function handlePress() {
         router.push({
             pathname: "/teams/[teamId]",
             params: {
-                teamId: id,
+                teamId: teamDetails.id,
             },
         })
     }
@@ -45,42 +39,25 @@ export default function TeamCardSmall({
                 <View style={styles.rightBrush}/>
             </View>
 
-            <View style={styles.accentLine}/>
+            <View pointerEvents="none" style={styles.accentLeft}/>
+            <View pointerEvents="none" style={styles.accentRight}/>
+
 
             <View style={styles.logoContainer}>
-                <Picture variant={"team"} style={styles.logo} logoUrl={logoUrl}/>
+                <Picture variant={"team"} style={styles.logo} logoUrl={teamDetails.logoUrl}/>
             </View>
 
             <View style={styles.teamInfo}>
                 <Text
                     style={styles.teamName}
-                    numberOfLines={1}
+                    numberOfLines={2}
                     ellipsizeMode="tail"
                 >
-                    {name}
+                    {teamDetails.name}
                 </Text>
 
-                <View style={styles.playersRow}>
-                    <Ionicons
-                        name="people-outline"
-                        size={11}
-                        color="#A9C7B5"
-                    />
-
-                    <Text style={styles.playersText}>
-                        {playersCount}{" "}
-                        {playersCount === 1 ? "giocatore" : "giocatori"}
-                    </Text>
-                </View>
             </View>
 
-            <View style={styles.arrowContainer}>
-                <Ionicons
-                    name="chevron-forward"
-                    size={17}
-                    color="#FFD54A"
-                />
-            </View>
         </Pressable>
     );
 }
@@ -88,30 +65,30 @@ export default function TeamCardSmall({
 const styles = StyleSheet.create({
     card: {
         position: "relative",
-        width: "100%",
-        height: 56,
 
-        flexDirection: "row",
+        width: 90,
+        height: 95,
+
         alignItems: "center",
+        justifyContent: "space-between",
 
-        paddingHorizontal: 12,
+        paddingTop: 10,
+        paddingBottom: 5,
+        paddingHorizontal: 7,
 
-        backgroundColor: "#071D35",
+        backgroundColor: teamCardBlueColors.background,
 
-        borderRadius: 16,
+        borderRadius: 18,
         borderWidth: 1,
         borderColor: teamCardBlueColors.border,
 
         overflow: "hidden",
 
         shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 0.16,
-        shadowRadius: 6,
-        elevation: 4,
+        shadowOffset: {width: 0, height: 3},
+        shadowOpacity: 0.12,
+        shadowRadius: 5,
+        elevation: 3,
     },
 
     cardPressed: {
@@ -201,79 +178,66 @@ const styles = StyleSheet.create({
         ],
     },
 
-    accentLine: {
-        position: "absolute",
-        left: 0,
-        top: 20,
-        bottom: 20,
-
-        width: 4,
-        borderTopRightRadius: 4,
-        borderBottomRightRadius: 4,
-
-        backgroundColor: teamCardBlueColors.yellowAccent,
-    },
 
     logoContainer: {
-        width: 34,
-        height: 34,
-        borderRadius: 17,
+        width: 44,
+        height: 44,
+        borderRadius: 28,
 
         alignItems: "center",
         justifyContent: "center",
 
-        backgroundColor: teamCardBlueColors.logoBackground,
-        borderColor: teamCardBlueColors.logoBorder,
+        backgroundColor: "#FFFFFF",
 
-        borderWidth: 1,
+        borderWidth: 2,
+        borderColor: "rgba(255,255,255,0.7)",
     },
-
 
     logo: {
         width: "100%",
         height: "100%",
-        borderRadius: 17,
+        borderRadius: 28,
     },
 
     teamInfo: {
-        flex: 1,
+        width: "100%",
+        minHeight: 30,
         justifyContent: "center",
-        marginLeft: 10,
+        alignItems: "center",
     },
 
     teamName: {
         color: teamCardBlueColors.title,
-        fontSize: 14,
-        lineHeight: 16,
+        fontSize: 12,
+        lineHeight: 13,
         fontWeight: "800",
-        letterSpacing: 0.2,
+        textAlign: "center",
     },
 
-    playersRow: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginTop: 2,
-        gap: 4,
+    accentLeft: {
+        position: "absolute",
+        left: 0,
+        top: 10,
+        height: 42,
+        width: 4,
+
+        borderTopRightRadius: 5,
+        borderBottomRightRadius: 5,
+
+        backgroundColor: teamCardBlueColors.yellowAccent,
     },
 
-    playersText: {
-        color: teamCardBlueColors.secondaryText,
-        fontSize: 10,
-        lineHeight: 12,
-        fontWeight: "500",
-    },
+    accentRight: {
+        position: "absolute",
+        right: 0,
+        top: 10,
+        height: 42,
+        width: 4,
 
-    arrowContainer: {
-        width: 28,
-        height: 28,
-        borderRadius: 14,
+        borderTopLeftRadius: 5,
+        borderBottomLeftRadius: 5,
 
-        marginLeft: 8,
-
-        alignItems: "center",
-        justifyContent: "center",
-
-        backgroundColor: teamCardBlueColors.yellowBackground,
+        backgroundColor: teamCardBlueColors.yellowAccent,
     },
 });
 

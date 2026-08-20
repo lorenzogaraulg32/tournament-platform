@@ -12,8 +12,8 @@ import PlayersCard from "@/src/components/app/teams/PlayersCard";
 import AdminsCard from "@/src/components/app/teams/AdminsCard";
 import {loadCurrentUserId} from "@/src/services/users/authService";
 import {UserEntity} from "@/src/services/users/userService";
-import TeamCarousel from "@/src/components/app/teams/HorizontalCarousel";
-import HorizontalCarousel from "@/src/components/app/teams/HorizontalCarousel";
+import TeamCarousel from "@/src/components/common/HorizontalCarousel";
+import HorizontalCarousel from "@/src/components/common/HorizontalCarousel";
 
 
 export default function teamId() {
