@@ -29,4 +29,6 @@ public class TeamGetDetailsResponse {
     //L'id dell'admin è anche nei players
     private Set<String> adminIds = new HashSet<>();
 
+    private String invitationCode;
+
 }

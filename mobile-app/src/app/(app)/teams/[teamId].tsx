@@ -1,17 +1,12 @@
 import Background from "@/src/components/common/Background";
 import {useEffect, useState} from "react";
-import {getTeamDetails, TeamDetails} from "@/src/services/teams/teamGetService";
-import {Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
+import {getTeamDetails, TeamDetails} from "@/src/services/teams/teamService";
+import {ScrollView, StyleSheet, Text, View} from "react-native";
 import TitleApp from "@/src/components/common/headers/HeaderMain";
 import {useLocalSearchParams} from "expo-router";
 import TeamHeader from "@/src/components/app/teams/TeamHeader";
-import {colors} from "@/src/constants/theme";
 import InfoLabel from "@/src/components/common/labels/infoLabel";
-import {LinearGradient} from "expo-linear-gradient";
-import PlayersCard from "@/src/components/app/teams/PlayersCard";
-import AdminsCard from "@/src/components/app/teams/AdminsCard";
 import {loadCurrentUserId} from "@/src/services/users/authService";
-import {UserEntity} from "@/src/services/users/userService";
 import TeamCarousel from "@/src/components/common/HorizontalCarousel";
 import HorizontalCarousel from "@/src/components/common/HorizontalCarousel";
 
@@ -31,16 +26,10 @@ export default function teamId() {
         team.adminIds.includes(String(userId));
 
 
-    function handleFriendInvitation() {
-        //todo
-    }
 
     function handleModTeam() {
         //todo
     }
-
-
-
 
 
     useEffect(() => {
@@ -72,8 +61,6 @@ export default function teamId() {
         }
 
 
-
-
         void loadUserId();
         void loadTeamInfo()
     }, [teamId]);
@@ -82,7 +69,6 @@ export default function teamId() {
     function handleMoreAdminsPress() {
         return undefined;
     }
-
 
 
     return (
@@ -100,31 +86,32 @@ export default function teamId() {
                 team={team}
                 isLoading={isLoading}
                 error={error}
-                onInviteFriendPress={handleFriendInvitation}/>
+            />
 
             <View style={styles.scrollContainer}>
 
                 <ScrollView style={styles.scroll}>
                     <View style={styles.scrollContent}>
 
-                        <View style={styles.section}>
-                            <InfoLabel
-                                text={"Bio"}
-                                labelIconName={"information-circle-outline"}
-                            />
-                            <LinearGradient
-                                colors={[colors.textThird, "#EAF8EF", "#F7FCF9"]}
-                                start={{x: 0, y: 0}}
-                                end={{x: 1, y: 1}}
-                                style={[styles.gradient, styles.descContainer]}
-                            >
-                                <Text
-                                    numberOfLines={5}
-                                    style={styles.description}>
-                                    {team?.description || "..."}
-                                </Text>
-                            </LinearGradient>
-                        </View>
+                        {team?.description ? (
+
+                            <View style={styles.section}>
+                                <InfoLabel
+                                    text={"Bio"}
+                                    labelIconName={"information-circle-outline"}
+                                />
+                                <View
+                                    style={styles.descContainer}>
+                                    <Text
+                                        numberOfLines={5}
+                                        style={styles.description}>
+                                        {team.description}
+                                    </Text>
+                                </View>
+                            </View>
+                        ) : (
+                            <View></View>
+                        )}
 
                         <View style={styles.section}>
                             <InfoLabel
@@ -133,9 +120,11 @@ export default function teamId() {
                             />
                             {team && (
                                 <HorizontalCarousel
+                                    style={styles.teamCarousel}
+                                    transparent
                                     inputEntity={team}
                                     variant="players"
-                              />
+                                />
                             )}
                         </View>
 
@@ -149,6 +138,8 @@ export default function teamId() {
 
                             {team && (
                                 <TeamCarousel
+                                    style={styles.teamCarousel}
+                                    transparent
                                     inputEntity={team}
                                     variant="admins"
                                 />
@@ -173,6 +164,14 @@ const styles = StyleSheet.create({
         borderRadius: 28,
     },
 
+
+    teamCarousel: {
+        marginHorizontal: 0,
+        backgroundColor: "transparent",
+        borderWidth: 0,
+        borderRadius: 0,
+    },
+
     scroll: {
         height: "100%",
         marginTop: -26,
@@ -191,17 +190,16 @@ const styles = StyleSheet.create({
         gap: 4,
     },
 
-    gradient: {
-        borderRadius: 16,
-        paddingVertical: 8,
-        borderWidth: 1,
-        borderColor: "#D0EBDD",
-    },
 
     descContainer: {
-        paddingHorizontal: 5,
+        backgroundColor: "rgba(246,246,246,0.89)",
+        paddingHorizontal: 20,
+        paddingVertical: 8,
         borderLeftWidth: 4,
+        borderRightWidth: 4,
+        borderRadius: 25,
         borderLeftColor: "#00A859",
+        borderRightColor: "#00A859",
     },
 
     description: {
@@ -209,7 +207,6 @@ const styles = StyleSheet.create({
         lineHeight: 20,
         color: "#3D4340",
     },
-
 
 
 });

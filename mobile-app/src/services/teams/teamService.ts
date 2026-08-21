@@ -21,6 +21,7 @@ export type TeamDetails = {
     creatorId: string;
     playerIds: string[];
     adminIds: string[];
+    invitationCode: string
 };
 
 
@@ -103,6 +104,52 @@ export async function getUserTeams(userId: string): Promise<TeamInfo[]> {
     }
 
     return await response.json() as TeamInfo[];
+
+}
+
+
+export async function refreshCode(teamId: number) {
+
+    const accessToken =
+        await SecureStore.getItemAsync("accessToken");
+
+    const tokenType =
+        await SecureStore.getItemAsync("tokenType");
+
+    if (!accessToken) {
+        throw new Error("Access token non disponibile");
+    }
+
+    const response = await fetch(
+        `${API_URL}/teams/${teamId}/change_code`,
+        {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                Authorization: `${tokenType ?? "Bearer"} ${accessToken}`,
+            },
+        }
+    );
+
+    if (response.status === 401 || response.status === 403) {
+        console.log("Non autorizzato al refresh del codice")
+    }
+
+
+    if (!response.ok) {
+        const errorBody = await response.text();
+
+        throw new Error(
+            errorBody || `Errore nel cambio del codice: ${response.status}`
+        );
+    }
+
+    return await response.json() as TeamDetails;
+
+
+}
+
+async function patchTeam() {
 
 }
 

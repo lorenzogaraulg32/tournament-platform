@@ -89,8 +89,11 @@ public class Team {
     )
     private BigDecimal longitude;
 
+    @Column(name = "invitation_code", nullable = false, unique = true)
+    private String invitationCode;
 
-    public Team(String name, String description, String creatorId, Set<String> playerIds, Set<String> adminIds, RecruitmentStatus status, String locationLabel, BigDecimal latitude, BigDecimal longitude) {
+
+    public Team(String name, String description, String creatorId, Set<String> playerIds, Set<String> adminIds, RecruitmentStatus status, String locationLabel, BigDecimal latitude, BigDecimal longitude, String invitationCode) {
         this.name = name;
         this.description = description;
         this.creatorId = creatorId;
@@ -100,6 +103,7 @@ public class Team {
         this.locationLabel = locationLabel;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.invitationCode = invitationCode;
     }
 
 }

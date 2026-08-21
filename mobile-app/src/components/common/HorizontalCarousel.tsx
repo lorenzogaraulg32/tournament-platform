@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {loadUserInfo, UserEntity} from "@/src/services/users/userService";
-import {getUserTeams, TeamDetails, TeamInfo} from "@/src/services/teams/teamGetService";
+import {getUserTeams, TeamDetails, TeamInfo} from "@/src/services/teams/teamService";
 import {ActivityIndicator, ScrollView, StyleProp, StyleSheet, Text, View, ViewStyle} from "react-native";
 import {LinearGradient} from "expo-linear-gradient";
 import {colors} from "@/src/constants/theme";

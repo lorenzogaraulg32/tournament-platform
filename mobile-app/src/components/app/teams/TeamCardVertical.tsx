@@ -1,8 +1,8 @@
 import {Pressable, StyleSheet, Text, View} from "react-native";
-import {teamCardBlueColors, teamCardGreenColors} from "@/src/constants/theme"
+import {teamCardBlueColors} from "@/src/constants/theme"
 import {router} from "expo-router";
 import Picture from "@/src/components/common/Picture";
-import {TeamInfo} from "@/src/services/teams/teamGetService";
+import {TeamInfo} from "@/src/services/teams/teamService";
 
 type TeamCardVerticalProps = {
     teamDetails: TeamInfo
@@ -66,11 +66,12 @@ const styles = StyleSheet.create({
     card: {
         position: "relative",
 
-        width: 90,
-        height: 95,
-
         alignItems: "center",
         justifyContent: "space-between",
+
+        width: 90,
+        height: 95,
+        gap: 3,
 
         paddingTop: 10,
         paddingBottom: 5,

@@ -19,7 +19,7 @@ public class TeamPlayersController {
 
     @GetMapping("/{teamId}/players")
     public ResponseEntity<Set<String>> getPlayers(@PathVariable String teamId) {
-        Set<String> response = teamPlayerService.getAllPlayersInTeam(teamId );
+        Set<String> response = teamPlayerService.getAllPlayersInTeam(teamId);
         return ResponseEntity.ok(response);
     }
 
@@ -31,6 +31,17 @@ public class TeamPlayersController {
         TeamGetDetailsResponse response = teamPlayerService.addPlayerInTeam(teamId, userId);
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/players/{invitationCode}")
+    public ResponseEntity<TeamGetDetailsResponse> addPlayerInvitationCode(
+            @PathVariable String invitationCode
+    ) {
+        TeamGetDetailsResponse response = teamPlayerService.addPlayerInTeamInvitationCode(invitationCode);
+        return ResponseEntity.ok(response);
+    }
+
+
+
 
     @DeleteMapping("/{teamId}/players/{userId}")
     public ResponseEntity<TeamGetDetailsResponse> removePlayer(

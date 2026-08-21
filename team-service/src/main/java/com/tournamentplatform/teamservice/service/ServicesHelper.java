@@ -7,6 +7,8 @@ import com.tournamentplatform.teamservice.errorHandling.ResourceNotFoundExceptio
 import com.tournamentplatform.teamservice.repository.TeamsRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class ServicesHelper {
 
@@ -30,7 +32,8 @@ public class ServicesHelper {
                 buildPublicLogoUrl(team),
                 team.getCreatorId(),
                 team.getPlayerIds(),
-                team.getAdminIds()
+                team.getAdminIds(),
+                team.getInvitationCode()
         );
     }
 
@@ -53,6 +56,21 @@ public class ServicesHelper {
         }
 
         return "/teams/" + team.getId() + "/logo";
+    }
+
+
+    public String generateUniqueInvitationCode() {
+        String code;
+
+        do {
+            code = UUID.randomUUID()
+                    .toString()
+                    .replace("-", "")
+                    .substring(0, 8)
+                    .toUpperCase();
+        } while (teamsRepository.existsByInvitationCode(code));
+
+        return code;
     }
 
 }

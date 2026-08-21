@@ -22,5 +22,8 @@ public interface TeamsRepository extends JpaRepository<Team, Long> {
             """)
     List<Team> findAllByPlayerIds(@Param("userId") String userId);
 
+    boolean existsByInvitationCode(String invitationCode);
+
+    Team getByInvitationCode(@Param("invitation_code") String invitationConde);
 
 }

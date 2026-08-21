@@ -15,6 +15,7 @@ export const colors = {
 
     textLightGreen: "#8dc00c",
 
+    iconGlowColor:"rgba(0,86,40,0.3)",
 
     error: "#FF4D4D",
     success: "#43A047",

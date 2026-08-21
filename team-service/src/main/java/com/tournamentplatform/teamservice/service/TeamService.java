@@ -59,7 +59,8 @@ public class TeamService {
                 request.getStatus(),
                 request.getLocation().getLabel(),
                 request.getLocation().getLatitude(),
-                request.getLocation().getLongitude()
+                request.getLocation().getLongitude(),
+                servicesHelper.generateUniqueInvitationCode()
         );
 
         Team savedTeam = teamsRepository.save(team);
@@ -123,6 +124,20 @@ public class TeamService {
 
         return servicesHelper.toTeamGetDeatilsResponse(savedTeam);
     }
+
+    public TeamGetDetailsResponse patchTeamCode(String id) {
+
+        Team team = servicesHelper.getTeamEntityOrThrow(id);
+
+        teamAuthorizationHelper.checkTeamAdmin(team);
+
+        team.setInvitationCode(servicesHelper.generateUniqueInvitationCode());
+
+        Team savedTeam = teamsRepository.save(team);
+
+        return servicesHelper.toTeamGetDeatilsResponse(savedTeam);
+    }
+
 
     public TeamGetDetailsResponse patchTeamLogo(String id, MultipartFile file) {
 

@@ -89,6 +89,15 @@ public class TeamController {
     }
 
 
+    @PostMapping("/{id}/change_code")
+    public ResponseEntity<TeamGetDetailsResponse> changeInvitationCode(
+            @PathVariable String id
+    ) {
+        TeamGetDetailsResponse response = teamService.patchTeamCode(id);
+        return ResponseEntity.ok(response);
+    }
+
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTeam(@PathVariable String id) {
         teamService.deleteTeam(id);

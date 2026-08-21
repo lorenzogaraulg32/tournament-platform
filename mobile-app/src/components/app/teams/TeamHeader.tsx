@@ -2,15 +2,15 @@ import {ActivityIndicator, Pressable, StyleSheet, Text, View,} from "react-nativ
 import Ionicons from "@expo/vector-icons/Ionicons";
 import HeaderEntity from "../../common/headers/HeaderEntity";
 import Picture from "@/src/components/common/Picture";
-import type {TeamDetails} from "@/src/services/teams/teamGetService";
+import {refreshCode, TeamDetails} from "@/src/services/teams/teamService";
 import {colors} from "@/src/constants/theme";
-
+import {useEffect, useRef, useState} from "react";
+import * as Clipboard from "expo-clipboard";
 
 type TeamHeaderProps = {
     team: TeamDetails | null;
     isLoading?: boolean;
     error?: string | null;
-    onInviteFriendPress: () => void
 };
 
 const TEAM_BACKGROUND = require("../../../../assets/images/teaminfoSectionBkg.png");
@@ -28,7 +28,6 @@ export default function TeamHeader({
                                        team,
                                        isLoading = false,
                                        error = null,
-                                       onInviteFriendPress,
                                    }: TeamHeaderProps) {
 
 
@@ -106,7 +105,7 @@ export default function TeamHeader({
 
                             <InviteFriendBadge
                                 label={"Invita nella squadra"}
-                                onPress={onInviteFriendPress}
+                                team={team}
                             />
                         </View>
 
@@ -120,52 +119,103 @@ export default function TeamHeader({
 
 type inviteFriendBadgeProps = {
     label: string;
-    onPress: () => void;
+    team: TeamDetails
 };
 
 function InviteFriendBadge({
                                label,
-                               onPress,
+                               team,
                            }: inviteFriendBadgeProps) {
+
+    const [invitationCode, setInvitationCode] = useState(team.invitationCode)
+
+    const [copied, setCopied] = useState(false);
+
+    const copiedTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    async function copyInvitationCode() {
+        await Clipboard.setStringAsync(invitationCode);
+
+        setCopied(true);
+
+        if (copiedTimeout.current) {
+            clearTimeout(copiedTimeout.current);
+        }
+
+        copiedTimeout.current = setTimeout(() => {
+            setCopied(false);
+        }, 1500);
+    }
+
+
+    useEffect(() => {
+        setInvitationCode(team.invitationCode);
+    }, [team.invitationCode]);
+
+
+    async function refreshInvitationCode() {
+        try {
+            const updatedTeam = await refreshCode(team.id);
+
+            setInvitationCode(updatedTeam.invitationCode);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
-        <Pressable
-            onPress={onPress}
-            hitSlop={4}
-            accessibilityRole="button"
-            accessibilityLabel={`Apri ${label}`}
-            style={({pressed}) => [
-                styles.infoBadge,
-                pressed && styles.infoBadgePressed,
-            ]}
-        >
-            <View style={styles.infoBadgeIcon}>
-                <Ionicons
-                    name="share-social-outline"
-                    size={16}
-                    color="#FFFFFF"
-                />
-            </View>
+        <View style={styles.infoBadge}>
 
-            <Text
-                style={styles.infoBadgeText}
-                numberOfLines={1}
+            {/* AREA COPIA */}
+            <Pressable
+                onPress={copyInvitationCode}
+                style={({pressed}) => [
+                    styles.copyArea,
+                    pressed && styles.infoBadgePressed,
+                ]}
+                accessibilityRole="button"
+                accessibilityLabel="Copia codice invito"
             >
-                {label}
-            </Text>
+                <View style={styles.infoBadgeIcon}>
+                    <Ionicons
+                        name="copy-outline"
+                        size={16}
+                        color="#FFFFFF"
+                    />
+                </View>
 
-            <View style={styles.infoBadgeArrow}>
+                <Text
+                    style={styles.infoBadgeText}
+                    numberOfLines={1}
+                >
+                    {copied ? "Copiato!" : invitationCode}
+                </Text>
+            </Pressable>
+
+
+            {/* AREA REFRESH */}
+            <Pressable
+                onPress={refreshInvitationCode}
+                style={({pressed}) => [
+                    styles.refreshCode,
+                    pressed && styles.refreshCodePressed,
+                ]}
+                accessibilityRole="button"
+                accessibilityLabel="Genera nuovo codice invito"
+            >
                 <Ionicons
-                    name="chevron-forward"
-                    size={14}
+                    name="refresh"
+                    size={18}
                     color="#FFFFFF"
                 />
-            </View>
-        </Pressable>
+            </Pressable>
+
+        </View>
     );
 }
 
 
-//!! L'altezza della card in realtà è legata all'altezza del vertical separator
+//! L'altezza della card in realtà è legata all'altezza del vertical separator
 const styles = StyleSheet.create({
 
     container: {
@@ -261,6 +311,31 @@ const styles = StyleSheet.create({
         elevation: 2,
     },
 
+    infoBadgePressed: {
+        opacity: 0.8,
+    },
+
+    copyArea: {
+        flexDirection: "row",
+        alignItems: "center",
+        flex: 1,
+        gap: 6,
+    },
+
+    refreshCode: {
+        alignItems: "center",
+        justifyContent: "center",
+        width: 28,
+        height: 28,
+        borderRadius: 60,
+        backgroundColor: "rgba(255,255,255,0.4)",
+    },
+
+    refreshCodePressed: {
+        opacity: 0.8,
+    },
+
+
     infoBadgeIcon: {
         width: 24,
         height: 24,
@@ -280,22 +355,6 @@ const styles = StyleSheet.create({
         color: "#FFFFFF",
         fontSize: 11,
         fontWeight: "800",
-    },
-
-    infoBadgeArrow: {
-        width: 20,
-        height: 20,
-        borderRadius: 10,
-
-        alignItems: "center",
-        justifyContent: "center",
-
-        backgroundColor: "rgba(255, 255, 255, 0.16)",
-    },
-
-    infoBadgePressed: {
-        opacity: 0.78,
-        transform: [{scale: 0.97}],
     },
 
 

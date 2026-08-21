@@ -34,6 +34,19 @@ public class TeamPlayerService {
         return servicesHelper.toTeamGetDeatilsResponse(savedTeam);
     }
 
+    public TeamGetDetailsResponse addPlayerInTeamInvitationCode( String invitationCode) {
+
+        Team team = teamsRepository.getByInvitationCode(invitationCode);
+
+        String playerId = teamAuthorizationHelper.getCurrentUserId();
+
+        team.getPlayerIds().add(playerId);
+
+        Team savedTeam = teamsRepository.save(team);
+
+        return servicesHelper.toTeamGetDeatilsResponse(savedTeam);
+    }
+
     public TeamGetDetailsResponse removePlayerFromTeam(String teamId, String playerId) {
 
         Team team = servicesHelper.getTeamEntityOrThrow(teamId);
@@ -58,4 +71,5 @@ public class TeamPlayerService {
         Team team = servicesHelper.getTeamEntityOrThrow(teamId);
         return team.getPlayerIds();
     }
+
 }
