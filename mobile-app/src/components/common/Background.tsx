@@ -1,19 +1,16 @@
 import {ReactNode} from "react";
 import {ScrollView, StyleSheet, View} from "react-native";
-import {inspect} from "node:util";
 import {colors} from "@/src/constants/theme"
 
 type BackgroundContainerProps = {
     children: ReactNode,
-    header?: ReactNode,
     style?: any
 }
 
-export default function Background({children, header, style}: BackgroundContainerProps) {
+export default function Background({children, style}: BackgroundContainerProps) {
     return (
 
         <View style={styles.container}>
-            {header}
             <ScrollView
                 style={styles.scrollView}
                 contentContainerStyle={styles.scrollContent}
@@ -34,6 +31,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.background,
     },
     scrollView: {
+        marginTop: 55,
         flex: 1,
     },
 

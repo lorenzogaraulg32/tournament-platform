@@ -1,5 +1,4 @@
 import Background from "@/src/components/common/Background";
-import TitleApp from "@/src/components/common/headers/HeaderMain";
 import {ImageBackground, Pressable, StyleSheet, Text, View} from "react-native";
 import {useState} from "react";
 import MyTeams from "@/src/app/(app)/teams/myTeams";
@@ -14,9 +13,6 @@ export default function TeamsPage() {
 
     return (
         <Background
-            header={
-                <TitleApp text="Squadre"/>
-            }
         >
 
             <View style={styles.panelShadow}>

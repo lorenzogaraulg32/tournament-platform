@@ -1,11 +1,13 @@
 import {ActivityIndicator, Pressable, StyleSheet, Text, View,} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import HeaderEntity from "../../common/headers/HeaderEntity";
+import HeaderContainer from "./headerContainer";
 import Picture from "@/src/components/common/Picture";
 import {refreshCode, TeamDetails} from "@/src/services/teams/teamService";
 import {colors} from "@/src/constants/theme";
 import {useEffect, useRef, useState} from "react";
 import * as Clipboard from "expo-clipboard";
+import {router} from "expo-router";
+import {loadCurrentUserId} from "@/src/services/users/authService";
 
 type TeamHeaderProps = {
     team: TeamDetails | null;
@@ -30,19 +32,99 @@ export default function TeamHeader({
                                        error = null,
                                    }: TeamHeaderProps) {
 
+    const [modBtn, setModBtn] = useState(false);
+
+
+    useEffect(() => {
+
+        async function canShowModBtn() {
+            if (!team) {
+                setModBtn(false);
+                return;
+            }
+            const currentUserId = await loadCurrentUserId();
+
+            if (!currentUserId) {
+                setModBtn(false);
+                return;
+            }
+
+            setModBtn(team.adminIds.includes(String(currentUserId)));
+        }
+
+        void canShowModBtn()
+    },[team]);
+
 
     function formatLocationLabel(location: string): string {
         const parts = location.split(",")
         return parts[0] + "  · " + parts[1] + "  · " + parts[2]
     }
 
+    const onBackPress = () => {
+        router.back()
+    }
+
+
+    const onOptionsPress = () => {
+        console.log("options premuto")
+    }
+
 
     return (
-        <HeaderEntity
+        <HeaderContainer
             backgroundSource={TEAM_BACKGROUND}
             overlayColor="rgba(31, 10, 2, 0.25)"
             borderColor="rgba(255, 154, 72, 0.25)"
         >
+
+            <Pressable
+                onPress={onBackPress}
+                accessibilityRole="button"
+                accessibilityLabel="Torna indietro"
+                hitSlop={12}
+                android_ripple={{
+                    color: "rgba(255, 255, 255, 0.20)",
+                }}
+                style={({pressed}) => [
+                    styles.backButton,
+                    pressed && styles.backButtonPressed,
+                ]}
+            >
+                {({pressed}) => (
+                    <Ionicons
+                        name="arrow-back"
+                        size={22}
+                        color={pressed ? "rgba(255, 255, 255, 0.75)" : "#FFFFFF"}
+                    />
+                )}
+            </Pressable>
+
+
+            {!error && modBtn ? (
+                <Pressable
+                    onPress={onOptionsPress}
+                    accessibilityRole="button"
+                    accessibilityLabel="Modifica"
+                    hitSlop={12}
+                    android_ripple={{
+                        color: "rgba(255, 255, 255, 0.20)",
+                    }}
+                    style={({pressed}) => [
+                        styles.modBtn,
+                        pressed && styles.modPressed,
+                    ]}
+                >
+                    {({pressed}) => (
+                        <Ionicons
+                            name="pencil"
+                            size={22}
+                            color={pressed ? "rgba(255, 255, 255, 0.75)" : "#FFFFFF"}
+                        />
+                    )}
+                </Pressable>
+            ) : (<View></View>)}
+
             {isLoading ? (
                 <View style={styles.feedbackContainer}>
                     <ActivityIndicator
@@ -113,7 +195,7 @@ export default function TeamHeader({
                     </View>
                 </View>
             )}
-        </HeaderEntity>
+        </HeaderContainer>
     );
 }
 
@@ -215,15 +297,14 @@ function InviteFriendBadge({
 }
 
 
-//! L'altezza della card in realtà è legata all'altezza del vertical separator
 const styles = StyleSheet.create({
 
     container: {
         flexDirection: "row",
         paddingHorizontal: 14,
-        paddingVertical: 10,
+        marginTop: 30,
+        paddingVertical: 12,
         height: 160,
-
     },
 
     rightContainer: {
@@ -241,8 +322,9 @@ const styles = StyleSheet.create({
     },
 
     imageContainer: {
-        width: 95,
-        height: 95,
+        width: 88,
+        height: 88,
+        marginLeft: 10,
         borderRadius: 1000,
         overflow: "hidden",
         borderWidth: 3,
@@ -257,7 +339,7 @@ const styles = StyleSheet.create({
 
     verticalSeparator: {
         width: 1,
-        height: 120,
+        height: 134,
         marginHorizontal: 14,
         backgroundColor: "rgba(255, 255, 255, 0.24)",
     },
@@ -371,6 +453,70 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: "600",
         textAlign: "center",
+    },
+
+
+    backButton: {
+        position: "absolute",
+
+        left: 15,
+        top: 15,
+        width: 38,
+        height: 38,
+
+        borderRadius: 21,
+
+        alignItems: "center",
+        justifyContent: "center",
+
+        backgroundColor: "rgba(255,255,255,0.19)",
+
+        borderWidth: 1,
+        borderColor: "rgba(255,255,255,0.58)",
+
+        overflow: "hidden",
+    },
+
+    backButtonPressed: {
+        backgroundColor: "rgba(255, 255, 255, 0.24)",
+        borderColor: "rgba(255, 255, 255, 0.35)",
+
+        opacity: 0.85,
+
+        transform: [
+            {scale: 0.92},
+        ],
+    },
+
+    modBtn: {
+        position: "absolute",
+        right: 15,
+        top: 15,
+        width: 38,
+        height: 38,
+
+        borderRadius: 21,
+
+        alignItems: "center",
+        justifyContent: "center",
+
+        backgroundColor: "rgba(255, 255, 255, 0.12)",
+
+        borderWidth: 1,
+        borderColor: "rgba(255, 255, 255, 0.18)",
+
+        overflow: "hidden",
+    },
+
+    modPressed: {
+        backgroundColor: "rgba(255, 255, 255, 0.24)",
+        borderColor: "rgba(255, 255, 255, 0.35)",
+
+        opacity: 0.85,
+
+        transform: [
+            {scale: 0.92},
+        ],
     },
 
 

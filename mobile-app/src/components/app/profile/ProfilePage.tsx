@@ -1,9 +1,8 @@
-import ProfileHeader from "@/src/components/app/profile/ProfileHeader";
+import ProfileHeader from "@/src/components/common/headers/ProfileHeader";
 import {useEffect, useState} from "react";
 import {AuthInfo, handleLogout, loadUserAuthInfo} from "@/src/services/users/authService";
 import {loadUserInfo, UserInfo} from "@/src/services/users/userService";
 import Background from "@/src/components/common/Background";
-import TitleApp from "@/src/components/common/headers/HeaderMain";
 import {ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {colors} from "@/src/constants/theme";
@@ -57,10 +56,7 @@ export default function ProfilePage({userId, teams}: ProfilePageProps) {
 
 
     return (
-        <Background
-            header={
-                <TitleApp text={"Profilo"}/>
-            }>
+        <Background>
             {isLoading ? (
                 <View style={styles.feedbackContainer}>
                     <ActivityIndicator color="#FFFFFF" size="large"/>

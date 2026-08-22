@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
 import * as SecureStore from "expo-secure-store";
 import {ScrollView, StyleSheet, Text} from "react-native";
-import TitleApp from "@/src/components/common/headers/HeaderMain";
 import Background from "@/src/components/common/Background";
 
 export default function Homepage() {
@@ -21,7 +20,7 @@ export default function Homepage() {
 
     return (
 
-        <Background header={<TitleApp text={"Home"}/>}>
+        <Background>
 
             <ScrollView
                 style={styles.scrollView}

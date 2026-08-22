@@ -6,19 +6,22 @@ import {
 } from "react-native";
 import {ReactNode} from "react";
 
-type SectionContainerProps = {
+type headerProps = {
     children: ReactNode;
     backgroundSource: ImageSourcePropType;
     overlayColor: string;
     borderColor: string;
 };
 
-export default function HeaderEntity({
+export default function HeaderContainer({
                               children,
                               backgroundSource,
                               overlayColor,
                               borderColor,
-                          }: SectionContainerProps) {
+                          }: headerProps) {
+
+
+
     return (
         <View style={styles.shadowContainer}>
             <ImageBackground
@@ -27,9 +30,10 @@ export default function HeaderEntity({
                     styles.card,
                     {borderColor},
                 ]}
-                imageStyle={styles.cardImage}
+                imageStyle={styles.cardBackground}
                 resizeMode="cover"
             >
+
                 <View
                     style={[
                         styles.cardOverlay,
@@ -67,42 +71,13 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
 
-    cardImage: {
+    cardBackground: {
+
         borderRadius: 28,
     },
 
     cardOverlay: {
         ...StyleSheet.absoluteFillObject,
-    },
-
-    dataContainer: {
-        minHeight: 120,
-        flexDirection: "row",
-        alignItems: "center",
-
-        paddingHorizontal: 18,
-        paddingVertical: 18,
-    },
-
-    feedbackContainer: {
-        minHeight: 120,
-        alignItems: "center",
-        justifyContent: "center",
-
-        paddingHorizontal: 24,
-        gap: 10,
-    },
-
-    imageContainer: {
-        width: 88,
-        height: 88,
-        borderRadius: 44,
-
-        overflow: "hidden",
-
-        borderWidth: 3,
-        borderColor: "#FFFFFF",
-        backgroundColor: "#D9D9D9",
     },
 
     verticalSeparator: {
@@ -161,4 +136,8 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         textAlign: "center",
     },
+
+
+
+
 });

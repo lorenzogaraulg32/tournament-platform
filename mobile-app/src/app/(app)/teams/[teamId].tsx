@@ -2,9 +2,8 @@ import Background from "@/src/components/common/Background";
 import {useEffect, useState} from "react";
 import {getTeamDetails, TeamDetails} from "@/src/services/teams/teamService";
 import {ScrollView, StyleSheet, Text, View} from "react-native";
-import TitleApp from "@/src/components/common/headers/HeaderMain";
 import {useLocalSearchParams} from "expo-router";
-import TeamHeader from "@/src/components/app/teams/TeamHeader";
+import TeamHeader from "@/src/components/common/headers/TeamHeader";
 import InfoLabel from "@/src/components/common/labels/infoLabel";
 import {loadCurrentUserId} from "@/src/services/users/authService";
 import TeamCarousel from "@/src/components/common/HorizontalCarousel";
@@ -19,17 +18,6 @@ export default function teamId() {
 
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
-    const canModifyTeam =
-        team !== null &&
-        userId !== null &&
-        team.adminIds.includes(String(userId));
-
-
-
-    function handleModTeam() {
-        //todo
-    }
 
 
     useEffect(() => {
@@ -66,22 +54,8 @@ export default function teamId() {
     }, [teamId]);
 
 
-    function handleMoreAdminsPress() {
-        return undefined;
-    }
-
-
     return (
-        <Background
-            header={
-                <TitleApp
-                    text="Dettagli squadra"
-                    backBtn
-                    optionsBtn={canModifyTeam}
-                    onOptionsPress={canModifyTeam ? handleModTeam : undefined}
-                />
-            }
-        >
+        <Background>
             <TeamHeader
                 team={team}
                 isLoading={isLoading}
