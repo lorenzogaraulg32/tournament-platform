@@ -1,6 +1,6 @@
 import {StyleSheet, Text} from "react-native";
 import AuthTextField from "@/src/components/auth/AuthTextField";
-import AuthHeader from "@/src/components/auth/AuthHeader";
+import AuthHeader from "@/src/components/common/headers/AuthHeader";
 import AuthContainer from "@/src/components/auth/AuthContainer";
 import AuthContent from "@/src/components/auth/AuthContent";
 import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
@@ -108,7 +108,7 @@ export default function LoginPage() {
             //caricamento per permettere di controllare se l'utente esiste
             await loadUserInfo(id);
 
-            router.replace("/(app)");
+            router.replace("/(app)/home");
 
         } catch (error) {
             if (error instanceof ApiRequestError) {

@@ -21,7 +21,7 @@ export default function ButtonBackground({text, onPress}: ButtonBGProps) {
         >
             <ImageBackground
                 source={require(
-                    "../../../../assets/images/teaminfoSectionBkg.png"
+                    "../../../../assets/images/backgrounds/orangeBackground.png"
                 )}
                 style={styles.btn}
                 imageStyle={styles.btnBg}

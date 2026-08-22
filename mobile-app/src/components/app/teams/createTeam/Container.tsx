@@ -26,7 +26,7 @@ export default function Container({children}: CreateTeamContainerProps) {
                 >
                     <ImageBackground
                         source={require(
-                            "../../../../../assets/images/teaminfoSectionBkg.png"
+                            "../../../../../assets/images/backgrounds/orangeBackground.png"
                         )}
                         style={styles.hero}
                         imageStyle={styles.heroBackground}

@@ -1,5 +1,6 @@
 import {ReactNode} from "react";
 import {ScrollView, StyleSheet, View} from "react-native";
+
 import {colors} from "@/src/constants/theme"
 
 type BackgroundContainerProps = {

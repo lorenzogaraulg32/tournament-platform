@@ -73,7 +73,7 @@ export default function ProfileHeader({
 
     return (
         <HeaderContainer
-            backgroundSource={require("../../../../assets/images/userInfoSectionBkg.png")}
+            backgroundSource={require("../../../../assets/images/backgrounds/redBackground.png")}
             overlayColor="rgba(0, 24, 14, 0.30)"
             borderColor="rgba(112, 255, 162, 0.22)"
         >

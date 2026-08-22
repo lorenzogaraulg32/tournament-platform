@@ -4,6 +4,7 @@ import {useState} from "react";
 import MyTeams from "@/src/app/(app)/teams/myTeams";
 import ButtonBackground from "@/src/components/common/buttons/ButtonBackground";
 import {router} from "expo-router";
+import {corners} from "@/src/constants/theme";
 
 type TeamsTab = "myTeams" | "findTeam";
 
@@ -19,7 +20,7 @@ export default function TeamsPage() {
                 <View style={styles.container}>
 
                     <ImageBackground
-                        source={require("../../../../assets/images/teaminfoSectionBkg.png")}
+                        source={require("../../../../assets/images/backgrounds/orangeBackground.png")}
                         style={styles.tabsContainer}
                         imageStyle={styles.backgroundImage}
                     >
@@ -92,15 +93,15 @@ export default function TeamsPage() {
 }
 
 
-const PANEL_RADIUS = 18;
+
 
 const styles = StyleSheet.create({
 
     panelShadow: {
         flex: 1,
 
-        borderTopLeftRadius: PANEL_RADIUS,
-        borderTopRightRadius: PANEL_RADIUS,
+        borderTopLeftRadius: corners.standard,
+        borderTopRightRadius: corners.standard,
 
         shadowColor: "#000000",
         shadowOffset: {
@@ -119,8 +120,8 @@ const styles = StyleSheet.create({
         borderColor: "#FFFFFF",
         borderWidth: 0.5,
 
-        borderTopLeftRadius: PANEL_RADIUS,
-        borderTopRightRadius: PANEL_RADIUS,
+        borderTopLeftRadius: corners.standard,
+        borderTopRightRadius: corners.standard,
         overflow: "hidden",
     },
 
@@ -131,17 +132,17 @@ const styles = StyleSheet.create({
 
         alignItems: "center",
 
-        minHeight: 50,
+        minHeight: 60,
 
-        borderTopLeftRadius: PANEL_RADIUS,
-        borderTopRightRadius: PANEL_RADIUS,
+        borderTopLeftRadius: corners.standard,
+        borderTopRightRadius: corners.standard,
 
         overflow: "hidden",
     },
 
     backgroundImage: {
-        borderTopLeftRadius: PANEL_RADIUS,
-        borderTopRightRadius: PANEL_RADIUS,
+        borderTopLeftRadius: corners.standard,
+        borderTopRightRadius: corners.standard,
     },
 
     tab: {

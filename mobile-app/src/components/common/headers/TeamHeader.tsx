@@ -15,7 +15,7 @@ type TeamHeaderProps = {
     error?: string | null;
 };
 
-const TEAM_BACKGROUND = require("../../../../assets/images/teaminfoSectionBkg.png");
+const TEAM_BACKGROUND = require("../../../../assets/images/backgrounds/orangeBackground.png");
 
 
 /**

@@ -2,7 +2,7 @@ import {loadCurrentUserId} from "@/src/services/users/authService";
 import {useEffect, useState} from "react";
 import ProfilePage from "@/src/components/app/profile/ProfilePage";
 
-export default function Profile() {
+export default function Index() {
 
     const [userId, setUserId] = useState<string>("")
 

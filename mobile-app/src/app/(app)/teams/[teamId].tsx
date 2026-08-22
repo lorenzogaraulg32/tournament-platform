@@ -8,6 +8,7 @@ import InfoLabel from "@/src/components/common/labels/infoLabel";
 import {loadCurrentUserId} from "@/src/services/users/authService";
 import TeamCarousel from "@/src/components/common/HorizontalCarousel";
 import HorizontalCarousel from "@/src/components/common/HorizontalCarousel";
+import {corners} from "@/src/constants/theme";
 
 
 export default function teamId() {
@@ -135,7 +136,7 @@ export default function teamId() {
 const styles = StyleSheet.create({
 
     scrollContainer: {
-        borderRadius: 28,
+        borderRadius: corners.standard,
     },
 
 

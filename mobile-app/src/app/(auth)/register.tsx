@@ -1,6 +1,6 @@
 import {StyleSheet, Text} from "react-native";
 import AuthTextField from "@/src/components/auth/AuthTextField";
-import AuthHeader from "@/src/components/auth/AuthHeader";
+import AuthHeader from "@/src/components/common/headers/AuthHeader";
 import AuthContainer from "@/src/components/auth/AuthContainer";
 import AuthContent from "@/src/components/auth/AuthContent";
 import {useState} from "react";

@@ -311,7 +311,7 @@ export default function OnBoarding() {
                     await uploadProfilePicture(profileLogo);
                 }
 
-                router.replace("/(app)");
+                router.replace("/(app)/home");
 
             } catch (error) {
                 console.error(error);

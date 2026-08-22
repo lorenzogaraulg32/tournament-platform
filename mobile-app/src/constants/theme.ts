@@ -28,7 +28,7 @@ export const fonts = {
 
 
 export const corners = {
-    standard: 17,
+    standard: 18,
 }
 
 

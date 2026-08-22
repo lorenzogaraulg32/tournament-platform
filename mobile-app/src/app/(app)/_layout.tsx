@@ -7,76 +7,71 @@ import {colors} from "@/src/constants/theme"
 export default function RootLayout() {
     return (
 
-
         <Tabs
             screenOptions={{
                 headerShown: false,
-
                 tabBarStyle: styles.tabsBar,
-
                 tabBarActiveTintColor: "#ffffff",
                 tabBarInactiveTintColor: "#ffffff",
-
                 tabBarLabelStyle: styles.barLabel,
                 tabBarShowLabel: true,
             }}
         >
+            <Tabs.Screen
+                name="home"
+                options={{
+                    title: "Home",
+                    tabBarIcon: ({ color, size, focused }) => (
+                        <Ionicons
+                            name={focused ? "home" : "home-outline"}
+                            size={size}
+                            color={color}
+                        />
+                    ),
+                }}
+            />
 
+            <Tabs.Screen
+                name="teams"
+                options={{
+                    title: "Squadre",
+                    tabBarIcon: ({ color, size, focused }) => (
+                        <Ionicons
+                            name={focused ? "people" : "people-outline"}
+                            size={size}
+                            color={color}
+                        />
+                    ),
+                }}
+            />
 
-                <Tabs.Screen
-                    name="index"
-                    options={{
-                        title: "Home",
-                        tabBarIcon: ({color, size, focused}) => (
-                            <Ionicons
-                                name={focused ? "home" : "home-outline"}
-                                size={size}
-                                color={color}
-                            />
-                        ),
-                    }}
-                />
-                <Tabs.Screen
-                    name="teams"
-                    options={{
-                        title: "Squadre",
-                        tabBarIcon: ({color, size, focused}) => (
-                            <Ionicons
-                                name={focused ? "people" : "people-outline"}
-                                size={size}
-                                color={color}
-                            />
-                        ),
-                    }}
-                />
+            <Tabs.Screen
+                name="tournaments"
+                options={{
+                    title: "Tornei",
+                    tabBarIcon: ({ color, size, focused }) => (
+                        <Ionicons
+                            name={focused ? "trophy" : "trophy-outline"}
+                            size={size}
+                            color={color}
+                        />
+                    ),
+                }}
+            />
 
-                <Tabs.Screen
-                    name="tournaments"
-                    options={{
-                        title: "Tornei",
-                        tabBarIcon: ({color, size, focused}) => (
-                            <Ionicons
-                                name={focused ? "trophy" : "trophy-outline"}
-                                size={size}
-                                color={color}
-                            />
-                        ),
-                    }}
-                />
-
-                <Tabs.Screen
-                    name="profile"
-                    options={{
-                        title: "Profilo",
-                        tabBarIcon: ({color, size, focused}) => (
-                            <Ionicons
-                                name={focused ? "person" : "person-outline"}
-                                size={size}
-                                color={color}
-                            />
-                        ),
-                    }}
-                />
+            <Tabs.Screen
+                name="profile"
+                options={{
+                    title: "Profilo",
+                    tabBarIcon: ({ color, size, focused }) => (
+                        <Ionicons
+                            name={focused ? "person" : "person-outline"}
+                            size={size}
+                            color={color}
+                        />
+                    ),
+                }}
+            />
         </Tabs>
 
     );
