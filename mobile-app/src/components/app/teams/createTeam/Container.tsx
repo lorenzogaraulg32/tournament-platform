@@ -1,5 +1,5 @@
 import {ImageBackground, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View} from "react-native";
-import Background from "@/src/components/common/Background";
+import PageLayout from "@/src/components/common/PageLayout";
 import ButtonBack from "@/src/components/common/buttons/ButtonBack";
 import {ReactNode} from "react";
 import Picture from "@/src/components/common/Picture";
@@ -10,7 +10,7 @@ type CreateTeamContainerProps = {
 
 
 export default function Container({children}: CreateTeamContainerProps) {
-    return (<Background>
+    return (<PageLayout>
         <View style={styles.container}>
             <KeyboardAvoidingView
                 style={styles.keyboardContainer}
@@ -53,7 +53,7 @@ export default function Container({children}: CreateTeamContainerProps) {
                 </ScrollView>
             </KeyboardAvoidingView>
         </View>
-    </Background>)
+    </PageLayout>)
 }
 
 

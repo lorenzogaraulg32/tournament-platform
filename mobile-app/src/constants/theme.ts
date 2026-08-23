@@ -1,5 +1,8 @@
 export const colors = {
     orangeDefault: "#C8480A",
+    orangeDefaultBK: "#FFF1E8",
+    mustardDefault: "#C89200",
+    mustardDefaultBK: "FFF7DD",
 
 
     background: "#012613",

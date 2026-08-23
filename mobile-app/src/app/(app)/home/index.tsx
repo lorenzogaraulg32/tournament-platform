@@ -1,20 +1,39 @@
 import {ImageBackground, ScrollView, StyleSheet, Text, View} from "react-native";
-import Background from "@/src/components/common/Background";
+import PageLayout from "@/src/components/common/PageLayout";
 import {colors, corners} from "@/src/constants/theme";
+import CodeInput from "@/src/components/app/home/CodeInput";
+import {addCurrentUserToTeamViaCode} from "@/src/services/teams/teamService";
+import {router} from "expo-router";
+import PageHeader from "@/src/components/common/headers/PageHeader";
 
 export default function Homepage() {
 
 
+    async function joinTeam(code: string) {
+        const team = await addCurrentUserToTeamViaCode(code)
+        router.push({
+            pathname: "/teams/[teamId]",
+            params: {
+                teamId: team.id,
+            },
+        })
+    }
+
+    function joinTournament(code: string) {
+
+    }
+
     return (
 
-        <Background>
-
-            <ImageBackground
-                source={require("../../../../assets/images/backgrounds/greenBackground.png")}
-                style={styles.titleContainer}>
-                <Text style={styles.homeTitle}>{"Benvenuto in JoinCup"}</Text>
-            </ImageBackground>
-
+        <PageLayout
+            header={
+                <PageHeader
+                    variant="green"
+                    label="Benvenuto in JoinCup"
+                    title="Entra in gioco."
+                    subtitle="Unisciti a una squadra o partecipa a un torneo."
+                />
+            }>
             <View style={styles.scrollContainer}></View>
             <ScrollView
                 style={styles.scrollView}
@@ -22,8 +41,17 @@ export default function Homepage() {
                 showsVerticalScrollIndicator={false}
             >
 
+                <CodeInput
+                    variant="team"
+                    onJoin={(code) => joinTeam(code)}
+                />
+
+                <CodeInput
+                    variant="tournament"
+                    onJoin={(code) => joinTournament(code)}
+                />
             </ScrollView>
-        </Background>
+        </PageLayout>
 
     )
 }
@@ -37,31 +65,12 @@ const styles = StyleSheet.create({
 
     scrollView: {
         flex: 1,
-        backgroundColor: "#ffffff",
-    },
-
-    titleContainer: {
-        padding: 15,
-        alignItems: "center",
-        justifyContent: "center",
-        overflow: "hidden",
-        borderTopLeftRadius: corners.standard,
-        borderTopRightRadius: corners.standard,
-        borderWidth: 1,
-
-        borderColor: colors.background,
-        borderBottomColor: "#fff",
-
-        backgroundColor: colors.background,
-    },
-
-    homeTitle: {
-        color: "#ffffff",
-        fontSize: 24,
-        fontWeight: 700,
     },
 
     scrollContent: {
         flexGrow: 1,
+        gap: 22,
     },
+
+
 });

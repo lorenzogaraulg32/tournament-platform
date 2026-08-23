@@ -1,5 +1,5 @@
 import * as SecureStore from "expo-secure-store";
-import {handleLogout} from "@/src/services/users/authService";
+import {handleLogout, loadCurrentUserId} from "@/src/services/users/authService";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -107,6 +107,45 @@ export async function getUserTeams(userId: string): Promise<TeamInfo[]> {
 
 }
 
+
+export async function addCurrentUserToTeamViaCode(code: string) {
+
+    const accessToken = await SecureStore.getItemAsync("accessToken");
+
+    const tokenType = await SecureStore.getItemAsync("tokenType");
+
+    if (!accessToken) {
+        throw new Error("Access token non disponibile");
+    }
+
+    const response = await fetch(
+        `${API_URL}/teams/players/${code}`,
+        {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                Authorization: `${tokenType ?? "Bearer"} ${accessToken}`,
+            },
+        }
+    );
+
+    if (response.status === 401 || response.status === 403) {
+        console.log("Non autorizzato al refresh del codice")
+    }
+
+
+    if (!response.ok) {
+        const errorBody = await response.text();
+
+        throw new Error(
+            errorBody || `Errore nel cambio del codice: ${response.status}`
+        );
+    }
+
+    return await response.json() as TeamDetails;
+
+
+}
 
 export async function refreshCode(teamId: number) {
 

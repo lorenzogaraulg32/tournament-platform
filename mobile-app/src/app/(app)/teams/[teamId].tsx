@@ -1,4 +1,4 @@
-import Background from "@/src/components/common/Background";
+import PageLayout from "@/src/components/common/PageLayout";
 import {useEffect, useState} from "react";
 import {getTeamDetails, TeamDetails} from "@/src/services/teams/teamService";
 import {ScrollView, StyleSheet, Text, View} from "react-native";
@@ -8,7 +8,6 @@ import InfoLabel from "@/src/components/common/labels/infoLabel";
 import {loadCurrentUserId} from "@/src/services/users/authService";
 import TeamCarousel from "@/src/components/common/HorizontalCarousel";
 import HorizontalCarousel from "@/src/components/common/HorizontalCarousel";
-import {corners} from "@/src/constants/theme";
 
 
 export default function teamId() {
@@ -56,89 +55,94 @@ export default function teamId() {
 
 
     return (
-        <Background>
-            <TeamHeader
-                team={team}
-                isLoading={isLoading}
-                error={error}
-            />
+        <PageLayout
+            header={
+                <TeamHeader
+                    team={team}
+                    isLoading={isLoading}
+                    error={error}
+                />
+            }
+        >
+            <ScrollView style={styles.scroll}>
+                <View style={styles.scrollContent}>
 
-            <View style={styles.scrollContainer}>
+                    {team?.description ? (
 
-                <ScrollView style={styles.scroll}>
-                    <View style={styles.scrollContent}>
-
-                        {team?.description ? (
-
-                            <View style={styles.section}>
-                                <InfoLabel
-                                    text={"Bio"}
-                                    labelIconName={"information-circle-outline"}
-                                />
-                                <View
-                                    style={styles.descContainer}>
-                                    <Text
-                                        numberOfLines={5}
-                                        style={styles.description}>
-                                        {team.description}
-                                    </Text>
-                                </View>
+                        <View style={styles.section}>
+                            <InfoLabel
+                                text={"Bio"}
+                                labelIconName={"information-circle-outline"}
+                            />
+                            <View
+                                style={styles.descContainer}>
+                                <Text
+                                    numberOfLines={5}
+                                    style={styles.description}>
+                                    {team.description}
+                                </Text>
                             </View>
-                        ) : (
-                            <View></View>
+                        </View>
+                    ) : (
+                        <View></View>
+                    )}
+
+                    <View style={styles.section}>
+                        <InfoLabel
+                            text={"Players"}
+                            labelIconName={"people-outline"}
+                        />
+                        {team && (
+                            <HorizontalCarousel
+                                style={styles.teamCarousel}
+                                transparent
+                                inputEntity={team}
+                                variant="players"
+                            />
+                        )}
+                    </View>
+
+
+                    <View style={styles.section}>
+                        <InfoLabel
+                            text={"Admin"}
+                            labelIconName={"shield-checkmark-outline"}
+                        />
+
+
+                        {team && (
+                            <TeamCarousel
+                                style={styles.teamCarousel}
+                                transparent
+                                inputEntity={team}
+                                variant="admins"
+                            />
                         )}
 
-                        <View style={styles.section}>
-                            <InfoLabel
-                                text={"Players"}
-                                labelIconName={"people-outline"}
-                            />
-                            {team && (
-                                <HorizontalCarousel
-                                    style={styles.teamCarousel}
-                                    transparent
-                                    inputEntity={team}
-                                    variant="players"
-                                />
-                            )}
-                        </View>
-
-
-                        <View style={styles.section}>
-                            <InfoLabel
-                                text={"Admin"}
-                                labelIconName={"shield-checkmark-outline"}
-                            />
-
-
-                            {team && (
-                                <TeamCarousel
-                                    style={styles.teamCarousel}
-                                    transparent
-                                    inputEntity={team}
-                                    variant="admins"
-                                />
-                            )}
-
-                        </View>
-
-
                     </View>
-                </ScrollView>
-            </View>
 
-        </Background>
+
+                </View>
+            </ScrollView>
+        </PageLayout>
     )
 
 }
-
-
 const styles = StyleSheet.create({
 
-    scrollContainer: {
-        borderRadius: corners.standard,
+    scroll: {
+        flex: 1,
     },
 
+    scrollContent: {
+        gap: 24,
+
+        paddingTop: 12,
+        paddingBottom: 30,
+    },
+
+    section: {
+    },
 
     teamCarousel: {
         marginHorizontal: 0,
@@ -147,34 +151,21 @@ const styles = StyleSheet.create({
         borderRadius: 0,
     },
 
-    scroll: {
-        height: "100%",
-        marginTop: -26,
-        paddingTop: 36,
-        paddingHorizontal: 10,
-        paddingBottom: 20,
-        backgroundColor: "#ffffff",
-        zIndex: -1,
-    },
-
-    scrollContent: {
-        gap: 12,
-    },
-
-    section: {
-        gap: 4,
-    },
-
-
     descContainer: {
-        backgroundColor: "rgba(246,246,246,0.89)",
-        paddingHorizontal: 20,
-        paddingVertical: 8,
+        backgroundColor: "#FFFFFF",
+
+        paddingHorizontal: 16,
+
+        marginTop: 10,
+        paddingVertical: 14,
+
+        borderRadius: 14,
+
+        borderWidth: 1,
+        borderColor: "#E0E7E3",
+
         borderLeftWidth: 4,
-        borderRightWidth: 4,
-        borderRadius: 25,
         borderLeftColor: "#00A859",
-        borderRightColor: "#00A859",
     },
 
     description: {
@@ -182,6 +173,5 @@ const styles = StyleSheet.create({
         lineHeight: 20,
         color: "#3D4340",
     },
-
 
 });

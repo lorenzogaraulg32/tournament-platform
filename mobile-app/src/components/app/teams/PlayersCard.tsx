@@ -33,7 +33,7 @@ export default function PlayersCard({
     const role = playerRole ? ROLE_LABELS[playerRole] : "Jolly";
 
     function handlePress() {
-
+        //todo:
     }
 
     return (
@@ -76,12 +76,17 @@ export default function PlayersCard({
 const styles = StyleSheet.create({
 
     card: {
-        justifyContent: "center",
+        justifyContent: "flex-start",
         flexDirection: "column",
         alignItems: "center",
 
-        height: 85,
-        width: 62,
+        height: 92,
+        width: 72,
+
+
+        paddingVertical: 8,
+
+        gap: 4,
 
         backgroundColor: teamCardGreenColors.background,
 
@@ -106,8 +111,8 @@ const styles = StyleSheet.create({
 
 
     logoContainer: {
-        width: 36,
-        height: 36,
+        width: 40,
+        height: 40,
         borderRadius: 20,
 
         alignItems: "center",
@@ -232,7 +237,6 @@ const styles = StyleSheet.create({
             {scaleX: 1.3},
         ],
     },
-
 
     accentLeft: {
         position: "absolute",

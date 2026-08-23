@@ -221,10 +221,7 @@ export default function HorizontalCarousel({
 
 const styles = StyleSheet.create({
     container: {
-        paddingHorizontal: 5,
-        justifyContent: "space-between",
         flexDirection: "row",
-        gap: 5,
     },
 
     cardContainer: {
