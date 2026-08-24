@@ -1,4 +1,4 @@
-import ProfileHeader from "@/src/components/common/headers/ProfileHeader";
+import HeaderProfile from "@/src/components/common/headers/HeaderProfile";
 import {useEffect, useState} from "react";
 import {AuthInfo, handleLogout, loadUserAuthInfo} from "@/src/services/users/authService";
 import {loadUserInfo, UserInfo} from "@/src/services/users/userService";
@@ -8,6 +8,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import {colors} from "@/src/constants/theme";
 import InfoLabel from "@/src/components/common/labels/infoLabel";
 import TeamCarousel from "@/src/components/common/HorizontalCarousel";
+import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 
 type ProfilePageProps = {
     userId: string;
@@ -56,67 +57,62 @@ export default function ProfilePage({userId, teams}: ProfilePageProps) {
 
 
     return (
-        <PageLayout>
-            {isLoading ? (
-                <View style={styles.feedbackContainer}>
-                    <ActivityIndicator color="#FFFFFF" size="large"/>
-                </View>
-
-            ) : error ? (
-                <View style={styles.feedbackContainer}>
-                    <Text style={styles.feedbackText}>
-                        {error}
-                    </Text>
-                </View>
-            ) : !userInfo || !userAuthInfo ? (
-                <View style={styles.feedbackContainer}>
-                    <Text style={styles.feedbackText}>
-                        Utente non disponibile
-                    </Text>
-                </View>
-            ) : (
-                <View style={styles.profileContainer}>
-
-                    <View style={styles.headerContainer}>
-                        <ProfileHeader
-                            userInfo={userInfo}
-                            authInfo={userAuthInfo}
-                            isLoading={false}
-                        />
+        <PageLayout
+            header={
+            <HeaderContainer variant={"red"}>
+                {isLoading ? (
+                    <View >
+                        <ActivityIndicator color="#FFFFFF" size="large"/>
                     </View>
+                ) : error ? (
+                    <View>
+                        <Text style={styles.feedbackText}>
+                            {error}
+                        </Text>
+                    </View>
+                ) : !userInfo || !userAuthInfo ? (
+                    <View>
+                        <Text style={styles.feedbackText}>
+                            Utente non disponibile
+                        </Text>
+                    </View>
+                ) : (
+                    <HeaderProfile
+                        userInfo={userInfo}
+                        authInfo={userAuthInfo}
+                        isLoading={false}
+                    />
+                )}
+            </HeaderContainer>}>
 
-                    <ScrollView
-                        style={styles.scrollView}
-                        contentContainerStyle={styles.scrollContent}
-                        showsVerticalScrollIndicator={false}
-                    >
-                        <View style={styles.profileContent}>
-                            {teams ? (
-                                <View style={styles.section}>
-                                    <InfoLabel text={"Squadre"} labelIconName={"shirt-outline"}/>
-                                    <TeamCarousel
-                                        transparent
-                                        style={styles.teamCarousel}
-                                        inputEntity={{
-                                            id: userId,
-                                            userInfo: userInfo
-                                        }}
-                                        variant="teams"
-                                    />
-                                </View>
-                            ) : (
-                                <View>
-                                </View>
-                            )}
-                        </View>
-                    </ScrollView>
+            <View style={styles.profileContainer}>
+                <ScrollView
+                    style={styles.scrollView}
+                    contentContainerStyle={styles.scrollContent}
+                    showsVerticalScrollIndicator={false}
+                >
+                    <View style={styles.profileContent}>
+                        {teams && userInfo ? (
+                            <View style={styles.section}>
+                                <InfoLabel text={"Squadre"} labelIconName={"shirt-outline"}/>
+                                <TeamCarousel
+                                    transparent
+                                    style={styles.teamCarousel}
+                                    inputEntity={{
+                                        id: userId,
+                                        userInfo: userInfo
+                                    }}
+                                    variant="teams"
+                                />
+                            </View>
+                        ) : (
+                            <View>
+                            </View>
+                        )}
+                    </View>
+                </ScrollView>
 
-                </View>
-
-
-            )}
-
-
+            </View>
             <View style={styles.logoutContainer}>
 
                 <Pressable
@@ -208,13 +204,6 @@ const styles = StyleSheet.create({
     logoutBtnPressed: {
         transform: [{scale: 0.98}],
         opacity: 0.9,
-    },
-
-    feedbackContainer: {
-        minHeight: 120,
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 20,
     },
 
     feedbackText: {

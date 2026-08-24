@@ -1,34 +1,39 @@
-import {ActivityIndicator, Pressable, StyleSheet, Text, View,} from "react-native";
-import Container from "@/src/components/app/teams/createTeam/Container";
-import Switch from "@/src/components/app/teams/createTeam/Switch";
-import Fields from "@/src/components/app/teams/createTeam/Fields";
-import PositionField, {TeamLocation,} from "@/src/components/app/teams/createTeam/PositionField";
-import {createTeam, RecruitmentStatus, TeamLogoUpload,} from "@/src/services/teams/teamCreationService";
+import {StyleSheet, Text, View,} from "react-native";
 import {useState} from "react";
 import {router} from "expo-router";
-import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+
+import Switch from "@/src/components/app/teams/createTeam/Switch";
+import Fields from "@/src/components/app/teams/createTeam/Fields";
+import PositionField from "@/src/components/app/teams/createTeam/PositionField";
 import LogoField from "@/src/components/app/teams/createTeam/LogoField";
+import CreateTeamPage from "@/src/components/app/teams/createTeam/CreateTeamPage";
 
-export default function CreateTeamPage() {
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
+import {createTeam, TeamCreationRequest, TeamLogoUpload,} from "@/src/services/teams/teamCreationService";
+import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
 
-    const [status, setStatus] =
-        useState<RecruitmentStatus>("CLOSED");
+type TeamCreationStep = 0 | 1 | 2;
 
-    const [location, setLocation] =
-        useState<TeamLocation | null>(null);
+const FIRST_STEP: TeamCreationStep = 0;
+const LAST_STEP: TeamCreationStep = 2;
+
+const STEPS: TeamCreationStep[] = [0, 1, 2];
+
+export default function CreateTeam() {
+    const [currentStep, setCurrentStep] =
+        useState<TeamCreationStep>(FIRST_STEP);
+
+    const [teamData, setTeamData] =
+        useState<TeamCreationRequest>({
+            name: "",
+            description: "",
+            status: "CLOSED",
+            location: undefined,
+        });
 
     const [logo, setLogo] =
         useState<TeamLogoUpload | null>(null);
 
-    const [nameError, setNameError] =
-        useState<string | undefined>();
-
-    const [locationError, setLocationError] =
-        useState<string | undefined>();
-
-    const [logoError, setLogoError] =
+    const [stepError, setStepError] =
         useState<string | undefined>();
 
     const [submitError, setSubmitError] =
@@ -37,139 +42,303 @@ export default function CreateTeamPage() {
     const [isSubmitting, setIsSubmitting] =
         useState(false);
 
-    function validateForm(): boolean {
-        let isValid = true;
+    function updateTeamData<
+        K extends keyof TeamCreationRequest
+    >(
+        field: K,
+        value: TeamCreationRequest[K],
+    ) {
+        setTeamData((previousData) => ({
+            ...previousData,
+            [field]: value,
+        }));
 
-        setNameError(undefined);
-        setLocationError(undefined);
-        setLogoError(undefined)
+        setStepError(undefined);
         setSubmitError(null);
+    }
 
-        const trimmedName = name.trim();
+    function validateNameAndDescription(): boolean {
+        const trimmedName = teamData.name.trim();
+        const trimmedDescription =
+            teamData.description?.trim() ?? "";
 
-        if (trimmedName.length < 5 || trimmedName.length > 20) {
-            setNameError(
-                "Il nome deve avere tra 5 e 20 caratteri"
+        if (
+            trimmedName.length < 5 ||
+            trimmedName.length > 20
+        ) {
+            setStepError(
+                "Il nome deve avere tra 5 e 20 caratteri",
             );
-            isValid = false;
+            return false;
         }
 
+        if (trimmedDescription.length > 160) {
+            setStepError(
+                "La descrizione non può superare i 160 caratteri",
+            );
+            return false;
+        }
+
+        return true;
+    }
+
+
+    function validateLocation(): boolean {
+        const location = teamData.location;
+
+        // Nessuna posizione: consentito
         if (!location) {
-            setLocationError(
-                "Seleziona la posizione della squadra"
-            );
-            isValid = false;
+            return true;
         }
 
-        if (logo) {
-            if (
-                logo.fileSize !== undefined &&
-                logo.fileSize > 2 * 1024 * 1024
-            ) {
-                setLogoError(
-                    "Il logo non può superare i 2 MB"
-                );
-                isValid = false;
+        // Posizione presente ma non valida
+        if (
+            !location.label?.trim() ||
+            !Number.isFinite(location.latitude) ||
+            !Number.isFinite(location.longitude)
+        ) {
+            setStepError(
+                "La posizione selezionata non è valida",
+            );
+            return false;
+        }
+
+        return true;
+    }
+
+
+    function validateLogo(): boolean {
+        if (
+            logo?.fileSize !== undefined &&
+            logo.fileSize > 2 * 1024 * 1024
+        ) {
+            setStepError(
+                "Il logo non può superare i 2 MB",
+            );
+            return false;
+        }
+
+        return true;
+    }
+
+    function validateStep(
+        step: TeamCreationStep,
+    ): boolean {
+        setStepError(undefined);
+
+        switch (step) {
+            case 0:
+                return validateNameAndDescription();
+
+            case 1:
+                return validateLocation();
+
+            case 2:
+                return validateLogo();
+        }
+    }
+
+    function validateForm(): boolean {
+        for (const step of STEPS) {
+            if (!validateStep(step)) {
+                setCurrentStep(step);
+                return false;
             }
         }
 
-        return isValid;
+        return true;
     }
 
-    async function handleCreateTeam() {
-        if (!validateForm() || !location) {
+    function handleBack() {
+        if (
+            currentStep === FIRST_STEP ||
+            isSubmitting
+        ) {
             return;
         }
 
+        setStepError(undefined);
+        setSubmitError(null);
+
+        setCurrentStep(
+            (currentStep - 1) as TeamCreationStep,
+        );
+    }
+
+    async function handleNext() {
+        if (isSubmitting) {
+            return;
+        }
+
+        setSubmitError(null);
+
+        if (!validateStep(currentStep)) {
+            return;
+        }
+
+        if (currentStep === LAST_STEP) {
+            await handleCreateTeam();
+            return;
+        }
+
+        setCurrentStep(
+            (currentStep + 1) as TeamCreationStep,
+        );
+    }
+
+    async function handleCreateTeam() {
+        if (!validateForm()) {
+            return;
+        }
+
+        const selectedLocation = teamData.location;
+
+        if (!selectedLocation) {
+            return;
+        }
+
+        const trimmedDescription =
+            teamData.description?.trim();
+
         try {
             setIsSubmitting(true);
+            setSubmitError(null);
 
-            const response = await createTeam({
-                    name: name.trim(),
+            const response = await createTeam(
+                {
+                    name: teamData.name.trim(),
                     description:
-                        description.trim() || undefined,
-                    status,
+                        trimmedDescription || undefined,
+                    status: teamData.status,
                     location: {
-                        label: location.label,
-                        latitude: location.latitude,
-                        longitude: location.longitude,
+                        label: selectedLocation.label,
+                        latitude:
+                        selectedLocation.latitude,
+                        longitude:
+                        selectedLocation.longitude,
                     },
                 },
-                logo
+                logo,
             );
 
             router.replace(`/teams/${response.id}`);
-        } catch (error) {
+        } catch (caughtError) {
             setSubmitError(
-                error instanceof Error
-                    ? error.message
-                    : "Errore durante la creazione"
+                caughtError instanceof Error
+                    ? caughtError.message
+                    : "Errore durante la creazione",
             );
-            console.error(error)
+
+            console.error(caughtError);
         } finally {
             setIsSubmitting(false);
         }
     }
 
+    function renderStep() {
+        switch (currentStep) {
+            case 0:
+                return (
+                    <View style={styles.stepContainer}>
+                        <Fields
+                            label="Nome squadra"
+                            labelIconName="shield-outline"
+                            placeholder="Es. FC Bar Ci Siamo"
+                            value={teamData.name}
+                            onChangeText={(name) =>
+                                updateTeamData(
+                                    "name",
+                                    name,
+                                )
+                            }
+                            maxLength={20}
+                            minLength={5}
+                            editable={!isSubmitting}
+                        />
+
+                        <Fields
+                            label="Descrizione"
+                            optional
+                            labelIconName="chatbubble-ellipses-outline"
+                            placeholder="Racconta qualcosa della tua squadra..."
+                            value={
+                                teamData.description ?? ""
+                            }
+                            onChangeText={(description) =>
+                                updateTeamData(
+                                    "description",
+                                    description,
+                                )
+                            }
+                            multiline
+                            maxLength={160}
+                            textAlignVertical="top"
+                            editable={!isSubmitting}
+                            inputStyle={{
+                                minHeight: 120,
+                            }}
+                        />
+
+                        <Switch
+                            value={teamData.status}
+                            onChange={(status) =>
+                                updateTeamData(
+                                    "status",
+                                    status,
+                                )
+                            }
+                        />
+
+                        {stepError && (
+                            <Text
+                                style={styles.stepError}
+                            >
+                                {stepError}
+                            </Text>
+                        )}
+                    </View>
+                );
+
+            case 1:
+                return (
+                    <View style={styles.stepContainer}>
+                        <PositionField
+                            value={teamData.location ?? null}
+                            onChange={(newLocation) =>
+                                updateTeamData(
+                                    "location",
+                                    newLocation ?? undefined,
+                                )
+                            }
+                            errorMessage={stepError}
+                            variant="createTeam"
+                        />
+                    </View>
+                );
+
+            case 2:
+                return (
+                    <View style={styles.stepContainer}>
+                        <LogoField
+                            variant="createTeam"
+                            value={logo}
+                            onChange={(newLogo) => {
+                                setLogo(newLogo);
+                                setStepError(undefined);
+                                setSubmitError(null);
+                            }}
+                            disabled={isSubmitting}
+                            errorMessage={stepError}
+                        />
+                    </View>
+                );
+        }
+    }
+
     return (
-        <Container>
+        <CreateTeamPage>
             <View style={styles.formContainer}>
-
-                <Fields
-                    label="Nome squadra"
-                    labelIconName="shield-outline"
-                    placeholder="Es. FC Bar Ci Siamo"
-                    value={name}
-                    onChangeText={setName}
-                    errorMessage={nameError}
-                    maxLength={20}
-                    minLength={5}
-                    editable={!isSubmitting}
-                />
-
-                <Fields
-                    label="Descrizione"
-                    optional
-                    labelIconName="chatbubble-ellipses-outline"
-                    placeholder="Racconta qualcosa della tua squadra..."
-                    value={description}
-                    onChangeText={setDescription}
-                    multiline
-                    maxLength={160}
-                    textAlignVertical="top"
-                    editable={!isSubmitting}
-                    inputStyle={{
-                        minHeight: 120,
-                    }}
-                />
-
-                <Switch
-                    value={status}
-                    onChange={setStatus}
-                />
-
-                <PositionField
-                    value={location}
-                    onChange={(newLocation) => {
-                        setLocation(newLocation);
-
-                        if (newLocation) {
-                            setLocationError(undefined);
-                        }
-                    }}
-                    errorMessage={locationError}
-                    variant={"createTeam"}/>
-
-                <LogoField
-                    variant={"createTeam"}
-                    value={logo}
-                    onChange={(newLogo) => {
-                        setLogo(newLogo);
-                        setLogoError(undefined);
-                    }}
-                    disabled={isSubmitting}
-                    errorMessage={logoError}
-                />
+                {renderStep()}
 
                 {submitError && (
                     <Text style={styles.submitError}>
@@ -177,55 +346,50 @@ export default function CreateTeamPage() {
                     </Text>
                 )}
 
-                <Pressable
-                    onPress={() => void handleCreateTeam()}
-                    disabled={isSubmitting}
-                    style={({pressed}) => [
-                        styles.submitButton,
-                        pressed && styles.submitButtonPressed,
-                        isSubmitting &&
-                        styles.submitButtonDisabled,
-                    ]}
-                >
-                    {isSubmitting ? (
-                        <ActivityIndicator color="#FFFFFF"/>
-                    ) : (
-                        <>
-                            <FontAwesome6
-                                name="plus"
-                                size={19}
-                                color="#FFFFFF"
-                            />
-
-                            <Text style={styles.submitButtonText}>
-                                Crea squadra
-                            </Text>
-                        </>
+                <View style={styles.btnContainer}>
+                    {currentStep > FIRST_STEP && (
+                        <ButtonSolid
+                            style={styles.btn}
+                            onPress={handleBack}
+                            disabled={isSubmitting}
+                            variant="buttonLogin"
+                            textVariant="textLogin"
+                            text="Indietro"
+                        />
                     )}
-                </Pressable>
+
+                    <ButtonSolid
+                        style={styles.btn}
+                        variant="buttonRegister"
+                        textVariant="textRegister"
+                        onPress={() => void handleNext()}
+                        disabled={isSubmitting}
+                        text={
+                            currentStep === LAST_STEP
+                                ? "Crea"
+                                : "Avanti"
+                        }
+                    />
+                </View>
             </View>
-        </Container>
+        </CreateTeamPage>
     );
 }
 
 const styles = StyleSheet.create({
     formContainer: {
         flex: 1,
-        minHeight: 320,
-        marginTop: -25,
-        paddingHorizontal: 20,
-        paddingTop: 16,
-        paddingBottom: 20,
-        borderRadius: 24,
-        backgroundColor: "#FFFFFF",
-        shadowColor: "#000000",
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 0.12,
-        shadowRadius: 7,
-        elevation: 5,
+    },
+
+    stepContainer: {
+        flex: 1,
+    },
+
+    stepError: {
+        marginTop: 12,
+        color: "#B42318",
+        fontSize: 14,
+        textAlign: "center",
     },
 
     submitError: {
@@ -235,27 +399,16 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
 
-    submitButton: {
-        minHeight: 54,
+    btnContainer: {
+        width: "100%",
         flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 10,
-        borderRadius: 18,
-        backgroundColor: "#C8480A",
+        alignItems: "stretch",
+        gap: 12,
+        marginTop: 20,
     },
 
-    submitButtonPressed: {
-        opacity: 0.8,
-    },
-
-    submitButtonDisabled: {
-        opacity: 0.6,
-    },
-
-    submitButtonText: {
-        color: "#FFFFFF",
-        fontSize: 17,
-        fontWeight: "800",
+    btn: {
+        flex: 1,
+        minWidth: 0,
     },
 });

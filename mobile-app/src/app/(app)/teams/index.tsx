@@ -4,8 +4,9 @@ import {useState} from "react";
 import MyTeams from "@/src/app/(app)/teams/myTeams";
 import ButtonBackground from "@/src/components/common/buttons/ButtonBackground";
 import {router} from "expo-router";
-import PageHeader from "@/src/components/common/headers/PageHeader";
+import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import HeaderPage from "@/src/components/common/headers/HeaderPage";
 
 type TeamsTab = "myTeams" | "findTeam";
 
@@ -16,102 +17,111 @@ export default function TeamsPage() {
     return (
         <PageLayout
             header={
-                <PageHeader
-                    variant="orange"
-                    label="JoinCup"
-                    title="Squadre"
-                    subtitle="Gestisci le tue squadre e trovane di nuove."
-                />
+                <HeaderContainer variant="orange">
+                    <HeaderPage
+                        label="JoinCup"
+                        title="Squadre"
+                        subtitle="Gestisci le tue squadre e trovane di nuove."/>
+                </HeaderContainer>
 
             }
-        contentStyle={styles.content}>
+            contentStyle={styles.content}>
 
 
+            <View style={styles.tabsContainer}>
 
-                <View style={styles.tabsContainer}>
-
-                    <Pressable
-                        accessibilityRole="button"
-                        accessibilityState={{
-                            selected: activeTab === "myTeams",
-                        }}
-                        onPress={() => setActiveTab("myTeams")}
-                        style={({pressed}) => [
-                            styles.tab,
-                            activeTab === "myTeams" && styles.activeTab,
-                            pressed && styles.pressedTab,
+                <Pressable
+                    accessibilityRole="button"
+                    accessibilityState={{
+                        selected: activeTab === "myTeams",
+                    }}
+                    onPress={() => setActiveTab("myTeams")}
+                    style={({pressed}) => [
+                        styles.tab,
+                        activeTab === "myTeams" && styles.activeTab,
+                        pressed && styles.pressedTab,
+                    ]}
+                >
+                    <Text
+                        style={[
+                            styles.tabText,
+                            activeTab === "myTeams" && styles.activeTabText,
                         ]}
                     >
-                        <Text
-                            style={[
-                                styles.tabText,
-                                activeTab === "myTeams" && styles.activeTabText,
-                            ]}
-                        >
-                            Le mie squadre
-                        </Text>
-                    </Pressable>
+                        Le mie squadre
+                    </Text>
+                </Pressable>
 
-                    <Pressable
-                        accessibilityRole="button"
-                        accessibilityState={{
-                            selected: activeTab === "findTeam",
-                        }}
-                        onPress={() => setActiveTab("findTeam")}
-                        style={({pressed}) => [
-                            styles.tab,
-                            activeTab === "findTeam" && styles.activeTab,
-                            pressed && styles.pressedTab,
+                <Pressable
+                    accessibilityRole="button"
+                    accessibilityState={{
+                        selected: activeTab === "findTeam",
+                    }}
+                    onPress={() => setActiveTab("findTeam")}
+                    style={({pressed}) => [
+                        styles.tab,
+                        activeTab === "findTeam" && styles.activeTab,
+                        pressed && styles.pressedTab,
+                    ]}
+                >
+                    <Text
+                        style={[
+                            styles.tabText,
+                            activeTab === "findTeam" && styles.activeTabText,
                         ]}
                     >
-                        <Text
-                            style={[
-                                styles.tabText,
-                                activeTab === "findTeam" && styles.activeTabText,
-                            ]}
-                        >
-                            Trova squadra
-                        </Text>
-                    </Pressable>
+                        Trova squadra
+                    </Text>
+                </Pressable>
 
-                </View>
+            </View>
 
-                <View style={styles.content}>
-                    {activeTab === "myTeams" ? (
-                        <View style={styles.myTeamsContent}>
+            <View style={styles.tabContent}>
+                {activeTab === "myTeams" ? (
+                    <View style={styles.myTeamsContent}>
 
-                            <MyTeams/>
+                        <MyTeams/>
 
-                            <ButtonBackground
-                                text="Crea nuova squadra"
-                                onPress={() => router.push("/teams/create")}
+                        <ButtonBackground
+                            text="Crea nuova squadra"
+                            onPress={() => router.push("/teams/create")}
+                        />
+
+                    </View>
+                ) : (
+                    <View style={styles.findTeamContent}>
+                        <View style={styles.searchContainer}>
+                            <Ionicons
+                                name="search-outline"
+                                size={21}
+                                color="#7A8781"
                             />
 
+                            <TextInput
+                                placeholder="Cerca una squadra..."
+                                placeholderTextColor="#9AA39F"
+                                style={styles.searchInput}
+                            />
                         </View>
-                    ) : (
-                        <View style={styles.findTeamContent}>
-                            <View style={styles.searchContainer}>
-                                <Ionicons
-                                    name="search-outline"
-                                    size={21}
-                                    color="#7A8781"
-                                />
-
-                                <TextInput
-                                    placeholder="Cerca una squadra..."
-                                    placeholderTextColor="#9AA39F"
-                                    style={styles.searchInput}
-                                />
-                            </View>
-                        </View>
-                    )}
-                </View>
+                    </View>
+                )}
+            </View>
         </PageLayout>
     );
 }
 
 
 const styles = StyleSheet.create({
+
+    content: {
+        paddingHorizontal: 5,
+    },
+
+    tabContent: {
+        flex: 1,
+        paddingTop: 18,
+    },
+
 
     tabsContainer: {
         flexDirection: "row",
@@ -157,11 +167,7 @@ const styles = StyleSheet.create({
     },
 
 
-    content: {
-        flex: 1,
-        paddingTop: 18,
-        paddingHorizontal: 5,
-    },
+
 
     myTeamsContent: {
         flex: 1,

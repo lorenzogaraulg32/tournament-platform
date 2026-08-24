@@ -14,7 +14,7 @@ export type TeamCreationRequest = {
     name: string;
     description?: string;
     status: RecruitmentStatus;
-    location: TeamLocationRequest;
+    location?: TeamLocationRequest;
 };
 
 export type TeamLogoUpload = {

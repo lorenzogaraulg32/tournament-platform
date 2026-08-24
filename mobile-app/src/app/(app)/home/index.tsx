@@ -1,10 +1,11 @@
-import {ImageBackground, ScrollView, StyleSheet, Text, View} from "react-native";
+import {ScrollView, StyleSheet, View} from "react-native";
 import PageLayout from "@/src/components/common/PageLayout";
-import {colors, corners} from "@/src/constants/theme";
+import {corners} from "@/src/constants/theme";
 import CodeInput from "@/src/components/app/home/CodeInput";
 import {addCurrentUserToTeamViaCode} from "@/src/services/teams/teamService";
 import {router} from "expo-router";
-import PageHeader from "@/src/components/common/headers/PageHeader";
+import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
+import HeaderPage from "@/src/components/common/headers/HeaderPage";
 
 export default function Homepage() {
 
@@ -27,12 +28,11 @@ export default function Homepage() {
 
         <PageLayout
             header={
-                <PageHeader
-                    variant="green"
-                    label="Benvenuto in JoinCup"
-                    title="Entra in gioco."
-                    subtitle="Unisciti a una squadra o partecipa a un torneo."
-                />
+                <HeaderContainer variant="green">
+                    <HeaderPage label="Benvenuto in JoinCup"
+                                title="Entra in gioco."
+                                subtitle="Unisciti a una squadra o partecipa a un torneo."/>
+                </HeaderContainer>
             }>
             <View style={styles.scrollContainer}></View>
             <ScrollView

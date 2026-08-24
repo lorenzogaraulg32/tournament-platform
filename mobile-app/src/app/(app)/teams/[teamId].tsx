@@ -3,11 +3,12 @@ import {useEffect, useState} from "react";
 import {getTeamDetails, TeamDetails} from "@/src/services/teams/teamService";
 import {ScrollView, StyleSheet, Text, View} from "react-native";
 import {useLocalSearchParams} from "expo-router";
-import TeamHeader from "@/src/components/common/headers/TeamHeader";
+import HeaderTeam from "@/src/components/common/headers/HeaderTeam";
 import InfoLabel from "@/src/components/common/labels/infoLabel";
 import {loadCurrentUserId} from "@/src/services/users/authService";
 import TeamCarousel from "@/src/components/common/HorizontalCarousel";
 import HorizontalCarousel from "@/src/components/common/HorizontalCarousel";
+import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 
 
 export default function teamId() {
@@ -57,11 +58,13 @@ export default function teamId() {
     return (
         <PageLayout
             header={
-                <TeamHeader
+                <HeaderContainer variant={"orange"}>
+                <HeaderTeam
                     team={team}
                     isLoading={isLoading}
                     error={error}
                 />
+                </HeaderContainer>
             }
         >
             <ScrollView style={styles.scroll}>

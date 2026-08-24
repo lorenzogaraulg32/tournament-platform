@@ -8,30 +8,37 @@ type AuthHeaderProps = {
     subtitle: string,
 }
 
+/**
+ * Header usato nelle sezioni di autenticazione
+ * @param title
+ * @param headline
+ * @param subtitle
+ * @constructor
+ */
 
 export default function AuthHeader({title, headline, subtitle}: AuthHeaderProps) {
     return (
-        <View style={styles.introContainer}>
+        <View style={styles.container}>
             <View style={styles.logoBox}>
                 <Ionicons name="trophy" size={54} color={"#00A85A"}/>
             </View>
             {title &&
-                <Text style={[styles.textBase, styles.title]}>{title}</Text>
+                <Text style={[styles.text, styles.title]}>{title}</Text>
             }
-            <Text style={[styles.textBase, styles.headline]}>{headline}</Text>
-            <Text style={[styles.textBase, styles.subtitle]}>{subtitle}</Text>
+            <Text style={[styles.text, styles.headline]}>{headline}</Text>
+            <Text style={[styles.text, styles.subtitle]}>{subtitle}</Text>
         </View>
     );
 }
 
 
 const styles = StyleSheet.create({
-    introContainer: {
+    container: {
         alignItems: "center",
         gap: 10
     },
 
-    textBase: {
+    text: {
         textAlign: "center",
         maxWidth: 310,
     },

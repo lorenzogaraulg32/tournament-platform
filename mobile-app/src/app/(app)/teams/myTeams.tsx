@@ -17,6 +17,7 @@ export default function MyTeams() {
 
 
     async function loadUserTeams(isActive: boolean) {
+        console.log("Loading user teams....")
         try {
             setIsLoading(true)
             setError(null)
@@ -52,6 +53,7 @@ export default function MyTeams() {
     }
 
     function renderUserTeams() {
+
         if (isLoading) {
             return (
                 <View style={styles.messageContainer}>
@@ -74,6 +76,7 @@ export default function MyTeams() {
         }
 
         if (userTeams.length === 0) {
+            console.log("UserTeam vuoto")
             return (
                 <View style={styles.messageContainer}>
                     <Text style={styles.messageText}>
@@ -85,6 +88,7 @@ export default function MyTeams() {
 
 
         return userTeams.map((team) => (
+
             <TeamCardHorizontal
                 key={team.id}
                 id={team.id}
@@ -100,7 +104,7 @@ export default function MyTeams() {
 
             let isActive = true;
 
-            loadUserTeams(isActive)
+             void loadUserTeams(isActive)
 
             return () => {
                 isActive = false;

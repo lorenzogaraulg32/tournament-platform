@@ -1,6 +1,5 @@
 import {ActivityIndicator, Pressable, StyleSheet, Text, View,} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import HeaderContainer from "./headerContainer";
 import Picture from "@/src/components/common/Picture";
 import {refreshCode, TeamDetails} from "@/src/services/teams/teamService";
 import {useEffect, useRef, useState} from "react";
@@ -14,8 +13,6 @@ type TeamHeaderProps = {
     error?: string | null;
 };
 
-const TEAM_BACKGROUND = require("../../../../assets/images/backgrounds/orangeBackground.png");
-
 
 /**
  *
@@ -25,7 +22,7 @@ const TEAM_BACKGROUND = require("../../../../assets/images/backgrounds/orangeBac
  * @param onInviteFriendPress
  * @constructor
  */
-export default function TeamHeader({
+export default function HeaderTeam({
                                        team,
                                        isLoading = false,
                                        error = null,
@@ -73,12 +70,7 @@ export default function TeamHeader({
 
 
     return (
-        <HeaderContainer
-            backgroundSource={TEAM_BACKGROUND}
-            overlayColor="rgba(31, 10, 2, 0.25)"
-            borderColor="rgba(255, 154, 72, 0.25)"
-        >
-
+        <View>
             <Pressable
                 onPress={onBackPress}
                 hitSlop={16}
@@ -133,7 +125,7 @@ export default function TeamHeader({
                     </View>
 
                     <View style={styles.rightContainer}>
-                        <View style={styles.titleRow}>
+                        <View style={styles.nameRow}>
 
                             <Text
                                 style={styles.teamName}
@@ -179,7 +171,7 @@ export default function TeamHeader({
                     </View>
                 </View>
             )}
-        </HeaderContainer>
+        </View>
     );
 }
 
@@ -226,7 +218,7 @@ function InviteFriendBadge({team,}: InviteFriendBadgeProps) {
     }
 
     return (
-        <View style={styles.infoBadge}>
+        <View style={styles.codeBadge}>
 
             <Pressable
                 onPress={copyInvitationCode}
@@ -280,14 +272,9 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
         alignItems: "center",
-
-        paddingHorizontal: 28,
-        paddingTop: 75,
-        paddingBottom: 28,
-
+        paddingTop: 25,
         gap: 25,
     },
-
 
     imageContainer: {
         width: 80,
@@ -322,7 +309,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
     },
 
-    infoBadge: {
+    codeBadge: {
         flexDirection: "row",
         alignItems: "center",
 
@@ -407,12 +394,12 @@ const styles = StyleSheet.create({
 
     backButton: {
         position: "absolute",
-        top: 50,
-        left: 18,
+
+        left: 0,
         zIndex: 10,
 
-        width: 40,
-        height: 40,
+        width: 35,
+        height: 35,
 
         alignItems: "center",
         justifyContent: "center",
@@ -423,7 +410,7 @@ const styles = StyleSheet.create({
 
     },
 
-    titleRow: {
+    nameRow: {
         flexDirection: "row",
         alignItems: "center",
         gap: 8,
@@ -441,8 +428,8 @@ const styles = StyleSheet.create({
     },
 
     editButton: {
-        width: 36,
-        height: 36,
+        width: 33,
+        height: 33,
 
         borderRadius: 18,
 

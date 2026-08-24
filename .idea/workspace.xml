@@ -4,22 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Removed global header, refined specific headers">
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/app/home/CodeInput.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/common/headers/PageHeader.tsx" afterDir="false" />
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Graphical improvements, need to also do the profile">
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/app/teams/createTeam/CreateTeamPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/common/headers/HeaderCreateTeam.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/common/headers/HeaderPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-gateway/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/mvnw.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/mvnw.cmd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/home/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/home/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/[teamId].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/[teamId].tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/create.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/create.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/myTeams.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/myTeams.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/tournaments/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/tournaments/_layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/tournaments/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/tournaments/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/components/app/profile/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/app/profile/ProfilePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/app/teams/AdminsCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/app/teams/AdminsCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/app/teams/PlayersCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/app/teams/PlayersCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/app/teams/createTeam/Container.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/app/teams/createTeam/Container.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/Background.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/PageLayout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/HorizontalCarousel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/HorizontalCarousel.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/headers/TeamHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/headers/TeamHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/constants/theme.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/constants/theme.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/teams/teamService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/teams/teamService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/app/teams/createTeam/Container.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/buttons/ButtonBack.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/headers/AuthHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/headers/AuthHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/headers/PageHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/headers/HeaderContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/headers/ProfileHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/headers/HeaderProfile.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/headers/TeamHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/headers/HeaderTeam.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/headers/headerContainer.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/teams/teamCreationService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/teams/teamCreationService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service-registry/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/service-registry/mvnw.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/team-service/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/mvnw.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament-service/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/tournament-service/mvnw.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/mvnw.cmd" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,7 +75,7 @@
     <setting file="file://$PROJECT_DIR$/mobile-app/src/components/app/teams/TeamInfoSection.tsx" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
@@ -141,11 +152,11 @@
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\onboarding" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\common\headers" />
+      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\common\headersNew" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\assets\images\backgrounds" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\assets\images\teamPlaceholders" />
-      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\common\headers" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\app\(app)\Home" />
-      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\app\(app)\Tournaments" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.tournamentplatform.userservice.service" />
@@ -282,15 +293,8 @@
       <workItem from="1787227260866" duration="10509000" />
       <workItem from="1787317163133" duration="9845000" />
       <workItem from="1787393586176" duration="8076000" />
-      <workItem from="1787479785385" duration="6973000" />
-    </task>
-    <task id="LOCAL-00003" summary="Improved exception handling and added Login endpoint">
-      <option name="closed" value="true" />
-      <created>1782815297826</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1782815297826</updated>
+      <workItem from="1787479785385" duration="7069000" />
+      <workItem from="1787577436098" duration="7398000" />
     </task>
     <task id="LOCAL-00004" summary="Auth microservice version 1 completed with unit tests and integration tests">
       <option name="closed" value="true" />
@@ -676,7 +680,15 @@
       <option name="project" value="LOCAL" />
       <updated>1787401170353</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="Graphical improvements, need to also do the profile">
+      <option name="closed" value="true" />
+      <created>1787489527910</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1787489527910</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -694,7 +706,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="First design of starting page created. files/directories naming and arrangment is very primitive, need to refractor" />
     <MESSAGE value="Small fixes" />
     <MESSAGE value="Buig Update, now frontend is connected, forgot to commit before&#10;&#10;User registration and login is working (backend-frontend)&#10;&#10;Now working on the teams section" />
     <MESSAGE value="Buig Update, now frontend is connected, forgot to commit before&#10;&#10;User registration and login is working (backend-frontend)&#10;&#10;Now frontend fetches and displays the user teams&#10;&#10;Now working on the teams section" />
@@ -719,7 +730,8 @@
     <MESSAGE value="Restructured Profile page, added the possibility to visualize a generic user teams but blocking current user teams in profile, to limit redundancy" />
     <MESSAGE value="Adjusted graphic, added friend invitation code for teams" />
     <MESSAGE value="Removed global header, refined specific headers" />
-    <option name="LAST_COMMIT_MESSAGE" value="Removed global header, refined specific headers" />
+    <MESSAGE value="Graphical improvements, need to also do the profile" />
+    <option name="LAST_COMMIT_MESSAGE" value="Graphical improvements, need to also do the profile" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
