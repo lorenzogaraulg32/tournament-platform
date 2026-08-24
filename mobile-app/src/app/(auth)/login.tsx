@@ -1,14 +1,14 @@
 import {StyleSheet, Text} from "react-native";
-import AuthTextField from "@/src/components/auth/AuthTextField";
-import AuthHeader from "@/src/components/common/headers/AuthHeader";
-import AuthContainer from "@/src/components/auth/AuthContainer";
-import AuthContent from "@/src/components/auth/AuthContent";
+import AuthTextField from "@/src/components/pagesComponents/auth/AuthTextField";
+import AuthHeader from "@/src/components/pagesComponents/auth/AuthHeader";
+import AuthContainer from "@/src/components/pagesComponents/auth/AuthContainer";
+import AuthContent from "@/src/components/pagesComponents/auth/AuthContent";
 import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
 import {colors} from "@/src/constants/theme";
 import {router} from "expo-router";
 import {useState} from "react";
 import {loadCurrentUserId, loginUser, saveSession} from "@/src/services/users/authService";
-import {ApiRequestError} from "@/src/services/errorService";
+import {ApiRequestError} from "@/src/services/common/errorService";
 import {loadUserInfo} from "@/src/services/users/userService";
 
 type LoginFieldErrors = {

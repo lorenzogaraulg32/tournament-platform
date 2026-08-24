@@ -5,8 +5,8 @@ import {getToken} from "@/src/services/users/authService";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
-const placeholderLogoTeam = require("../../../assets/images/teamPlaceholders/logoPlaceholder.webp");
-const placeholderLogoPlayer = require("../../../assets/images/teamPlaceholders/profilePlaceholder.png");
+const placeholderLogoTeam = require("../../../../assets/images/teamPlaceholders/logoPlaceholder.webp");
+const placeholderLogoPlayer = require("../../../../assets/images/teamPlaceholders/profilePlaceholder.png");
 
 
 type PictureProps = {

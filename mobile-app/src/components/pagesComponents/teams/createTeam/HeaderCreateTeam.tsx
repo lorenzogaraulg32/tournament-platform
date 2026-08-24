@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View} from "react-native";
-import Picture from "@/src/components/common/Picture";
+import Picture from "@/src/components/common/images/Picture";
 
 
 export default function HeaderCreateTeam() {

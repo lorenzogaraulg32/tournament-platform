@@ -1,9 +1,9 @@
 import {StyleSheet} from "react-native";
 import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
 import {router} from "expo-router";
-import AuthHeader from "@/src/components/common/headers/AuthHeader";
-import AuthContent from "@/src/components/auth/AuthContent";
-import AuthContainer from "@/src/components/auth/AuthContainer";
+import AuthHeader from "@/src/components/pagesComponents/auth/AuthHeader";
+import AuthContent from "@/src/components/pagesComponents/auth/AuthContent";
+import AuthContainer from "@/src/components/pagesComponents/auth/AuthContainer";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 
 

@@ -19,7 +19,7 @@ export default function AuthContainer({header, content}: AuthContainerProps) {
             style={styles.container}
         >
             <ImageBackground
-                source={require("../../../assets/images/full_bkg.png")}
+                source={require("../../../../assets/images/full_bkg.png")}
                 style={StyleSheet.absoluteFill}
                 imageStyle={StyleSheet.absoluteFill}
 

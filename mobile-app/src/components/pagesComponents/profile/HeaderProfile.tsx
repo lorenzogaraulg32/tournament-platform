@@ -1,7 +1,7 @@
 import {ActivityIndicator, Pressable, StyleSheet, Text, View} from "react-native";
 import {UserInfo} from "@/src/services/users/userService";
 import {AuthInfo, loadCurrentUserId} from "@/src/services/users/authService";
-import Picture from "@/src/components/common/Picture";
+import Picture from "@/src/components/common/images/Picture";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {router} from "expo-router";
 import {useEffect, useState} from "react";

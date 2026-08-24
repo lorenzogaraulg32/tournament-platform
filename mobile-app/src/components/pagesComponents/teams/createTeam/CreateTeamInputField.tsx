@@ -16,7 +16,7 @@ type CreateTeamFieldProps = TextInputProps & {
 
 //DOppio container, perchè external consente di posizionare icone/info aggiuntive a destra
 
-export default function Fields({
+export default function CreateTeamInputField({
                                    label,
                                    optional = false,
                                    errorMessage,

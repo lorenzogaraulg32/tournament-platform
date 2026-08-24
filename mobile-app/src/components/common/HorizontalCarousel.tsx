@@ -4,10 +4,10 @@ import {getUserTeams, TeamDetails, TeamInfo} from "@/src/services/teams/teamServ
 import {ActivityIndicator, ScrollView, StyleProp, StyleSheet, Text, View, ViewStyle} from "react-native";
 import {LinearGradient} from "expo-linear-gradient";
 import {colors} from "@/src/constants/theme";
-import AdminsCard from "@/src/components/app/teams/AdminsCard";
-import PlayersCard from "@/src/components/app/teams/PlayersCard";
+import AdminsCard from "@/src/components/pagesComponents/teams/AdminsCard";
+import PlayersCard from "@/src/components/pagesComponents/teams/PlayersCard";
 import {Sport} from "@/src/services/users/userConstants";
-import TeamCardVertical from "@/src/components/app/teams/TeamCardVertical";
+import TeamCardVertical from "@/src/components/pagesComponents/teams/TeamCardVertical";
 
 type CarouselCommonProps = {
     style?: StyleProp<ViewStyle>;

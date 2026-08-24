@@ -99,7 +99,7 @@ $MAVEN_HOME_PARENT = "$MAVEN_WRAPPER_DISTS/$distributionUrlNameMain"
 $MAVEN_HOME_NAME = ([System.Security.Cryptography.SHA256]::Create().ComputeHash([byte[]][char[]]$distributionUrl) | ForEach-Object {$_.ToString("x2")}) -join ''
 $MAVEN_HOME = "$MAVEN_HOME_PARENT/$MAVEN_HOME_NAME"
 
-if (Test-Path -Path "$MAVEN_HOME" -PathType CreateTeamPage) {
+if (Test-Path -Path "$MAVEN_HOME" -PathType CreateTeamContainer) {
   Write-Verbose "found existing MAVEN_HOME at $MAVEN_HOME"
   Write-Output "MVN_CMD=$MAVEN_HOME/bin/$MVN_CMD"
   exit $?
@@ -155,7 +155,7 @@ $actualDistributionDir = ""
 # First try the expected directory name (for regular distributions)
 $expectedPath = Join-Path "$TMP_DOWNLOAD_DIR" "$distributionUrlNameMain"
 $expectedMvnPath = Join-Path "$expectedPath" "bin/$MVN_CMD"
-if ((Test-Path -Path $expectedPath -PathType CreateTeamPage) -and (Test-Path -Path $expectedMvnPath -PathType Leaf)) {
+if ((Test-Path -Path $expectedPath -PathType CreateTeamContainer) -and (Test-Path -Path $expectedMvnPath -PathType Leaf)) {
   $actualDistributionDir = $distributionUrlNameMain
 }
 
@@ -178,7 +178,7 @@ Rename-Item -Path "$TMP_DOWNLOAD_DIR/$actualDistributionDir" -NewName $MAVEN_HOM
 try {
   Move-Item -Path "$TMP_DOWNLOAD_DIR/$MAVEN_HOME_NAME" -Destination $MAVEN_HOME_PARENT | Out-Null
 } catch {
-  if (! (Test-Path -Path "$MAVEN_HOME" -PathType CreateTeamPage)) {
+  if (! (Test-Path -Path "$MAVEN_HOME" -PathType CreateTeamContainer)) {
     Write-Error "fail to move MAVEN_HOME"
   }
 } finally {

@@ -2,11 +2,11 @@ import {StyleSheet, Text, View,} from "react-native";
 import {useState} from "react";
 import {router} from "expo-router";
 
-import Switch from "@/src/components/app/teams/createTeam/Switch";
-import Fields from "@/src/components/app/teams/createTeam/Fields";
-import PositionField from "@/src/components/app/teams/createTeam/PositionField";
-import LogoField from "@/src/components/app/teams/createTeam/LogoField";
-import CreateTeamPage from "@/src/components/app/teams/createTeam/CreateTeamPage";
+import Switch from "@/src/components/pagesComponents/teams/createTeam/Switch";
+import CreateTeamInputField from "@/src/components/pagesComponents/teams/createTeam/CreateTeamInputField";
+import PositionField from "@/src/components/pagesComponents/teams/createTeam/PositionField";
+import LogoField from "@/src/components/common/images/LogoField";
+import CreateTeamContainer from "@/src/components/pagesComponents/teams/createTeam/CreateTeamContainer";
 
 import {createTeam, TeamCreationRequest, TeamLogoUpload,} from "@/src/services/teams/teamCreationService";
 import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
@@ -240,7 +240,7 @@ export default function CreateTeam() {
             case 0:
                 return (
                     <View style={styles.stepContainer}>
-                        <Fields
+                        <CreateTeamInputField
                             label="Nome squadra"
                             labelIconName="shield-outline"
                             placeholder="Es. FC Bar Ci Siamo"
@@ -256,7 +256,7 @@ export default function CreateTeam() {
                             editable={!isSubmitting}
                         />
 
-                        <Fields
+                        <CreateTeamInputField
                             label="Descrizione"
                             optional
                             labelIconName="chatbubble-ellipses-outline"
@@ -336,7 +336,7 @@ export default function CreateTeam() {
     }
 
     return (
-        <CreateTeamPage>
+        <CreateTeamContainer>
             <View style={styles.formContainer}>
                 {renderStep()}
 
@@ -372,7 +372,7 @@ export default function CreateTeam() {
                     />
                 </View>
             </View>
-        </CreateTeamPage>
+        </CreateTeamContainer>
     );
 }
 

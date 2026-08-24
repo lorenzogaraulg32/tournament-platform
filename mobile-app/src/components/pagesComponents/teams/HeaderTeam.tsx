@@ -1,6 +1,6 @@
 import {ActivityIndicator, Pressable, StyleSheet, Text, View,} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import Picture from "@/src/components/common/Picture";
+import Picture from "@/src/components/common/images/Picture";
 import {refreshCode, TeamDetails} from "@/src/services/teams/teamService";
 import {useEffect, useRef, useState} from "react";
 import * as Clipboard from "expo-clipboard";

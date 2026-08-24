@@ -2,7 +2,7 @@ import {Pressable, StyleSheet, Text, View} from "react-native";
 import {teamCardBlueColors} from "@/src/constants/theme"
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {router} from "expo-router";
-import Picture from "@/src/components/common/Picture";
+import Picture from "@/src/components/common/images/Picture";
 
 type TeamCardSmallProps = {
     id: number

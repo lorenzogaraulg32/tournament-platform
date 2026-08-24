@@ -1,6 +1,6 @@
 import * as SecureStore from "expo-secure-store";
-import {ApiRequestError, isApiErrorBody} from "@/src/services/errorService";
-import {readResponseBody} from "@/src/services/helperService";
+import {ApiRequestError, isApiErrorBody} from "@/src/services/common/errorService";
+import {readResponseBody} from "@/src/services/common/helperService";
 import {router} from "expo-router";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;

@@ -19,7 +19,7 @@ export default function OnBoardingContainer({label, content}: OnBoardingProps) {
             style={styles.container}
         >
             <ImageBackground
-                source={require("../../../assets/images/full_bkg.png")}
+                source={require("../../../../../assets/images/full_bkg.png")}
                 style={StyleSheet.absoluteFill}
                 imageStyle={StyleSheet.absoluteFill}
 

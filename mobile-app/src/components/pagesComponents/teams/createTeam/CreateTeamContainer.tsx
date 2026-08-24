@@ -2,14 +2,14 @@ import {KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View} from "reac
 import PageLayout from "@/src/components/common/PageLayout";
 import {ReactNode} from "react";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
-import HeaderCreateTeam from "@/src/components/common/headers/HeaderCreateTeam";
+import HeaderCreateTeam from "@/src/components/pagesComponents/teams/createTeam/HeaderCreateTeam";
 
 type CreateTeamContainerProps = {
     children: ReactNode
 }
 
 
-export default function CreateTeamPage({children}: CreateTeamContainerProps) {
+export default function CreateTeamContainer({children}: CreateTeamContainerProps) {
     return (
         <PageLayout header={
             <HeaderContainer variant={"orange"}>

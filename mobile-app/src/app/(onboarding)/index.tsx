@@ -1,7 +1,7 @@
 import {ActivityIndicator, Pressable, StyleSheet, Text, View} from "react-native";
-import AuthTextField from "@/src/components/auth/AuthTextField";
+import AuthTextField from "@/src/components/pagesComponents/auth/AuthTextField";
 import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
-import AuthContent from "@/src/components/auth/AuthContent";
+import AuthContent from "@/src/components/pagesComponents/auth/AuthContent";
 import {colors} from "@/src/constants/theme";
 import {useState} from "react";
 import {
@@ -9,11 +9,11 @@ import {
     uploadProfilePicture,
     UserOnBoardingInfo
 } from "@/src/services/users/userService";
-import PositionField from "@/src/components/app/teams/createTeam/PositionField";
-import LogoField, {SelectedLogo} from "@/src/components/app/teams/createTeam/LogoField";
+import PositionField from "@/src/components/pagesComponents/teams/createTeam/PositionField";
+import LogoField, {SelectedLogo} from "@/src/components/common/images/LogoField";
 import DateTimePicker, {DateTimePickerEvent} from "@react-native-community/datetimepicker";
-import OnBoardingContainer from "@/src/components/onboarding/OnBoardingContainer";
-import {ApiRequestError} from "@/src/services/errorService";
+import OnBoardingContainer from "@/src/components/pagesComponents/auth/onboarding/OnBoardingContainer";
+import {ApiRequestError} from "@/src/services/common/errorService";
 import {router} from "expo-router";
 import {Gender, ROLE_LABELS, Sport, SPORT_LABELS, SPORT_ROLES, SportRole} from "@/src/services/users/userConstants";
 

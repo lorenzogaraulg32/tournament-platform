@@ -1,39 +1,28 @@
 import {Pressable, StyleSheet, Text, View} from "react-native";
-import Picture from "@/src/components/common/Picture";
+import Picture from "@/src/components/common/images/Picture";
 import {colors, teamCardBlueColors, teamCardGreenColors} from "@/src/constants/theme";
 import {UserEntity} from "@/src/services/users/userService";
-import {ROLE_LABELS, Sport, SportRole} from "@/src/services/users/userConstants";
+import {TeamDetails} from "@/src/services/teams/teamService";
 
-
-type PlayerCardProps = {
-    player: UserEntity
-    sport: Sport
+type AdminsCardProps = {
+    admin: UserEntity
+    team: TeamDetails
 }
 
 
-export default function PlayersCard({
-                                        player,
-                                        sport
-                                    }: PlayerCardProps
+export default function AdminsCard({
+                                       admin,
+                                       team
+                                   }: AdminsCardProps
 ) {
 
-    function getRoleBySport(
-        player: UserEntity,
-        sport: Sport
-    ): SportRole | undefined {
-        return player.userInfo.roles.find(
-            item => item.sport === sport
-        )?.role;
-    }
+    const profilePicUrl = admin.userInfo.profilePicUrl
+    const name = admin.userInfo.username
+    const role = team.creatorId === admin.id ? "Owner" : "Admin"
 
-    const profilePicUrl = player.userInfo.profilePicUrl
-    const name = player.userInfo.username
-    const playerRole = getRoleBySport(player, sport);
-
-    const role = playerRole ? ROLE_LABELS[playerRole] : "Jolly";
 
     function handlePress() {
-        //todo:
+        //TODO
     }
 
     return (
@@ -62,13 +51,17 @@ export default function PlayersCard({
                     style={styles.logo}
                     logoUrl={profilePicUrl}/>
             </View>
-            <Text
-                numberOfLines={1}
-                style={styles.name}>
-                {name}
-            </Text>
+            <View style={styles.userInfoContainer}>
+                <Text
+                    numberOfLines={1}
+                    style={styles.name}>
+                    {name}
+                </Text>
 
-            <Text style={styles.ruolo}>{role}</Text>
+                <View style={styles.roleBadgeContainer}>
+                    <Text style={styles.ruolo}>{role ? (role) : ("OWNER")}</Text>
+                </View>
+            </View>
         </Pressable>
     )
 }
@@ -76,23 +69,18 @@ export default function PlayersCard({
 const styles = StyleSheet.create({
 
     card: {
-        justifyContent: "flex-start",
-        flexDirection: "column",
+        justifyContent: "space-evenly",
+        flexDirection: "row",
         alignItems: "center",
 
-        height: 92,
-        width: 72,
-
-
-        paddingVertical: 8,
-
-        gap: 4,
-
-        backgroundColor: teamCardGreenColors.background,
+        height: 70,
+        width: 120,
 
         borderRadius: 18,
         borderWidth: 1,
         borderColor: teamCardGreenColors.border,
+
+        backgroundColor: teamCardGreenColors.background,
 
         overflow: "hidden",
 
@@ -109,7 +97,6 @@ const styles = StyleSheet.create({
         transform: [{scale: 0.985}],
     },
 
-
     logoContainer: {
         width: 40,
         height: 40,
@@ -118,8 +105,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
 
-        backgroundColor: teamCardGreenColors.logoBackground,
-        borderColor: teamCardGreenColors.logoBorder,
+        backgroundColor: teamCardBlueColors.logoBackground,
+        borderColor: teamCardBlueColors.logoBorder,
 
         borderWidth: 1,
     },
@@ -146,14 +133,32 @@ const styles = StyleSheet.create({
     ruolo: {
         fontSize: 10,
         fontWeight: "bold",
-        color: colors.textLightGreen,
-        textShadowColor:   "rgba(141,192,12,0.38)",
+        color:  "#41800a",
+        textShadowColor:   "rgba(75,145,11,0.18)",
         textShadowOffset:{
-            height: 2,
+            height: 1,
             width: 0
         },
         textShadowRadius: 2,
     },
+
+    userInfoContainer: {
+        height: "100%",
+        justifyContent: "center",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 5,
+
+    },
+    roleBadgeContainer: {
+        backgroundColor: "#ffffff",
+        paddingHorizontal: 6,
+        paddingVertical: 2,
+        borderColor: colors.textLightGreen,
+        borderWidth: 1,
+        borderRadius: 50
+    },
+
 
     background: {
         ...StyleSheet.absoluteFillObject,
@@ -238,6 +243,7 @@ const styles = StyleSheet.create({
         ],
     },
 
+
     accentLeft: {
         position: "absolute",
         left: 0,
@@ -263,5 +269,6 @@ const styles = StyleSheet.create({
 
         backgroundColor: teamCardGreenColors.accent,
     },
+
 
 })

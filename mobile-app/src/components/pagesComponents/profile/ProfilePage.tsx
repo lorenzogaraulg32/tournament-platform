@@ -1,4 +1,4 @@
-import HeaderProfile from "@/src/components/common/headers/HeaderProfile";
+import HeaderProfile from "@/src/components/pagesComponents/profile/HeaderProfile";
 import {useEffect, useState} from "react";
 import {AuthInfo, handleLogout, loadUserAuthInfo} from "@/src/services/users/authService";
 import {loadUserInfo, UserInfo} from "@/src/services/users/userService";

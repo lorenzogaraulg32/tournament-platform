@@ -1,6 +1,6 @@
 import {ActivityIndicator, ScrollView, StyleSheet, Text, View} from "react-native";
 import {getCurrentUserTeams, TeamInfo} from "@/src/services/teams/teamService";
-import TeamCardHorizontal from "@/src/components/app/teams/TeamCardHorizontal";
+import TeamCardHorizontal from "@/src/components/pagesComponents/teams/TeamCardHorizontal";
 import {useCallback, useState} from "react";
 import {useFocusEffect} from "expo-router";
 

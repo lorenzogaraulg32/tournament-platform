@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {getTeamDetails, TeamDetails} from "@/src/services/teams/teamService";
 import {ScrollView, StyleSheet, Text, View} from "react-native";
 import {useLocalSearchParams} from "expo-router";
-import HeaderTeam from "@/src/components/common/headers/HeaderTeam";
+import HeaderTeam from "@/src/components/pagesComponents/teams/HeaderTeam";
 import InfoLabel from "@/src/components/common/labels/infoLabel";
 import {loadCurrentUserId} from "@/src/services/users/authService";
 import TeamCarousel from "@/src/components/common/HorizontalCarousel";

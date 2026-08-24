@@ -1,6 +1,6 @@
 import {loadCurrentUserId} from "@/src/services/users/authService";
 import {useEffect, useState} from "react";
-import ProfilePage from "@/src/components/app/profile/ProfilePage";
+import ProfilePage from "@/src/components/pagesComponents/profile/ProfilePage";
 
 export default function Index() {
 

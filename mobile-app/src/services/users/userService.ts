@@ -1,9 +1,9 @@
 import * as SecureStore from "expo-secure-store";
 import {File} from "expo-file-system";
 import {fetch} from "expo/fetch";
-import {ApiRequestError, isApiErrorBody} from "@/src/services/errorService";
-import {readResponseBody} from "@/src/services/helperService";
-import {SelectedLogo} from "@/src/components/app/teams/createTeam/LogoField";
+import {ApiRequestError, isApiErrorBody} from "@/src/services/common/errorService";
+import {readResponseBody} from "@/src/services/common/helperService";
+import {SelectedLogo} from "@/src/components/common/images/LogoField";
 import {router} from "expo-router";
 import {Gender, GeoLocation, Sport, UserSportRole} from "@/src/services/users/userConstants";
 

@@ -1,7 +1,7 @@
 import {ScrollView, StyleSheet, View} from "react-native";
 import PageLayout from "@/src/components/common/PageLayout";
 import {corners} from "@/src/constants/theme";
-import CodeInput from "@/src/components/app/home/CodeInput";
+import CodeInput from "@/src/components/pagesComponents/home/CodeInput";
 import {addCurrentUserToTeamViaCode} from "@/src/services/teams/teamService";
 import {router} from "expo-router";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
