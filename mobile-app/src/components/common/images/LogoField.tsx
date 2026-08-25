@@ -4,6 +4,7 @@ import {Image} from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import FormLabel from "@/src/components/common/labels/formLabel";
+import {SelectedImage} from "@/src/services/users/imagesService";
 
 const MAX_LOGO_SIZE = 2 * 1024 * 1024;
 
@@ -16,17 +17,11 @@ const ALLOWED_MIME_TYPES = new Set([
 
 type variant = "createTeam" | "createUser"
 
-export type SelectedLogo = {
-    uri: string;
-    fileName: string;
-    mimeType: string;
-    fileSize?: number;
-};
 
 type LogoFieldProps = {
     variant: variant
-    value: SelectedLogo | null;
-    onChange: (logo: SelectedLogo | null) => void;
+    value: SelectedImage | null;
+    onChange: (logo: SelectedImage | null) => void;
     placeholderIcon?: ComponentProps<typeof Ionicons>["name"];
     label?: string;
     optional?: boolean;

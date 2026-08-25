@@ -1,7 +1,7 @@
 import {useEffect, useMemo, useState} from "react";
 import {ImageStyle, StyleProp,} from "react-native";
 import {Image} from "expo-image";
-import {getToken} from "@/src/services/users/authService";
+import {getAuthorizationHeader} from "@/src/services/users/authService";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -16,10 +16,10 @@ type PictureProps = {
 };
 
 export default function Picture({
-                                 logoUrl,
-                                 style,
-                                 variant
-                             }: PictureProps) {
+                                    logoUrl,
+                                    style,
+                                    variant
+                                }: PictureProps) {
     const [authorization, setAuthorization] =
         useState<string | null>(null);
 
@@ -27,17 +27,38 @@ export default function Picture({
         useState(false);
 
     useEffect(() => {
+        let isMounted = true;
 
-        async function loadAuth() {
-            setAuthorization(await getToken())
+        setHasError(false);
+
+        if (!logoUrl) {
+            setAuthorization(null);
+
+            return () => {
+                isMounted = false;
+            };
         }
 
-        void loadAuth();
+        getAuthorizationHeader()
+            .then(header => {
+                if (isMounted) {
+                    setAuthorization(header);
+                }
+            })
+            .catch(error => {
+                console.error(
+                    "Errore recupero autorizzazione immagine:",
+                    error
+                );
 
-    }, []);
+                if (isMounted) {
+                    setHasError(true);
+                }
+            });
 
-    useEffect(() => {
-        setHasError(false);
+        return () => {
+            isMounted = false;
+        };
     }, [logoUrl]);
 
     const completeLogoUrl = useMemo(() => {

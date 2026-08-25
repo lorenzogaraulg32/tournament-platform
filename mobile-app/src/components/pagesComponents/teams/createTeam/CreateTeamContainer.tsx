@@ -1,8 +1,10 @@
-import {KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View} from "react-native";
+import {KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, View} from "react-native";
 import PageLayout from "@/src/components/common/PageLayout";
 import {ReactNode} from "react";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import HeaderCreateTeam from "@/src/components/pagesComponents/teams/createTeam/HeaderCreateTeam";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import {router} from "expo-router";
 
 type CreateTeamContainerProps = {
     children: ReactNode
@@ -10,6 +12,9 @@ type CreateTeamContainerProps = {
 
 
 export default function CreateTeamContainer({children}: CreateTeamContainerProps) {
+
+
+
     return (
         <PageLayout header={
             <HeaderContainer variant={"orange"}>
@@ -58,20 +63,7 @@ const styles = StyleSheet.create({
     },
 
 
-    closeButton: {
-        position: "absolute",
 
-
-        width: 42,
-        height: 42,
-        alignItems: "center",
-        justifyContent: "center",
-
-        borderRadius: 21,
-        borderWidth: 1,
-        borderColor: "rgba(255, 255, 255, 0.45)",
-        backgroundColor: "rgba(255, 255, 255, 0.32)",
-    },
 
     closeButtonPressed: {
         opacity: 0.7,

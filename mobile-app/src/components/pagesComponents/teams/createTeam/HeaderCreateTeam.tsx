@@ -1,11 +1,31 @@
-import {StyleSheet, Text, View} from "react-native";
+import {Pressable, StyleSheet, Text, View} from "react-native";
 import Picture from "@/src/components/common/images/Picture";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import {router} from "expo-router";
 
 
 export default function HeaderCreateTeam() {
+
+    function onBackPress() {
+        router.back()
+    }
+
     return (
         <View style={styles.header}>
 
+            <Pressable
+                onPress={onBackPress}
+                hitSlop={16}
+                style={[
+                    styles.backButton,
+                ]}
+            >
+                <Ionicons
+                    name="chevron-back"
+                    size={28}
+                    color="#FFFFFF"
+                />
+            </Pressable>
             <View style={styles.headerImageContainer}>
                 <Picture logoUrl={""} style={styles.logo} variant={"team"}/>
             </View>
@@ -26,7 +46,7 @@ export default function HeaderCreateTeam() {
 
 const styles = StyleSheet.create({
     header: {
-        marginTop: 30,
+        paddingTop: 35,
         flexDirection: "row",
         alignItems: "center",
         overflow: "hidden",
@@ -73,4 +93,25 @@ const styles = StyleSheet.create({
         height: "100%",
         borderRadius: 100
     },
+
+    backButton: {
+        position: "absolute",
+
+        top: 0,
+        left: 0,
+        zIndex: 10,
+
+        width: 35,
+        height: 35,
+
+        alignItems: "center",
+        justifyContent: "center",
+
+        borderRadius: 18,
+
+        backgroundColor: "rgba(255,255,255,0.14)",
+
+    },
+
+
 })

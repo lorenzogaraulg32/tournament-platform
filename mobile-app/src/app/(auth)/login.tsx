@@ -77,20 +77,21 @@ export default function LoginPage() {
         }
 
         setApiError("");
+        setFieldErrors({});
 
-/*
-        if (!validateLoginForm()) {
-            return
-        }
-*/
+        /*
+                if (!validateLoginForm()) {
+                    return
+                }
+        */
         try {
             setIsLoading(true);
-/*
-            const response = await loginUser({
-                email: email.trim().toLowerCase(),
-                password
-            });
-*/
+            /*
+                        const response = await loginUser({
+                            email: email.trim().toLowerCase(),
+                            password
+                        });
+            */
 
             const response = await loginUser({
                 email: "lorenzo.garau.lg32@gmail.com",
@@ -105,36 +106,37 @@ export default function LoginPage() {
 
             const id = await loadCurrentUserId();
 
-            //caricamento per permettere di controllare se l'utente esiste
-            await loadUserInfo(id);
-
-            router.replace("/(app)/home");
-
-        } catch (error) {
-            if (error instanceof ApiRequestError) {
-                if (error.status === 404) {
+            try {
+                await loadUserInfo(id);
+                router.replace("/(app)/home");
+            } catch (error) {
+                if (
+                    error instanceof ApiRequestError &&
+                    error.status === 404
+                ) {
                     router.replace("/(onboarding)");
                     return;
-                } else {
-                    setApiError(error.message)
-
-                    setFieldErrors((current) => ({
-                        ...current,
-                        email:
-                            error.fieldErrors.email ??
-                            current.email,
-                        password:
-                            error.fieldErrors.password ??
-                            current.password,
-                    }));
-
                 }
+
+                throw error;
+            }
+
+        } catch (error) {
+            if (!(error instanceof ApiRequestError)) {
+                console.error("Errore Login: " + error);
+
+                setApiError(
+                    "Impossibile contattare il server. Riprova."
+                );
                 return;
             }
 
-            setApiError(
-                "Impossibile contattare il server. Riprova.",
-            );
+            setApiError(error.message);
+
+            setFieldErrors({
+                email: error.fieldErrors.email,
+                password: error.fieldErrors.password,
+            });
         } finally {
             setIsLoading(false);
         }

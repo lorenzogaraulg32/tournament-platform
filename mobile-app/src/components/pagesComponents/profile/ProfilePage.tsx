@@ -31,14 +31,13 @@ export default function ProfilePage({userId, teams}: ProfilePageProps) {
             const authInfo = await loadUserAuthInfo(userId);
 
 
-            const userInfo = await loadUserInfo("1");
+            const userInfo = await loadUserInfo(userId);
 
 
             setUserAuthInfo(authInfo);
             setUserInfo(userInfo);
 
         } catch (error) {
-
 
             setError("Impossibile caricare le info dell'utente");
 
@@ -142,15 +141,12 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: -26,
         paddingTop: 36,
-        paddingHorizontal: 10,
         paddingBottom: 20,
-        backgroundColor: "#ffffff",
         zIndex: -1,
     },
 
     scrollContent: {
         gap: 10,
-        backgroundColor: "#ffffff"
     },
 
 

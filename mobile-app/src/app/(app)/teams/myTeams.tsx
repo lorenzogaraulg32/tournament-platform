@@ -3,6 +3,7 @@ import {getCurrentUserTeams, TeamInfo} from "@/src/services/teams/teamService";
 import TeamCardHorizontal from "@/src/components/pagesComponents/teams/TeamCardHorizontal";
 import {useCallback, useState} from "react";
 import {useFocusEffect} from "expo-router";
+import {ApiRequestError} from "@/src/services/common/errorService";
 
 
 /**
@@ -16,41 +17,53 @@ export default function MyTeams() {
     const [error, setError] = useState<string | null>(null);
 
 
-    async function loadUserTeams(isActive: boolean) {
-        console.log("Loading user teams....")
-        try {
-            setIsLoading(true)
-            setError(null)
 
-            const loadedTeams = await getCurrentUserTeams()
+    useFocusEffect(
+        useCallback(() => {
+            let isActive = true;
 
-            if (isActive) {
-                setUserTeams(loadedTeams);
+            async function loadUserTeams() {
+                try {
+                    setIsLoading(true);
+                    setError(null);
+
+                    const loadedTeams =
+                        await getCurrentUserTeams();
+
+                    if (isActive) {
+                        setUserTeams(loadedTeams);
+                    }
+                } catch (error: unknown) {
+                    if (!isActive) {
+                        return;
+                    }
+
+                    console.error(
+                        "Errore caricamento squadre:",
+                        error
+                    );
+
+                    if (error instanceof ApiRequestError) {
+                        setError(error.message);
+                    } else {
+                        setError(
+                            "Errore durante il recupero delle squadre"
+                        );
+                    }
+                } finally {
+                    if (isActive) {
+                        setIsLoading(false);
+                    }
+                }
             }
 
+            void loadUserTeams();
 
-        } catch (error: unknown) {
-
-            if (!isActive) {
-                return;
-            }
-
-            if (error instanceof Error) {
-                setError(error.message);
-            } else {
-                setError(
-                    "Errore durante il recupero delle squadre"
-                );
-            }
-        } finally {
-            if (isActive) {
-                setIsLoading(false);
-            }
-
-        }
-
-
-    }
+            return () => {
+                isActive = false;
+            };
+        }, [])
+    );
 
     function renderUserTeams() {
 
@@ -98,21 +111,6 @@ export default function MyTeams() {
             />
         ));
     }
-
-    useFocusEffect(
-        useCallback(() => {
-
-            let isActive = true;
-
-             void loadUserTeams(isActive)
-
-            return () => {
-                isActive = false;
-            };
-
-        }, [])
-    )
-
 
     return (
         <ScrollView

@@ -10,6 +10,7 @@ import CreateTeamContainer from "@/src/components/pagesComponents/teams/createTe
 
 import {createTeam, TeamCreationRequest, TeamLogoUpload,} from "@/src/services/teams/teamCreationService";
 import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
+import {ApiRequestError} from "@/src/services/common/errorService";
 
 type TeamCreationStep = 0 | 1 | 2;
 
@@ -187,49 +188,55 @@ export default function CreateTeam() {
     }
 
     async function handleCreateTeam() {
+        if (isSubmitting) {
+            return;
+        }
+
+        setSubmitError(null);
+
         if (!validateForm()) {
             return;
         }
 
         const selectedLocation = teamData.location;
 
-        if (!selectedLocation) {
-            return;
-        }
-
-        const trimmedDescription =
-            teamData.description?.trim();
+        const request: TeamCreationRequest = {
+            name: teamData.name.trim(),
+            description:
+                teamData.description?.trim() || undefined,
+            status: teamData.status,
+            location: selectedLocation
+                ? {
+                    label: selectedLocation.label,
+                    latitude: selectedLocation.latitude,
+                    longitude: selectedLocation.longitude,
+                }
+                : undefined,
+        };
 
         try {
             setIsSubmitting(true);
-            setSubmitError(null);
 
             const response = await createTeam(
-                {
-                    name: teamData.name.trim(),
-                    description:
-                        trimmedDescription || undefined,
-                    status: teamData.status,
-                    location: {
-                        label: selectedLocation.label,
-                        latitude:
-                        selectedLocation.latitude,
-                        longitude:
-                        selectedLocation.longitude,
-                    },
-                },
-                logo,
+                request,
+                logo
             );
 
             router.replace(`/teams/${response.id}`);
-        } catch (caughtError) {
-            setSubmitError(
-                caughtError instanceof Error
-                    ? caughtError.message
-                    : "Errore durante la creazione",
+        } catch (error: unknown) {
+            if (error instanceof ApiRequestError) {
+                setSubmitError(error.message);
+                return;
+            }
+
+            console.error(
+                "Errore imprevisto durante la creazione squadra:",
+                error
             );
 
-            console.error(caughtError);
+            setSubmitError(
+                "Impossibile creare la squadra. Riprova."
+            );
         } finally {
             setIsSubmitting(false);
         }

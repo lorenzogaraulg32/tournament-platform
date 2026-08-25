@@ -1,9 +1,9 @@
 export async function readResponseBody(
-    response: Response,
+    response: Response
 ): Promise<unknown> {
     const text = await response.text();
 
-    if (!text) {
+    if (!text.trim()) {
         return null;
     }
 
