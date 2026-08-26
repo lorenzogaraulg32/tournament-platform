@@ -1,7 +1,6 @@
 package com.tournamentplatform.authservice;
 
 import com.tournamentplatform.authservice.dto.*;
-import com.tournamentplatform.authservice.excpetion.LoginException;
 import com.tournamentplatform.authservice.service.AuthService;
 import com.tournamentplatform.authservice.service.JwtService;
 import com.tournamentplatform.authservice.user.User;

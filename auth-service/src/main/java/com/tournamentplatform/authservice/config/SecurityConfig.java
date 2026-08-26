@@ -1,5 +1,7 @@
 package com.tournamentplatform.authservice.config;
 
+import com.tournamentplatform.authservice.security.RestAccessDeniedHandler;
+import com.tournamentplatform.authservice.security.RestAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -23,7 +25,11 @@ import java.util.List;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http,
+            RestAuthenticationEntryPoint authenticationEntryPoint,
+            RestAccessDeniedHandler accessDeniedHandler
+    ) {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
 
@@ -40,10 +46,18 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
 
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint(authenticationEntryPoint)
+                        .accessDeniedHandler(accessDeniedHandler)
+                )
+
                 .oauth2ResourceServer(oauth2 ->
-                        oauth2.jwt(jwt ->
-                                jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())
-                        )
+                        oauth2
+                                .authenticationEntryPoint(authenticationEntryPoint)
+                                .accessDeniedHandler(accessDeniedHandler)
+                                .jwt(jwt ->
+                                        jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())
+                                )
                 )
 
                 .httpBasic(AbstractHttpConfigurer::disable)
