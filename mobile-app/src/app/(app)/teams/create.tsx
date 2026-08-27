@@ -10,7 +10,7 @@ import CreateTeamContainer from "@/src/components/pagesComponents/teams/createTe
 
 import {createTeam, TeamCreationRequest, TeamLogoUpload,} from "@/src/services/teams/teamCreationService";
 import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
-import {ApiRequestError} from "@/src/services/common/errorService";
+import {ApiRequestError} from "@/src/services/errorService";
 
 type TeamCreationStep = 0 | 1 | 2;
 

@@ -1,10 +1,91 @@
-import {Tabs} from "expo-router";
+import {Redirect, Tabs} from "expo-router";
 import {StyleSheet} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import {colors} from "@/src/constants/theme"
+import {useCallback, useEffect, useRef, useState} from "react";
+import {ApiRequestError} from "@/src/services/errorService";
+import {loadUserInfo} from "@/src/services/users/userService";
+import {loadCurrentUserId} from "@/src/services/users/authService";
+import ProfileCheckErrorScreen from "@/src/app/(app)/ProfileCheckErrorScreen";
+import LoadingScreen from "@/src/app/(app)/LoadingScreen";
+
+
+type ProfileState =
+    | "checking"
+    | "available"
+    | "missing"
+    | "error";
+
 
 export default function RootLayout() {
+    const [profileState, setProfileState] = useState<ProfileState>("checking");
+    const [isRetrying, setIsRetrying] = useState(false);
+    const isMounted = useRef(true);
+
+    const checkProfile = useCallback(async (): Promise<void> => {
+        setIsRetrying(true);
+
+        try {
+            const id = await loadCurrentUserId();
+
+            await loadUserInfo(id);
+
+            if (isMounted.current) {
+                setProfileState("available");
+            }
+        } catch (error) {
+            if (!isMounted.current) {
+                return;
+            }
+
+            if (
+                error instanceof ApiRequestError &&
+                error.status === 404
+            ) {
+                setProfileState("missing");
+                return;
+            }
+
+            setProfileState("error");
+        } finally {
+            if (isMounted.current) {
+                setIsRetrying(false);
+            }
+        }
+    }, []);
+
+
+    useEffect(() => {
+        isMounted.current = true;
+
+        void checkProfile();
+
+        return () => {
+            isMounted.current = false;
+        };
+    }, [checkProfile]);
+
+    if (profileState === "checking") {
+        return <LoadingScreen message="Caricamento in corso..."/>;
+    }
+
+    if (profileState === "missing") {
+        return (
+            <Redirect href="/(onboarding)"/>
+        );
+    }
+
+    if (profileState === "error") {
+        return (
+            <ProfileCheckErrorScreen
+                onRetry={checkProfile}
+                isRetrying={isRetrying}
+            />
+        );
+    }
+
+
     return (
 
         <Tabs
@@ -21,7 +102,7 @@ export default function RootLayout() {
                 name="home"
                 options={{
                     title: "Home",
-                    tabBarIcon: ({ color, size, focused }) => (
+                    tabBarIcon: ({color, size, focused}) => (
                         <Ionicons
                             name={focused ? "home" : "home-outline"}
                             size={size}
@@ -35,7 +116,7 @@ export default function RootLayout() {
                 name="teams"
                 options={{
                     title: "Squadre",
-                    tabBarIcon: ({ color, size, focused }) => (
+                    tabBarIcon: ({color, size, focused}) => (
                         <Ionicons
                             name={focused ? "people" : "people-outline"}
                             size={size}
@@ -49,7 +130,7 @@ export default function RootLayout() {
                 name="tournaments"
                 options={{
                     title: "Tornei",
-                    tabBarIcon: ({ color, size, focused }) => (
+                    tabBarIcon: ({color, size, focused}) => (
                         <Ionicons
                             name={focused ? "trophy" : "trophy-outline"}
                             size={size}
@@ -63,7 +144,7 @@ export default function RootLayout() {
                 name="profile"
                 options={{
                     title: "Profilo",
-                    tabBarIcon: ({ color, size, focused }) => (
+                    tabBarIcon: ({color, size, focused}) => (
                         <Ionicons
                             name={focused ? "person" : "person-outline"}
                             size={size}

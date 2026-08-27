@@ -1,10 +1,5 @@
-import * as SecureStore from "expo-secure-store";
-import {fetch} from "expo/fetch";
-import {ApiRequestError, isApiErrorBody} from "@/src/services/common/errorService";
-import {readResponseBody} from "@/src/services/common/helperService";
-import {router} from "expo-router";
 import {Gender, GeoLocation, Sport, UserSportRole} from "@/src/services/users/userConstants";
-import {authenticatedFetch} from "@/src/services/users/authService";
+import {authenticatedFetch} from "@/src/services/fetchService";
 
 //Usato solo per la creazione utente non contiene logoUrl
 export type UserOnBoardingInfo = {
@@ -42,7 +37,6 @@ const API_URL = process.env.EXPO_PUBLIC_API_URL;
 export async function completeOnBoarding(
     userData: UserOnBoardingInfo
 ): Promise<UserInfo> {
-
 
     const response = await authenticatedFetch(
         `${API_URL}/users/me`,

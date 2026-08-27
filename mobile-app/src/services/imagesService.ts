@@ -1,7 +1,7 @@
 import * as SecureStore from "expo-secure-store";
 import {File} from "expo-file-system";
 import {fetch} from "expo/fetch";
-import {ApiRequestError} from "@/src/services/common/errorService";
+import {ApiRequestError} from "@/src/services/errorService";
 
 export type SelectedImage = {
     uri: string;

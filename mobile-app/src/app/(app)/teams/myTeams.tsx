@@ -3,7 +3,7 @@ import {getCurrentUserTeams, TeamInfo} from "@/src/services/teams/teamService";
 import TeamCardHorizontal from "@/src/components/pagesComponents/teams/TeamCardHorizontal";
 import {useCallback, useState} from "react";
 import {useFocusEffect} from "expo-router";
-import {ApiRequestError} from "@/src/services/common/errorService";
+import {ApiRequestError} from "@/src/services/errorService";
 
 
 /**

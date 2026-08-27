@@ -5,11 +5,10 @@ import AuthContainer from "@/src/components/pagesComponents/auth/AuthContainer";
 import AuthContent from "@/src/components/pagesComponents/auth/AuthContent";
 import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
 import {colors} from "@/src/constants/theme";
-import {router} from "expo-router";
 import {useState} from "react";
-import {loadCurrentUserId, loginUser, saveSession} from "@/src/services/users/authService";
-import {ApiRequestError} from "@/src/services/common/errorService";
-import {loadUserInfo} from "@/src/services/users/userService";
+import {loginUser} from "@/src/services/users/authService";
+import {normalizeApiRequestError} from "@/src/services/errorService";
+import {saveSession} from "@/src/services/users/sessionService";
 
 type LoginFieldErrors = {
     email?: string;
@@ -98,44 +97,16 @@ export default function LoginPage() {
                 password: "Lombax99"
             });
 
-
-            await saveSession(
-                response.accessToken,
-                response.tokenType
-            );
-
-            const id = await loadCurrentUserId();
-
-            try {
-                await loadUserInfo(id);
-                router.replace("/(app)/home");
-            } catch (error) {
-                if (
-                    error instanceof ApiRequestError &&
-                    error.status === 404
-                ) {
-                    router.replace("/(onboarding)");
-                    return;
-                }
-
-                throw error;
-            }
+            await saveSession(response.accessToken, response.tokenType);
 
         } catch (error) {
-            if (!(error instanceof ApiRequestError)) {
-                console.error("Errore Login: " + error);
+            const apiError = normalizeApiRequestError(error,)
 
-                setApiError(
-                    "Impossibile contattare il server. Riprova."
-                );
-                return;
-            }
-
-            setApiError(error.message);
+            setApiError(apiError.message);
 
             setFieldErrors({
-                email: error.fieldErrors.email,
-                password: error.fieldErrors.password,
+                email: apiError.errors.email?.[0],
+                password: apiError.errors.password?.[0],
             });
         } finally {
             setIsLoading(false);

@@ -5,7 +5,7 @@ import LogoField from "@/src/components/common/images/LogoField";
 import OnBoardingContainer from "@/src/components/pagesComponents/auth/onboarding/OnBoardingContainer";
 import OnBoardingNavigationButtons from "@/src/components/pagesComponents/onBoarding/OnBoardingNavigationButtons";
 import {onboardingStepStyles as styles} from "@/src/components/pagesComponents/onBoarding/onboardingStepStyles"
-import type {SelectedImage} from "@/src/services/users/imagesService";
+import type {SelectedImage} from "@/src/services/imagesService";
 
 type UsernameAndLogoStepProps = {
     username: string;

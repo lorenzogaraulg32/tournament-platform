@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {router} from "expo-router";
 import {completeOnBoarding, type UserOnBoardingInfo,} from "@/src/services/users/userService";
-import {ApiRequestError} from "@/src/services/common/errorService";
+import {ApiRequestError} from "@/src/services/errorService";
 import {Sport, type SportRole,} from "@/src/services/users/userConstants";
 import {
     validateBirthDate,
@@ -12,7 +12,7 @@ import {
     validateUsername,
     validateUserSportsAndRoles,
 } from "@/src/constants/helpers/validationHelper";
-import {type SelectedImage, uploadProfilePicture,} from "@/src/services/users/imagesService";
+import {type SelectedImage, uploadProfilePicture,} from "@/src/services/imagesService";
 import NameAndSurnameStep from "@/src/components/pagesComponents/onBoarding/steps/NameAndSurnameStep";
 import UsernameAndLogoStep from "@/src/components/pagesComponents/onBoarding/steps/UsernameAndLogoStep";
 import BirthDateAndGenderStep from "@/src/components/pagesComponents/onBoarding/steps/BirthDateAndGenderStep";

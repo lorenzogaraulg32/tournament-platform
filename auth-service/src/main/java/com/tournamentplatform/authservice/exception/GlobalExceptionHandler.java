@@ -48,8 +48,13 @@ public class GlobalExceptionHandler {
         String code = exception.getCode().getCode();
         String path = request.getRequestURI();
 
-        log.debug(
-                "Errore applicativo: traceId={}, status={}, code={}, path={}",
+        log.error("""
+                        Errore applicativo:
+                                 traceId: {}
+                                 status: {}
+                                 code: {}
+                                 path: {}
+                        """,
                 traceId,
                 status.value(),
                 code,
@@ -88,8 +93,13 @@ public class GlobalExceptionHandler {
         String path = request.getRequestURI();
 
         if (status.is5xxServerError()) {
-            log.error(
-                    "Errore interno: traceId={}, status={}, code={}, path={}",
+            log.error("""
+                            Errore interno:
+                              traceId: {}
+                              status: {}
+                              code: {}
+                              path: {}
+                            """,
                     traceId,
                     status.value(),
                     code,
@@ -97,8 +107,13 @@ public class GlobalExceptionHandler {
                     exception
             );
         } else {
-            log.debug(
-                    "Errore gestito: traceId={}, status={}, code={}, path={}",
+            log.error("""
+                            Errore gestito:
+                              traceId: {}
+                              status: {}
+                              code: {}
+                              path: {}
+                            """,
                     traceId,
                     status.value(),
                     code,

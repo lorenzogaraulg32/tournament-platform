@@ -7,9 +7,9 @@ import {useState} from "react";
 import {router} from "expo-router";
 import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
 import {colors} from "@/src/constants/theme";
-import {ApiRequestError} from "@/src/services/common/errorService";
-import {loginUser, registerUser, saveSession} from "@/src/services/users/authService";
-import * as SecureStore from "expo-secure-store";
+import {normalizeApiRequestError} from "@/src/services/errorService";
+import {loginUser, registerUser} from "@/src/services/users/authService";
+import {saveSession} from "@/src/services/users/sessionService";
 
 type RegisterFieldError = {
     email?: string;
@@ -19,40 +19,12 @@ type RegisterFieldError = {
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function RegisterPage() {
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [fieldErrors, setFieldErrors] = useState<RegisterFieldError>({});
-
     const [apiError, setApiError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-
-    function validateRegisterForm(): boolean {
-        const errors: RegisterFieldError = {};
-
-        const normalizedEmail = email.trim();
-
-
-        if (!normalizedEmail) {
-            errors.email = "Inserisci l'email";
-        } else if (!EMAIL_REGEX.test(normalizedEmail)) {
-            errors.email = "Inserisci un'email valida";
-        }
-
-        const hasNumber = /\d/;
-
-        if (!password.trim()) {
-            errors.password = "Inserisci la password";
-        } else if (password.length < 8) {
-            errors.password = "La password deve contenere almeno 8 caratteri";
-        } else if (!hasNumber.test(password)) {
-            errors.password = "La password deve contenere almeno 1 numero";
-        }
-
-        setFieldErrors(errors);
-
-        return Object.keys(errors).length === 0;
-    }
-
 
     async function handleRegister() {
         if (isLoading) {
@@ -60,7 +32,6 @@ export default function RegisterPage() {
         }
 
         setApiError("");
-
 
         if (!validateRegisterForm()) {
             return
@@ -87,31 +58,23 @@ export default function RegisterPage() {
                     loginResponse.tokenType
                 );
 
-
                 router.replace("/(onboarding)");
             }
 
         } catch (error) {
-            if (error instanceof ApiRequestError) {
-                console.log(error.fieldErrors)
-                setApiError(error.message)
+            const apiError = normalizeApiRequestError(error)
 
-                setFieldErrors((current) => ({
-                    ...current,
-                    email:
-                        error.fieldErrors.email ??
-                        current.email,
-                    password:
-                        error.fieldErrors.password ??
-                        current.password,
-                }));
+            setApiError(apiError.message)
 
-                return;
-            }
-
-            setApiError(
-                "Impossibile contattare il server. Riprova.",
-            );
+            setFieldErrors((current) => ({
+                ...current,
+                email:
+                    apiError.errors.email?.[0] ??
+                    current.email,
+                password:
+                    apiError.errors.password?.[0] ??
+                    current.password,
+            }));
         } finally {
             setIsLoading(false);
         }
@@ -139,6 +102,33 @@ export default function RegisterPage() {
                 password: undefined,
             }));
         }
+    }
+
+    function validateRegisterForm(): boolean {
+        const errors: RegisterFieldError = {};
+
+        const normalizedEmail = email.trim();
+
+
+        if (!normalizedEmail) {
+            errors.email = "Inserisci l'email";
+        } else if (!EMAIL_REGEX.test(normalizedEmail)) {
+            errors.email = "Inserisci un'email valida";
+        }
+
+        const hasNumber = /\d/;
+
+        if (!password.trim()) {
+            errors.password = "Inserisci la password";
+        } else if (password.length < 8) {
+            errors.password = "La password deve contenere almeno 8 caratteri";
+        } else if (!hasNumber.test(password)) {
+            errors.password = "La password deve contenere almeno 1 numero";
+        }
+
+        setFieldErrors(errors);
+
+        return Object.keys(errors).length === 0;
     }
 
     return (
