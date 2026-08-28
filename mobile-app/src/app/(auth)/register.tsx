@@ -51,10 +51,12 @@ export default function RegisterPage() {
                 email: normalizedEmail,
                 password
             });
+
             await saveSession(
                 loginResponse.accessToken,
                 loginResponse.tokenType
             );
+
             router.replace("/(onboarding)");
 
         } catch (error) {

@@ -9,80 +9,94 @@ import {colors} from "@/src/constants/theme";
 import InfoLabel from "@/src/components/common/labels/infoLabel";
 import TeamCarousel from "@/src/components/common/HorizontalCarousel";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
+import {normalizeApiRequestError} from "@/src/services/errorService";
 
 type ProfilePageProps = {
     userId: string;
     teams?: boolean
+    isOwnProfile: boolean
 };
 
-export default function ProfilePage({userId, teams}: ProfilePageProps) {
+export default function ProfilePage({userId, teams, isOwnProfile}: ProfilePageProps) {
 
     const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
     const [userAuthInfo, setUserAuthInfo] = useState<AuthInfo | null>(null);
     const [isLoading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    async function loadProfile() {
-        try {
-            setLoading(true);
-            setError(null);
-
-
-            const authInfo = await loadUserAuthInfo(userId);
-
-
-            const userInfo = await loadUserInfo(userId);
-
-
-            setUserAuthInfo(authInfo);
-            setUserInfo(userInfo);
-
-        } catch (error) {
-
-            setError("Impossibile caricare le info dell'utente");
-
-        } finally {
-            setLoading(false);
-        }
-    }
-
     useEffect(() => {
-        if (!userId) {
-            return;
+        let isActive = true;
+
+        async function loadProfile() {
+            try {
+                setLoading(true);
+                setError(null);
+
+                const [authInfo, profileInfo] =
+                    await Promise.all([
+                        loadUserAuthInfo(userId),
+                        loadUserInfo(userId),
+                    ]);
+
+                if (!isActive) {
+                    return;
+                }
+
+                setUserAuthInfo(authInfo);
+                setUserInfo(profileInfo);
+            } catch (error) {
+                const apiError =
+                    normalizeApiRequestError(error);
+
+                if (
+                    apiError.status !== 401 &&
+                    isActive
+                ) {
+                    setError(apiError.message);
+                }
+            } finally {
+                if (isActive) {
+                    setLoading(false);
+                }
+            }
         }
 
         void loadProfile();
-    }, [])
+
+        return () => {
+            isActive = false;
+        };
+    }, [userId]);
 
 
     return (
         <PageLayout
             header={
-            <HeaderContainer variant={"red"}>
-                {isLoading ? (
-                    <View >
-                        <ActivityIndicator color="#FFFFFF" size="large"/>
-                    </View>
-                ) : error ? (
-                    <View>
-                        <Text style={styles.feedbackText}>
-                            {error}
-                        </Text>
-                    </View>
-                ) : !userInfo || !userAuthInfo ? (
-                    <View>
-                        <Text style={styles.feedbackText}>
-                            Utente non disponibile
-                        </Text>
-                    </View>
-                ) : (
-                    <HeaderProfile
-                        userInfo={userInfo}
-                        authInfo={userAuthInfo}
-                        isLoading={false}
-                    />
-                )}
-            </HeaderContainer>}>
+                <HeaderContainer variant={"red"}>
+                    {isLoading ? (
+                        <View>
+                            <ActivityIndicator color="#FFFFFF" size="large"/>
+                        </View>
+                    ) : error ? (
+                        <View>
+                            <Text style={styles.feedbackText}>
+                                {error}
+                            </Text>
+                        </View>
+                    ) : !userInfo || !userAuthInfo ? (
+                        <View>
+                            <Text style={styles.feedbackText}>
+                                Utente non disponibile
+                            </Text>
+                        </View>
+                    ) : (
+                        <HeaderProfile
+                            userInfo={userInfo}
+                            authInfo={userAuthInfo}
+                            canEdit={isOwnProfile}
+                        />
+                    )}
+                </HeaderContainer>}>
 
             <View style={styles.profileContainer}>
                 <ScrollView
@@ -112,7 +126,8 @@ export default function ProfilePage({userId, teams}: ProfilePageProps) {
                 </ScrollView>
 
             </View>
-            <View style={styles.logoutContainer}>
+            {isOwnProfile &&
+                <View style={styles.logoutContainer}>
 
                 <Pressable
                     style={({pressed}) => [
@@ -130,6 +145,7 @@ export default function ProfilePage({userId, teams}: ProfilePageProps) {
                 </Pressable>
 
             </View>
+            }
 
         </PageLayout>
     );

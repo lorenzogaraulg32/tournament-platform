@@ -3,7 +3,7 @@ import {getCurrentUserTeams, TeamInfo} from "@/src/services/teams/teamService";
 import TeamCardHorizontal from "@/src/components/pagesComponents/teams/TeamCardHorizontal";
 import {useCallback, useState} from "react";
 import {useFocusEffect} from "expo-router";
-import {ApiRequestError} from "@/src/services/errorService";
+import {normalizeApiRequestError} from "@/src/services/errorService";
 
 
 /**
@@ -16,8 +16,6 @@ export default function MyTeams() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-
-
     useFocusEffect(
         useCallback(() => {
             let isActive = true;
@@ -27,29 +25,23 @@ export default function MyTeams() {
                     setIsLoading(true);
                     setError(null);
 
-                    const loadedTeams =
-                        await getCurrentUserTeams();
+                    const loadedTeams = await getCurrentUserTeams();
 
                     if (isActive) {
                         setUserTeams(loadedTeams);
                     }
-                } catch (error: unknown) {
+                } catch (error) {
                     if (!isActive) {
                         return;
                     }
+                    const apiError = normalizeApiRequestError(error)
 
-                    console.error(
-                        "Errore caricamento squadre:",
-                        error
-                    );
-
-                    if (error instanceof ApiRequestError) {
-                        setError(error.message);
-                    } else {
-                        setError(
-                            "Errore durante il recupero delle squadre"
-                        );
+                    // Redirect già gestito da authenticatedFetch
+                    if (apiError.status === 401) {
+                        return;
                     }
+
+                    setError(apiError.message)
                 } finally {
                     if (isActive) {
                         setIsLoading(false);

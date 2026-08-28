@@ -5,65 +5,86 @@ import {ScrollView, StyleSheet, Text, View} from "react-native";
 import {useLocalSearchParams} from "expo-router";
 import HeaderTeam from "@/src/components/pagesComponents/teams/HeaderTeam";
 import InfoLabel from "@/src/components/common/labels/infoLabel";
-import {loadCurrentUserId} from "@/src/services/users/authService";
 import TeamCarousel from "@/src/components/common/HorizontalCarousel";
 import HorizontalCarousel from "@/src/components/common/HorizontalCarousel";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
+import {normalizeApiRequestError} from "@/src/services/errorService";
+import {loadCurrentUserId} from "@/src/services/users/authService";
 
 
 export default function teamId() {
 
     const {teamId} = useLocalSearchParams<{ teamId: string }>();
-    const [userId, setUserId] = useState<string | null>(null);
     const [team, setTeam] = useState<TeamDetails | null>(null);
-
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [isCurrentUserTeamAdmin, setIsCurrentUserTeamAdmin] = useState<boolean>(false)
 
 
     useEffect(() => {
-
-        async function loadUserId() {
-            const id = await loadCurrentUserId();
-            setUserId(id);
-        }
+        let isActive = true
 
         async function loadTeamInfo() {
             try {
                 setIsLoading(true)
                 setError(null)
-                const loadedTeam = await getTeamDetails(teamId);
+                setTeam(null);
+                setIsCurrentUserTeamAdmin(false);
+
+
+                const [loadedTeam, currentUserId] = await Promise.all([
+                    getTeamDetails(teamId),
+                    loadCurrentUserId(),
+                ]);
+
+                if (!isActive) {
+                    return;
+                }
+
+                if (loadedTeam.adminIds.includes(currentUserId)) {
+                    setIsCurrentUserTeamAdmin(true)
+                }
+
                 setTeam(loadedTeam);
 
-            } catch (error: unknown) {
-                if (error instanceof Error) {
-                    setError(error.message);
-                } else {
-                    setError(
-                        "Errore durante il recupero della squadra"
-                    );
+            } catch (error) {
+                if (!isActive) {
+                    return;
                 }
-            } finally {
+                const apiError = normalizeApiRequestError(error)
 
-                setIsLoading(false);
+                // Redirect già gestito da authenticatedFetch
+                if (apiError.status === 401) {
+                    return;
+                }
+
+                setError(apiError.message)
+            } finally {
+                if (isActive) {
+                    setIsLoading(false);
+                }
             }
         }
 
-
-        void loadUserId();
         void loadTeamInfo()
-    }, [teamId]);
+
+        return () => {
+            isActive = false;
+        };
+
+    }, [teamId])
 
 
     return (
         <PageLayout
             header={
                 <HeaderContainer variant={"orange"}>
-                <HeaderTeam
-                    team={team}
-                    isLoading={isLoading}
-                    error={error}
-                />
+                    <HeaderTeam
+                        team={team}
+                        isLoading={isLoading}
+                        error={error}
+                        canEdit={isCurrentUserTeamAdmin}
+                    />
                 </HeaderContainer>
             }
         >
@@ -144,8 +165,7 @@ const styles = StyleSheet.create({
         paddingBottom: 30,
     },
 
-    section: {
-    },
+    section: {},
 
     teamCarousel: {
         marginHorizontal: 0,

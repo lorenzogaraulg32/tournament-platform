@@ -8,6 +8,7 @@ import AdminsCard from "@/src/components/pagesComponents/teams/AdminsCard";
 import PlayersCard from "@/src/components/pagesComponents/teams/PlayersCard";
 import {Sport} from "@/src/services/users/userConstants";
 import TeamCardVertical from "@/src/components/pagesComponents/teams/TeamCardVertical";
+import {normalizeApiRequestError} from "@/src/services/errorService";
 
 type CarouselCommonProps = {
     style?: StyleProp<ViewStyle>;
@@ -55,94 +56,102 @@ export default function HorizontalCarousel({
     const isTeam = "adminIds" in inputEntity
 
     useEffect(() => {
-        async function loadTeamPlayers() {
+
+        let isActive = true;
+
+        async function loadEntities() {
             try {
                 setIsLoading(true)
                 setError(null)
-                if (isTeam) {
-                    const players = await Promise.all(
-                        inputEntity.playerIds.map(async (playerId: string) => {
+                switch (variant) {
+                    case "teams":
+                        await loadUserTeams();
+                        break;
 
-                            const userInfo = await loadUserInfo(playerId);
+                    case "admins":
+                        await loadTeamAdmins();
+                        break;
 
-                            return {
-                                id: playerId,
-                                userInfo
-                            };
-                        })
-                    );
-                    setEntities({
-                        type: "users",
-                        items: players
-                    });
+                    case "players":
+                        await loadTeamPlayers();
+                        break;
+                }
+            } catch (error) {
+                if (!isActive) {
+                    return;
+                }
+                const apiError = normalizeApiRequestError(error)
+
+                // Redirect già gestito da authenticatedFetch
+                if (apiError.status === 401) {
+                    return;
                 }
 
-            } catch (error) {
-                console.log("ERRORE CARICAMENTO GIOCATORI: " + error)
-                setError("Errore caricamento giocatori")
+                setError(apiError.message)
             } finally {
-                setIsLoading(false)
+                if (isActive) {
+                    setIsLoading(false)
+                }
+
+            }
+        }
+
+        async function loadTeamPlayers() {
+            if (isTeam) {
+                const players = await Promise.all(
+                    inputEntity.playerIds.map(async (playerId: string) => {
+
+                        const userInfo = await loadUserInfo(playerId);
+
+                        return {
+                            id: playerId,
+                            userInfo
+                        };
+                    })
+                );
+                setEntities({
+                    type: "users",
+                    items: players
+                });
             }
         }
 
         async function loadTeamAdmins() {
-            try {
-                setIsLoading(true)
-                setError(null)
-                if (isTeam) {
-                    const admins = await Promise.all(
-                        inputEntity.adminIds.map(async (adminId: string) => {
+            if (isTeam) {
+                const admins = await Promise.all(
+                    inputEntity.adminIds.map(async (adminId: string) => {
 
-                            const userInfo = await loadUserInfo(adminId);
+                        const userInfo = await loadUserInfo(adminId);
 
-                            const admin: UserEntity = {
-                                id: adminId,
-                                userInfo: userInfo
-                            };
+                        const admin: UserEntity = {
+                            id: adminId,
+                            userInfo: userInfo
+                        };
 
-                            return admin;
-                        })
-                    );
-                    setEntities({
-                        type: "users",
-                        items: admins
-                    });
-                }
-
-            } catch (error) {
-                console.log("ERRORE CARICAMENTO ADMIN: " + error)
-                setError("Errore caricamento admin")
-            } finally {
-                setIsLoading(false)
+                        return admin;
+                    })
+                );
+                setEntities({
+                    type: "users",
+                    items: admins
+                });
             }
         }
 
         async function loadUserTeams() {
-            try {
-                setIsLoading(true)
-                setError(null)
-                if (!isTeam) {
-                    const teams = await getUserTeams(inputEntity.id)
-                    setEntities({
-                        type: "teams",
-                        items: teams
-                    });
-                }
-
-            } catch (error) {
-                console.log("ERRORE CARICAMENTO SQUADRE: " + error)
-                setError("Errore caricamento Squadre")
-            } finally {
-                setIsLoading(false)
+            if (!isTeam) {
+                const teams = await getUserTeams(inputEntity.id)
+                setEntities({
+                    type: "teams",
+                    items: teams
+                });
             }
         }
 
-        if (variant === "players") {
-            void loadTeamPlayers()
-        } else if (variant === "admins") {
-            void loadTeamAdmins()
-        } else {
-            void loadUserTeams()
+        void loadEntities()
+
+        return () => {
+            isActive = false
         }
 
     }, [inputEntity, variant]);

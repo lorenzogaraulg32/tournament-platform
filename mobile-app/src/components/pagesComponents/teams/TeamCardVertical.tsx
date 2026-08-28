@@ -12,7 +12,7 @@ type TeamCardVerticalProps = {
 export default function TeamCardVertical({
                                              teamDetails
                                          }: TeamCardVerticalProps) {
-    async function handlePress() {
+    function handlePress() {
         router.push({
             pathname: "/teams/[teamId]",
             params: {

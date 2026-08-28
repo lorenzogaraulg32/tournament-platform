@@ -1,16 +1,17 @@
-import {ActivityIndicator, Pressable, StyleSheet, Text, View,} from "react-native";
+import {ActivityIndicator, Alert, Pressable, StyleSheet, Text, View,} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Picture from "@/src/components/common/images/Picture";
 import {refreshCode, TeamDetails} from "@/src/services/teams/teamService";
 import {useEffect, useRef, useState} from "react";
 import * as Clipboard from "expo-clipboard";
 import {router} from "expo-router";
-import {loadCurrentUserId} from "@/src/services/users/authService";
+import {normalizeApiRequestError} from "@/src/services/errorService";
 
 type TeamHeaderProps = {
     team: TeamDetails | null;
     isLoading?: boolean;
     error?: string | null;
+    canEdit: boolean;
 };
 
 
@@ -26,29 +27,8 @@ export default function HeaderTeam({
                                        team,
                                        isLoading = false,
                                        error = null,
+                                       canEdit
                                    }: TeamHeaderProps) {
-
-    const [modBtn, setModBtn] = useState(false);
-
-    useEffect(() => {
-
-        async function canShowModBtn() {
-            if (!team) {
-                setModBtn(false);
-                return;
-            }
-            const currentUserId = await loadCurrentUserId();
-
-            if (!currentUserId) {
-                setModBtn(false);
-                return;
-            }
-
-            setModBtn(team.adminIds.includes(String(currentUserId)));
-        }
-
-        void canShowModBtn()
-    }, [team]);
 
 
     function formatLocationLabel(location: string): string {
@@ -134,7 +114,7 @@ export default function HeaderTeam({
                                 {team.name}
                             </Text>
 
-                            {!error && modBtn && (
+                            {canEdit && (
                                 <Pressable
                                     onPress={onOptionsPress}
                                     accessibilityRole="button"
@@ -165,6 +145,7 @@ export default function HeaderTeam({
 
                         <InviteFriendBadge
                             team={team}
+                            canRefresh={canEdit}
                         />
 
 
@@ -177,9 +158,10 @@ export default function HeaderTeam({
 
 type InviteFriendBadgeProps = {
     team: TeamDetails
+    canRefresh: boolean
 };
 
-function InviteFriendBadge({team,}: InviteFriendBadgeProps) {
+function InviteFriendBadge({team, canRefresh}: InviteFriendBadgeProps) {
 
     const [invitationCode, setInvitationCode] = useState(team.invitationCode)
 
@@ -188,34 +170,54 @@ function InviteFriendBadge({team,}: InviteFriendBadgeProps) {
     const copiedTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     async function copyInvitationCode() {
-        await Clipboard.setStringAsync(invitationCode);
+        try {
+            await Clipboard.setStringAsync(invitationCode);
 
-        setCopied(true);
+            setCopied(true);
 
-        if (copiedTimeout.current) {
-            clearTimeout(copiedTimeout.current);
+            if (copiedTimeout.current) {
+                clearTimeout(copiedTimeout.current);
+            }
+
+            copiedTimeout.current = setTimeout(() => {
+                setCopied(false);
+            }, 1500);
+        } catch {
+            Alert.alert(
+                "Copia non riuscita",
+                "Non è stato possibile copiare il codice di invito.",
+            );
         }
 
-        copiedTimeout.current = setTimeout(() => {
-            setCopied(false);
-        }, 1500);
     }
 
+    async function refreshInvitationCode() {
+        try {
+            const updatedTeam =
+                await refreshCode(team.id);
+
+            setInvitationCode(
+                updatedTeam.invitationCode,
+            );
+        } catch (error) {
+            const apiError =
+                normalizeApiRequestError(error);
+
+            // Redirect già gestito centralmente
+            if (apiError.status === 401) {
+                return;
+            }
+
+            Alert.alert(
+                "Impossibile aggiornare il codice",
+                apiError.message,
+            );
+        }
+    }
 
     useEffect(() => {
         setInvitationCode(team.invitationCode);
     }, [team.invitationCode]);
-
-
-    async function refreshInvitationCode() {
-        try {
-            const updatedTeam = await refreshCode(team.id);
-
-            setInvitationCode(updatedTeam.invitationCode);
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
     return (
         <View style={styles.codeBadge}>
@@ -246,22 +248,23 @@ function InviteFriendBadge({team,}: InviteFriendBadgeProps) {
             </Pressable>
 
 
-            <Pressable
-                onPress={refreshInvitationCode}
-                style={({pressed}) => [
-                    styles.refreshCode,
-                    pressed && styles.refreshCodePressed,
-                ]}
-                accessibilityRole="button"
-                accessibilityLabel="Genera nuovo codice invito"
-            >
-                <Ionicons
-                    name="refresh"
-                    size={18}
-                    color="#FFFFFF"
-                />
-            </Pressable>
-
+            {canRefresh &&
+                <Pressable
+                    onPress={refreshInvitationCode}
+                    style={({pressed}) => [
+                        styles.refreshCode,
+                        pressed && styles.refreshCodePressed,
+                    ]}
+                    accessibilityRole="button"
+                    accessibilityLabel="Genera nuovo codice invito"
+                >
+                    <Ionicons
+                        name="refresh"
+                        size={18}
+                        color="#FFFFFF"
+                    />
+                </Pressable>
+            }
         </View>
     );
 }

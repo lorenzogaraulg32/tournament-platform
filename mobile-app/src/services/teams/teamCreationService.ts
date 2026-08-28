@@ -1,5 +1,6 @@
 import {File, Paths} from "expo-file-system";
-import {authenticatedFetch} from "@/src/services/users/authService";
+import {authenticatedFetch} from "@/src/services/fetchService";
+
 
 export type RecruitmentStatus = "OPEN" | "CLOSED";
 
@@ -33,11 +34,7 @@ export async function createTeam(
     request: TeamCreationRequest,
     logo?: TeamLogoUpload | null
 ): Promise<TeamCreationResponse> {
-    if (!API_URL) {
-        throw new Error(
-            "EXPO_PUBLIC_API_URL non configurata"
-        );
-    }
+
 
     const teamFile = new File(
         Paths.cache,

@@ -1,6 +1,6 @@
 import {Pressable, StyleSheet, Text, View} from "react-native";
 import Picture from "@/src/components/common/images/Picture";
-import {colors, teamCardBlueColors, teamCardGreenColors} from "@/src/constants/theme";
+import {colors, teamCardGreenColors} from "@/src/constants/theme";
 import {UserEntity} from "@/src/services/users/userService";
 import {ROLE_LABELS, Sport, SportRole} from "@/src/services/users/userConstants";
 
@@ -17,10 +17,7 @@ export default function PlayersCard({
                                     }: PlayerCardProps
 ) {
 
-    function getRoleBySport(
-        player: UserEntity,
-        sport: Sport
-    ): SportRole | undefined {
+    function getRoleBySport(player: UserEntity, sport: Sport): SportRole | undefined {
         return player.userInfo.roles.find(
             item => item.sport === sport
         )?.role;
@@ -135,8 +132,8 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontSize: 11,
         fontWeight: 700,
-        textShadowColor:   "rgba(0,0,0,0.29)",
-        textShadowOffset:{
+        textShadowColor: "rgba(0,0,0,0.29)",
+        textShadowOffset: {
             height: 2,
             width: 0
         },
@@ -147,8 +144,8 @@ const styles = StyleSheet.create({
         fontSize: 10,
         fontWeight: "bold",
         color: colors.textLightGreen,
-        textShadowColor:   "rgba(141,192,12,0.38)",
-        textShadowOffset:{
+        textShadowColor: "rgba(141,192,12,0.38)",
+        textShadowOffset: {
             height: 2,
             width: 0
         },

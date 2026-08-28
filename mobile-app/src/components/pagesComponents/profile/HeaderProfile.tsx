@@ -1,10 +1,9 @@
-import {ActivityIndicator, Pressable, StyleSheet, Text, View} from "react-native";
+import {Pressable, StyleSheet, Text, View} from "react-native";
 import {UserInfo} from "@/src/services/users/userService";
-import {AuthInfo, loadCurrentUserId} from "@/src/services/users/authService";
+import {AuthInfo} from "@/src/services/users/authService";
 import Picture from "@/src/components/common/images/Picture";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {router} from "expo-router";
-import {useEffect, useState} from "react";
 
 
 /**
@@ -15,41 +14,17 @@ import {useEffect, useState} from "react";
  */
 
 export type ProfileHeaderProps = {
-    isLoading: boolean
-    userInfo?: UserInfo
-    authInfo?: AuthInfo,
-
+    userInfo: UserInfo
+    authInfo: AuthInfo,
+    canEdit: boolean,
 }
 
 
 export default function HeaderProfile({
-                                          isLoading,
                                           userInfo,
-                                          authInfo
+                                          authInfo,
+                                          canEdit
                                       }: ProfileHeaderProps) {
-
-    const [modBtn, setModBtn] = useState(false);
-
-
-    useEffect(() => {
-
-        async function canShowModBtn() {
-            if (!authInfo) {
-                setModBtn(false);
-                return;
-            }
-            const currentUserId = await loadCurrentUserId();
-
-            if (!currentUserId) {
-                setModBtn(false);
-                return;
-            }
-
-            setModBtn(currentUserId === authInfo.id);
-        }
-
-        void canShowModBtn()
-    }, [authInfo]);
 
 
     const onBackPress = () => {
@@ -87,89 +62,78 @@ export default function HeaderProfile({
                 />
             </Pressable>
 
-            {isLoading ? (
-                <View style={styles.container}>
-                    <ActivityIndicator color="#FFFFFF" size="large"/>
+            <View style={styles.container}>
+
+                <View style={styles.imageContainer}>
+                    <Picture
+                        variant="player"
+                        logoUrl={userInfo.profilePicUrl}
+                        style={styles.profileImage}
+                    />
                 </View>
-            ) : !userInfo || !authInfo ? (
-                <View style={styles.container}>
-                    <Text style={styles.feedbackText}>
-                        Utente non disponibile
-                    </Text>
-                </View>
-            ) : (
-                <View style={styles.container}>
 
-                    <View style={styles.imageContainer}>
-                        <Picture
-                            variant="player"
-                            logoUrl={userInfo.profilePicUrl}
-                            style={styles.profileImage}
-                        />
-                    </View>
+                <View style={styles.rightContainer}>
 
-                    <View style={styles.rightContainer}>
-
-                        <View style={styles.titleRow}>
-                            <Text
-                                style={styles.profileName}
-                                numberOfLines={1}
-                            >
-                                {`${userInfo.firstName} ${userInfo.lastName}`}
-                            </Text>
-
-                            {modBtn && (
-                                <Pressable
-                                    onPress={onOptionsPress}
-                                    accessibilityRole="button"
-                                    accessibilityLabel="Modifica profilo"
-                                    hitSlop={10}
-                                    style={({pressed}) => [
-                                        styles.editButton,
-                                        pressed && styles.editButtonPressed,
-                                    ]}
-                                >
-                                    <Ionicons
-                                        name="pencil-outline"
-                                        size={18}
-                                        color="#FFFFFF"
-                                    />
-                                </Pressable>
-                            )}
-                        </View>
-
+                    <View style={styles.titleRow}>
                         <Text
-                            style={styles.username}
+                            style={styles.profileName}
                             numberOfLines={1}
                         >
-                            @{userInfo.username}
+                            {`${userInfo.firstName} ${userInfo.lastName}`}
                         </Text>
 
-                        {userInfo.location && (
-                            <Text
-                                style={styles.location}
-                                numberOfLines={1}
+                        {canEdit && (
+                            <Pressable
+                                onPress={onOptionsPress}
+                                accessibilityRole="button"
+                                accessibilityLabel="Modifica profilo"
+                                hitSlop={10}
+                                style={({pressed}) => [
+                                    styles.editButton,
+                                    pressed && styles.editButtonPressed,
+                                ]}
                             >
-                                {formatLocationLabel(userInfo.location.label)}
-                            </Text>
+                                <Ionicons
+                                    name="pencil-outline"
+                                    size={18}
+                                    color="#FFFFFF"
+                                />
+                            </Pressable>
                         )}
-
-                        <Text
-                            style={styles.email}
-                            numberOfLines={1}
-                        >
-                            {authInfo.email}
-                        </Text>
-
-                        <View style={styles.subscriptionBadge}>
-                            <Text style={styles.subscriptionText}>
-                                Piano gratuito
-                            </Text>
-                        </View>
-
                     </View>
 
-                </View>)}
+                    <Text
+                        style={styles.username}
+                        numberOfLines={1}
+                    >
+                        @{userInfo.username}
+                    </Text>
+
+                    {userInfo.location && (
+                        <Text
+                            style={styles.location}
+                            numberOfLines={1}
+                        >
+                            {formatLocationLabel(userInfo.location.label)}
+                        </Text>
+                    )}
+
+                    <Text
+                        style={styles.email}
+                        numberOfLines={1}
+                    >
+                        {authInfo.email}
+                    </Text>
+
+                    <View style={styles.subscriptionBadge}>
+                        <Text style={styles.subscriptionText}>
+                            Piano gratuito
+                        </Text>
+                    </View>
+
+                </View>
+
+            </View>
         </View>
 
     );

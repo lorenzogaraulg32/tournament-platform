@@ -1,16 +1,14 @@
 import {StyleSheet, Text, View,} from "react-native";
 import {useState} from "react";
 import {router} from "expo-router";
-
 import Switch from "@/src/components/pagesComponents/teams/createTeam/Switch";
 import CreateTeamInputField from "@/src/components/pagesComponents/teams/createTeam/CreateTeamInputField";
 import PositionField from "@/src/components/pagesComponents/teams/createTeam/PositionField";
 import LogoField from "@/src/components/common/images/LogoField";
 import CreateTeamContainer from "@/src/components/pagesComponents/teams/createTeam/CreateTeamContainer";
-
 import {createTeam, TeamCreationRequest, TeamLogoUpload,} from "@/src/services/teams/teamCreationService";
 import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
-import {ApiRequestError} from "@/src/services/errorService";
+import {normalizeApiRequestError,} from "@/src/services/errorService";
 
 type TeamCreationStep = 0 | 1 | 2;
 
@@ -31,21 +29,15 @@ export default function CreateTeam() {
             location: undefined,
         });
 
-    const [logo, setLogo] =
-        useState<TeamLogoUpload | null>(null);
+    const [logo, setLogo] = useState<TeamLogoUpload | null>(null);
 
-    const [stepError, setStepError] =
-        useState<string | undefined>();
+    const [stepError, setStepError] = useState<string | undefined>();
 
-    const [submitError, setSubmitError] =
-        useState<string | null>(null);
+    const [submitError, setSubmitError] = useState<string | null>(null);
 
-    const [isSubmitting, setIsSubmitting] =
-        useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    function updateTeamData<
-        K extends keyof TeamCreationRequest
-    >(
+    function updateTeamData<K extends keyof TeamCreationRequest>(
         field: K,
         value: TeamCreationRequest[K],
     ) {
@@ -58,6 +50,8 @@ export default function CreateTeam() {
         setSubmitError(null);
     }
 
+
+    //validazione puramente frontend
     function validateNameAndDescription(): boolean {
         const trimmedName = teamData.name.trim();
         const trimmedDescription =
@@ -83,7 +77,6 @@ export default function CreateTeam() {
         return true;
     }
 
-
     function validateLocation(): boolean {
         const location = teamData.location;
 
@@ -107,7 +100,6 @@ export default function CreateTeam() {
         return true;
     }
 
-
     function validateLogo(): boolean {
         if (
             logo?.fileSize !== undefined &&
@@ -122,9 +114,7 @@ export default function CreateTeam() {
         return true;
     }
 
-    function validateStep(
-        step: TeamCreationStep,
-    ): boolean {
+    function validateStep(step: TeamCreationStep,): boolean {
         setStepError(undefined);
 
         switch (step) {
@@ -223,20 +213,38 @@ export default function CreateTeam() {
             );
 
             router.replace(`/teams/${response.id}`);
-        } catch (error: unknown) {
-            if (error instanceof ApiRequestError) {
-                setSubmitError(error.message);
+        } catch (error) {
+            const apiError = normalizeApiRequestError(error);
+
+            // Redirect già gestito da authenticatedFetch
+            if (apiError.status === 401) {
                 return;
             }
 
-            console.error(
-                "Errore imprevisto durante la creazione squadra:",
-                error
-            );
+            const firstStepError =
+                apiError.errors.name?.[0]
+                ?? apiError.errors.description?.[0]
+                ?? apiError.errors.status?.[0];
 
-            setSubmitError(
-                "Impossibile creare la squadra. Riprova."
-            );
+            if (firstStepError) {
+                setCurrentStep(0);
+                setStepError(firstStepError);
+                return;
+            }
+
+            const locationError =
+                apiError.errors.location?.[0]
+                ?? apiError.errors["location.label"]?.[0]
+                ?? apiError.errors["location.latitude"]?.[0]
+                ?? apiError.errors["location.longitude"]?.[0];
+
+            if (locationError) {
+                setCurrentStep(1);
+                setStepError(locationError);
+                return;
+            }
+
+            setSubmitError(apiError.message);
         } finally {
             setIsSubmitting(false);
         }

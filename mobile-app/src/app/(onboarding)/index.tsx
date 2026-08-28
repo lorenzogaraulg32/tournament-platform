@@ -1,7 +1,7 @@
- import {useState} from "react";
+import {useState} from "react";
 import {router} from "expo-router";
 import {completeOnBoarding, type UserOnBoardingInfo,} from "@/src/services/users/userService";
-import {ApiRequestError} from "@/src/services/errorService";
+import {normalizeApiRequestError} from "@/src/services/errorService";
 import {Sport, type SportRole,} from "@/src/services/users/userConstants";
 import {
     validateBirthDate,
@@ -18,6 +18,7 @@ import UsernameAndLogoStep from "@/src/components/pagesComponents/onBoarding/ste
 import BirthDateAndGenderStep from "@/src/components/pagesComponents/onBoarding/steps/BirthDateAndGenderStep";
 import SportsAndRolesStep from "@/src/components/pagesComponents/onBoarding/steps/SportsAndRolesStep";
 import LocationStep from "@/src/components/pagesComponents/onBoarding/steps/LocationStep";
+import {Alert} from "react-native";
 
 const TOTAL_STEPS = 5;
 
@@ -33,12 +34,10 @@ type OnBoardingFieldErrors = {
 };
 
 export default function OnBoarding() {
-    const [fieldErrors, setFieldErrors] =
-        useState<OnBoardingFieldErrors>({});
-    const [finalError, setFinalError] = useState("");
+    const [fieldErrors, setFieldErrors] = useState<OnBoardingFieldErrors>({});
+    const [apiError, setApiError] = useState("");
     const [isLoading, setLoading] = useState(false);
     const [step, setStep] = useState(0);
-
     const [userData, setUserData] = useState<UserOnBoardingInfo>({
         username: "",
         firstName: "",
@@ -49,9 +48,73 @@ export default function OnBoarding() {
         roles: [],
         location: null,
     });
+    const [profileLogo, setProfileLogo] = useState<SelectedImage | null>(null);
 
-    const [profileLogo, setProfileLogo] =
-        useState<SelectedImage | null>(null);
+
+    async function handleOnboarding() {
+        try {
+            setApiError("");
+            setLoading(true);
+
+            await completeOnBoarding(userData);
+
+            if (profileLogo) {
+                try {
+                    await uploadProfilePicture(profileLogo);
+                } catch (error) {
+                    const normalizedError = normalizeApiRequestError(error);
+
+                    console.warn(
+                        "Profilo creato, ma caricamento immagine fallito:",
+                        normalizedError.message,
+                    );
+
+                    Alert.alert(
+                        "Profilo creato",
+                        "Il profilo è stato creato correttamente, ma non è stato possibile caricare l'immagine. Potrai riprovare in seguito.",
+                        [
+                            {
+                                text: "Continua",
+                                onPress: () =>
+                                    router.replace("/(app)/home"),
+                            },
+                        ],
+                        {
+                            cancelable: false,
+                        },
+                    );
+
+                    return;
+                }
+            }
+
+            router.replace("/(app)/home");
+        } catch (error) {
+            const apiError = normalizeApiRequestError(error)
+
+            setApiError(apiError.message);
+
+            setFieldErrors((current) => ({
+                ...current,
+                username: apiError.errors.username?.[0] ?? current.username,
+                firstName: apiError.errors.firstName?.[0] ?? current.firstName,
+                lastName: apiError.errors.lastName?.[0] ?? current.lastName,
+                birthDate: apiError.errors.birthDate?.[0] ?? current.birthDate,
+                gender: apiError.errors.gender?.[0] ?? current.gender,
+                sports:
+                    apiError.errors.sports?.[0]
+                    ?? apiError.errors.roles?.[0]
+                    ?? current.sports,
+                location: apiError.errors.location?.[0] ?? current.location,
+                profileLogo: apiError.errors.profileLogo?.[0] ?? current.profileLogo,
+            }));
+        } finally {
+            setLoading(false);
+        }
+    }
+
+
+    /*----------------- Gestione degli steps e dei fields  -------------------*/
 
     const handleFieldChange = <K extends keyof UserOnBoardingInfo>(
         field: K,
@@ -62,6 +125,14 @@ export default function OnBoarding() {
             [field]: value,
         }));
     };
+
+    function applyFieldErrors(
+        errors: OnBoardingFieldErrors
+    ): boolean {
+        setFieldErrors(errors);
+        return !Object.values(errors).some(Boolean);
+    }
+
 
     const toggleSport = (sport: Sport) => {
         setUserData(prev => {
@@ -134,30 +205,8 @@ export default function OnBoarding() {
             return;
         }
 
-        try {
-            setFinalError("");
-            setLoading(true);
+        await handleOnboarding()
 
-            await completeOnBoarding(userData);
-
-            if (profileLogo) {
-                await uploadProfilePicture(profileLogo);
-            }
-
-            router.replace("/(app)/home");
-        } catch (error) {
-            console.error(error);
-
-            if (error instanceof ApiRequestError) {
-                setFinalError(error.message);
-            } else {
-                setFinalError(
-                    "Si è verificato un errore durante il completamento dell'onboarding"
-                );
-            }
-        } finally {
-            setLoading(false);
-        }
     };
 
     const handleBack = () => {
@@ -168,12 +217,6 @@ export default function OnBoarding() {
         setStep(currentStep => Math.max(currentStep - 1, 0));
     };
 
-    function applyFieldErrors(
-        errors: OnBoardingFieldErrors
-    ): boolean {
-        setFieldErrors(errors);
-        return !Object.values(errors).some(Boolean);
-    }
 
     function validateNameAndSurname(): boolean {
         return applyFieldErrors({
@@ -299,7 +342,7 @@ export default function OnBoarding() {
                     <LocationStep
                         location={userData.location}
                         errorMessage={fieldErrors.location}
-                        finalError={finalError}
+                        finalError={apiError}
                         isLoading={isLoading}
                         onLocationChange={value =>
                             handleFieldChange("location", value)

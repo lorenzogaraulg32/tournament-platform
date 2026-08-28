@@ -18,7 +18,7 @@ export default function TeamCardHorizontal({
                                           logoUrl,
                                           playersCount,
                                       }: TeamCardSmallProps) {
-    async function handlePress() {
+    function handlePress() {
         router.push({
             pathname: "/teams/[teamId]",
             params: {
