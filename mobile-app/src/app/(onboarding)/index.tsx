@@ -1,4 +1,4 @@
-import {useState} from "react";
+ import {useState} from "react";
 import {router} from "expo-router";
 import {completeOnBoarding, type UserOnBoardingInfo,} from "@/src/services/users/userService";
 import {ApiRequestError} from "@/src/services/errorService";

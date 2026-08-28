@@ -5,15 +5,17 @@ import com.tournamentplatform.userservice.dto.PatchUserRequest;
 import com.tournamentplatform.userservice.dto.UserResponse;
 import com.tournamentplatform.userservice.entity.User;
 import com.tournamentplatform.userservice.entity.utils.UserSportRole;
+import com.tournamentplatform.userservice.exceptions.userExceptions.InvalidSportRoleConfigurationException;
+import com.tournamentplatform.userservice.exceptions.userExceptions.UserAlreadyExistException;
+import com.tournamentplatform.userservice.exceptions.userExceptions.UserNotFoundException;
+import com.tournamentplatform.userservice.exceptions.userExceptions.UsernameAlreadyRegisteredException;
 import com.tournamentplatform.userservice.mapper.UserMapper;
 import com.tournamentplatform.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -30,14 +32,11 @@ public class UserService {
     ) {
 
         if (userRepository.existsById(userId)) {
-            throw new ResponseStatusException(
-                    HttpStatus.CONFLICT,
-                    "User profile already exists"
-            );
+            throw new UserAlreadyExistException();
         }
 
         if (userRepository.existsByUsername(request.username())) {
-            throw new IllegalArgumentException("Username già registrato");
+            throw new UsernameAlreadyRegisteredException();
         }
 
         User user = UserMapper.toEntity(userId, request);
@@ -58,7 +57,7 @@ public class UserService {
         return UserMapper.toResponse(user);
     }
 
-
+    //TODO: FIX QUANDO IMPLEMENTIAMO LA MODIFICA FRONTEND
     public UserResponse patchUser(
             String userId,
             PatchUserRequest request
@@ -85,37 +84,32 @@ public class UserService {
         User user = getUserEntity(userId);
 
         userRepository.delete(user);
+
+        profilePictureStorageService.deleteProfilePicture(userId);
     }
 
 
     private User getUserEntity(String userId) {
-
-        return userRepository.findById(userId)
-                .orElseThrow(() ->
-                        new ResponseStatusException(
-                                HttpStatus.NOT_FOUND,
-                                "User not found"
-                        )
-                );
+        return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
     }
 
     private void validateSportConfiguration(User user) {
-
         for (UserSportRole role : user.getRoles()) {
-
             if (!user.getSports().contains(role.getSport())) {
-                throw new ResponseStatusException(
-                        HttpStatus.BAD_REQUEST,
-                        "Role sport must be included in user's sports"
-                );
+                throw new InvalidSportRoleConfigurationException();
             }
 
             if (role.getRole().getSport() != role.getSport()) {
-                throw new ResponseStatusException(
-                        HttpStatus.BAD_REQUEST,
-                        "Role does not belong to the selected sport"
-                );
+                throw new InvalidSportRoleConfigurationException();
             }
+        }
+
+        boolean everySportHasARole = user.getSports().stream()
+                .allMatch(sport -> user.getRoles().stream()
+                        .anyMatch(role -> role.getSport() == sport));
+
+        if (!everySportHasARole) {
+            throw new InvalidSportRoleConfigurationException();
         }
     }
 
@@ -130,7 +124,6 @@ public class UserService {
 
         userRepository.save(user);
     }
-
 
     public Resource getProfilePictureByFilename(String filename) {
         return profilePictureStorageService

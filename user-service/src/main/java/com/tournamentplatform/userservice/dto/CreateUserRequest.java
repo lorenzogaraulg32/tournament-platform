@@ -12,29 +12,29 @@ import java.util.Set;
 public record CreateUserRequest(
 
         @NotBlank
-        @Size(max = 20)
+        @Size(max = 20, message = "L'username non può superare i 20 caratteri")
         String username,
 
         @NotBlank
-        @Size(max = 20)
+        @Size(max = 20, message = "Il nome non può superare i 20 caratteri")
         String firstName,
 
         @NotBlank
-        @Size(max = 20)
+        @Size(max = 20, message = "Il cognome non può superare i 20 caratteri")
         String lastName,
 
         @NotNull
-        @Past
+        @Past(message = "La data di nascita deve essere nel passato")
         LocalDate birthDate,
 
-        @NotNull
+        @NotNull(message = "Il sesso è obbligatorio")
         Gender gender,
 
-        @NotEmpty
+        @NotEmpty(message = "Selezionare almeno uno sport")
         Set<Sport> sports,
 
         @Valid
-        @NotEmpty
+        @NotEmpty(message = "Selezionare almeno un ruolo per sport")
         Set<UserSportRoleRequest> roles,
 
         @Valid

@@ -1,6 +1,9 @@
 package com.tournamentplatform.userservice.service;
 
-import jakarta.ws.rs.NotFoundException;
+import com.tournamentplatform.userservice.exceptions.imageExceptions.InvalidProfilePictureException;
+import com.tournamentplatform.userservice.exceptions.imageExceptions.ProfilePictureNotFoundException;
+import com.tournamentplatform.userservice.exceptions.imageExceptions.ProfilePictureStorageException;
+import com.tournamentplatform.userservice.exceptions.imageExceptions.ProfilePictureTooLargeException;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
@@ -26,10 +29,7 @@ public class ProfilePictureStorageService {
 
     private final Path uploadDir;
 
-    public ProfilePictureStorageService(
-            @Value("${app.uploads.profile-pics}")
-            String uploadDir
-    ) {
+    public ProfilePictureStorageService(@Value("${app.uploads.profile-pics}") String uploadDir) {
         this.uploadDir = Paths.get(uploadDir)
                 .toAbsolutePath()
                 .normalize();
@@ -44,15 +44,7 @@ public class ProfilePictureStorageService {
         }
     }
 
-    public String storeProfilePicture(
-            String userId,
-            MultipartFile file
-    ) {
-        if (userId == null) {
-            throw new IllegalArgumentException(
-                    "L'ID dell'utente è obbligatorio"
-            );
-        }
+    public String storeProfilePicture(String userId, MultipartFile file) {
 
         validateFile(file);
 
@@ -75,15 +67,10 @@ public class ProfilePictureStorageService {
 
         // Protezione aggiuntiva contro percorsi esterni alla cartella.
         if (!destination.startsWith(uploadDir)) {
-            throw new IllegalArgumentException(
-                    "Percorso immagine profilo non valido"
-            );
+            throw new InvalidProfilePictureException();
         }
 
-        try (
-                InputStream inputStream =
-                        file.getInputStream()
-        ) {
+        try (InputStream inputStream = file.getInputStream()) {
             Files.copy(
                     inputStream,
                     destination,
@@ -99,18 +86,13 @@ public class ProfilePictureStorageService {
             return PUBLIC_LOGO_PATH + filename;
 
         } catch (IOException exception) {
-            throw new IllegalStateException(
-                    "Errore durante il salvataggio dell'immagine profilo",
-                    exception
-            );
+            throw new ProfilePictureStorageException();
         }
     }
 
     public Resource loadProfilePicture(String filename) {
         if (filename == null || filename.isBlank()) {
-            throw new IllegalArgumentException(
-                    "Il nome del logo è obbligatorio"
-            );
+            throw new InvalidProfilePictureException();
         }
 
         String safeFilename = Path
@@ -124,18 +106,11 @@ public class ProfilePictureStorageService {
 
 
         if (!filePath.startsWith(uploadDir)) {
-            throw new IllegalArgumentException(
-                    "Percorso immagine profilo non valido"
-            );
+            throw new InvalidProfilePictureException();
         }
 
-        if (
-                !Files.exists(filePath) ||
-                        !Files.isRegularFile(filePath)
-        ) {
-            throw new NotFoundException(
-                    "immagine profilo non trovata"
-            );
+        if (!Files.isRegularFile(filePath)) {
+            throw new ProfilePictureNotFoundException();
         }
 
         return new FileSystemResource(filePath);
@@ -161,25 +136,17 @@ public class ProfilePictureStorageService {
             }
 
         } catch (IOException exception) {
-            throw new IllegalStateException(
-                    "Errore durante l'eliminazione del logo",
-                    exception
-            );
+            throw new ProfilePictureStorageException();
         }
     }
 
-
     private void validateFile(MultipartFile file) {
         if (file == null || file.isEmpty()) {
-            throw new IllegalArgumentException(
-                    "Il file del logo è vuoto"
-            );
+            throw new InvalidProfilePictureException();
         }
 
         if (file.getSize() > MAX_FILE_SIZE) {
-            throw new IllegalArgumentException(
-                    "Il logo non può superare i 2 MB"
-            );
+            throw new ProfilePictureTooLargeException();
         }
     }
 
@@ -205,15 +172,10 @@ public class ProfilePictureStorageService {
                 return ImageFormat.WEBP;
             }
 
-            throw new IllegalArgumentException(
-                    "Il file non è un'immagine PNG, JPEG o WEBP valida"
-            );
+            throw new InvalidProfilePictureException();
 
         } catch (IOException exception) {
-            throw new IllegalStateException(
-                    "Impossibile leggere il file del logo",
-                    exception
-            );
+            throw new ProfilePictureStorageException();
         }
     }
 
@@ -226,27 +188,17 @@ public class ProfilePictureStorageService {
          * application/octet-stream. In quel caso ci basiamo
          * sul contenuto binario già analizzato.
          */
-        if (
-                contentType == null ||
-                        contentType.isBlank() ||
-                        contentType.equalsIgnoreCase(
-                                "application/octet-stream"
-                        )
-        ) {
+        if (contentType == null || contentType.isBlank() || contentType.equalsIgnoreCase("application/octet-stream")) {
             return;
         }
 
-        String normalizedContentType =
-                contentType.toLowerCase(Locale.ROOT);
+        String normalizedContentType = contentType.toLowerCase(Locale.ROOT);
 
-        if (
-                !detectedFormat
-                        .getAllowedContentTypes()
-                        .contains(normalizedContentType)
+        if (!detectedFormat
+                .getAllowedContentTypes()
+                .contains(normalizedContentType)
         ) {
-            throw new IllegalArgumentException(
-                    "Il tipo dichiarato del file non corrisponde al suo contenuto"
-            );
+            throw new InvalidProfilePictureException();
         }
     }
 

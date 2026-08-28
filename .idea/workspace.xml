@@ -4,29 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Big Improvements on code organization, reduced coupling between classes, and cleaned up code.&#10;&#10;Also centralized error managment">
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/LoadingScreen.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/ProfileCheckErrorScreen.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/services/errorService.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/services/fetchService.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/services/users/sessionService.ts" afterDir="false" />
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Big Improvements on frontend services, now they are more separated and with single responsabilty. Also reworked errors and errors parsing and managment">
+      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/dto/ApiErrorResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/exceptions/ApplicationException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/exceptions/ErrorCode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/exceptions/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/exceptions/UserErrorCode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/exceptions/imageExceptions/InvalidProfilePictureException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/exceptions/imageExceptions/ProfilePictureNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/exceptions/imageExceptions/ProfilePictureStorageException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/exceptions/imageExceptions/ProfilePictureTooLargeException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/exceptions/userExceptions/InvalidSportRoleConfigurationException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/exceptions/userExceptions/UserAlreadyExistException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/exceptions/userExceptions/UserNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/exceptions/userExceptions/UsernameAlreadyRegisteredException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/exception/GlobalExceptionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/_layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/create.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/create.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/myTeams.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/myTeams.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(auth)/login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(auth)/login.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(auth)/register.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(auth)/register.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(onboarding)/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(onboarding)/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/images/LogoField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/images/LogoField.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/onBoarding/steps/UsernameAndLogoStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/onBoarding/steps/UsernameAndLogoStep.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/constants/helpers/validationHelper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/constants/helpers/validationHelper.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/constants/theme.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/constants/theme.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/common/errorService.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/common/helperService.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/users/authService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/users/authService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/users/imagesService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/imagesService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/users/userService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/users/userService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/dto/CreateUserRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/dto/CreateUserRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/service/ProfilePictureStorageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/service/ProfilePictureStorageService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/service/UserService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,7 +105,7 @@
     "Spring Boot.UserServiceApplication.executor": "Run",
     "jdk.selected.JAVA_MODULE": "21",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Lombax/Desktop/Progetto Gestione Tornei Calcetto/mobile-app/src/app/(app)",
+    "last_opened_file_path": "C:/Users/Lombax/Desktop/Progetto Gestione Tornei Calcetto/user-service/src/main/java/com/tournamentplatform/userservice/exceptions",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -141,11 +138,11 @@
       <recent name="com.tournamentplatform.tournament.DTO" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\user-service\src\main\java\com\tournamentplatform\userservice\exceptions" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\app\(app)" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\services\users" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\assets\images\backgrounds" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\app\(app)\home" />
-      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\app\(app)\tournaments" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\services" />
@@ -155,11 +152,11 @@
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\common\images" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.tournamentplatform.userservice.exceptions.imageExceptions" />
+      <recent name="com.tournamentplatform.userservice.exceptions" />
+      <recent name="com.tournamentplatform.userservice.dto" />
       <recent name="com.tournamentplatform.userservice.service" />
       <recent name="entity" />
-      <recent name="com.tournamentplatform.teamservice.dto" />
-      <recent name="com.tournamentplatform.teamservice.errorHandling" />
-      <recent name="com.tournamentplatform.teamservice.service" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -346,15 +343,8 @@
       <workItem from="1787664717167" duration="4012000" />
       <workItem from="1787668811819" duration="8193000" />
       <workItem from="1787755530338" duration="7006000" />
-      <workItem from="1787837484782" duration="7761000" />
-    </task>
-    <task id="LOCAL-00007" summary="Tournament Service init&#10;Create new tournament enpoint added&#10;Security config added for jwt validation">
-      <option name="closed" value="true" />
-      <created>1783003409973</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1783003409973</updated>
+      <workItem from="1787837484782" duration="8281000" />
+      <workItem from="1787918776977" duration="5506000" />
     </task>
     <task id="LOCAL-00008" summary="Tournament Service init&#10;Create new tournament enpoint added&#10;Security config added for jwt validation">
       <option name="closed" value="true" />
@@ -740,7 +730,15 @@
       <option name="project" value="LOCAL" />
       <updated>1787677162183</updated>
     </task>
-    <option name="localTasksCounter" value="56" />
+    <task id="LOCAL-00056" summary="Big Improvements on frontend services, now they are more separated and with single responsabilty. Also reworked errors and errors parsing and managment">
+      <option name="closed" value="true" />
+      <created>1787847702244</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1787847702244</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -758,7 +756,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Big Update, now frontend is connected, forgot to commit before&#10;&#10;User registration and login is working (backend-frontend)&#10;&#10;Now frontend fetches and displays the user teams&#10;&#10;Now working on the teams section" />
     <MESSAGE value="Team details fronted - backend  &#10;Now you can click on a team card from /teams and get routed to the team details page wich shows team details etc. WIP" />
     <MESSAGE value="little graphical fix" />
     <MESSAGE value="Your team section is now collapsable" />
@@ -783,7 +780,8 @@
     <MESSAGE value="Structured headers for re-using and coerence, rebuilt teamCreation page to dived it into steps, like onboarding" />
     <MESSAGE value="Restructured folders for better managment" />
     <MESSAGE value="Big Improvements on code organization, reduced coupling between classes, and cleaned up code.&#10;&#10;Also centralized error managment" />
-    <option name="LAST_COMMIT_MESSAGE" value="Big Improvements on code organization, reduced coupling between classes, and cleaned up code.&#10;&#10;Also centralized error managment" />
+    <MESSAGE value="Big Improvements on frontend services, now they are more separated and with single responsabilty. Also reworked errors and errors parsing and managment" />
+    <option name="LAST_COMMIT_MESSAGE" value="Big Improvements on frontend services, now they are more separated and with single responsabilty. Also reworked errors and errors parsing and managment" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -41,25 +41,21 @@ export default function RegisterPage() {
             setIsLoading(true);
             const normalizedEmail = email.trim().toLowerCase();
 
-            const response = await registerUser({
+            void await registerUser({
                 email: normalizedEmail,
                 password
             });
 
-            if (response.message === "Utente registrato correttamente") {
 
-                const loginResponse = await loginUser({
-                    email: normalizedEmail,
-                    password
-                });
-
-                await saveSession(
-                    loginResponse.accessToken,
-                    loginResponse.tokenType
-                );
-
-                router.replace("/(onboarding)");
-            }
+            const loginResponse = await loginUser({
+                email: normalizedEmail,
+                password
+            });
+            await saveSession(
+                loginResponse.accessToken,
+                loginResponse.tokenType
+            );
+            router.replace("/(onboarding)");
 
         } catch (error) {
             const apiError = normalizeApiRequestError(error)
