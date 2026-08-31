@@ -35,12 +35,12 @@ public enum UserErrorCode implements ErrorCode {
     ),
 
     USER_PIC_NOT_FOUND(
-            " USER_PIC_NOT_FOUND",
+            "USER_PIC_NOT_FOUND",
             "La foto profilo non è stata trovata"
     ),
 
     USER_PIC_IO_ERROR(
-            " USER_PIC_IO_ERROR",
+            "USER_PIC_IO_ERROR",
             "Errore nello storage della foto profilo"
     );
 

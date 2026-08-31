@@ -2,6 +2,7 @@ package com.tournamentplatform.teamservice.service;
 
 import com.tournamentplatform.teamservice.dto.TeamGetDetailsResponse;
 import com.tournamentplatform.teamservice.entity.Team;
+import com.tournamentplatform.teamservice.errorHandling.teamsExceptions.OwnerRemovalExcpetion;
 import com.tournamentplatform.teamservice.repository.TeamsRepository;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ public class TeamPlayerService {
 
         Team savedTeam = teamsRepository.save(team);
 
-        return servicesHelper.toTeamGetDeatilsResponse(savedTeam);
+        return servicesHelper.toTeamGetDetailsResponse(savedTeam);
     }
 
     public TeamGetDetailsResponse addPlayerInTeamInvitationCode( String invitationCode) {
@@ -44,7 +45,7 @@ public class TeamPlayerService {
 
         Team savedTeam = teamsRepository.save(team);
 
-        return servicesHelper.toTeamGetDeatilsResponse(savedTeam);
+        return servicesHelper.toTeamGetDetailsResponse(savedTeam);
     }
 
     public TeamGetDetailsResponse removePlayerFromTeam(String teamId, String playerId) {
@@ -54,7 +55,7 @@ public class TeamPlayerService {
         teamAuthorizationHelper.checkTeamAdmin(team);
 
         if (team.getCreatorId().equals(playerId)) {
-            throw new IllegalArgumentException("Il creator non può essere rimosso dai giocatori");
+            throw new OwnerRemovalExcpetion();
         }
 
         team.getPlayerIds().remove(playerId);
@@ -62,7 +63,7 @@ public class TeamPlayerService {
 
         Team savedTeam = teamsRepository.save(team);
 
-        return servicesHelper.toTeamGetDeatilsResponse(savedTeam);
+        return servicesHelper.toTeamGetDetailsResponse(savedTeam);
     }
 
 

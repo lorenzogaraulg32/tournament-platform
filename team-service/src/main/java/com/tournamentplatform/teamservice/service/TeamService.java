@@ -73,26 +73,22 @@ public class TeamService {
 
             savedTeam.setLogoUrl(logoUrl);
         } else {
-            System.out.println("Il logo è nullo o vuoto!");
+            System.out.println("Il logo è nullo o vuoto, non è stato salvato");
         }
 
-
         return new TeamCreationResponse(String.valueOf(savedTeam.getId()));
-
-
     }
 
     public TeamGetDetailsResponse getTeam(String id) {
 
         Team team = servicesHelper.getTeamEntityOrThrow(id);
 
-        return servicesHelper.toTeamGetDeatilsResponse(team);
+        return servicesHelper.toTeamGetDetailsResponse(team);
     }
 
     public ResponseEntity<Resource> getTeamLogo(String teamId) {
 
-        Team team =
-                servicesHelper.getTeamEntityOrThrow(teamId);
+        Team team = servicesHelper.getTeamEntityOrThrow(teamId);
 
         teamAuthorizationHelper.checkTeamPlayer(team);
 
@@ -122,7 +118,7 @@ public class TeamService {
 
         Team savedTeam = teamsRepository.save(team);
 
-        return servicesHelper.toTeamGetDeatilsResponse(savedTeam);
+        return servicesHelper.toTeamGetDetailsResponse(savedTeam);
     }
 
     public TeamGetDetailsResponse patchTeamCode(String id) {
@@ -135,7 +131,7 @@ public class TeamService {
 
         Team savedTeam = teamsRepository.save(team);
 
-        return servicesHelper.toTeamGetDeatilsResponse(savedTeam);
+        return servicesHelper.toTeamGetDetailsResponse(savedTeam);
     }
 
 
@@ -151,7 +147,7 @@ public class TeamService {
 
         Team savedTeam = teamsRepository.save(team);
 
-        return servicesHelper.toTeamGetDeatilsResponse(savedTeam);
+        return servicesHelper.toTeamGetDetailsResponse(savedTeam);
     }
 
     @Transactional
@@ -172,8 +168,6 @@ public class TeamService {
 
 
     public List<TeamGetResponse> getCurrentUserTeams() {
-
-
         return teamsRepository
                 .findAllByPlayerIds(teamAuthorizationHelper.getCurrentUserId())
                 .stream()

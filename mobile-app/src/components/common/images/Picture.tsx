@@ -1,7 +1,7 @@
 import {useEffect, useMemo, useState} from "react";
 import {ImageStyle, StyleProp,} from "react-native";
 import {Image} from "expo-image";
-import {getAuthorizationHeader} from "@/src/services/users/authService";
+import {getAuthorizationHeader} from "@/src/services/users/sessionService";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 

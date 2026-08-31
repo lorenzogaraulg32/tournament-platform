@@ -1,7 +1,10 @@
 package com.tournamentplatform.teamservice.service;
 
-import com.tournamentplatform.teamservice.entity.Team;
-import jakarta.ws.rs.NotFoundException;
+import com.tournamentplatform.teamservice.errorHandling.imageExceptions.InvalidProfilePictureException;
+import com.tournamentplatform.teamservice.errorHandling.imageExceptions.ProfilePictureNotFoundException;
+import com.tournamentplatform.teamservice.errorHandling.imageExceptions.ProfilePictureStorageException;
+import com.tournamentplatform.teamservice.errorHandling.imageExceptions.ProfilePictureTooLargeException;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -26,10 +29,7 @@ public class LogoStorageService {
 
     private final Path uploadDir;
 
-    public LogoStorageService(
-            @Value("${app.uploads.team-logos-dir}")
-            String uploadDir
-    ) {
+    public LogoStorageService(@Value("${app.uploads.team-logos-dir}") String uploadDir) {
         this.uploadDir = Paths.get(uploadDir)
                 .toAbsolutePath()
                 .normalize();
@@ -44,16 +44,7 @@ public class LogoStorageService {
         }
     }
 
-    public String storeTeamLogo(
-            Long teamId,
-            MultipartFile file
-    ) {
-        if (teamId == null) {
-            throw new IllegalArgumentException(
-                    "L'ID della squadra è obbligatorio"
-            );
-        }
-
+    public String storeTeamLogo(Long teamId, MultipartFile file) {
         validateFile(file);
 
         ImageFormat imageFormat = detectImageFormat(file);
@@ -75,21 +66,15 @@ public class LogoStorageService {
 
         // Protezione aggiuntiva contro percorsi esterni alla cartella.
         if (!destination.startsWith(uploadDir)) {
-            throw new IllegalArgumentException(
-                    "Percorso del logo non valido"
-            );
+            throw new InvalidProfilePictureException();
         }
 
-        try (
-                InputStream inputStream =
-                        file.getInputStream()
-        ) {
+        try (InputStream inputStream = file.getInputStream()) {
             Files.copy(
                     inputStream,
                     destination,
                     StandardCopyOption.REPLACE_EXISTING
             );
-
 
             deleteOtherTeamLogoFiles(
                     teamId,
@@ -99,18 +84,13 @@ public class LogoStorageService {
             return PUBLIC_LOGO_PATH + filename;
 
         } catch (IOException exception) {
-            throw new IllegalStateException(
-                    "Errore durante il salvataggio del logo",
-                    exception
-            );
+            throw new ProfilePictureStorageException();
         }
     }
 
     public Resource loadTeamLogo(String filename) {
         if (filename == null || filename.isBlank()) {
-            throw new IllegalArgumentException(
-                    "Il nome del logo è obbligatorio"
-            );
+            throw new InvalidProfilePictureException();
         }
 
         String safeFilename = Path
@@ -123,18 +103,12 @@ public class LogoStorageService {
                 .normalize();
 
         if (!filePath.startsWith(uploadDir)) {
-            throw new IllegalArgumentException(
-                    "Percorso del logo non valido"
-            );
+            throw new InvalidProfilePictureException();
         }
 
-        if (
-                !Files.exists(filePath) ||
-                        !Files.isRegularFile(filePath)
+        if (!Files.exists(filePath) || !Files.isRegularFile(filePath)
         ) {
-            throw new NotFoundException(
-                    "Logo non trovato"
-            );
+            throw new ProfilePictureNotFoundException();
         }
 
         return new FileSystemResource(filePath);
@@ -160,28 +134,21 @@ public class LogoStorageService {
             }
 
         } catch (IOException exception) {
-            throw new IllegalStateException(
-                    "Errore durante l'eliminazione del logo",
-                    exception
-            );
+            throw new ProfilePictureStorageException();
         }
     }
-
 
 
     private void validateFile(MultipartFile file) {
         if (file == null || file.isEmpty()) {
-            throw new IllegalArgumentException(
-                    "Il file del logo è vuoto"
-            );
+            throw new InvalidProfilePictureException();
         }
 
         if (file.getSize() > MAX_FILE_SIZE) {
-            throw new IllegalArgumentException(
-                    "Il logo non può superare i 2 MB"
-            );
+            throw new ProfilePictureTooLargeException();
         }
     }
+
 
     private ImageFormat detectImageFormat(
             MultipartFile file
@@ -205,15 +172,10 @@ public class LogoStorageService {
                 return ImageFormat.WEBP;
             }
 
-            throw new IllegalArgumentException(
-                    "Il file non è un'immagine PNG, JPEG o WEBP valida"
-            );
+            throw new InvalidProfilePictureException();
 
         } catch (IOException exception) {
-            throw new IllegalStateException(
-                    "Impossibile leggere il file del logo",
-                    exception
-            );
+            throw new ProfilePictureStorageException();
         }
     }
 
@@ -244,9 +206,7 @@ public class LogoStorageService {
                         .getAllowedContentTypes()
                         .contains(normalizedContentType)
         ) {
-            throw new IllegalArgumentException(
-                    "Il tipo dichiarato del file non corrisponde al suo contenuto"
-            );
+            throw new InvalidProfilePictureException();
         }
     }
 
@@ -319,6 +279,7 @@ public class LogoStorageService {
                 && webp.equals("WEBP");
     }
 
+    @Getter
     private enum ImageFormat {
 
         PNG(
@@ -351,12 +312,5 @@ public class LogoStorageService {
                     allowedContentTypes;
         }
 
-        public String getExtension() {
-            return extension;
-        }
-
-        public Set<String> getAllowedContentTypes() {
-            return allowedContentTypes;
-        }
     }
 }

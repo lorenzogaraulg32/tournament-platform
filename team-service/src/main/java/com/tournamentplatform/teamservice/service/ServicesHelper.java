@@ -3,7 +3,7 @@ package com.tournamentplatform.teamservice.service;
 import com.tournamentplatform.teamservice.dto.TeamGetDetailsResponse;
 import com.tournamentplatform.teamservice.dto.TeamGetResponse;
 import com.tournamentplatform.teamservice.entity.Team;
-import com.tournamentplatform.teamservice.errorHandling.ResourceNotFoundException;
+import com.tournamentplatform.teamservice.errorHandling.teamsExceptions.TeamNotFoundException;
 import com.tournamentplatform.teamservice.repository.TeamsRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +20,10 @@ public class ServicesHelper {
 
     public Team getTeamEntityOrThrow(String id) {
         return teamsRepository.findById(Long.valueOf(id))
-                .orElseThrow(() -> new ResourceNotFoundException("Team non trovato con id: " + id));
+                .orElseThrow(TeamNotFoundException::new);
     }
 
-    public TeamGetDetailsResponse toTeamGetDeatilsResponse(Team team) {
+    public TeamGetDetailsResponse toTeamGetDetailsResponse(Team team) {
         return new TeamGetDetailsResponse(
                 team.getId(),
                 team.getName(),

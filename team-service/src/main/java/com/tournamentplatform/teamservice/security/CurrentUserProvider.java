@@ -17,7 +17,7 @@ public class CurrentUserProvider {
                 .getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()) {
-            throw new AccessDeniedException("Utente non autorizzato per l'operazione");
+            throw new AccessDeniedException("Utente non autenticato");
         }
 
         return authentication.getName();

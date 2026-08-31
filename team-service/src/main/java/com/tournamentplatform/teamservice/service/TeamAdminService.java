@@ -2,6 +2,8 @@ package com.tournamentplatform.teamservice.service;
 
 import com.tournamentplatform.teamservice.dto.TeamGetDetailsResponse;
 import com.tournamentplatform.teamservice.entity.Team;
+import com.tournamentplatform.teamservice.errorHandling.teamsExceptions.OwnerRemovalExcpetion;
+import com.tournamentplatform.teamservice.errorHandling.teamsExceptions.UserNotMemberException;
 import com.tournamentplatform.teamservice.repository.TeamsRepository;
 import org.springframework.stereotype.Service;
 
@@ -27,14 +29,14 @@ public class TeamAdminService {
         teamAuthorizationHelper.checkTeamCreator(team);
 
         if (!team.getPlayerIds().contains(userId)) {
-            throw new IllegalArgumentException("L'utente deve essere un giocatore del team prima di diventare admin");
+            throw new UserNotMemberException();
         }
 
         team.getAdminIds().add(userId);
 
         Team savedTeam = teamsRepository.save(team);
 
-        return servicesHelper.toTeamGetDeatilsResponse(savedTeam);
+        return servicesHelper.toTeamGetDetailsResponse(savedTeam);
 
     }
 
@@ -44,14 +46,14 @@ public class TeamAdminService {
         teamAuthorizationHelper.checkTeamCreator(team);
 
         if (team.getCreatorId().equals(userId)) {
-            throw new IllegalArgumentException("Il creator non può essere rimosso dagli admin");
+            throw new OwnerRemovalExcpetion();
         }
 
         team.getAdminIds().remove(userId);
 
         Team savedTeam = teamsRepository.save(team);
 
-        return servicesHelper.toTeamGetDeatilsResponse(savedTeam);
+        return servicesHelper.toTeamGetDetailsResponse(savedTeam);
 
     }
 
