@@ -9,6 +9,8 @@ import com.tournamentplatform.tournament.errorHandling.tournamentExceptions.Tour
 import com.tournamentplatform.tournament.repository.TournamentRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class TournamentHelper {
 
@@ -41,6 +43,22 @@ public class TournamentHelper {
                 tournament.getStatus().name(),
                 tournament.getRulesUrl()
         );
+    }
+
+
+
+    public String generateUniqueInvitationCode() {
+        String code;
+
+        do {
+            code = UUID.randomUUID()
+                    .toString()
+                    .replace("-", "")
+                    .substring(0, 8)
+                    .toUpperCase();
+        } while (tournamentRepository.existsByInvitationCode(code));
+
+        return code;
     }
 
     public void validateTournament(Tournament tournament) {

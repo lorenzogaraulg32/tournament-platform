@@ -45,7 +45,8 @@ public class TournamentService {
                 request.getMinTeams(),
                 request.getMaxTeams(),
                 request.getFormat(),
-                request.getRulesUrl()
+                request.getRulesUrl(),
+                tournamentHelper.generateUniqueInvitationCode()
         );
 
         tournamentHelper.validateTournament(tournament);

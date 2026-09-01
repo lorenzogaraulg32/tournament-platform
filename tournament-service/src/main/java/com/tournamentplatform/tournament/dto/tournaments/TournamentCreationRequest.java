@@ -41,5 +41,7 @@ public class TournamentCreationRequest {
 
     private String rulesUrl;
 
+    //codice di invito autogenerato dal server
+
 
 }

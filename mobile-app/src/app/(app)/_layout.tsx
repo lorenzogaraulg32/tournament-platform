@@ -4,11 +4,11 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 import {colors} from "@/src/constants/theme"
 import {useCallback, useEffect, useRef, useState} from "react";
-import {ApiRequestError} from "@/src/services/errorService";
+import {ApiRequestError, normalizeApiRequestError} from "@/src/services/errorService";
 import {loadUserInfo} from "@/src/services/users/userService";
 import {loadCurrentUserId} from "@/src/services/users/authService";
-import ProfileCheckErrorScreen from "@/src/app/(app)/ProfileCheckErrorScreen";
-import LoadingScreen from "@/src/app/(app)/LoadingScreen";
+import ErrorScreen from "@/src/components/common/ErrorScreen";
+import LoadingScreen from "@/src/components/common/LoadingScreen";
 
 
 type ProfileState =
@@ -23,7 +23,8 @@ export default function RootLayout() {
     const [isRetrying, setIsRetrying] = useState(false);
     const isMounted = useRef(true);
 
-    const checkProfile = useCallback(async (): Promise<void> => {
+    //questo controllo serve nel caso in cui l'utente non è recuperato dopo il login, quindi nel caso non esista
+    const resolveProfileState = useCallback(async (): Promise<void> => {
         setIsRetrying(true);
 
         try {
@@ -59,12 +60,12 @@ export default function RootLayout() {
     useEffect(() => {
         isMounted.current = true;
 
-        void checkProfile();
+        void resolveProfileState();
 
         return () => {
             isMounted.current = false;
         };
-    }, [checkProfile]);
+    }, [resolveProfileState]);
 
     if (profileState === "checking") {
         return <LoadingScreen message="Caricamento in corso..."/>;
@@ -78,8 +79,10 @@ export default function RootLayout() {
 
     if (profileState === "error") {
         return (
-            <ProfileCheckErrorScreen
-                onRetry={checkProfile}
+            <ErrorScreen
+                title="Servizio Momentaneamente indisponibile"
+                message={"Errore interno del server"}
+                onRetry={resolveProfileState}
                 isRetrying={isRetrying}
             />
         );

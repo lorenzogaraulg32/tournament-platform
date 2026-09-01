@@ -9,6 +9,7 @@ import {useState} from "react";
 import {loginUser} from "@/src/services/users/authService";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {saveSession} from "@/src/services/users/sessionService";
+import {router} from "expo-router";
 
 type LoginFieldErrors = {
     email?: string;
@@ -97,7 +98,11 @@ export default function LoginPage() {
                 password: "Lombax99"
             });
 
+            console.log("Token: " + response.accessToken)
+
             await saveSession(response.accessToken, response.tokenType);
+
+            router.replace("/(app)/home");
 
         } catch (error) {
             const apiError = normalizeApiRequestError(error,)

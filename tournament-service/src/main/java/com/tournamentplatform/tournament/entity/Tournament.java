@@ -72,6 +72,9 @@ public class Tournament {
     @Column(name = "rules_url")
     private String rulesUrl;
 
+    @Column(name = "invitation_code", nullable = false, unique = true)
+    private String invitationCode;
+
     //costruttore per la creazione dell'entity a partire dalla request
     public Tournament(String name,
                       String description,
@@ -82,7 +85,8 @@ public class Tournament {
                       Integer minTeams,
                       Integer maxTeams,
                       TournamentFormat format,
-                      String rulesUrl
+                      String rulesUrl,
+                      String invitationCode
     ) {
         this.name = name;
         this.description = description;
@@ -94,6 +98,7 @@ public class Tournament {
         this.maxTeams = maxTeams;
         this.format = format;
         this.rulesUrl = rulesUrl;
+        this.invitationCode = invitationCode;
     }
 
     @PrePersist
