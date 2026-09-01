@@ -3,8 +3,9 @@ package com.tournamentplatform.tournament.service;
 import com.tournamentplatform.tournament.dto.admin.AdminAddingRequest;
 import com.tournamentplatform.tournament.dto.admin.AdminGetResponse;
 import com.tournamentplatform.tournament.entity.Tournament;
-import com.tournamentplatform.tournament.errorHandling.ResourceNotFoundException;
-import com.tournamentplatform.tournament.repository.TournamentRepository;
+import com.tournamentplatform.tournament.errorHandling.tournamentExceptions.CantRemoveOwnerException;
+import com.tournamentplatform.tournament.errorHandling.tournamentExceptions.NotTournamentAdminException_BAD_REQUEST;
+import com.tournamentplatform.tournament.errorHandling.tournamentExceptions.UserAlreadyAdminException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,19 +14,19 @@ import java.util.List;
 @Service
 public class TournamentAdminService {
 
-    private final TournamentRepository tournamentRepository;
-    private final TournamentAuthorizationHelper tournamentAuthorizationHelper;
 
-    public TournamentAdminService(TournamentRepository tournamentRepository, TournamentAuthorizationHelper tournamentAuthorizationHelper) {
-        this.tournamentRepository = tournamentRepository;
+    private final TournamentAuthorizationHelper tournamentAuthorizationHelper;
+    private final TournamentHelper tournamentHelper;
+
+
+    public TournamentAdminService(TournamentAuthorizationHelper tournamentAuthorizationHelper, TournamentHelper tournamentHelper) {
         this.tournamentAuthorizationHelper = tournamentAuthorizationHelper;
+        this.tournamentHelper = tournamentHelper;
     }
 
 
     public List<AdminGetResponse> getTournamentAdmins(String id) {
-        Tournament tournament = tournamentRepository.findById(
-                        Long.valueOf(id))
-                .orElseThrow(() -> new ResourceNotFoundException("Nessun torneo trovato con id: " + id));
+        Tournament tournament = tournamentHelper.findOrThrow(id);
 
         List<AdminGetResponse> response = new ArrayList<>();
 
@@ -37,45 +38,40 @@ public class TournamentAdminService {
     }
 
     public List<AdminGetResponse> addTournamentAdmin(String id, AdminAddingRequest request) {
-
-        Tournament tournament = tournamentRepository.findById(
-                        Long.valueOf(id))
-                .orElseThrow(() -> new ResourceNotFoundException("Nessun torneo trovato con id: " + id));
-
+        Tournament tournament = tournamentHelper.findOrThrow(id);
         tournamentAuthorizationHelper.checkTournamentAdmin(tournament);
 
         if (tournament.getAdminsById().contains(request.adminId())) {
-            throw new IllegalArgumentException("L'utente è già admin di questo torneo");
+            throw new UserAlreadyAdminException();
         }
 
         tournament.getAdminsById().add(request.adminId());
 
-        tournamentRepository.save(tournament);
+        tournamentHelper.saveTournament(tournament);
 
         return getTournamentAdmins(id);
 
     }
 
     public void removeAdminFromTournament(String id, String adminId) {
-        Tournament tournament = tournamentRepository.findById(
-                        Long.valueOf(id))
-                .orElseThrow(() -> new ResourceNotFoundException("Nessun torneo trovato con id: " + id));
-
+        Tournament tournament = tournamentHelper.findOrThrow(id);
 
         tournamentAuthorizationHelper.checkTournamentAdmin(tournament);
 
         if (tournament.getCreatedByUserId().equals(adminId)) {
-            throw new IllegalArgumentException("Il creatore del torneo non può essere rimosso dagli admin");
+            throw new CantRemoveOwnerException();
         }
 
         if (!tournament.getAdminsById().contains(adminId)) {
-            throw new IllegalArgumentException("L'utente non è un amministratore di questo torneo");
+            throw new NotTournamentAdminException_BAD_REQUEST();
         }
 
         tournament.getAdminsById().remove(adminId);
 
-        tournamentRepository.save(tournament);
+        tournamentHelper.saveTournament(tournament);
+
 
     }
+
 
 }

@@ -25,7 +25,7 @@ public class Tournament {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "description", length = 1000)
+    @Column(name = "description", length = 500)
     private String description;
 
     @Column(name = "created_by_user_id")
@@ -69,8 +69,21 @@ public class Tournament {
     @Column(name = "status", nullable = false)
     private TournamentStatus status = TournamentStatus.CREATED;
 
+    @Column(name = "rules_url")
+    private String rulesUrl;
+
     //costruttore per la creazione dell'entity a partire dalla request
-    public Tournament(String name, String description, String userId, ArrayList<String> adminsById, LocalDate startDate, LocalDate endDate, Integer minTeams, Integer maxTeams, TournamentFormat format) {
+    public Tournament(String name,
+                      String description,
+                      String userId,
+                      ArrayList<String> adminsById,
+                      LocalDate startDate,
+                      LocalDate endDate,
+                      Integer minTeams,
+                      Integer maxTeams,
+                      TournamentFormat format,
+                      String rulesUrl
+    ) {
         this.name = name;
         this.description = description;
         this.createdByUserId = userId;
@@ -80,6 +93,7 @@ public class Tournament {
         this.minTeams = minTeams;
         this.maxTeams = maxTeams;
         this.format = format;
+        this.rulesUrl = rulesUrl;
     }
 
     @PrePersist

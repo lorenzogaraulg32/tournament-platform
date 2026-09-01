@@ -1,8 +1,9 @@
 package com.tournamentplatform.tournament.service;
 
 import com.tournamentplatform.tournament.entity.Tournament;
+import com.tournamentplatform.tournament.errorHandling.tournamentExceptions.NotTournamentAdminException_FORBIDDEN;
+import com.tournamentplatform.tournament.errorHandling.tournamentExceptions.NotTournamentOwnerException;
 import com.tournamentplatform.tournament.security.CurrentUserProvider;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,14 +19,14 @@ public class TournamentAuthorizationHelper {
     public void checkTournamentAdmin(Tournament tournament) {
         String currentUserId = currentUserProvider.getCurrentUserId();
         if (!tournament.getAdminsById().contains(currentUserId)) {
-            throw new AccessDeniedException("Non sei autorizzato per questa modifica");
+            throw new NotTournamentAdminException_FORBIDDEN();
         }
     }
 
     public void checkTournamentCreator(Tournament tournament) {
         String currentUserId = currentUserProvider.getCurrentUserId();
         if (!tournament.getCreatedByUserId().equals(currentUserId)) {
-            throw new AccessDeniedException("Non sei autorizzato per questa modifica");
+            throw new NotTournamentOwnerException();
         }
     }
 

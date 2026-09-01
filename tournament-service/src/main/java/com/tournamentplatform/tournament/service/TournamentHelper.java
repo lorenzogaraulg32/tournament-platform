@@ -4,13 +4,27 @@ import com.tournamentplatform.tournament.dto.tournaments.TournamentGetResponse;
 import com.tournamentplatform.tournament.dto.tournaments.TournamentPatchRequest;
 import com.tournamentplatform.tournament.entity.Tournament;
 import com.tournamentplatform.tournament.entity.TournamentStatus;
+import com.tournamentplatform.tournament.errorHandling.tournamentExceptions.InvalidTournamentException;
+import com.tournamentplatform.tournament.errorHandling.tournamentExceptions.TournamentNotFoundException;
+import com.tournamentplatform.tournament.repository.TournamentRepository;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TournamentHelper {
 
+    private final TournamentRepository tournamentRepository;
 
-    //TournamentHelper
+    public TournamentHelper(TournamentRepository tournamentRepository) {
+        this.tournamentRepository = tournamentRepository;
+    }
+
+    public Tournament findOrThrow(String id) {
+        return tournamentRepository.findById(Long.valueOf(id)).orElseThrow(TournamentNotFoundException::new);
+    }
+
+    public Tournament saveTournament(Tournament tournament) {
+        return tournamentRepository.save(tournament);
+    }
 
     public TournamentGetResponse toTournamentGetResponse(Tournament tournament) {
         return new TournamentGetResponse(
@@ -24,28 +38,18 @@ public class TournamentHelper {
                 tournament.getMinTeams(),
                 tournament.getMaxTeams(),
                 tournament.getFormat().name(),
-                tournament.getStatus().name()
+                tournament.getStatus().name(),
+                tournament.getRulesUrl()
         );
     }
 
     public void validateTournament(Tournament tournament) {
-
-        if (tournament.getName() == null || tournament.getName().isBlank()) {
-            throw new IllegalArgumentException("Il nome del torneo non può essere vuoto");
+        if (tournament.getMaxTeams() < tournament.getMinTeams()) {
+            throw new InvalidTournamentException();
         }
 
-        if (tournament.getMinTeams() != null && tournament.getMinTeams() < 2) {
-            throw new IllegalArgumentException("Il numero minimo di squadre deve essere almeno 2");
-        }
-
-        if (tournament.getMaxTeams() != null && tournament.getMinTeams() != null
-                && tournament.getMaxTeams() < tournament.getMinTeams()) {
-            throw new IllegalArgumentException("Il numero massimo di squadre non può essere minore del minimo");
-        }
-
-        if (tournament.getStartDate() != null && tournament.getEndDate() != null
-                && tournament.getStartDate().isAfter(tournament.getEndDate())) {
-            throw new IllegalArgumentException("La data di inizio non può essere successiva alla data di fine");
+        if (tournament.getStartDate().isAfter(tournament.getEndDate())) {
+            throw new InvalidTournamentException();
         }
     }
 

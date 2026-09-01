@@ -14,7 +14,7 @@ public class TournamentPatchRequest {
 
     private String name;
 
-    @Size(max = 1000, message = "La descrizione può avere al massimo 1000 caratteri")
+    @Size(max = 500, message = "La descrizione può avere al massimo 1000 caratteri")
     private String description;
 
     private LocalDate startDate;

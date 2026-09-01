@@ -14,6 +14,7 @@ public record TournamentGetResponse(
         Integer minTeams,
         Integer maxTeams,
         String format,
-        String status
+        String status,
+        String rulesUrl
 ) {
 }

@@ -4,13 +4,35 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="refactor(frontend): standardize API error handling&#10;&#10;* centralize authenticated requests, timeouts and API error mapping&#10;* handle expired sessions consistently across protected flows&#10;* normalize loading and error states for onboarding, profiles and teams&#10;* map backend validation errors to the appropriate form steps&#10;* handle optional image upload failures without duplicating created resources">
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Fixed minor bugs on exceptionHandling of team_service">
+      <change afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/dto/ApiErrorResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/errorHandling/ApplicationException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/errorHandling/ErrorCode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/errorHandling/TournamentErrorCode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/errorHandling/imageExceptions/InvalidProfilePictureException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/errorHandling/imageExceptions/ProfilePictureNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/errorHandling/imageExceptions/ProfilePictureStorageException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/errorHandling/imageExceptions/ProfilePictureTooLargeException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/errorHandling/tournamentExceptions/CantRemoveOwnerException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/errorHandling/tournamentExceptions/InvalidTournamentException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/errorHandling/tournamentExceptions/NotTournamentAdminException_BAD_REQUEST.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/errorHandling/tournamentExceptions/NotTournamentAdminException_FORBIDDEN.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/errorHandling/tournamentExceptions/NotTournamentOwnerException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/errorHandling/tournamentExceptions/TournamentNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/errorHandling/tournamentExceptions/UserAlreadyAdminException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/dto/teamCreation/TeamCreationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/dto/teamCreation/TeamCreationRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/errorHandling/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/errorHandling/GlobalExceptionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/repository/TeamsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/repository/TeamsRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamPlayerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamPlayerService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamService.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/errorHandling/TeamErrorCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/errorHandling/TeamErrorCode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/dto/ErrorResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/dto/tournaments/TournamentCreationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/dto/tournaments/TournamentCreationRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/dto/tournaments/TournamentGetResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/dto/tournaments/TournamentGetResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/dto/tournaments/TournamentPatchRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/dto/tournaments/TournamentPatchRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/entity/Tournament.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/entity/Tournament.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/errorHandling/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/errorHandling/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/errorHandling/ResourceNotFoundException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/service/TournamentAdminService.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/service/TournamentAdminService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/service/TournamentAuthorizationHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/service/TournamentAuthorizationHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/service/TournamentHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/service/TournamentHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/service/TournamentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/service/TournamentService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,7 +114,7 @@
     &quot;Spring Boot.UserServiceApplication.executor&quot;: &quot;Run&quot;,
     &quot;jdk.selected.JAVA_MODULE&quot;: &quot;21&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Lombax/Desktop/Progetto Gestione Tornei Calcetto/team-service/src/main/java/com/tournamentplatform/teamservice/errorHandling&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Lombax/Desktop/Progetto Gestione Tornei Calcetto/tournament-service/src/main/java/com/tournamentplatform/tournament/errorHandling&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -125,11 +147,11 @@
       <recent name="com.tournamentplatform.tournament.DTO" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\tournament-service\src\main\java\com\tournamentplatform\tournament\errorHandling" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\team-service\src\main\java\com\tournamentplatform\teamservice\errorHandling" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\user-service\src\main\java\com\tournamentplatform\userservice\exceptions" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\app\(app)" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\services\users" />
-      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\assets\images\backgrounds" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\services" />
@@ -139,11 +161,11 @@
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\common\images" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.tournamentplatform.tournament.errorHandling.tournamentExceptions" />
+      <recent name="com.tournamentplatform.tournament.errorHandling" />
+      <recent name="com.tournamentplatform.tournament.dto" />
       <recent name="com.tournamentplatform.teamservice.errorHandling.teamsExceptions" />
       <recent name="com.tournamentplatform.teamservice.errorHandling" />
-      <recent name="com.tournamentplatform.teamservice.dto" />
-      <recent name="com.tournamentplatform.userservice.exceptions.imageExceptions" />
-      <recent name="com.tournamentplatform.userservice.exceptions" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -333,15 +355,8 @@
       <workItem from="1787837484782" duration="8281000" />
       <workItem from="1787918776977" duration="12755000" />
       <workItem from="1788182733084" duration="3837000" />
-      <workItem from="1788263986632" duration="1682000" />
-    </task>
-    <task id="LOCAL-00010" summary="TournamentService - Patch endpoint added">
-      <option name="closed" value="true" />
-      <created>1783010194842</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1783010194842</updated>
+      <workItem from="1788263986632" duration="4397000" />
+      <workItem from="1788279491973" duration="588000" />
     </task>
     <task id="LOCAL-00011" summary="Added Admin managment and endpoints&#10;Refractor for better responsability separation">
       <option name="closed" value="true" />
@@ -727,7 +742,15 @@
       <option name="project" value="LOCAL" />
       <updated>1787933106102</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="Fixed minor bugs on exceptionHandling of team_service">
+      <option name="closed" value="true" />
+      <created>1788265763348</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1788265763348</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -745,7 +768,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Your team section is now collapsable" />
     <MESSAGE value="Added animation for expand/collapse section" />
     <MESSAGE value="Added in TeamInfoSection.tsx 2 badges one for admin and one for players, so on the click the user can check them out. Routes not yet implemented" />
     <MESSAGE value="Fixed team Deletion" />
@@ -770,7 +792,8 @@
     <MESSAGE value="Big Improvements on frontend services, now they are more separated and with single responsabilty. Also reworked errors and errors parsing and managment" />
     <MESSAGE value="Improvements on exception handling of user_service" />
     <MESSAGE value="refactor(frontend): standardize API error handling&#10;&#10;* centralize authenticated requests, timeouts and API error mapping&#10;* handle expired sessions consistently across protected flows&#10;* normalize loading and error states for onboarding, profiles and teams&#10;* map backend validation errors to the appropriate form steps&#10;* handle optional image upload failures without duplicating created resources" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor(frontend): standardize API error handling&#10;&#10;* centralize authenticated requests, timeouts and API error mapping&#10;* handle expired sessions consistently across protected flows&#10;* normalize loading and error states for onboarding, profiles and teams&#10;* map backend validation errors to the appropriate form steps&#10;* handle optional image upload failures without duplicating created resources" />
+    <MESSAGE value="Fixed minor bugs on exceptionHandling of team_service" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed minor bugs on exceptionHandling of team_service" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
