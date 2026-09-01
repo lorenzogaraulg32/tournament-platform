@@ -29,7 +29,6 @@ public class TeamCreationRequest {
 
 
     @Valid
-    @NotNull(message = "La posizione della squadra è obbligatoria")
     private TeamLocationRequest location;
 
 

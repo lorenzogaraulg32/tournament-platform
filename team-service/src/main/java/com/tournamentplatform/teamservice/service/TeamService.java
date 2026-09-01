@@ -5,6 +5,7 @@ import com.tournamentplatform.teamservice.dto.TeamGetResponse;
 import com.tournamentplatform.teamservice.dto.TeamNamePatchRequest;
 import com.tournamentplatform.teamservice.dto.teamCreation.TeamCreationRequest;
 import com.tournamentplatform.teamservice.dto.teamCreation.TeamCreationResponse;
+import com.tournamentplatform.teamservice.dto.teamCreation.TeamLocationRequest;
 import com.tournamentplatform.teamservice.entity.Team;
 import com.tournamentplatform.teamservice.repository.TeamsRepository;
 import jakarta.validation.Valid;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,6 +52,19 @@ public class TeamService {
         admins.add(currentUserId);
 
 
+        TeamLocationRequest location = request.getLocation();
+
+        String locationLabel = null;
+        BigDecimal latitude = null;
+        BigDecimal longitude = null;
+
+        if (location != null) {
+            locationLabel = location.getLabel();
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+        }
+
+
         Team team = new Team(
                 request.getName(),
                 request.getDescription(),
@@ -57,9 +72,9 @@ public class TeamService {
                 players,
                 admins,
                 request.getStatus(),
-                request.getLocation().getLabel(),
-                request.getLocation().getLatitude(),
-                request.getLocation().getLongitude(),
+                locationLabel,
+                latitude,
+                longitude,
                 servicesHelper.generateUniqueInvitationCode()
         );
 

@@ -3,6 +3,7 @@ package com.tournamentplatform.teamservice.service;
 import com.tournamentplatform.teamservice.dto.TeamGetDetailsResponse;
 import com.tournamentplatform.teamservice.entity.Team;
 import com.tournamentplatform.teamservice.errorHandling.teamsExceptions.OwnerRemovalExcpetion;
+import com.tournamentplatform.teamservice.errorHandling.teamsExceptions.TeamNotFoundException;
 import com.tournamentplatform.teamservice.repository.TeamsRepository;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +38,9 @@ public class TeamPlayerService {
 
     public TeamGetDetailsResponse addPlayerInTeamInvitationCode( String invitationCode) {
 
-        Team team = teamsRepository.getByInvitationCode(invitationCode);
+        Team team = teamsRepository
+                .findByInvitationCode(invitationCode)
+                .orElseThrow(TeamNotFoundException::new);
 
         String playerId = teamAuthorizationHelper.getCurrentUserId();
 

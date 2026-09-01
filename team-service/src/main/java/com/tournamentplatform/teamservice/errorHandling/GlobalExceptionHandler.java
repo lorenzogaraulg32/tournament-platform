@@ -164,7 +164,7 @@ public class GlobalExceptionHandler {
             HttpServletRequest request
     ) {
         return buildResponse(
-                HttpStatus.UNAUTHORIZED,
+                HttpStatus.FORBIDDEN ,
                 exception,
                 request
         );
@@ -176,7 +176,7 @@ public class GlobalExceptionHandler {
             HttpServletRequest request
     ) {
         return buildResponse(
-                HttpStatus.UNAUTHORIZED,
+                HttpStatus.FORBIDDEN ,
                 exception,
                 request
         );
@@ -188,7 +188,7 @@ public class GlobalExceptionHandler {
             HttpServletRequest request
     ) {
         return buildResponse(
-                HttpStatus.UNAUTHORIZED,
+                HttpStatus.FORBIDDEN ,
                 exception,
                 request
         );
@@ -201,7 +201,7 @@ public class GlobalExceptionHandler {
             HttpServletRequest request
     ) {
         return buildResponse(
-                HttpStatus.UNAUTHORIZED,
+                HttpStatus.FORBIDDEN ,
                 exception,
                 request
         );

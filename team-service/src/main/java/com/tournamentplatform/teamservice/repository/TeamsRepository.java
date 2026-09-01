@@ -1,6 +1,7 @@
 package com.tournamentplatform.teamservice.repository;
 
 import com.tournamentplatform.teamservice.entity.Team;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,6 +25,6 @@ public interface TeamsRepository extends JpaRepository<Team, Long> {
 
     boolean existsByInvitationCode(String invitationCode);
 
-    Team getByInvitationCode(@Param("invitation_code") String invitationConde);
+    Optional<Team> findByInvitationCode(String invitationCode);
 
 }
