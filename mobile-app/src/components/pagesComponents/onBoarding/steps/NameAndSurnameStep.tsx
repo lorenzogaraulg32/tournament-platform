@@ -26,6 +26,7 @@ export default function NameAndSurnameStep({
 }: NameAndSurnameStepProps) {
     return (
         <OnBoardingContainer
+            step={1}
             label="Completa la registrazione"
             content={
                 <AuthContent style={styles.inputFieldsContainer}>
@@ -56,6 +57,6 @@ export default function NameAndSurnameStep({
                     />
                 </AuthContent>
             }
-        />
+         />
     );
 }

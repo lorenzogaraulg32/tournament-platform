@@ -17,16 +17,17 @@ type LocationStepProps = {
 };
 
 export default function LocationStep({
-    location,
-    errorMessage,
-    finalError,
-    isLoading,
-    onLocationChange,
-    onBack,
-    onNext,
-}: LocationStepProps) {
+                                         location,
+                                         errorMessage,
+                                         finalError,
+                                         isLoading,
+                                         onLocationChange,
+                                         onBack,
+                                         onNext,
+                                     }: LocationStepProps) {
     return (
         <OnBoardingContainer
+            step={5}
             label="Completa la registrazione"
             content={
                 <AuthContent style={styles.inputFieldsContainer}>

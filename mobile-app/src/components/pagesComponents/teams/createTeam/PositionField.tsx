@@ -2,7 +2,7 @@ import {ActivityIndicator, Alert, Pressable, StyleSheet, Text, TextInput, View,}
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {useEffect, useState} from "react";
 import * as Location from "expo-location";
-import FormLabel from "@/src/components/common/labels/formLabel";
+import FormLabel from "@/src/components/common/labels/FormLabel";
 import { colors } from "@/src/constants/theme";
 
 

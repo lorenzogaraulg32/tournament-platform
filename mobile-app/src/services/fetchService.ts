@@ -48,7 +48,8 @@ export async function authenticatedFetch(
 export async function fetchWithTimeout(
     url: string,
     options: RequestInit,
-    timeoutMs = 10_000): Promise<Response> {
+    timeoutMs = 10_000
+): Promise<Response> {
     const controller = new AbortController();
     let didTimeout = false;
 
@@ -65,7 +66,12 @@ export async function fetchWithTimeout(
     } catch (error) {
 
         //qua lanciamo errori di timeout e di server offline/no connessione
-
+        if (error instanceof Error) {
+            console.log("Tipo:", error.name);
+            console.log("Messaggio originale:", error.message);
+            console.log("Stack:", error.stack);
+            console.log("Cause:", error.cause);
+        }
         if (didTimeout) {
             throw new ApiRequestError(
                 "La richiesta sta impiegando troppo tempo. Controlla la connessione.",

@@ -1,17 +1,13 @@
 import {useState} from "react";
 import {Pressable, Text, View} from "react-native";
-import DateTimePicker, {
-    type DateTimePickerEvent,
-} from "@react-native-community/datetimepicker";
+import DateTimePicker, {type DateTimePickerEvent,} from "@react-native-community/datetimepicker";
 import AuthContent from "@/src/components/pagesComponents/auth/AuthContent";
 import OnBoardingContainer from "@/src/components/pagesComponents/auth/onboarding/OnBoardingContainer";
 import {Gender} from "@/src/services/users/userConstants";
-import {
-    formatDateForBackend,
-    parseBirthDate,
-} from "@/src/constants/helpers/parsingHelper";
+import {formatDateForBackend, parseBirthDate,} from "@/src/constants/helpers/parsingHelper";
 import OnBoardingNavigationButtons from "@/src/components/pagesComponents/onBoarding/OnBoardingNavigationButtons";
 import {onboardingStepStyles as styles} from "@/src/components/pagesComponents/onBoarding/onboardingStepStyles"
+
 type BirthDateAndGenderStepProps = {
     birthDate: string | null;
     gender: Gender | null;
@@ -24,15 +20,15 @@ type BirthDateAndGenderStepProps = {
 };
 
 export default function BirthDateAndGenderStep({
-    birthDate,
-    gender,
-    birthDateError,
-    genderError,
-    onBirthDateChange,
-    onGenderChange,
-    onBack,
-    onNext,
-}: BirthDateAndGenderStepProps) {
+                                                   birthDate,
+                                                   gender,
+                                                   birthDateError,
+                                                   genderError,
+                                                   onBirthDateChange,
+                                                   onGenderChange,
+                                                   onBack,
+                                                   onNext,
+                                               }: BirthDateAndGenderStepProps) {
     const [showBirthDatePicker, setShowBirthDatePicker] =
         useState(false);
 
@@ -49,6 +45,7 @@ export default function BirthDateAndGenderStep({
 
     return (
         <OnBoardingContainer
+            step={3}
             label="Completa la registrazione"
             content={
                 <AuthContent style={styles.inputFieldsContainer}>

@@ -3,7 +3,7 @@ import {Pressable, StyleSheet, Text, View,} from "react-native";
 import {Image} from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import FormLabel from "@/src/components/common/labels/formLabel";
+import FormLabel from "@/src/components/common/labels/FormLabel";
 import {SelectedImage} from "@/src/services/imagesService";
 
 const MAX_LOGO_SIZE = 2 * 1024 * 1024;

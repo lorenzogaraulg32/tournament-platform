@@ -6,7 +6,7 @@ import PageLayout from "@/src/components/common/PageLayout";
 import {ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {colors} from "@/src/constants/theme";
-import InfoLabel from "@/src/components/common/labels/infoLabel";
+import InfoLabel from "@/src/components/common/labels/InfoLabel";
 import TeamCarousel from "@/src/components/common/HorizontalCarousel";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import {normalizeApiRequestError} from "@/src/services/errorService";

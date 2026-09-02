@@ -23,6 +23,16 @@ export class ApiRequestError extends Error {
 }
 
 
+export function printApiRequestError(error : ApiRequestError){
+    console.log("Status: " + error.status)
+    console.log("Code: " + error.code)
+    console.log("Errors: " + error.errors)
+    console.log("Trace: " + error.traceId)
+    console.log("Message: " + error.message)
+
+}
+
+
 //mapping delle response con errore, con fallback in caso di errore malformato/sconosciuto
 //prende il body della response in input per verificare se si tratta di un errore
 export function throwApiRequestError(

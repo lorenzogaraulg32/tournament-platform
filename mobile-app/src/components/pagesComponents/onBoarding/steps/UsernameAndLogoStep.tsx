@@ -30,6 +30,7 @@ export default function UsernameAndLogoStep({
                                             }: UsernameAndLogoStepProps) {
     return (
         <OnBoardingContainer
+            step={2}
             label="Completa la registrazione"
             content={
                 <AuthContent style={styles.inputFieldsContainer}>

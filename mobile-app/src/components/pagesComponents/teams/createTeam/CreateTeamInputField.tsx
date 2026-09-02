@@ -2,7 +2,7 @@ import {StyleProp, StyleSheet, Text, TextInput, TextInputProps, TextStyle, View}
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {useState} from "react";
 import {fonts} from "@/src/constants/theme";
-import FormLabel from "@/src/components/common/labels/formLabel";
+import FormLabel from "@/src/components/common/labels/FormLabel";
 
 type CreateTeamFieldProps = TextInputProps & {
     label: string;
@@ -14,7 +14,7 @@ type CreateTeamFieldProps = TextInputProps & {
     maxLength?: number;
 };
 
-//DOppio container, perchè external consente di posizionare icone/info aggiuntive a destra
+//Doppio container, perchè external consente di posizionare icone/info aggiuntive a destra
 
 export default function CreateTeamInputField({
                                    label,
@@ -29,7 +29,7 @@ export default function CreateTeamInputField({
                                }: CreateTeamFieldProps) {
 
     const [isFocused, setIsFocused] = useState(false);
-    const isError = Boolean(errorMessage);
+
 
     return (
         <View style={styles.container}>
@@ -45,11 +45,11 @@ export default function CreateTeamInputField({
 
                 value={value}
 
-                onFocus={(event) => {
+                onFocus={() => {
                     setIsFocused(true);
                 }}
 
-                onBlur={(event) => {
+                onBlur={() => {
                     setIsFocused(false);
                 }}
 

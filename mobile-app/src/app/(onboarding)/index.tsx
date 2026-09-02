@@ -37,7 +37,7 @@ export default function OnBoarding() {
     const [fieldErrors, setFieldErrors] = useState<OnBoardingFieldErrors>({});
     const [apiError, setApiError] = useState("");
     const [isLoading, setLoading] = useState(false);
-    const [step, setStep] = useState(0);
+    const [step, setStep] = useState(1);
     const [userData, setUserData] = useState<UserOnBoardingInfo>({
         username: "",
         firstName: "",
@@ -198,7 +198,7 @@ export default function OnBoarding() {
             return;
         }
 
-        const isLastStep = step === TOTAL_STEPS - 1;
+        const isLastStep = step === TOTAL_STEPS ;
 
         if (!isLastStep) {
             setStep(currentStep => currentStep + 1);
@@ -256,15 +256,15 @@ export default function OnBoarding() {
 
     function validateCurrentStep(): boolean {
         switch (step) {
-            case 0:
-                return validateNameAndSurname();
             case 1:
-                return validateUsernameAndLogo();
+                return validateNameAndSurname();
             case 2:
-                return validateBirthDateAndGender();
+                return validateUsernameAndLogo();
             case 3:
-                return validateSportsAndRoles();
+                return validateBirthDateAndGender();
             case 4:
+                return validateSportsAndRoles();
+            case 5:
                 return validateLocation();
             default:
                 return false;
@@ -273,7 +273,7 @@ export default function OnBoarding() {
 
     function renderStep() {
         switch (step) {
-            case 0:
+            case 1:
                 return (
                     <NameAndSurnameStep
                         firstName={userData.firstName}
@@ -290,7 +290,7 @@ export default function OnBoarding() {
                     />
                 );
 
-            case 1:
+            case 2:
                 return (
                     <UsernameAndLogoStep
                         username={userData.username}
@@ -306,7 +306,7 @@ export default function OnBoarding() {
                     />
                 );
 
-            case 2:
+            case 3:
                 return (
                     <BirthDateAndGenderStep
                         birthDate={userData.birthDate}
@@ -324,7 +324,7 @@ export default function OnBoarding() {
                     />
                 );
 
-            case 3:
+            case 4:
                 return (
                     <SportsAndRolesStep
                         sports={userData.sports}
@@ -337,7 +337,7 @@ export default function OnBoarding() {
                     />
                 );
 
-            case 4:
+            case 5:
                 return (
                     <LocationStep
                         location={userData.location}

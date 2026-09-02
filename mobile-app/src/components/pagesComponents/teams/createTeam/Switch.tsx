@@ -1,8 +1,9 @@
 import {Pressable, StyleSheet, Text, View} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import FormLabel from "@/src/components/common/labels/formLabel";
+import FormLabel from "@/src/components/common/labels/FormLabel";
+import {RecruitmentStatus} from "@/src/services/teams/teamCreationService";
 
-export type RecruitmentStatus = "OPEN" | "CLOSED";
+
 
 type RecruitmentStatusSectionProps = {
     value: RecruitmentStatus;

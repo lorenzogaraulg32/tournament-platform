@@ -1,4 +1,3 @@
-import {File} from "expo-file-system";
 import {authenticatedFetch} from "@/src/services/fetchService";
 
 export type SelectedImage = {
@@ -11,34 +10,27 @@ export type SelectedImage = {
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 export async function uploadProfilePicture(
-    logo: SelectedImage
+    image: SelectedImage
 ): Promise<void> {
-
-    const pictureFile = new File(logo.uri);
-
-    if (!pictureFile.exists) {
-        throw new Error(
-            "L'immagine selezionata non è più disponibile"
-        );
-    }
-
     const formData = new FormData();
 
     formData.append(
         "file",
-        pictureFile
+        {
+            uri: image.uri,
+            name: image.fileName,
+            type: image.mimeType,
+        } as unknown as Blob
     );
 
-    void await authenticatedFetch(
+    await authenticatedFetch(
         `${API_URL}/users/me/profile-picture`,
         {
             method: "POST",
-            headers: {},
             body: formData,
         }
     );
 }
-
 
 
 

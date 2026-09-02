@@ -54,22 +54,37 @@ export async function createTeam(
 
         formData.append(
             "team",
-            teamFile
+            {
+                uri: teamFile.uri,
+                name: teamFile.name,
+                type: "application/json",
+            } as unknown as Blob
         );
 
         if (logo) {
-            const logoFile = new File(logo.uri);
-
-            if (!logoFile.exists) {
-                throw new Error(
-                    "L'immagine selezionata non è più disponibile"
-                );
-            }
             formData.append(
                 "logo",
-                logoFile
+                {
+                    uri: logo.uri,
+                    name: logo.fileName,
+                    type: logo.mimeType,
+                } as unknown as Blob
             );
         }
+
+
+/*
+        const response = await authenticatedFetch(
+            `${API_URL}/teams`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(request),
+            }
+        );
+*/
 
         const response = await authenticatedFetch(
             `${API_URL}/teams`,
@@ -80,7 +95,6 @@ export async function createTeam(
         );
 
         return await response.json() as TeamCreationResponse;
-
     } finally {
         if (teamFile.exists) {
             teamFile.delete();
