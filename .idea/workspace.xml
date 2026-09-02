@@ -5,34 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Added progress bar for multipages forms&#10;Fixed a bug where an user couldnt upload pictures&#10;Made a general layout for form based pages">
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/common/forms/FormContent.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/common/forms/FormLayout.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/common/forms/FormProgressBar.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/createTeam/steps/LogoStep.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/createTeam/steps/NameAndDescStep.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/createTeam/steps/PositionStep.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/[teamId].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/[teamId].tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/create.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/create.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(onboarding)/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(onboarding)/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/images/LogoField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/images/LogoField.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/labels/formLabel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/labels/FormLabel.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/labels/infoLabel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/labels/InfoLabel.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/auth/onboarding/OnBoardingContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/auth/onboarding/OnBoardingContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/onBoarding/steps/BirthDateAndGenderStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/onBoarding/steps/BirthDateAndGenderStep.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/onBoarding/steps/LocationStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/onBoarding/steps/LocationStep.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/onBoarding/steps/NameAndSurnameStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/onBoarding/steps/NameAndSurnameStep.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/onBoarding/steps/SportsAndRolesStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/onBoarding/steps/SportsAndRolesStep.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/onBoarding/steps/UsernameAndLogoStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/onBoarding/steps/UsernameAndLogoStep.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfilePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/createTeam/CreateTeamContainer.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/createTeam/CreateTeamInputField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/createTeam/CreateTeamInputField.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/createTeam/PositionField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/createTeam/PositionField.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/createTeam/Switch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/createTeam/Switch.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/errorService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/errorService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/fetchService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/fetchService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/imagesService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/imagesService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/teams/teamCreationService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/teams/teamCreationService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/HorizontalCarousel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/HorizontalCarousel.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -357,15 +331,7 @@
       <workItem from="1788182733084" duration="3837000" />
       <workItem from="1788263986632" duration="4397000" />
       <workItem from="1788279491973" duration="2510000" />
-      <workItem from="1788347737150" duration="10251000" />
-    </task>
-    <task id="LOCAL-00013" summary="Team service init and renaming tournament-service module">
-      <option name="closed" value="true" />
-      <created>1783089702757</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1783089702757</updated>
+      <workItem from="1788347737150" duration="10909000" />
     </task>
     <task id="LOCAL-00014" summary="Team service init and renaming tournament-service module">
       <option name="closed" value="true" />
@@ -751,7 +717,15 @@
       <option name="project" value="LOCAL" />
       <updated>1788282021884</updated>
     </task>
-    <option name="localTasksCounter" value="62" />
+    <task id="LOCAL-00062" summary="Added progress bar for multipages forms&#10;Fixed a bug where an user couldnt upload pictures&#10;Made a general layout for form based pages">
+      <option name="closed" value="true" />
+      <created>1788358522547</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1788358522547</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

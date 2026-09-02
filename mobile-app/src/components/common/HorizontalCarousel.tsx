@@ -175,7 +175,10 @@ export default function HorizontalCarousel({
                 style={styles.carousel}
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.cardContainer}
+                contentContainerStyle={[
+                    styles.cardContainer,
+                    entities.items.length === 0 && styles.emptyScrollContent,
+                ]}
             >
                 {isLoading ? (
                     <ActivityIndicator size="large" color="#ffffff"/>
@@ -185,7 +188,7 @@ export default function HorizontalCarousel({
 
                     variant === "players" ? (
                         entities.items.length === 0 ? (
-                            <Text style={styles.errorText}>Nessun giocatore nella squadra</Text>
+                            <Text style={styles.emptyEntitiesText}>Nessun giocatore nella squadra</Text>
                         ) : (
                             entities.items.map((player) => (
                                 <PlayersCard
@@ -197,7 +200,7 @@ export default function HorizontalCarousel({
                         )
                     ) : variant === "admins" ? (
                         entities.items.length === 0 ? (
-                            <Text style={styles.errorText}>Nessun admin nella squadra</Text>
+                            <Text style={styles.emptyEntitiesText}>Nessun admin nella squadra</Text>
                         ) : (
                             entities.items.map((admin) => (
                                 <AdminsCard
@@ -207,10 +210,10 @@ export default function HorizontalCarousel({
                                 />
                             ),)
                         )
-                    ) : (<View></View>)
+                    ) : (<View/>)
                 ) : entities.type === "teams" ? (
                     entities.items.length === 0 ? (
-                        <Text style={styles.errorText}>Nessuna squadra</Text>
+                        <Text style={styles.emptyEntitiesText}>Crea una squadra oppure{"\n"} unisciti tramite il codice d'invito</Text>
                     ) : (
                         entities.items.map((team) => (
                             <TeamCardVertical
@@ -243,6 +246,12 @@ const styles = StyleSheet.create({
         width: "100%",
     },
 
+    emptyScrollContent: {
+        flexGrow: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
 
     gradient: {
         borderRadius: 16,
@@ -256,5 +265,13 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: "600",
         textAlign: "center",
+    },
+
+    emptyEntitiesText:{
+        fontSize: 15,
+        fontWeight: "600",
+        textAlign: "center",
+        color: "#7c7c7c",
+        flex: 1,
     },
 });
