@@ -5,17 +5,22 @@ import {ScrollView, StyleSheet, Text, View} from "react-native";
 import {useLocalSearchParams} from "expo-router";
 import HeaderTeam from "@/src/components/pagesComponents/teams/HeaderTeam";
 import InfoLabel from "@/src/components/common/labels/InfoLabel";
-import TeamCarousel from "@/src/components/common/HorizontalCarousel";
-import HorizontalCarousel from "@/src/components/common/HorizontalCarousel";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {loadCurrentUserId} from "@/src/services/users/authService";
+import CarouselContainer from "@/src/components/common/carousel&cards/CarouselContainer";
+import PlayersCard from "@/src/components/common/carousel&cards/PlayersCard";
+import {Sport} from "@/src/services/users/userConstants";
+import {loadUserInfo, UserEntity} from "@/src/services/users/userService";
+import AdminsCard from "@/src/components/common/carousel&cards/AdminsCard";
 
 
 export default function teamId() {
 
     const {teamId} = useLocalSearchParams<{ teamId: string }>();
     const [team, setTeam] = useState<TeamDetails | null>(null);
+    const [teamPlayers, setTeamPlayers] = useState<UserEntity[]>([])
+    const [teamAdmins, setTeamAdmins] = useState<UserEntity[]>([])
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [isCurrentUserTeamAdmin, setIsCurrentUserTeamAdmin] = useState<boolean>(false)
@@ -37,6 +42,32 @@ export default function teamId() {
                     loadCurrentUserId(),
                 ]);
 
+
+
+                const loadedPlayers = await Promise.all(
+                    loadedTeam.playerIds.map(async (id) => {
+                        const userInfo =
+                            await loadUserInfo(id);
+
+                        return {
+                            id,
+                            userInfo,
+                        };
+                    })
+                );
+
+                const loadedAdmins = await Promise.all(
+                    loadedTeam.adminIds.map(async (id) => {
+                        const userInfo =
+                            await loadUserInfo(id);
+
+                        return {
+                            id,
+                            userInfo,
+                        };
+                    })
+                );
+
                 if (!isActive) {
                     return;
                 }
@@ -45,6 +76,8 @@ export default function teamId() {
                     setIsCurrentUserTeamAdmin(true)
                 }
 
+                setTeamPlayers(loadedPlayers)
+                setTeamAdmins(loadedAdmins)
                 setTeam(loadedTeam);
 
             } catch (error) {
@@ -117,12 +150,17 @@ export default function teamId() {
                             labelIconName={"people-outline"}
                         />
                         {team && (
-                            <HorizontalCarousel
-                                style={styles.teamCarousel}
-                                transparent
-                                inputEntity={team}
-                                variant="players"
-                            />
+                            <CarouselContainer
+                                items={teamPlayers.map((player) => (
+                                    <PlayersCard
+                                        key={player.id}
+                                        player={player}
+                                        //todo: l'entità squadra deve avere uno sport!
+                                        sport={Sport.FOOTBALL}/>
+                                ))}
+                                emptyMsg={"Nessun giocatore nella squadra"}
+                                isLoading={isLoading}
+                                error={error}/>
                         )}
                     </View>
 
@@ -135,12 +173,16 @@ export default function teamId() {
 
 
                         {team && (
-                            <TeamCarousel
-                                style={styles.teamCarousel}
-                                transparent
-                                inputEntity={team}
-                                variant="admins"
-                            />
+                            <CarouselContainer
+                                items={teamAdmins.map((player) => (
+                                    <AdminsCard
+                                        key={player.id}
+                                        admin={player}
+                                        team={team}/>
+                                ))}
+                                emptyMsg={"Nessun admin nella squadra"}
+                                isLoading={isLoading}
+                                error={error}/>
                         )}
 
                     </View>

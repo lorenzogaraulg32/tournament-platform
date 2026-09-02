@@ -7,22 +7,25 @@ import {ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View} from "
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {colors} from "@/src/constants/theme";
 import InfoLabel from "@/src/components/common/labels/InfoLabel";
-import TeamCarousel from "@/src/components/common/HorizontalCarousel";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import {normalizeApiRequestError} from "@/src/services/errorService";
+import {loadUserTeams, TeamInfo} from "@/src/services/teams/teamService";
+import CarouselContainer from "@/src/components/common/carousel&cards/CarouselContainer";
+import TeamCardVertical from "@/src/components/common/carousel&cards/TeamCardVertical";
 
 type ProfilePageProps = {
     userId: string;
-    teams?: boolean
     isOwnProfile: boolean
 };
 
-export default function ProfilePage({userId, teams, isOwnProfile}: ProfilePageProps) {
+export default function ProfilePage({userId, isOwnProfile}: ProfilePageProps) {
 
     const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
     const [userAuthInfo, setUserAuthInfo] = useState<AuthInfo | null>(null);
     const [isLoading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [userTeams, setUserTeams] = useState<TeamInfo[]>([])
+
 
     useEffect(() => {
         let isActive = true;
@@ -32,10 +35,11 @@ export default function ProfilePage({userId, teams, isOwnProfile}: ProfilePagePr
                 setLoading(true);
                 setError(null);
 
-                const [authInfo, profileInfo] =
+                const [authInfo, profileInfo, teams] =
                     await Promise.all([
                         loadUserAuthInfo(userId),
                         loadUserInfo(userId),
+                        loadUserTeams(userId)
                     ]);
 
                 if (!isActive) {
@@ -44,14 +48,12 @@ export default function ProfilePage({userId, teams, isOwnProfile}: ProfilePagePr
 
                 setUserAuthInfo(authInfo);
                 setUserInfo(profileInfo);
+                setUserTeams(teams)
             } catch (error) {
                 const apiError =
                     normalizeApiRequestError(error);
 
-                if (
-                    apiError.status !== 401 &&
-                    isActive
-                ) {
+                if (apiError.status !== 401 && isActive) {
                     setError(apiError.message);
                 }
             } finally {
@@ -67,7 +69,6 @@ export default function ProfilePage({userId, teams, isOwnProfile}: ProfilePagePr
             isActive = false;
         };
     }, [userId]);
-
 
     return (
         <PageLayout
@@ -105,17 +106,18 @@ export default function ProfilePage({userId, teams, isOwnProfile}: ProfilePagePr
                     showsVerticalScrollIndicator={false}
                 >
                     <View style={styles.profileContent}>
-                        {teams && userInfo ? (
+                        {!isOwnProfile && userInfo ? (
                             <View style={styles.section}>
                                 <InfoLabel text={"Squadre"} labelIconName={"shirt-outline"}/>
-                                <TeamCarousel
-                                    transparent
-                                    style={styles.teamCarousel}
-                                    inputEntity={{
-                                        id: userId,
-                                        userInfo: userInfo
-                                    }}
-                                    variant="teams"
+                                <CarouselContainer
+                                    items={userTeams?.map((team) => (
+                                        <TeamCardVertical
+                                            key={team.id}
+                                            teamDetails={team}/>
+                                    ))}
+                                    isLoading={isLoading}
+                                    emptyMsg={"Crea una squadra oppure\n unisciti tramite il codice d'invito"}
+                                    error={error}
                                 />
                             </View>
                         ) : (
@@ -129,22 +131,22 @@ export default function ProfilePage({userId, teams, isOwnProfile}: ProfilePagePr
             {isOwnProfile &&
                 <View style={styles.logoutContainer}>
 
-                <Pressable
-                    style={({pressed}) => [
-                        styles.logoutBtn,
-                        pressed && styles.logoutBtnPressed
-                    ]}
+                    <Pressable
+                        style={({pressed}) => [
+                            styles.logoutBtn,
+                            pressed && styles.logoutBtnPressed
+                        ]}
 
-                    onPress={handleLogout}>
-                    <Ionicons
-                        name="log-out-outline"
-                        size={28}
-                        color="#ffffff"
-                        style={{transform: [{translateX: +3}]}}
-                    />
-                </Pressable>
+                        onPress={handleLogout}>
+                        <Ionicons
+                            name="log-out-outline"
+                            size={28}
+                            color="#ffffff"
+                            style={{transform: [{translateX: +3}]}}
+                        />
+                    </Pressable>
 
-            </View>
+                </View>
             }
 
         </PageLayout>

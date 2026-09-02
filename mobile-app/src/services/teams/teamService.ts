@@ -48,7 +48,7 @@ export async function getCurrentUserTeams(): Promise<TeamInfo[]> {
     return await response.json() as TeamInfo[];
 }
 
-export async function getUserTeams(userId: string): Promise<TeamInfo[]> {
+export async function loadUserTeams(userId: string): Promise<TeamInfo[]> {
     const response = await authenticatedFetch(
         `${requireApiUrl()}/teams/user/${encodeURIComponent(userId)}`,
         {

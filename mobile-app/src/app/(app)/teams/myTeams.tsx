@@ -1,6 +1,6 @@
 import {ActivityIndicator, ScrollView, StyleSheet, Text, View} from "react-native";
 import {getCurrentUserTeams, TeamInfo} from "@/src/services/teams/teamService";
-import TeamCardHorizontal from "@/src/components/pagesComponents/teams/TeamCardHorizontal";
+import TeamCardHorizontal from "@/src/components/common/carousel&cards/TeamCardHorizontal";
 import {useCallback, useState} from "react";
 import {useFocusEffect} from "expo-router";
 import {normalizeApiRequestError} from "@/src/services/errorService";
@@ -81,11 +81,10 @@ export default function MyTeams() {
         }
 
         if (userTeams.length === 0) {
-            console.log("UserTeam vuoto")
             return (
                 <View style={styles.messageContainer}>
                     <Text style={styles.messageText}>
-                        Non sei iscritto a nessuna squadra
+                        Entra in una squadra con il codice invito
                     </Text>
                 </View>
             )

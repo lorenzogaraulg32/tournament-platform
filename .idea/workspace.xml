@@ -4,9 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Added progress bar for multipages forms&#10;Fixed a bug where an user couldnt upload pictures&#10;Made a general layout for form based pages">
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Minor graphical modifications">
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/common/carousel/CarouselContainer.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/profile/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/profile/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/[teamId].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/[teamId].tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/myTeams.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/myTeams.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/HorizontalCarousel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/HorizontalCarousel.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfilePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/teams/teamService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/teams/teamService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/users/userService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/users/userService.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -331,15 +338,7 @@
       <workItem from="1788182733084" duration="3837000" />
       <workItem from="1788263986632" duration="4397000" />
       <workItem from="1788279491973" duration="2510000" />
-      <workItem from="1788347737150" duration="10909000" />
-    </task>
-    <task id="LOCAL-00014" summary="Team service init and renaming tournament-service module">
-      <option name="closed" value="true" />
-      <created>1783089714248</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1783089714248</updated>
+      <workItem from="1788347737150" duration="14995000" />
     </task>
     <task id="LOCAL-00015" summary="Team creation endpoint added">
       <option name="closed" value="true" />
@@ -725,7 +724,15 @@
       <option name="project" value="LOCAL" />
       <updated>1788358522547</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL-00063" summary="Minor graphical modifications">
+      <option name="closed" value="true" />
+      <created>1788359198706</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1788359198706</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -743,7 +750,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Now User can upload a logo when creating a team. TODO: fetching and showing the real logo" />
     <MESSAGE value="Logo Fetch Implemented" />
     <MESSAGE value="Refractoring, simplified auth section by reducing custom components and duplication of code" />
     <MESSAGE value="Refractoring, simplified team section by reducing custom components and duplication of code" />
@@ -768,7 +774,8 @@
     <MESSAGE value="Adjusted exceptions in tournament_service" />
     <MESSAGE value="Adjusted fallback for unavailable service, and made the ErrorScreen reusable and general" />
     <MESSAGE value="Added progress bar for multipages forms&#10;Fixed a bug where an user couldnt upload pictures&#10;Made a general layout for form based pages" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added progress bar for multipages forms&#10;Fixed a bug where an user couldnt upload pictures&#10;Made a general layout for form based pages" />
+    <MESSAGE value="Minor graphical modifications" />
+    <option name="LAST_COMMIT_MESSAGE" value="Minor graphical modifications" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

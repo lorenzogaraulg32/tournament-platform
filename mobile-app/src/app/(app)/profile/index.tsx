@@ -66,7 +66,7 @@ export default function Index() {
     }
 
     return (
-        <ProfilePage userId={userId} teams isOwnProfile={true}/>
+        <ProfilePage userId={userId}  isOwnProfile={true}/>
     );
 
 
