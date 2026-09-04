@@ -4,6 +4,8 @@ export const colors = {
     mustardDefault: "#C89200",
     mustardDefaultBK: "#FFF7DD",
 
+    purpleDefault: "#8331c9",
+
 
     background: "#012613",
 

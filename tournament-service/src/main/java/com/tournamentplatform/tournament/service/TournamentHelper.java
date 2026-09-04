@@ -41,10 +41,14 @@ public class TournamentHelper {
                 tournament.getMaxTeams(),
                 tournament.getFormat().name(),
                 tournament.getStatus().name(),
-                tournament.getRulesUrl()
+                tournament.getRulesUrl(),
+                tournament.getCreatedByUserId(),
+                tournament.getAdminsById(),
+                tournament.getRegisteredTeamIds(),
+                tournament.getMatches()
+
         );
     }
-
 
 
     public String generateUniqueInvitationCode() {

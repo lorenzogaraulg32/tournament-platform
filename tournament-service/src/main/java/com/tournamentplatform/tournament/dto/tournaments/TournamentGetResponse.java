@@ -1,7 +1,11 @@
 package com.tournamentplatform.tournament.dto.tournaments;
 
+import com.tournamentplatform.tournament.entity.TournamentMatch;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 public record TournamentGetResponse(
         Long id,
@@ -15,6 +19,12 @@ public record TournamentGetResponse(
         Integer maxTeams,
         String format,
         String status,
-        String rulesUrl
+        String rulesUrl,
+        String createdById,
+        List<String> adminsId,
+        Set<Long> registeredTeamIds,
+        List<TournamentMatch> matches
 ) {
 }
+
+

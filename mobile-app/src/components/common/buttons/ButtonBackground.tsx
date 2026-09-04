@@ -4,10 +4,11 @@ import {FontAwesome6} from "@expo/vector-icons";
 type ButtonBGProps = {
     text: string
     onPress: () => void
+    variant: "orange" | "purple"
 }
 
 
-export default function ButtonBackground({text, onPress}: ButtonBGProps) {
+export default function ButtonBackground({text, onPress, variant}: ButtonBGProps) {
 
     return (
         <Pressable
@@ -20,9 +21,11 @@ export default function ButtonBackground({text, onPress}: ButtonBGProps) {
             ]}
         >
             <ImageBackground
-                source={require(
-                    "../../../../assets/images/backgrounds/orangeBackground.png"
-                )}
+                source={
+                    variant === "orange" ? require("../../../../assets/images/backgrounds/orangeBackground.png")
+                        : variant === "purple" ? require("../../../../assets/images/backgrounds/purpleBackground.png")
+                        : require("../../../../assets/images/backgrounds/greenBackground.png")
+                }
                 style={styles.btn}
                 imageStyle={styles.btnBg}
             >

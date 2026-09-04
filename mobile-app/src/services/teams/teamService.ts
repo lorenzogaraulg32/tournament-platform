@@ -24,19 +24,10 @@ export type TeamDetails = {
     invitationCode: string;
 };
 
-function requireApiUrl(): string {
-    if (!API_URL) {
-        throw new Error(
-            "EXPO_PUBLIC_API_URL non configurata"
-        );
-    }
-
-    return API_URL;
-}
 
 export async function getCurrentUserTeams(): Promise<TeamInfo[]> {
     const response = await authenticatedFetch(
-        `${requireApiUrl()}/teams/my-teams`,
+        `${API_URL}/teams/my-teams`,
         {
             method: "GET",
             headers: {
@@ -50,7 +41,7 @@ export async function getCurrentUserTeams(): Promise<TeamInfo[]> {
 
 export async function loadUserTeams(userId: string): Promise<TeamInfo[]> {
     const response = await authenticatedFetch(
-        `${requireApiUrl()}/teams/user/${encodeURIComponent(userId)}`,
+        `${API_URL}/teams/user/${encodeURIComponent(userId)}`,
         {
             method: "GET",
             headers: {
@@ -66,7 +57,7 @@ export async function addCurrentUserToTeamViaCode(
     code: string
 ): Promise<TeamDetails> {
     const response = await authenticatedFetch(
-        `${requireApiUrl()}/teams/players/${encodeURIComponent(code)}`,
+        `${API_URL}/teams/players/${encodeURIComponent(code)}`,
         {
             method: "POST",
             headers: {
@@ -82,7 +73,7 @@ export async function refreshCode(
     teamId: number
 ): Promise<TeamDetails> {
     const response = await authenticatedFetch(
-        `${requireApiUrl()}/teams/${teamId}/change_code`,
+        `${API_URL}/teams/${teamId}/change_code`,
         {
             method: "POST",
             headers: {
@@ -96,7 +87,7 @@ export async function refreshCode(
 
 export async function getTeamDetails(id: string): Promise<TeamDetails> {
     const response = await authenticatedFetch(
-        `${requireApiUrl()}/teams/${encodeURIComponent(id)}`,
+        `${API_URL}/teams/${encodeURIComponent(id)}`,
         {
             method: "GET",
             headers: {

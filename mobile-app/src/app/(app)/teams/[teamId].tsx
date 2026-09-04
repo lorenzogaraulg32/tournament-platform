@@ -42,8 +42,6 @@ export default function teamId() {
                     loadCurrentUserId(),
                 ]);
 
-
-
                 const loadedPlayers = await Promise.all(
                     loadedTeam.playerIds.map(async (id) => {
                         const userInfo =

@@ -2,8 +2,9 @@ import {ActivityIndicator, ScrollView, StyleSheet, Text, View} from "react-nativ
 import {getCurrentUserTeams, TeamInfo} from "@/src/services/teams/teamService";
 import TeamCardHorizontal from "@/src/components/common/carousel&cards/TeamCardHorizontal";
 import {useCallback, useState} from "react";
-import {useFocusEffect} from "expo-router";
+import {router, useFocusEffect} from "expo-router";
 import {normalizeApiRequestError} from "@/src/services/errorService";
+import ButtonBackground from "@/src/components/common/buttons/ButtonBackground";
 
 
 /**
@@ -104,14 +105,22 @@ export default function MyTeams() {
     }
 
     return (
-        <ScrollView
-            style={styles.scroll}
-            contentContainerStyle={styles.content}
-            showsVerticalScrollIndicator
-            persistentScrollbar
-        >
-            {renderUserTeams()}
-        </ScrollView>
+        <View style={styles.myTeamsContent}>
+            <ScrollView
+                style={styles.scroll}
+                contentContainerStyle={styles.content}
+                showsVerticalScrollIndicator
+                persistentScrollbar
+            >
+                {renderUserTeams()}
+            </ScrollView>
+            <ButtonBackground
+                text="Crea nuova squadra"
+                onPress={() => router.push("/teams/create")}
+                variant="orange"
+            />
+
+        </View>
     )
 }
 
@@ -122,6 +131,10 @@ const styles = StyleSheet.create({
         flex: 1
     },
 
+    myTeamsContent: {
+        flex: 1,
+        minHeight: 0,
+    },
 
     content: {
         paddingBottom: 6,

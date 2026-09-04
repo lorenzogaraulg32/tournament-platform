@@ -8,7 +8,9 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -75,6 +77,21 @@ public class Tournament {
     @Column(name = "invitation_code", nullable = false, unique = true)
     private String invitationCode;
 
+    @ElementCollection
+    @CollectionTable(
+            name = "tournament_teams",
+            joinColumns = @JoinColumn(name = "tournament_id")
+    )
+    @Column(name = "team_id", nullable = false)
+    private Set<Long> registeredTeamIds = new HashSet<>();
+
+    @OneToMany(
+            mappedBy = "tournament",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<TournamentMatch> matches = new ArrayList<>();
+
     //costruttore per la creazione dell'entity a partire dalla request
     public Tournament(String name,
                       String description,
@@ -86,7 +103,11 @@ public class Tournament {
                       Integer maxTeams,
                       TournamentFormat format,
                       String rulesUrl,
-                      String invitationCode
+                      String invitationCode,
+                      Set<Long> registeredTeamIds,
+                      List<TournamentMatch> matches
+
+
     ) {
         this.name = name;
         this.description = description;
@@ -99,6 +120,8 @@ public class Tournament {
         this.format = format;
         this.rulesUrl = rulesUrl;
         this.invitationCode = invitationCode;
+        this.registeredTeamIds = registeredTeamIds;
+        this.matches = matches;
     }
 
     @PrePersist

@@ -1,9 +1,6 @@
 package com.tournamentplatform.tournament.controller;
 
-import com.tournamentplatform.tournament.dto.tournaments.TournamentCreationRequest;
-import com.tournamentplatform.tournament.dto.tournaments.TournamentCreationResponse;
-import com.tournamentplatform.tournament.dto.tournaments.TournamentGetResponse;
-import com.tournamentplatform.tournament.dto.tournaments.TournamentPatchRequest;
+import com.tournamentplatform.tournament.dto.tournaments.*;
 import com.tournamentplatform.tournament.service.TournamentService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -43,6 +40,18 @@ public class TournamentController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/my-tournaments")
+    public ResponseEntity<UserTournamentsResponse> getMyTournaments(
+            @RequestParam(required = false)
+            List<String> myTeamIds
+    ) {
+        return ResponseEntity.ok(
+                tournamentService.getMyTournaments(
+                        myTeamIds != null ? myTeamIds : List.of()
+                )
+        );
+    }
+
     //restituisce il torneo aggiornato come fosse una get
     @PatchMapping("/{id}")
     public ResponseEntity<TournamentGetResponse> patchTournament(@PathVariable String id, @RequestBody @Valid TournamentPatchRequest patchRequest) {
@@ -57,8 +66,6 @@ public class TournamentController {
         return ResponseEntity.noContent().build();
 
     }
-
-
 
 
 }

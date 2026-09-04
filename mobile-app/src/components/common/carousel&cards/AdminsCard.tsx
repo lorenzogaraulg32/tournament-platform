@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
 
 
     background: {
-        ...StyleSheet.absoluteFillObject,
+        ...StyleSheet.absoluteFill,
         overflow: "hidden",
         borderRadius: 15,
     },

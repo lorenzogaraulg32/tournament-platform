@@ -1,17 +1,18 @@
 package com.tournamentplatform.tournament.service;
 
 
-import com.tournamentplatform.tournament.dto.tournaments.TournamentCreationRequest;
-import com.tournamentplatform.tournament.dto.tournaments.TournamentCreationResponse;
-import com.tournamentplatform.tournament.dto.tournaments.TournamentGetResponse;
-import com.tournamentplatform.tournament.dto.tournaments.TournamentPatchRequest;
+import com.tournamentplatform.tournament.dto.tournaments.*;
 import com.tournamentplatform.tournament.entity.Tournament;
 import com.tournamentplatform.tournament.entity.TournamentStatus;
 import com.tournamentplatform.tournament.repository.TournamentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class TournamentService {
@@ -46,7 +47,9 @@ public class TournamentService {
                 request.getMaxTeams(),
                 request.getFormat(),
                 request.getRulesUrl(),
-                tournamentHelper.generateUniqueInvitationCode()
+                tournamentHelper.generateUniqueInvitationCode(),
+                new HashSet<>(),
+                new ArrayList<>()
         );
 
         tournamentHelper.validateTournament(tournament);
@@ -70,6 +73,44 @@ public class TournamentService {
         }
         return tournamentsResponse;
     }
+
+    public UserTournamentsResponse getMyTournaments(
+            List<String> myTeamIds
+    ) {
+        String userId =
+                tournamentAuthorizationHelper.getCurrentUserId();
+
+        List<Tournament> managedTournaments =
+                tournamentRepository.findManagedByUserId(userId);
+
+        Set<Long> convertedTeamIds = myTeamIds == null
+                ? Set.of()
+                : myTeamIds.stream()
+                .map(Long::valueOf)
+                .collect(Collectors.toSet());
+
+        List<Tournament> participatingTournaments =
+                convertedTeamIds.isEmpty()
+                        ? List.of()
+                        : tournamentRepository
+                        .findParticipatedByTeamIds(convertedTeamIds);
+
+        List<TournamentGetResponse> managedResponses =
+                managedTournaments.stream()
+                        .map(tournamentHelper::toTournamentGetResponse)
+                        .toList();
+
+        List<TournamentGetResponse> participatingResponses =
+                participatingTournaments.stream()
+                        .map(tournamentHelper::toTournamentGetResponse)
+                        .toList();
+
+        return new UserTournamentsResponse(
+                managedResponses,
+                participatingResponses
+        );
+    }
+
 
     public TournamentGetResponse patchTournament(String id, TournamentPatchRequest patchRequest) {
 
@@ -97,4 +138,7 @@ public class TournamentService {
             tournament.setStatus(TournamentStatus.CANCELLED);
         }
     }
+
+
+
 }
