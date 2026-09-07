@@ -1,10 +1,12 @@
-import {ActivityIndicator, ScrollView, StyleSheet, Text, View} from "react-native";
+import {ScrollView, StyleSheet, View} from "react-native";
 import {getCurrentUserTeams, TeamInfo} from "@/src/services/teams/teamService";
 import TeamCardHorizontal from "@/src/components/common/carousel&cards/TeamCardHorizontal";
-import {useCallback, useState} from "react";
+import {useCallback, useRef, useState} from "react";
 import {router, useFocusEffect} from "expo-router";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import ButtonBackground from "@/src/components/common/buttons/ButtonBackground";
+import LoadingSection from "@/src/components/common/loading/LoadingSection";
+import ErrorSection from "@/src/components/common/errors/ErrorSection";
 
 
 /**
@@ -17,80 +19,71 @@ export default function MyTeams() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    useFocusEffect(
-        useCallback(() => {
-            let isActive = true;
+    const requestIdRef = useRef(0);
 
-            async function loadUserTeams() {
-                try {
-                    setIsLoading(true);
-                    setError(null);
+    const loadUserTeams = useCallback(async () => {
+        const requestId = ++requestIdRef.current;
 
-                    const loadedTeams = await getCurrentUserTeams();
+        try {
+            setIsLoading(true);
+            setError(null);
 
-                    if (isActive) {
-                        setUserTeams(loadedTeams);
-                    }
-                } catch (error) {
-                    if (!isActive) {
-                        return;
-                    }
-                    const apiError = normalizeApiRequestError(error)
+            const loadedTeams = await getCurrentUserTeams();
 
-                    // Redirect già gestito da authenticatedFetch
-                    if (apiError.status === 401) {
-                        return;
-                    }
-
-                    setError(apiError.message)
-                } finally {
-                    if (isActive) {
-                        setIsLoading(false);
-                    }
-                }
+            if (requestId === requestIdRef.current) {
+                setUserTeams(loadedTeams);
+            }
+        } catch (error) {
+            if (requestId !== requestIdRef.current) {
+                return;
             }
 
+            const apiError = normalizeApiRequestError(error);
+
+            // Redirect già gestito da authenticatedFetch
+            if (apiError.status === 401) {
+                return;
+            }
+
+            setError(apiError.message);
+        } finally {
+            if (requestId === requestIdRef.current) {
+                setIsLoading(false);
+            }
+        }
+    }, []);
+
+
+    useFocusEffect(
+        useCallback(() => {
             void loadUserTeams();
 
             return () => {
-                isActive = false;
+                requestIdRef.current++;
             };
-        }, [])
+        }, [loadUserTeams])
     );
+
 
     function renderUserTeams() {
 
         if (isLoading) {
             return (
-                <View style={styles.messageContainer}>
-                    <ActivityIndicator size={"small"}/>
-                    <Text style={styles.messageText}>
-                        Caricamento squadre...
-                    </Text>
-                </View>
+                <LoadingSection text={"Caricamento squadre..."}/>
             )
         }
 
         if (error) {
             return (
-                <View style={styles.messageContainer}>
-                    <Text style={styles.errorText}>
-                        {error}
-                    </Text>
-                </View>
+                <ErrorSection text={error} onRetry={loadUserTeams} variant={"error"}/>
             )
         }
 
         if (userTeams.length === 0) {
             return (
-                <View style={styles.messageContainer}>
-                    <Text style={styles.messageText}>
-                        Entra in una squadra con il codice invito
-                    </Text>
-                </View>
+                <ErrorSection text={"Entra in una squadra con il codice invito"} variant={"warning"}/>
             )
         }
-
 
         return userTeams.map((team) => (
 
@@ -141,23 +134,5 @@ const styles = StyleSheet.create({
         gap: 6,
     },
 
-    messageContainer: {
-        minHeight: 64,
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 8,
-        paddingHorizontal: 20,
-    },
 
-    messageText: {
-        fontSize: 14,
-        color: "#666666",
-        textAlign: "center",
-    },
-
-    errorText: {
-        fontSize: 14,
-        color: "#B42318",
-        textAlign: "center",
-    },
 });

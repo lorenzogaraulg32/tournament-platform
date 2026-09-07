@@ -4,36 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Removed HorizontalCarousel.tsx&#10;Added CarouselContainer.tsx for graphical coerence. Now the fetch responsibility if of the external component, not on the carousel itself">
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/findTeams.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/tournaments/findTournaments.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/tournaments/myTournaments.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/common/TabsContainer.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/services/tournaments/tournamentsDTO.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/services/tournaments/tournamentsService.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/dto/tournaments/UserTournamentsResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/entity/TournamentMatch.java" afterDir="false" />
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Tournament Section and refractoring">
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/common/errors/ErrorSection.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/common/loading/LoadingSection.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/tournaments/TournamentSection.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/[teamId].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/[teamId].tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/_layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/profile/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/profile/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/myTeams.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/myTeams.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/tournaments/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/tournaments/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/tournaments/myTournaments.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/tournaments/myTournaments.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/ErrorScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/errors/ErrorScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/LoadingScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/loading/LoadingScreen.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/buttons/ButtonBackground.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/buttons/ButtonBackground.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/AdminsCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/AdminsCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/PlayersCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/PlayersCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/TeamCardHorizontal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/TeamCardHorizontal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/TeamCardVertical.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/TeamCardVertical.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/constants/theme.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/constants/theme.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/teams/teamService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/teams/teamService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/controller/TournamentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/controller/TournamentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/dto/tournaments/TournamentGetResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/dto/tournaments/TournamentGetResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/entity/Tournament.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/entity/Tournament.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/repository/TournamentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/repository/TournamentRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/service/TournamentHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/service/TournamentHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/service/TournamentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/service/TournamentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfilePage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -155,11 +138,11 @@
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\app\(app)" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\common\errors" />
+      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\common\loading" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\common\carousel" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\common\forms" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\common" />
-      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components" />
-      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\services" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.tournamentplatform.tournament.errorHandling.tournamentExceptions" />
@@ -360,15 +343,8 @@
       <workItem from="1788279491973" duration="2510000" />
       <workItem from="1788347737150" duration="15324000" />
       <workItem from="1788465170779" duration="579000" />
-      <workItem from="1788530709718" duration="9551000" />
-    </task>
-    <task id="LOCAL-00016" summary="Team basic endpoints added&#10;Team admin management added">
-      <option name="closed" value="true" />
-      <created>1783353240601</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1783353240601</updated>
+      <workItem from="1788530709718" duration="9603000" />
+      <workItem from="1788788211309" duration="5235000" />
     </task>
     <task id="LOCAL-00017" summary="Team players endpoint added">
       <option name="closed" value="true" />
@@ -754,7 +730,15 @@
       <option name="project" value="LOCAL" />
       <updated>1788368963234</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="Init Tournaments Section">
+      <option name="closed" value="true" />
+      <created>1788541239663</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1788541239664</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -772,8 +756,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Refractoring, simplified auth section by reducing custom components and duplication of code" />
-    <MESSAGE value="Refractoring, simplified team section by reducing custom components and duplication of code" />
     <MESSAGE value="Rearranged [teamId] header &#10;Added options button to the main Header" />
     <MESSAGE value="Worked on team details page" />
     <MESSAGE value="Created a new microservice for managing users outside of auth context" />
@@ -797,7 +779,9 @@
     <MESSAGE value="Added progress bar for multipages forms&#10;Fixed a bug where an user couldnt upload pictures&#10;Made a general layout for form based pages" />
     <MESSAGE value="Minor graphical modifications" />
     <MESSAGE value="Removed HorizontalCarousel.tsx&#10;Added CarouselContainer.tsx for graphical coerence. Now the fetch responsibility if of the external component, not on the carousel itself" />
-    <option name="LAST_COMMIT_MESSAGE" value="Removed HorizontalCarousel.tsx&#10;Added CarouselContainer.tsx for graphical coerence. Now the fetch responsibility if of the external component, not on the carousel itself" />
+    <MESSAGE value="Init Tournaments Section" />
+    <MESSAGE value="Tournament Section and refractoring" />
+    <option name="LAST_COMMIT_MESSAGE" value="Tournament Section and refractoring" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

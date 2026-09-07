@@ -4,11 +4,11 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 import {colors} from "@/src/constants/theme"
 import {useCallback, useEffect, useRef, useState} from "react";
-import {ApiRequestError, normalizeApiRequestError} from "@/src/services/errorService";
+import {ApiRequestError} from "@/src/services/errorService";
 import {loadUserInfo} from "@/src/services/users/userService";
 import {loadCurrentUserId} from "@/src/services/users/authService";
-import ErrorScreen from "@/src/components/common/ErrorScreen";
-import LoadingScreen from "@/src/components/common/LoadingScreen";
+import ErrorScreen from "@/src/components/common/errors/ErrorScreen";
+import LoadingScreen from "@/src/components/common/loading/LoadingScreen";
 
 
 type ProfileState =

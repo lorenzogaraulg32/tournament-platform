@@ -24,7 +24,7 @@ export default function ButtonBackground({text, onPress, variant}: ButtonBGProps
                 source={
                     variant === "orange" ? require("../../../../assets/images/backgrounds/orangeBackground.png")
                         : variant === "purple" ? require("../../../../assets/images/backgrounds/purpleBackground.png")
-                        : require("../../../../assets/images/backgrounds/greenBackground.png")
+                            : require("../../../../assets/images/backgrounds/greenBackground.png")
                 }
                 style={styles.btn}
                 imageStyle={styles.btnBg}

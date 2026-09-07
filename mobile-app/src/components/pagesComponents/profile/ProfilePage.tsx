@@ -1,9 +1,9 @@
 import HeaderProfile from "@/src/components/pagesComponents/profile/HeaderProfile";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {AuthInfo, handleLogout, loadUserAuthInfo} from "@/src/services/users/authService";
 import {loadUserInfo, UserInfo} from "@/src/services/users/userService";
 import PageLayout from "@/src/components/common/PageLayout";
-import {ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
+import {Pressable, ScrollView, StyleSheet, View} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {colors} from "@/src/constants/theme";
 import InfoLabel from "@/src/components/common/labels/InfoLabel";
@@ -12,6 +12,8 @@ import {normalizeApiRequestError} from "@/src/services/errorService";
 import {loadUserTeams, TeamInfo} from "@/src/services/teams/teamService";
 import CarouselContainer from "@/src/components/common/carousel&cards/CarouselContainer";
 import TeamCardVertical from "@/src/components/common/carousel&cards/TeamCardVertical";
+import LoadingSection from "@/src/components/common/loading/LoadingSection";
+import ErrorSection from "@/src/components/common/errors/ErrorSection";
 
 type ProfilePageProps = {
     userId: string;
@@ -25,71 +27,65 @@ export default function ProfilePage({userId, isOwnProfile}: ProfilePageProps) {
     const [isLoading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [userTeams, setUserTeams] = useState<TeamInfo[]>([])
+    const requestIdRef = useRef(0);
 
 
-    useEffect(() => {
-        let isActive = true;
+    const loadProfile = useCallback(async () => {
 
-        async function loadProfile() {
-            try {
-                setLoading(true);
-                setError(null);
+        const requestId = ++requestIdRef.current;
+        try {
+            setLoading(true);
+            setError(null);
 
-                const [authInfo, profileInfo, teams] =
-                    await Promise.all([
-                        loadUserAuthInfo(userId),
-                        loadUserInfo(userId),
-                        loadUserTeams(userId)
-                    ]);
+            const [authInfo, profileInfo, teams] =
+                await Promise.all([
+                    loadUserAuthInfo(userId),
+                    loadUserInfo(userId),
+                    loadUserTeams(userId)
+                ]);
 
-                if (!isActive) {
-                    return;
-                }
+            if (requestId !== requestIdRef.current) {
+                return;
+            }
 
-                setUserAuthInfo(authInfo);
-                setUserInfo(profileInfo);
-                setUserTeams(teams)
-            } catch (error) {
-                const apiError =
-                    normalizeApiRequestError(error);
+            setUserAuthInfo(authInfo);
+            setUserInfo(profileInfo);
+            setUserTeams(teams)
+        } catch (error) {
+            const apiError =
+                normalizeApiRequestError(error);
 
-                if (apiError.status !== 401 && isActive) {
-                    setError(apiError.message);
-                }
-            } finally {
-                if (isActive) {
-                    setLoading(false);
-                }
+            if (apiError.status !== 401) {
+                setError(apiError.message);
+            }
+        } finally {
+            if (requestId === requestIdRef.current) {
+                setLoading(false);
             }
         }
+    }, [])
 
+    useEffect(() => {
         void loadProfile();
 
         return () => {
-            isActive = false;
+            requestIdRef.current++;
         };
-    }, [userId]);
+    }, [loadProfile]);
+
 
     return (
         <PageLayout
             header={
                 <HeaderContainer variant={"red"}>
                     {isLoading ? (
-                        <View>
-                            <ActivityIndicator color="#FFFFFF" size="large"/>
-                        </View>
+                        <LoadingSection text={"Caricamento profilo..."}/>
                     ) : error ? (
-                        <View>
-                            <Text style={styles.feedbackText}>
-                                {error}
-                            </Text>
-                        </View>
+                        <ErrorSection text={error} onRetry={loadProfile} variant={"error"}/>
+
                     ) : !userInfo || !userAuthInfo ? (
-                        <View>
-                            <Text style={styles.feedbackText}>
-                                Utente non disponibile
-                            </Text>
-                        </View>
+                        <ErrorSection text={"Utente non disponibile"} variant={"warning"}/>
+
                     ) : (
                         <HeaderProfile
                             userInfo={userInfo}
@@ -99,58 +95,61 @@ export default function ProfilePage({userId, isOwnProfile}: ProfilePageProps) {
                     )}
                 </HeaderContainer>}>
 
-            <View style={styles.profileContainer}>
-                <ScrollView
-                    style={styles.scrollView}
-                    contentContainerStyle={styles.scrollContent}
-                    showsVerticalScrollIndicator={false}
-                >
-                    <View style={styles.profileContent}>
-                        {!isOwnProfile && userInfo ? (
-                            <View style={styles.section}>
-                                <InfoLabel text={"Squadre"} labelIconName={"shirt-outline"}/>
-                                <CarouselContainer
-                                    items={userTeams?.map((team) => (
-                                        <TeamCardVertical
-                                            key={team.id}
-                                            teamDetails={team}/>
-                                    ))}
-                                    isLoading={isLoading}
-                                    emptyMsg={"Crea una squadra oppure\n unisciti tramite il codice d'invito"}
-                                    error={error}
-                                />
-                            </View>
-                        ) : (
-                            <View>
-                            </View>
-                        )}
-                    </View>
-                </ScrollView>
-
-            </View>
-            {isOwnProfile &&
-                <View style={styles.logoutContainer}>
-
-                    <Pressable
-                        style={({pressed}) => [
-                            styles.logoutBtn,
-                            pressed && styles.logoutBtnPressed
-                        ]}
-
-                        onPress={handleLogout}>
-                        <Ionicons
-                            name="log-out-outline"
-                            size={28}
-                            color="#ffffff"
-                            style={{transform: [{translateX: +3}]}}
-                        />
-                    </Pressable>
+            {userInfo &&
+                <View style={styles.profileContainer}>
+                    <ScrollView
+                        style={styles.scrollView}
+                        contentContainerStyle={styles.scrollContent}
+                        showsVerticalScrollIndicator={false}
+                    >
+                        <View style={styles.profileContent}>
+                            {!isOwnProfile ? (
+                                <View style={styles.section}>
+                                    <InfoLabel text={"Squadre"} labelIconName={"shirt-outline"}/>
+                                    <CarouselContainer
+                                        items={userTeams?.map((team) => (
+                                            <TeamCardVertical
+                                                key={team.id}
+                                                teamDetails={team}/>
+                                        ))}
+                                        isLoading={isLoading}
+                                        emptyMsg={"Crea una squadra oppure\n unisciti tramite il codice d'invito"}
+                                        error={error}
+                                    />
+                                </View>
+                            ) : (
+                                <View>
+                                </View>
+                            )}
+                        </View>
+                    </ScrollView>
 
                 </View>
             }
 
+            {isOwnProfile && <View style={styles.logoutContainer}>
+
+                <Pressable
+                    style={({pressed}) => [
+                        styles.logoutBtn,
+                        pressed && styles.logoutBtnPressed
+                    ]}
+
+                    onPress={handleLogout}>
+                    <Ionicons
+                        name="log-out-outline"
+                        size={28}
+                        color="#ffffff"
+                        style={{transform: [{translateX: +3}]}}
+                    />
+                </Pressable>
+
+            </View>
+            }
+
         </PageLayout>
-    );
+    )
+
 }
 
 
@@ -220,12 +219,6 @@ const styles = StyleSheet.create({
         opacity: 0.9,
     },
 
-    feedbackText: {
-        color: "#FFFFFF",
-        fontSize: 15,
-        fontWeight: "500",
-        textAlign: "center",
-    },
 
 
 });
