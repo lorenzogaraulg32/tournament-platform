@@ -29,7 +29,7 @@ export default function TournamentsPage() {
     return (
         <PageLayout
             header={
-                <HeaderContainer variant="purple">
+                <HeaderContainer variant="tournaments">
                     <HeaderPage
                         label="JoinCup"
                         title="Tornei"

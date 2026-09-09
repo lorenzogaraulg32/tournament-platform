@@ -11,7 +11,7 @@ import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {loadUserTeams, TeamInfo} from "@/src/services/teams/teamService";
 import CarouselContainer from "@/src/components/common/carousel&cards/CarouselContainer";
-import TeamCardVertical from "@/src/components/common/carousel&cards/TeamCardVertical";
+import TeamCardVertical from "@/src/components/pagesComponents/teams/TeamCardVertical";
 import LoadingSection from "@/src/components/common/loading/LoadingSection";
 import ErrorSection from "@/src/components/common/errors/ErrorSection";
 
@@ -44,6 +44,7 @@ export default function ProfilePage({userId, isOwnProfile}: ProfilePageProps) {
                     loadUserTeams(userId)
                 ]);
 
+
             if (requestId !== requestIdRef.current) {
                 return;
             }
@@ -52,6 +53,10 @@ export default function ProfilePage({userId, isOwnProfile}: ProfilePageProps) {
             setUserInfo(profileInfo);
             setUserTeams(teams)
         } catch (error) {
+
+            if (requestId !== requestIdRef.current) {
+                return;
+            }
             const apiError =
                 normalizeApiRequestError(error);
 
@@ -63,7 +68,7 @@ export default function ProfilePage({userId, isOwnProfile}: ProfilePageProps) {
                 setLoading(false);
             }
         }
-    }, [])
+    }, [userId])
 
     useEffect(() => {
         void loadProfile();
@@ -77,7 +82,7 @@ export default function ProfilePage({userId, isOwnProfile}: ProfilePageProps) {
     return (
         <PageLayout
             header={
-                <HeaderContainer variant={"red"}>
+                <HeaderContainer variant={"profile"}>
                     {isLoading ? (
                         <LoadingSection text={"Caricamento profilo..."}/>
                     ) : error ? (
@@ -218,7 +223,6 @@ const styles = StyleSheet.create({
         transform: [{scale: 0.98}],
         opacity: 0.9,
     },
-
 
 
 });

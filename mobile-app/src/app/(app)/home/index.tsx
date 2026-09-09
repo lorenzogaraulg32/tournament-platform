@@ -47,7 +47,7 @@ export default function Homepage() {
 
         <PageLayout
             header={
-                <HeaderContainer variant="green">
+                <HeaderContainer variant="home">
                     <HeaderPage label="Benvenuto in JoinCup"
                                 title="Entra in gioco."
                                 subtitle="Unisciti a una squadra o partecipa a un torneo."/>

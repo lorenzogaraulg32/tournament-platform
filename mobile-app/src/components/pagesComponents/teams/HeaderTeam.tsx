@@ -4,7 +4,6 @@ import Picture from "@/src/components/common/images/Picture";
 import {refreshCode, TeamDetails} from "@/src/services/teams/teamService";
 import {useEffect, useRef, useState} from "react";
 import * as Clipboard from "expo-clipboard";
-import {router} from "expo-router";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 
 type TeamHeaderProps = {
@@ -12,6 +11,7 @@ type TeamHeaderProps = {
     isLoading?: boolean;
     error?: string | null;
     canEdit: boolean;
+    onBack: () => void;
 };
 
 
@@ -27,7 +27,8 @@ export default function HeaderTeam({
                                        team,
                                        isLoading = false,
                                        error = null,
-                                       canEdit
+                                       canEdit,
+                                       onBack
                                    }: TeamHeaderProps) {
 
 
@@ -40,7 +41,7 @@ export default function HeaderTeam({
     }
 
     const onBackPress = () => {
-        router.back()
+        onBack()
     }
 
 

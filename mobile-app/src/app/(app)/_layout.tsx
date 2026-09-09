@@ -1,14 +1,14 @@
 import {Redirect, Tabs} from "expo-router";
-import {StyleSheet} from "react-native";
+import {ImageBackground, StyleSheet, View} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-
-import {colors} from "@/src/constants/theme"
 import {useCallback, useEffect, useRef, useState} from "react";
 import {ApiRequestError} from "@/src/services/errorService";
 import {loadUserInfo} from "@/src/services/users/userService";
 import {loadCurrentUserId} from "@/src/services/users/authService";
 import ErrorScreen from "@/src/components/common/errors/ErrorScreen";
 import LoadingScreen from "@/src/components/common/loading/LoadingScreen";
+
+import {type ColorVariant, variants} from "@/src/constants/bkManager";
 
 
 type ProfileState =
@@ -90,15 +90,28 @@ export default function RootLayout() {
 
 
     return (
-
         <Tabs
-            screenOptions={{
-                headerShown: false,
-                tabBarStyle: styles.tabsBar,
-                tabBarActiveTintColor: "#ffffff",
-                tabBarInactiveTintColor: "#ffffff",
-                tabBarLabelStyle: styles.barLabel,
-                tabBarShowLabel: true,
+            screenOptions={({route}) => {
+                const config = variants[route.name as ColorVariant] ?? variants.home;
+
+                return {
+                    headerShown: false,
+                    tabBarStyle: styles.tabsBar,
+                    tabBarActiveTintColor: "#ffffff",
+                    tabBarInactiveTintColor: "#ffffff",
+                    tabBarLabelStyle: styles.barLabel,
+                    tabBarShowLabel: true,
+
+                    tabBarBackground: () => (
+                        <ImageBackground
+                            source={config.background}
+                            style={StyleSheet.absoluteFill}
+                            resizeMode="cover"
+                        >
+                            <View style={styles.backgroundOverlay}/>
+                        </ImageBackground>
+                    ),
+                };
             }}
         >
             <Tabs.Screen
@@ -168,7 +181,7 @@ const styles = StyleSheet.create({
         paddingTop: 8,
         paddingBottom: 8,
 
-        backgroundColor: colors.background,
+        backgroundColor: "transparent",
 
         borderTopWidth: 1,
         borderTopColor: "rgba(255, 255, 255, 0.35)",
@@ -182,6 +195,11 @@ const styles = StyleSheet.create({
         shadowRadius: 6,
 
         elevation: 10,
+    },
+
+    backgroundOverlay: {
+        ...StyleSheet.absoluteFill,
+        backgroundColor: "rgba(0, 0, 0, 0.3)",
     },
 
 

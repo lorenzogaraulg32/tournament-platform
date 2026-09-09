@@ -14,7 +14,7 @@ export default function FormLayout( {header, children, variant} : FormLayoutProp
 
     return(
        <PageLayout header={
-           <HeaderContainer variant={(variant === "team" ? "orange" : "purple")}>
+           <HeaderContainer variant={(variant === "team" ? "teams" : "tournaments")}>
                {header}
            </HeaderContainer>
        }  >

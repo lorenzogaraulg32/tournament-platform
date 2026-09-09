@@ -27,7 +27,7 @@ export default function TeamsPage() {
     return (
         <PageLayout
             header={
-                <HeaderContainer variant="orange">
+                <HeaderContainer variant="teams">
                     <HeaderPage
                         label="JoinCup"
                         title="Squadre"

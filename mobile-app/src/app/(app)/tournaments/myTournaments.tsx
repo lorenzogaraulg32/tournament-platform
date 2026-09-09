@@ -36,7 +36,7 @@ export default function MyTournaments() {
             if (requestId !== requestIdRef.current) {
                 return;
             }
-
+            
             setTournamentsAdmin(loadedTournaments.managed);
             setTournamentsPlayer(loadedTournaments.participating);
         } catch (error) {
@@ -118,7 +118,7 @@ export default function MyTournaments() {
                 {renderContent()}
             </ScrollView>
             <ButtonBackground
-                text="Crea nuova squadra"
+                text="Crea nuovo torneo"
                 onPress={() => router.push("/teams/create")}
                 variant="purple"
             />

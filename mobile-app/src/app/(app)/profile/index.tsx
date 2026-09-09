@@ -3,15 +3,20 @@ import {useCallback, useEffect, useRef, useState} from "react";
 import ProfilePage from "@/src/components/pagesComponents/profile/ProfilePage";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {Alert} from "react-native";
-import {router} from "expo-router";
+import {Redirect, router} from "expo-router";
+import LoadingScreen from "@/src/components/common/loading/LoadingScreen";
 
 export default function Index() {
 
     const [userId, setUserId] = useState<string>("")
+    const [isLoadingUserId, setLoadingUserId] = useState<boolean>(true)
+
     const requestIdRef = useRef(0);
 
 
     const loadId = useCallback(async () => {
+
+        setLoadingUserId(true)
         const requestId = ++requestIdRef.current;
 
         try {
@@ -23,6 +28,7 @@ export default function Index() {
             }
 
             setUserId(currentUserId);
+            setLoadingUserId(false);
         } catch (error) {
             // Il componente è stato smontato o è partita un'altra richiesta
             if (requestId !== requestIdRef.current) {
@@ -66,13 +72,15 @@ export default function Index() {
         };
     }, [loadId]);
 
-    if (!userId) {
-        router.replace("/(app)/home")
+    if (isLoadingUserId) {
+        return <LoadingScreen message="Caricamento profilo..."/>;
     }
 
-    return (
-        <ProfilePage userId={userId} isOwnProfile={true}/>
-    );
+    if (!userId) {
+        return <Redirect href="/(app)/home"/>;
+    }
+
+    return <ProfilePage userId={userId} isOwnProfile={true}/>;
 
 
 }

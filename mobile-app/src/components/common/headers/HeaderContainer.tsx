@@ -1,36 +1,12 @@
-import {ImageBackground, ImageSourcePropType, StyleSheet} from "react-native";
+import {ImageBackground, StyleSheet} from "react-native";
 import {ReactNode} from "react";
-
-type PageHeaderVariant = | "green" | "orange" | "purple" | "red";
+import {variants, type ColorVariant} from "@/src/constants/bkManager";
 
 type PageHeaderProps = {
-    variant: PageHeaderVariant;
+    variant: ColorVariant;
     children: ReactNode;
 };
 
-type HeaderVariantConfig = {
-    background: ImageSourcePropType;
-};
-
-const variants: Record<PageHeaderVariant, HeaderVariantConfig> = {
-
-    green: {
-        background: require("../../../../assets/images/backgrounds/greenBackground.png"),
-    },
-
-    orange: {
-        background: require("../../../../assets/images/backgrounds/orangeBackground.png"),
-    },
-
-    purple: {
-        background: require("../../../../assets/images/backgrounds/purpleBackground.png"),
-    },
-
-    red: {
-        background: require("../../../../assets/images/backgrounds/redBackground.png"),
-    },
-
-};
 
 /**
  *  Contenitore degli header, si occupa di gestire lo sfondo, dimensioni, margine e padding

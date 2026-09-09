@@ -106,8 +106,6 @@ public class Tournament {
                       String invitationCode,
                       Set<Long> registeredTeamIds,
                       List<TournamentMatch> matches
-
-
     ) {
         this.name = name;
         this.description = description;

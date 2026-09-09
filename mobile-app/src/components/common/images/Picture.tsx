@@ -5,14 +5,15 @@ import {getAuthorizationHeader} from "@/src/services/users/sessionService";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
-const placeholderLogoTeam = require("../../../../assets/images/teamPlaceholders/logoPlaceholder.webp");
-const placeholderLogoPlayer = require("../../../../assets/images/teamPlaceholders/profilePlaceholder.png");
+const placeholderLogoTeam = require("@/assets/images/placeholders/logoPlaceholder.png");
+const placeholderLogoPlayer = require("@/assets/images/placeholders/profilePlaceholder.png");
+const placeholderTournamentLogo = require("@/assets/images/placeholders/tournamentPlaceholder.jpg");
 
 
 type PictureProps = {
     logoUrl?: string | null;
     style?: StyleProp<ImageStyle>;
-    variant: "player" | "team";
+    variant: "player" | "team" | "tournament";
 };
 
 export default function Picture({
@@ -90,7 +91,8 @@ export default function Picture({
     const placeholder =
         variant === "team"
             ? placeholderLogoTeam
-            : placeholderLogoPlayer;
+            : variant == "player" ? placeholderLogoPlayer
+            : placeholderTournamentLogo
 
 
     if (shouldShowPlaceholder) {

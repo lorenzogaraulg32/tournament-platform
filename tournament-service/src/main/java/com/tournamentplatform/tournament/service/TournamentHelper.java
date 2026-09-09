@@ -46,7 +46,6 @@ public class TournamentHelper {
                 tournament.getAdminsById(),
                 tournament.getRegisteredTeamIds(),
                 tournament.getMatches()
-
         );
     }
 

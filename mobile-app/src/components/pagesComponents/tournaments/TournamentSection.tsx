@@ -1,8 +1,9 @@
-import TeamCardHorizontal from "@/src/components/common/carousel&cards/TeamCardHorizontal";
 import ErrorSection from "@/src/components/common/errors/ErrorSection";
 import {StyleSheet, Text, View} from "react-native";
 import {FontAwesome6} from "@expo/vector-icons";
 import {TournamentDetails} from "@/src/services/tournaments/tournamentsDTO";
+import {colors, corners} from "@/src/constants/theme";
+import TournamentCardHorizontal from "@/src/components/pagesComponents/tournaments/TournamentCardHorizontal";
 
 type TournamentSectionProps = {
     title: string;
@@ -48,11 +49,12 @@ export function TournamentSection({
                 />
             ) : (
                 tournaments.map((tournament) => (
-                    <TeamCardHorizontal
+                    <TournamentCardHorizontal
                         key={tournament.id}
                         id={Number(tournament.id)}
                         name={tournament.name}
-                        playersCount={0}
+                        teamsCount={tournament.registeredTeamIds ? tournament.registeredTeamIds.length : 0}
+                        status={tournament.status}
                     />
                 ))
             )}
@@ -64,10 +66,14 @@ export function TournamentSection({
 const styles = StyleSheet.create({
 
     sectionHeader: {
-        marginTop: 10,
+        marginTop: 12,
+        marginBottom: 8,
+        padding: 12,
+        borderRadius: corners.standard,
         flexDirection: "row",
         alignItems: "center",
         gap: 12,
+        backgroundColor: colors.grayBK,
     },
 
     sectionIcon: {

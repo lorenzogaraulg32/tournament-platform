@@ -4,8 +4,7 @@ enum TournamentFormat {
     GROUPS_AND_KNOCKOUT = "GROUPS_AND_KNOCKOUT"
 }
 
-enum TournamentStatus {
-
+export enum TournamentStatus {
     CREATED = "CREATED",
     REG_OPEN = "REG_OPEN",
     REP_CLOSED = "REP_CLOSED",
@@ -15,6 +14,8 @@ enum TournamentStatus {
     COMPLETED = "COMPLETED",
     CANCELLED = "CANCELLED"
 }
+
+
 
 
 export type UserTournamentsResponse = {
@@ -49,4 +50,5 @@ export type TournamentDetails = {
     rulesUrl: string,
     createdById: string,
     adminsId: string[]
+    registeredTeamIds: string[],
 }

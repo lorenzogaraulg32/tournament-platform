@@ -2,7 +2,7 @@ import PageLayout from "@/src/components/common/PageLayout";
 import {useEffect, useState} from "react";
 import {getTeamDetails, TeamDetails} from "@/src/services/teams/teamService";
 import {ScrollView, StyleSheet, Text, View} from "react-native";
-import {useLocalSearchParams} from "expo-router";
+import {router, useLocalSearchParams} from "expo-router";
 import HeaderTeam from "@/src/components/pagesComponents/teams/HeaderTeam";
 import InfoLabel from "@/src/components/common/labels/InfoLabel";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
@@ -109,12 +109,13 @@ export default function teamId() {
     return (
         <PageLayout
             header={
-                <HeaderContainer variant={"orange"}>
+                <HeaderContainer variant={"teams"}>
                     <HeaderTeam
                         team={team}
                         isLoading={isLoading}
                         error={error}
                         canEdit={isCurrentUserTeamAdmin}
+                        onBack={() => {router.replace("/(app)/teams")}}
                     />
                 </HeaderContainer>
             }

@@ -1,79 +1,33 @@
-import {Pressable, StyleSheet, Text, View} from "react-native";
-import {teamCardBlueColors} from "@/src/constants/theme"
+import {ReactNode} from "react";
+import {Pressable, StyleSheet, View} from "react-native";
+import {teamCardBlueColors} from "@/src/constants/theme";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import {router} from "expo-router";
-import Picture from "@/src/components/common/images/Picture";
+import {TeamCardBK, TournamentCardBK} from "@/src/constants/bkManager";
 
-type TeamCardSmallProps = {
-    id: number
-    name: string;
-    playersCount: number;
-    logoUrl?: string;
+
+type HorizontalCardContainerProps = {
+    onPress: () => void,
+    variant: "team" | "tournament",
+    children: ReactNode,
 }
 
 
-export default function TeamCardHorizontal({
-                                          id,
-                                          name,
-                                          logoUrl,
-                                          playersCount,
-                                      }: TeamCardSmallProps) {
-    function handlePress() {
-        router.push({
-            pathname: "/teams/[teamId]",
-            params: {
-                teamId: id,
-            },
-        })
-    }
-
-
+export default function HorizontalCardContainer({
+                                                    onPress,
+                                                    variant,
+                                                    children
+                                                }:
+                                                    HorizontalCardContainerProps) {
     return (
         <Pressable
             style={({pressed}) => [
                 styles.card,
                 pressed && styles.cardPressed,
             ]}
-            onPress={handlePress}
+            onPress={onPress}
         >
-            <View pointerEvents="none" style={styles.background}>
-                <View style={styles.glowLeft}/>
-                <View style={styles.glowRight}/>
-                <View style={styles.diagonalLineOne}/>
-                <View style={styles.diagonalLineTwo}/>
-                <View style={styles.diagonalLineThree}/>
-                <View style={styles.rightBrush}/>
-            </View>
-
-            <View style={styles.accentLine}/>
-
-            <View style={styles.logoContainer}>
-                <Picture variant={"team"} style={styles.logo} logoUrl={logoUrl}/>
-            </View>
-
-            <View style={styles.teamInfo}>
-                <Text
-                    style={styles.teamName}
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                >
-                    {name}
-                </Text>
-
-                <View style={styles.playersRow}>
-                    <Ionicons
-                        name="people-outline"
-                        size={11}
-                        color="#A9C7B5"
-                    />
-
-                    <Text style={styles.playersText}>
-                        {playersCount}{" "}
-                        {playersCount === 1 ? "giocatore" : "giocatori"}
-                    </Text>
-                </View>
-            </View>
-
+            {variant == "tournament" ? <TournamentCardBK/> : <TeamCardBK/>}
+            {children}
             <View style={styles.arrowContainer}>
                 <Ionicons
                     name="chevron-forward"
@@ -81,9 +35,11 @@ export default function TeamCardHorizontal({
                     color="#FFD54A"
                 />
             </View>
+
         </Pressable>
-    );
+    )
 }
+
 
 const styles = StyleSheet.create({
     card: {
@@ -95,23 +51,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
 
         paddingHorizontal: 12,
-
-        backgroundColor: "#071D35",
-
-        borderRadius: 16,
-        borderWidth: 1,
-        borderColor: teamCardBlueColors.border,
-
-        overflow: "hidden",
-
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 0.16,
-        shadowRadius: 6,
-        elevation: 4,
     },
 
     cardPressed: {
@@ -276,4 +215,3 @@ const styles = StyleSheet.create({
         backgroundColor: teamCardBlueColors.yellowBackground,
     },
 });
-
