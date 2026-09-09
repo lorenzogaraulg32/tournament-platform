@@ -82,13 +82,11 @@ public class TeamService {
 
         if (logo != null && !logo.isEmpty()) {
             String logoUrl = logoStorageService.storeTeamLogo(
-                    savedTeam.getId(),
+                    team.getId(),
                     logo
             );
 
             savedTeam.setLogoUrl(logoUrl);
-        } else {
-            System.out.println("Il logo è nullo o vuoto, non è stato salvato");
         }
 
         return new TeamCreationResponse(String.valueOf(savedTeam.getId()));

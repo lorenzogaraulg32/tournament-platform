@@ -25,8 +25,8 @@ const variants = {
         subtitle: "Inserisci il codice del torneo",
         placeholder: "Codice torneo",
         icon: "trophy" as const,
-        accent: colors.mustardDefault,
-        iconBackground: colors.mustardDefaultBK,
+        accent: colors.purpleDefault,
+        iconBackground: colors.purpleBK,
     },
 };
 

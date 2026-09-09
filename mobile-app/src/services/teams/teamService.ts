@@ -17,6 +17,8 @@ export type TeamDetails = {
     name: string;
     description: string;
     locationLabel: string;
+    latitude:number;
+    longitude:number;
     logoUrl?: string | null;
     creatorId: string;
     playerIds: string[];
@@ -69,7 +71,7 @@ export async function addCurrentUserToTeamViaCode(
     return await response.json() as TeamDetails;
 }
 
-export async function refreshCode(
+export async function refreshCodeTeam(
     teamId: number
 ): Promise<TeamDetails> {
     const response = await authenticatedFetch(
@@ -97,4 +99,14 @@ export async function getTeamDetails(id: string): Promise<TeamDetails> {
     );
 
     return await response.json() as TeamDetails;
+}
+
+
+export function teamDetailsToTeamInfo(team : TeamDetails) : TeamInfo{
+    return {
+        id: team.id,
+        name: team.name,
+        logoUrl: team.logoUrl ? team.logoUrl : null,
+        numberOfPlayers: team.playerIds.length,
+    }
 }

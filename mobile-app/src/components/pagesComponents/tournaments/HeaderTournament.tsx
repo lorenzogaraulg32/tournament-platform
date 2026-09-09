@@ -1,13 +1,14 @@
 import {ActivityIndicator, Alert, Pressable, StyleSheet, Text, View,} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Picture from "@/src/components/common/images/Picture";
-import {refreshCodeTeam, TeamDetails} from "@/src/services/teams/teamService";
 import {useEffect, useRef, useState} from "react";
 import * as Clipboard from "expo-clipboard";
 import {normalizeApiRequestError} from "@/src/services/errorService";
+import {TournamentDetails} from "@/src/services/tournaments/tournamentsDTO";
+import {refreshCodeTournament} from "@/src/services/tournaments/tournamentsService";
 
-type TeamHeaderProps = {
-    team: TeamDetails | null;
+type TournamentHeaderProps = {
+    tournament: TournamentDetails | null;
     isLoading?: boolean;
     error?: string | null;
     canEdit: boolean;
@@ -23,148 +24,152 @@ type TeamHeaderProps = {
  * @param onInviteFriendPress
  * @constructor
  */
-export default function HeaderTeam({
-                                       team,
-                                       isLoading = false,
-                                       error = null,
-                                       canEdit,
-                                       onBack
-                                   }: TeamHeaderProps) {
+export default function HeaderTournament({
+                                             tournament,
+                                             isLoading = false,
+                                             error = null,
+                                             canEdit,
+                                             onBack
+                                         }: TournamentHeaderProps) {
 
 
     function formatLocationLabel(location: string): string {
-        return location
-            .split(",")
-            .map(part => part.trim())
-            .filter(Boolean)
-            .join("  ·  ");
-    }
+        if (location) {
+            return location
+                .split(",")
+                .map(part => part.trim())
+                .filter(Boolean)
+                .join("  ·  ");
+        }
+        return ""
 
-    const onBackPress = () => {
-        onBack()
-    }
+}
+
+const onBackPress = () => {
+    onBack()
+}
 
 
-    const onOptionsPress = () => {
-        console.log("options premuto")
-    }
+const onOptionsPress = () => {
+    console.log("options premuto")
+}
 
 
-    return (
-        <View>
-            <Pressable
-                onPress={onBackPress}
-                hitSlop={16}
-                style={[
-                    styles.backButton,
-                ]}
-            >
-                <Ionicons
-                    name="chevron-back"
-                    size={28}
+return (
+    <View>
+        <Pressable
+            onPress={onBackPress}
+            hitSlop={16}
+            style={[
+                styles.backButton,
+            ]}
+        >
+            <Ionicons
+                name="chevron-back"
+                size={28}
+                color="#FFFFFF"
+            />
+        </Pressable>
+
+        {isLoading ? (
+            <View style={styles.feedbackContainer}>
+                <ActivityIndicator
+                    size="large"
                     color="#FFFFFF"
                 />
-            </Pressable>
 
-            {isLoading ? (
-                <View style={styles.feedbackContainer}>
-                    <ActivityIndicator
-                        size="large"
-                        color="#FFFFFF"
+                <Text style={styles.feedbackText}>
+                    Caricamento torneo...
+                </Text>
+            </View>
+        ) : error ? (
+            <View style={styles.feedbackContainer}>
+                <Ionicons
+                    name="alert-circle-outline"
+                    size={30}
+                    color="#FFFFFF"
+                />
+
+                <Text style={styles.feedbackText}>
+                    {error}
+                </Text>
+            </View>
+        ) : !tournament ? (
+            <View style={styles.feedbackContainer}>
+                <Text style={styles.feedbackText}>
+                    Torneo non disponibile
+                </Text>
+            </View>
+        ) : (
+            <View style={styles.container}>
+                <View style={styles.imageContainer}>
+                    <Picture
+                        variant={"team"}
+                        logoUrl={tournament.logoUrl}
+                        style={styles.logo}
                     />
-
-                    <Text style={styles.feedbackText}>
-                        Caricamento squadra...
-                    </Text>
                 </View>
-            ) : error ? (
-                <View style={styles.feedbackContainer}>
-                    <Ionicons
-                        name="alert-circle-outline"
-                        size={30}
-                        color="#FFFFFF"
-                    />
 
-                    <Text style={styles.feedbackText}>
-                        {error}
-                    </Text>
-                </View>
-            ) : !team ? (
-                <View style={styles.feedbackContainer}>
-                    <Text style={styles.feedbackText}>
-                        Squadra non disponibile
-                    </Text>
-                </View>
-            ) : (
-                <View style={styles.container}>
-                    <View style={styles.imageContainer}>
-                        <Picture
-                            variant={"team"}
-                            logoUrl={team.logoUrl}
-                            style={styles.logo}
-                        />
-                    </View>
-
-                    <View style={styles.rightContainer}>
-                        <View style={styles.nameRow}>
-
-                            <Text
-                                style={styles.teamName}
-                                numberOfLines={1}
-                            >
-                                {team.name}
-                            </Text>
-
-                            {canEdit && (
-                                <Pressable
-                                    onPress={onOptionsPress}
-                                    accessibilityRole="button"
-                                    accessibilityLabel="Modifica squadra"
-                                    hitSlop={10}
-                                    style={({pressed}) => [
-                                        styles.editButton,
-                                        pressed && styles.editButtonPressed,
-                                    ]}
-                                >
-                                    <Ionicons
-                                        name="pencil-outline"
-                                        size={18}
-                                        color="#FFFFFF"
-                                    />
-                                </Pressable>
-                            )}
-
-                        </View>
+                <View style={styles.rightContainer}>
+                    <View style={styles.nameRow}>
 
                         <Text
-                            style={styles.teamLocation}
+                            style={styles.teamName}
                             numberOfLines={1}
                         >
-                            {formatLocationLabel(team.locationLabel)}
+                            {tournament.name}
                         </Text>
 
-
-                        <InviteFriendBadge
-                            team={team}
-                            canRefresh={canEdit}
-                        />
-
+                        {canEdit && (
+                            <Pressable
+                                onPress={onOptionsPress}
+                                accessibilityRole="button"
+                                accessibilityLabel="Modifica squadra"
+                                hitSlop={10}
+                                style={({pressed}) => [
+                                    styles.editButton,
+                                    pressed && styles.editButtonPressed,
+                                ]}
+                            >
+                                <Ionicons
+                                    name="pencil-outline"
+                                    size={18}
+                                    color="#FFFFFF"
+                                />
+                            </Pressable>
+                        )}
 
                     </View>
+
+                    <Text
+                        style={styles.teamLocation}
+                        numberOfLines={1}
+                    >
+                        {formatLocationLabel(tournament.locationLabel)}
+                    </Text>
+
+
+                    <InviteFriendBadge
+                        tournament={tournament}
+                        canRefresh={canEdit}
+                    />
+
+
                 </View>
-            )}
-        </View>
-    );
+            </View>
+        )}
+    </View>
+);
 }
 
 type InviteFriendBadgeProps = {
-    team: TeamDetails
+    tournament: TournamentDetails
     canRefresh: boolean
 };
 
-function InviteFriendBadge({team, canRefresh}: InviteFriendBadgeProps) {
+function InviteFriendBadge({tournament, canRefresh}: InviteFriendBadgeProps) {
 
-    const [invitationCode, setInvitationCode] = useState(team.invitationCode)
+    const [invitationCode, setInvitationCode] = useState(tournament.invitationCode)
 
     const [copied, setCopied] = useState(false);
 
@@ -192,10 +197,11 @@ function InviteFriendBadge({team, canRefresh}: InviteFriendBadgeProps) {
 
     }
 
+
     async function refreshInvitationCode() {
         try {
             const updatedTeam =
-                await refreshCodeTeam(team.id);
+                await refreshCodeTournament(tournament.id);
 
             setInvitationCode(
                 updatedTeam.invitationCode,
@@ -217,8 +223,8 @@ function InviteFriendBadge({team, canRefresh}: InviteFriendBadgeProps) {
     }
 
     useEffect(() => {
-        setInvitationCode(team.invitationCode);
-    }, [team.invitationCode]);
+        setInvitationCode(tournament.invitationCode);
+    }, [tournament.invitationCode]);
 
     return (
         <View style={styles.codeBadge}>

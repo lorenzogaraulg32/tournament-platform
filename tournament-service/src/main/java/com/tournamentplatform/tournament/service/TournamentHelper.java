@@ -45,7 +45,12 @@ public class TournamentHelper {
                 tournament.getCreatedByUserId(),
                 tournament.getAdminsById(),
                 tournament.getRegisteredTeamIds(),
-                tournament.getMatches()
+                tournament.getMatches(),
+                tournament.getLogoUrl(),
+                tournament.getLocationLabel(),
+                tournament.getLatitude(),
+                tournament.getLongitude(),
+                tournament.getInvitationCode()
         );
     }
 

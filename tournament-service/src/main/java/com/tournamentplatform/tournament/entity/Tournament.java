@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,7 +24,10 @@ public class Tournament {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+
     /* INFORMAZIONI GENERALI */
+
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -41,7 +45,11 @@ public class Tournament {
     @Column(name = "user_id")
     private List<String> adminsById = new ArrayList<>();
 
+
+
+
     /* DATE */
+
     @Column(name = "start_date")
     private LocalDate startDate;
 
@@ -54,6 +62,8 @@ public class Tournament {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+
+
     /* INDICAZIONI SQUADRE */
 
     @Column(name = "min_teams")
@@ -61,6 +71,15 @@ public class Tournament {
 
     @Column(name = "max_teams")
     private Integer maxTeams;
+
+    @ElementCollection
+    @CollectionTable(
+            name = "tournament_teams",
+            joinColumns = @JoinColumn(name = "tournament_id")
+    )
+    @Column(name = "team_id", nullable = false)
+    private Set<Long> registeredTeamIds = new HashSet<>();
+
 
     /* STATO TORNEO */
     @Enumerated(EnumType.STRING)
@@ -71,19 +90,17 @@ public class Tournament {
     @Column(name = "status", nullable = false)
     private TournamentStatus status = TournamentStatus.CREATED;
 
+
+    /* MISC */
+
     @Column(name = "rules_url")
     private String rulesUrl;
 
     @Column(name = "invitation_code", nullable = false, unique = true)
     private String invitationCode;
 
-    @ElementCollection
-    @CollectionTable(
-            name = "tournament_teams",
-            joinColumns = @JoinColumn(name = "tournament_id")
-    )
-    @Column(name = "team_id", nullable = false)
-    private Set<Long> registeredTeamIds = new HashSet<>();
+    @Column(name = "logo_url", length = 500)
+    private String logoUrl = null;
 
     @OneToMany(
             mappedBy = "tournament",
@@ -92,7 +109,26 @@ public class Tournament {
     )
     private List<TournamentMatch> matches = new ArrayList<>();
 
-    //costruttore per la creazione dell'entity a partire dalla request
+
+    /* POSIZIONE */
+    @Column(name = "location_label", length = 120)
+    private String locationLabel;
+
+    @Column(
+            name = "latitude",
+            precision = 9,
+            scale = 6
+    )
+    private BigDecimal latitude;
+
+    @Column(
+            name = "longitude",
+            precision = 9,
+            scale = 6
+    )
+    private BigDecimal longitude;
+
+
     public Tournament(String name,
                       String description,
                       String userId,
@@ -102,10 +138,13 @@ public class Tournament {
                       Integer minTeams,
                       Integer maxTeams,
                       TournamentFormat format,
-                      String rulesUrl,
                       String invitationCode,
                       Set<Long> registeredTeamIds,
-                      List<TournamentMatch> matches
+                      List<TournamentMatch> matches,
+                      String locationLabel,
+                      BigDecimal latitude,
+                      BigDecimal longitude
+
     ) {
         this.name = name;
         this.description = description;
@@ -116,10 +155,12 @@ public class Tournament {
         this.minTeams = minTeams;
         this.maxTeams = maxTeams;
         this.format = format;
-        this.rulesUrl = rulesUrl;
         this.invitationCode = invitationCode;
         this.registeredTeamIds = registeredTeamIds;
         this.matches = matches;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.locationLabel = locationLabel;
     }
 
     @PrePersist

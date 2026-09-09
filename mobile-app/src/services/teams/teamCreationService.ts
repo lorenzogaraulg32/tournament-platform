@@ -1,20 +1,17 @@
 import {File, Paths} from "expo-file-system";
 import {authenticatedFetch} from "@/src/services/fetchService";
+import {LocationRequest} from "@/src/services/common";
 
 
 export type RecruitmentStatus = "OPEN" | "CLOSED";
 
-export type TeamLocationRequest = {
-    label: string;
-    latitude: number;
-    longitude: number;
-};
+
 
 export type TeamCreationRequest = {
     name: string;
     description?: string;
     status: RecruitmentStatus;
-    location?: TeamLocationRequest;
+    location?: LocationRequest;
 };
 
 export type TeamLogoUpload = {

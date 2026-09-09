@@ -5,6 +5,7 @@ import Picture from "@/src/components/common/images/Picture";
 import HorizontalCardContainer from "@/src/components/common/carousel&cards/HorizontalCardContainer";
 import {TournamentStatus} from "@/src/services/tournaments/tournamentsDTO";
 import TournamentStatusBadge from "@/src/components/pagesComponents/tournaments/TournamentStatusBadge";
+import {router} from "expo-router";
 
 type TeamCardSmallProps = {
     id: number
@@ -23,17 +24,12 @@ export default function TournamentCardHorizontal({
                                                      status
                                                  }: TeamCardSmallProps) {
     function handlePress() {
-        /*
         router.push({
             pathname: "/tournaments/[tournamentId]",
             params: {
                 teamId: id,
             },
         })
-
-         */
-        console.log("Premuto!")
-
     }
 
 

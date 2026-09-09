@@ -5,6 +5,7 @@ export const colors = {
     mustardDefaultBK: "#FFF7DD",
 
     purpleDefault: "#8331c9",
+    purpleBK: "#F4E9FF",
 
     grayBK: "#F0F3F1",
 
@@ -17,12 +18,12 @@ export const colors = {
     textOffWhite: "#dedede",
 
     labelForm: "#1C1C1C",
-    labelInfo:  "#005628",
+    labelInfo: "#005628",
 
 
     textLightGreen: "#8dc00c",
 
-    iconGlowColor:"rgba(0,86,40,0.3)",
+    iconGlowColor: "rgba(0,86,40,0.3)",
 
     error: "#FF4D4D",
     success: "#43A047",

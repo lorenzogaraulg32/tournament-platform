@@ -1,65 +1,62 @@
 import PageLayout from "@/src/components/common/PageLayout";
 import {useEffect, useState} from "react";
-import {getTeamDetails, TeamDetails} from "@/src/services/teams/teamService";
+import {getTeamDetails, teamDetailsToTeamInfo, TeamInfo} from "@/src/services/teams/teamService";
 import {ScrollView, StyleSheet, Text, View} from "react-native";
 import {router, useLocalSearchParams} from "expo-router";
-import HeaderTeam from "@/src/components/pagesComponents/teams/HeaderTeam";
 import InfoLabel from "@/src/components/common/labels/InfoLabel";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {loadCurrentUserId} from "@/src/services/users/authService";
 import CarouselContainer from "@/src/components/common/carousel&cards/CarouselContainer";
-import PlayersCard from "@/src/components/common/carousel&cards/PlayersCard";
-import {Sport} from "@/src/services/users/userConstants";
 import {loadUserInfo, UserEntity} from "@/src/services/users/userService";
 import AdminsCard from "@/src/components/common/carousel&cards/AdminsCard";
+import {TournamentDetails} from "@/src/services/tournaments/tournamentsDTO";
+import {loadTournamentDetails} from "@/src/services/tournaments/tournamentsService";
+import HeaderTournament from "@/src/components/pagesComponents/tournaments/HeaderTournament";
 import { colors } from "@/src/constants/theme";
 
 
-export default function teamId() {
+export default function tournamentId() {
 
-    const {teamId} = useLocalSearchParams<{ teamId: string }>();
-    const [team, setTeam] = useState<TeamDetails | null>(null);
-    const [teamPlayers, setTeamPlayers] = useState<UserEntity[]>([])
-    const [teamAdmins, setTeamAdmins] = useState<UserEntity[]>([])
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [isCurrentUserTeamAdmin, setIsCurrentUserTeamAdmin] = useState<boolean>(false)
-    const [isCurrentUserTeamOwner, setIsCurrentUserTeamOwner] = useState<boolean>(false)
+
+    const {teamId} = useLocalSearchParams<{ teamId: string }>();
+    const [tournament, setTournament] = useState<TournamentDetails | null>(null);
+    const [tournamentTeams, setTournamentTeams] = useState<TeamInfo[]>([])
+    const [tournamentAdmins, setTournamentAdmins] = useState<UserEntity[]>([])
+    const [isCurrentUserTournamentAdmin, setIsCurrentUserTournamentAdmin] = useState<boolean>(false)
+    const [isCurrentUserTournamentOwner, setIsCurrentUserTournamentOwner] = useState<boolean>(false)
+
 
     useEffect(() => {
         let isActive = true
 
-        async function loadTeamInfo() {
+        async function loadTournamentInfo() {
             try {
                 setIsLoading(true)
                 setError(null)
-                setTeam(null);
-                setIsCurrentUserTeamAdmin(false);
+                setTournament(null);
+                setIsCurrentUserTournamentAdmin(false);
 
 
-                const [loadedTeam, currentUserId] = await Promise.all([
-                    getTeamDetails(teamId),
+                const [loadedTournament, currentUserId] = await Promise.all([
+                    loadTournamentDetails(teamId),
                     loadCurrentUserId(),
                 ]);
 
-                const loadedPlayers = await Promise.all(
-                    loadedTeam.playerIds.map(async (id) => {
-                        const userInfo =
-                            await loadUserInfo(id);
 
-                        return {
-                            id,
-                            userInfo,
-                        };
+                const loadedTeams = await Promise.all(
+                    loadedTournament.registeredTeamIds.map(async (id) => {
+                        const teamDetails = await getTeamDetails(id);
+                        return teamDetailsToTeamInfo(teamDetails)
                     })
                 );
 
                 const loadedAdmins = await Promise.all(
-                    loadedTeam.adminIds.map(async (id) => {
+                    loadedTournament.adminsId.map(async (id) => {
                         const userInfo =
                             await loadUserInfo(id);
-
                         return {
                             id,
                             userInfo,
@@ -71,18 +68,17 @@ export default function teamId() {
                     return;
                 }
 
-                if (loadedTeam.adminIds.includes(currentUserId)) {
-                    setIsCurrentUserTeamAdmin(true)
+                if (loadedTournament.adminsId.includes(currentUserId)) {
+                    setIsCurrentUserTournamentAdmin(true)
                 }
 
-
-                if (loadedTeam.creatorId === currentUserId) {
-                    setIsCurrentUserTeamOwner(true)
+                if (loadedTournament.createdById === currentUserId) {
+                    setIsCurrentUserTournamentOwner(true)
                 }
 
-                setTeamPlayers(loadedPlayers)
-                setTeamAdmins(loadedAdmins)
-                setTeam(loadedTeam);
+                setTournamentAdmins(loadedAdmins)
+                setTournamentTeams(loadedTeams)
+                setTournament(loadedTournament);
 
             } catch (error) {
                 if (!isActive) {
@@ -103,7 +99,7 @@ export default function teamId() {
             }
         }
 
-        void loadTeamInfo()
+        void loadTournamentInfo()
 
         return () => {
             isActive = false;
@@ -115,13 +111,15 @@ export default function teamId() {
     return (
         <PageLayout
             header={
-                <HeaderContainer variant={"teams"}>
-                    <HeaderTeam
-                        team={team}
+                <HeaderContainer variant={"tournaments"}>
+                    <HeaderTournament
+                        tournament={tournament}
                         isLoading={isLoading}
                         error={error}
-                        canEdit={isCurrentUserTeamAdmin}
-                        onBack={() => {router.replace("/(app)/teams")}}
+                        canEdit={isCurrentUserTournamentAdmin}
+                        onBack={() => {
+                            router.replace("/(app)/tournaments")
+                        }}
                     />
                 </HeaderContainer>
             }
@@ -129,13 +127,12 @@ export default function teamId() {
             <ScrollView style={styles.scroll}>
                 <View style={styles.scrollContent}>
 
-                    {team?.description ? (
-
+                    {tournament?.description ? (
                         <View style={styles.descriptionContainer}>
                             <View style={styles.descriptionAccent} />
 
                             <Text style={styles.description}>
-                                {team.description}
+                                {tournament.description}
                             </Text>
                         </View>
 
@@ -145,22 +142,9 @@ export default function teamId() {
 
                     <View style={styles.section}>
                         <InfoLabel
-                            text={"Players"}
+                            text={"Squadre"}
                             labelIconName={"people-outline"}
                         />
-                        {team && (
-                            <CarouselContainer
-                                items={teamPlayers.map((player) => (
-                                    <PlayersCard
-                                        key={player.id}
-                                        player={player}
-                                        //todo: l'entità squadra deve avere uno sport!
-                                        sport={Sport.FOOTBALL}/>
-                                ))}
-                                emptyMsg={"Nessun giocatore nella squadra"}
-                                isLoading={isLoading}
-                                error={error}/>
-                        )}
                     </View>
 
 
@@ -171,15 +155,15 @@ export default function teamId() {
                         />
 
 
-                        {team && (
+                        {tournament && (
                             <CarouselContainer
-                                items={teamAdmins.map((player) => (
+                                items={tournamentAdmins.map((player) => (
                                     <AdminsCard
                                         key={player.id}
                                         admin={player}
-                                        isOwner={isCurrentUserTeamOwner}/>
+                                        isOwner={isCurrentUserTournamentOwner}/>
                                 ))}
-                                emptyMsg={"Nessun admin nella squadra"}
+                                emptyMsg={"Nessun admin del torneo"}
                                 isLoading={isLoading}
                                 error={error}/>
                         )}
@@ -201,6 +185,7 @@ const styles = StyleSheet.create({
 
     scrollContent: {
         gap: 24,
+
         paddingBottom: 30,
     },
 
@@ -226,7 +211,7 @@ const styles = StyleSheet.create({
         width: 4,
         marginRight: 12,
         borderRadius: 4,
-        backgroundColor: colors.orangeDefault,
+        backgroundColor: colors.purpleDefault,
     },
 
     description: {

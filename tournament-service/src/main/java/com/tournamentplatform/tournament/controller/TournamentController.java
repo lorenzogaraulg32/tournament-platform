@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -21,8 +22,19 @@ public class TournamentController {
     }
 
     @PostMapping()
-    public ResponseEntity<TournamentCreationResponse> createTournament(@RequestBody @Valid TournamentCreationRequest request) {
-        TournamentCreationResponse response = tournamentService.createTournament(request);
+    public ResponseEntity<TournamentCreationResponse> createTournament(
+
+            @RequestPart("tournament")
+            @Valid
+            TournamentCreationRequest request,
+
+            @RequestPart(
+                    value = "logo",
+                    required = false
+            )
+            MultipartFile logo
+    ) {
+        TournamentCreationResponse response = tournamentService.createTournament(request,logo);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
@@ -65,6 +77,14 @@ public class TournamentController {
         tournamentService.deleteTournament(id);
         return ResponseEntity.noContent().build();
 
+    }
+
+    @PostMapping("/{id}/change_code")
+    public ResponseEntity<TournamentGetResponse> changeInvitationCode(
+            @PathVariable String id
+    ) {
+        TournamentGetResponse response = tournamentService.patchTournamentCode(id);
+        return ResponseEntity.ok(response);
     }
 
 

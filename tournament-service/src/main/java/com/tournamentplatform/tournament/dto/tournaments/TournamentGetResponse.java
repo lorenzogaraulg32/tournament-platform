@@ -2,6 +2,7 @@ package com.tournamentplatform.tournament.dto.tournaments;
 
 import com.tournamentplatform.tournament.entity.TournamentMatch;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,7 +24,12 @@ public record TournamentGetResponse(
         String createdById,
         List<String> adminsId,
         Set<Long> registeredTeamIds,
-        List<TournamentMatch> matches
+        List<TournamentMatch> matches,
+        String logoUrl,
+        String locationLabel,
+        BigDecimal latitude,
+        BigDecimal longitude,
+        String invitationCode
 ) {
 }
 

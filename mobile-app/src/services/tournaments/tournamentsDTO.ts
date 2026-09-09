@@ -16,8 +16,6 @@ export enum TournamentStatus {
 }
 
 
-
-
 export type UserTournamentsResponse = {
     managed: TournamentDetails[],
     participating: TournamentDetails[]
@@ -51,4 +49,9 @@ export type TournamentDetails = {
     createdById: string,
     adminsId: string[]
     registeredTeamIds: string[],
+    locationLabel: string;
+    latitude: number;
+    longitude: number;
+    logoUrl?: string | null;
+    invitationCode: string;
 }

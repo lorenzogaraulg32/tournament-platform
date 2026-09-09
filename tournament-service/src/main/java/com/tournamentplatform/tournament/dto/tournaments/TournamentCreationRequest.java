@@ -1,6 +1,7 @@
 package com.tournamentplatform.tournament.dto.tournaments;
 
 import com.tournamentplatform.tournament.entity.TournamentFormat;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -39,7 +40,8 @@ public class TournamentCreationRequest {
     @NotNull(message = "Il torneo deve avere un formato")
     private TournamentFormat format;
 
-    private String rulesUrl;
+    @Valid
+    private TournamentLocationRequest location;
 
     //codice di invito autogenerato dal server
 

@@ -6,13 +6,15 @@ import com.tournamentplatform.tournament.entity.Tournament;
 import com.tournamentplatform.tournament.entity.TournamentStatus;
 import com.tournamentplatform.tournament.repository.TournamentRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class TournamentService {
@@ -20,21 +22,41 @@ public class TournamentService {
     private final TournamentRepository tournamentRepository;
     private final TournamentHelper tournamentHelper;
     private final TournamentAuthorizationHelper tournamentAuthorizationHelper;
+    private final LogoStorageService logoStorageService;
 
-    public TournamentService(TournamentRepository tournamentRepository, TournamentHelper tournamentHelper, TournamentAuthorizationHelper tournamentAuthorizationHelper) {
+    public TournamentService(
+            TournamentRepository tournamentRepository,
+            TournamentHelper tournamentHelper,
+            TournamentAuthorizationHelper tournamentAuthorizationHelper,
+            LogoStorageService logoStorageService
+    ) {
         this.tournamentRepository = tournamentRepository;
         this.tournamentHelper = tournamentHelper;
         this.tournamentAuthorizationHelper = tournamentAuthorizationHelper;
+        this.logoStorageService = logoStorageService;
     }
 
 
     //creazione del torneo
-    public TournamentCreationResponse createTournament(TournamentCreationRequest request) {
+    @Transactional
+    public TournamentCreationResponse createTournament(TournamentCreationRequest request, MultipartFile logo) {
 
         String userId = tournamentAuthorizationHelper.getCurrentUserId();
 
         ArrayList<String> admins = new ArrayList<>();
         admins.add(userId);
+
+        TournamentLocationRequest location = request.getLocation();
+
+        String locationLabel = null;
+        BigDecimal latitude = null;
+        BigDecimal longitude = null;
+
+        if (location != null) {
+            locationLabel = location.getLabel();
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+        }
 
         Tournament tournament = new Tournament(
                 request.getName(),
@@ -46,15 +68,26 @@ public class TournamentService {
                 request.getMinTeams(),
                 request.getMaxTeams(),
                 request.getFormat(),
-                request.getRulesUrl(),
                 tournamentHelper.generateUniqueInvitationCode(),
                 new HashSet<>(),
-                new ArrayList<>()
+                new ArrayList<>(),
+                locationLabel,
+                latitude,
+                longitude
         );
 
         tournamentHelper.validateTournament(tournament);
 
         Tournament savedTournament = tournamentHelper.saveTournament(tournament);
+
+        if (logo != null && !logo.isEmpty()) {
+            String logoUrl = logoStorageService.storeTeamLogo(
+                    tournament.getId(),
+                    logo
+            );
+
+            savedTournament.setLogoUrl(logoUrl);
+        }
 
         return new TournamentCreationResponse(String.valueOf(savedTournament.getId()));
     }
@@ -140,5 +173,16 @@ public class TournamentService {
     }
 
 
+    public TournamentGetResponse patchTournamentCode(String id) {
 
+        Tournament team = tournamentHelper.findOrThrow(id);
+
+        tournamentAuthorizationHelper.checkTournamentAdmin(team);
+
+        team.setInvitationCode(tournamentHelper.generateUniqueInvitationCode());
+
+        Tournament savedTeam = tournamentRepository.save(team);
+
+        return tournamentHelper.toTournamentGetResponse(savedTeam);
+    }
 }

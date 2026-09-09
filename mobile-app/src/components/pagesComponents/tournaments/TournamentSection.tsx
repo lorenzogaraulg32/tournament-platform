@@ -27,7 +27,7 @@ export function TournamentSection({
                     <FontAwesome6
                         name={icon}
                         size={18}
-                        color="#8E2DE2"
+                        color={colors.purpleDefault}
                     />
                 </View>
 
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
 
-        backgroundColor: "#F4E9FF",
+        backgroundColor: colors.purpleBK,
     },
 
     sectionTitle: {

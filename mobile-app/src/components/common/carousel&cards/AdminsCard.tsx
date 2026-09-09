@@ -6,19 +6,18 @@ import {TeamDetails} from "@/src/services/teams/teamService";
 
 type AdminsCardProps = {
     admin: UserEntity
-    team: TeamDetails
+    isOwner: boolean
 }
 
 
 export default function AdminsCard({
                                        admin,
-                                       team
+                             isOwner
                                    }: AdminsCardProps
 ) {
 
     const profilePicUrl = admin.userInfo.profilePicUrl
     const name = admin.userInfo.username
-    const role = team.creatorId === admin.id ? "Owner" : "Admin"
 
 
     function handlePress() {
@@ -59,7 +58,7 @@ export default function AdminsCard({
                 </Text>
 
                 <View style={styles.roleBadgeContainer}>
-                    <Text style={styles.ruolo}>{role ? (role) : ("OWNER")}</Text>
+                    <Text style={styles.ruolo}>{isOwner ? (isOwner) : ("OWNER")}</Text>
                 </View>
             </View>
         </Pressable>
