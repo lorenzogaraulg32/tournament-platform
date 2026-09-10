@@ -169,7 +169,7 @@ export default function TeamsDetailsScreen() {
                                 isLoading={isLoading}
                                 error={error}
                                 orientation={"vertical"}
-                                style={styles.section}/>
+                            />
 
                         )}
 
@@ -190,7 +190,7 @@ export default function TeamsDetailsScreen() {
                                 isLoading={isLoading}
                                 error={error}
                                 orientation={"vertical"}
-                                style={styles.section}/>
+                            />
                         )}
                     </CollapsableSection>
                 </View>
@@ -210,10 +210,6 @@ const styles = StyleSheet.create({
     scrollContent: {
         gap: 20,
 
-    },
-
-    section: {
-        maxHeight: 280
     },
 
 

@@ -168,7 +168,7 @@ export default function TournamentDetailsPage() {
                                 isLoading={isLoading}
                                 error={error}
                                 orientation={"vertical"}
-                                style={styles.section}/>
+                                />
                         )}
                     </CollapsableSection>
 
@@ -188,7 +188,7 @@ export default function TournamentDetailsPage() {
                                 isLoading={isLoading}
                                 error={error}
                                 orientation={"vertical"}
-                                style={styles.section}/>
+                            />
                         )}
 
                     </CollapsableSection>
@@ -212,9 +212,6 @@ const styles = StyleSheet.create({
         paddingBottom: 30,
     },
 
-    section: {
-        maxHeight: 280
-    },
 
 
     teamCarousel: {
