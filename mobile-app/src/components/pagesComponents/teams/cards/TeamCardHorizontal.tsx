@@ -1,15 +1,25 @@
 import {StyleSheet, Text, View} from "react-native";
-import {teamCardBlueColors} from "@/src/constants/theme"
 import Ionicons from "@expo/vector-icons/Ionicons";
-import {router} from "expo-router";
+import {router, useSegments} from "expo-router";
 import Picture from "@/src/components/common/images/Picture";
 import HorizontalCardContainer from "@/src/components/common/carousel&cards/HorizontalCardContainer";
+import {teamCardColors} from "@/src/constants/cardPalettes";
 
 type TeamCardSmallProps = {
     id: number
     name: string;
     playersCount: number;
     logoUrl?: string;
+}
+
+const teamRoutes = {
+    teams: "/(app)/teams/[teamId]",
+    tournaments: "/(app)/tournaments/team/[teamId]",
+    profile: "/(app)/profile/team/[teamId]",
+} as const;
+
+function isTabName(value: string): value is keyof typeof teamRoutes {
+    return Object.prototype.hasOwnProperty.call(teamRoutes, value);
 }
 
 
@@ -19,13 +29,25 @@ export default function TeamCardHorizontal({
                                                logoUrl,
                                                playersCount,
                                            }: TeamCardSmallProps) {
+
+
+    const segments: readonly string[] = useSegments();
+
+
     function handlePress() {
+        const appIndex = segments.indexOf("(app)");
+        const tab = segments[appIndex + 1];
+
+        if (appIndex === -1 || !tab || !isTabName(tab)) {
+            return;
+        }
+
         router.push({
-            pathname: "/teams/[teamId]",
+            pathname: teamRoutes[tab],
             params: {
-                teamId: id,
+                teamId: String(id),
             },
-        })
+        });
     }
 
 
@@ -35,37 +57,38 @@ export default function TeamCardHorizontal({
             onPress={handlePress}
         >
 
-                <View style={styles.logoContainer}>
-                    <Picture variant={"team"} style={styles.logo} logoUrl={logoUrl}/>
-                </View>
+            <View style={styles.logoContainer}>
+                <Picture variant={"team"} style={styles.logo} logoUrl={logoUrl}/>
+            </View>
 
-                <View style={styles.teamInfo}>
-                    <Text
-                        style={styles.teamName}
-                        numberOfLines={1}
-                        ellipsizeMode="tail"
-                    >
-                        {name}
+            <View style={styles.teamInfo}>
+                <Text
+                    style={styles.teamName}
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                >
+                    {name}
+                </Text>
+
+                <View style={styles.playersRow}>
+                    <Ionicons
+                        name="people-outline"
+                        size={11}
+                        color="#A9C7B5"
+                    />
+
+                    <Text style={styles.playersText}>
+                        {playersCount}{" "}
+                        {playersCount === 1 ? "giocatore" : "giocatori"}
                     </Text>
-
-                    <View style={styles.playersRow}>
-                        <Ionicons
-                            name="people-outline"
-                            size={11}
-                            color="#A9C7B5"
-                        />
-
-                        <Text style={styles.playersText}>
-                            {playersCount}{" "}
-                            {playersCount === 1 ? "giocatore" : "giocatori"}
-                        </Text>
-                    </View>
                 </View>
+            </View>
 
 
         </HorizontalCardContainer>
     );
 }
+
 
 const styles = StyleSheet.create({
 
@@ -77,8 +100,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
 
-        backgroundColor: teamCardBlueColors.logoBackground,
-        borderColor: teamCardBlueColors.logoBorder,
+        backgroundColor: teamCardColors.logoBackground,
+        borderColor: teamCardColors.logoBorder,
 
         borderWidth: 1,
     },
@@ -97,7 +120,7 @@ const styles = StyleSheet.create({
     },
 
     teamName: {
-        color: teamCardBlueColors.title,
+        color: teamCardColors.title,
         fontSize: 14,
         lineHeight: 16,
         fontWeight: "800",
@@ -112,7 +135,7 @@ const styles = StyleSheet.create({
     },
 
     playersText: {
-        color: teamCardBlueColors.secondaryText,
+        color: teamCardColors.secondaryText,
         fontSize: 10,
         lineHeight: 12,
         fontWeight: "500",

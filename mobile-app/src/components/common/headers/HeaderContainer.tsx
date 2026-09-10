@@ -1,9 +1,9 @@
 import {ImageBackground, StyleSheet} from "react-native";
 import {ReactNode} from "react";
-import {variants, type ColorVariant} from "@/src/constants/bkManager";
+import {variants, type BKVariant} from "@/src/constants/bkManager";
 
 type PageHeaderProps = {
-    variant: ColorVariant;
+    variant: BKVariant;
     children: ReactNode;
 };
 

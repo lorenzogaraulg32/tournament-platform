@@ -5,6 +5,8 @@ import {refreshCodeTeam, TeamDetails} from "@/src/services/teams/teamService";
 import {useEffect, useRef, useState} from "react";
 import * as Clipboard from "expo-clipboard";
 import {normalizeApiRequestError} from "@/src/services/errorService";
+import BackButton from "@/src/components/common/buttons/BackButton";
+import SettingsButton from "@/src/components/common/buttons/SettingsButton";
 
 type TeamHeaderProps = {
     team: TeamDetails | null;
@@ -52,19 +54,7 @@ export default function HeaderTeam({
 
     return (
         <View>
-            <Pressable
-                onPress={onBackPress}
-                hitSlop={16}
-                style={[
-                    styles.backButton,
-                ]}
-            >
-                <Ionicons
-                    name="chevron-back"
-                    size={28}
-                    color="#FFFFFF"
-                />
-            </Pressable>
+            <BackButton onPress={onBackPress}/>
 
             {isLoading ? (
                 <View style={styles.feedbackContainer}>
@@ -115,24 +105,7 @@ export default function HeaderTeam({
                                 {team.name}
                             </Text>
 
-                            {canEdit && (
-                                <Pressable
-                                    onPress={onOptionsPress}
-                                    accessibilityRole="button"
-                                    accessibilityLabel="Modifica squadra"
-                                    hitSlop={10}
-                                    style={({pressed}) => [
-                                        styles.editButton,
-                                        pressed && styles.editButtonPressed,
-                                    ]}
-                                >
-                                    <Ionicons
-                                        name="pencil-outline"
-                                        size={18}
-                                        color="#FFFFFF"
-                                    />
-                                </Pressable>
-                            )}
+                            {canEdit && <SettingsButton onPress={onOptionsPress}/>}
 
                         </View>
 
@@ -417,6 +390,7 @@ const styles = StyleSheet.create({
     nameRow: {
         flexDirection: "row",
         alignItems: "center",
+        justifyContent: "space-between",
         gap: 8,
 
         minWidth: 0,

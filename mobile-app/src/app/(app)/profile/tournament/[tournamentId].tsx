@@ -1,0 +1,1 @@
+export {default} from "@/src/components/pagesComponents/tournaments/TournamentDetailsPage";

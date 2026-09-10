@@ -1,24 +1,44 @@
 import {Pressable, StyleSheet, Text, View} from "react-native";
-import {teamCardBlueColors} from "@/src/constants/theme"
-import {router} from "expo-router";
+import {router, useSegments} from "expo-router";
 import Picture from "@/src/components/common/images/Picture";
 import {TeamInfo} from "@/src/services/teams/teamService";
+import {teamCardColors} from "@/src/constants/cardPalettes";
 
 type TeamCardVerticalProps = {
     teamDetails: TeamInfo
+}
+
+const teamRoutes = {
+    teams: "/(app)/teams/[teamId]",
+    tournaments: "/(app)/tournaments/team/[teamId]",
+    profile: "/(app)/profile/team/[teamId]",
+} as const;
+
+function isTabName(value: string): value is keyof typeof teamRoutes {
+    return Object.prototype.hasOwnProperty.call(teamRoutes, value);
 }
 
 
 export default function TeamCardVertical({
                                              teamDetails
                                          }: TeamCardVerticalProps) {
+    const segments: readonly string[] = useSegments();
+
+
     function handlePress() {
+        const appIndex = segments.indexOf("(app)");
+        const tab = segments[appIndex + 1];
+
+        if (appIndex === -1 || !tab || !isTabName(tab)) {
+            return;
+        }
+
         router.push({
-            pathname: "/teams/[teamId]",
+            pathname: teamRoutes[tab],
             params: {
-                teamId: teamDetails.id,
+                teamId: String(teamDetails.id),
             },
-        })
+        });
     }
 
 
@@ -77,11 +97,11 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
         paddingHorizontal: 7,
 
-        backgroundColor: teamCardBlueColors.background,
+        backgroundColor: teamCardColors.background,
 
         borderRadius: 18,
         borderWidth: 1,
-        borderColor: teamCardBlueColors.border,
+        borderColor: teamCardColors.border,
 
         overflow: "hidden",
 
@@ -111,7 +131,7 @@ const styles = StyleSheet.create({
         height: 170,
         borderRadius: 85,
 
-        backgroundColor: teamCardBlueColors.glowLeft,
+        backgroundColor: teamCardColors.glowLeft,
     },
 
     glowRight: {
@@ -123,7 +143,7 @@ const styles = StyleSheet.create({
         height: 210,
         borderRadius: 105,
 
-        backgroundColor: teamCardBlueColors.glowRight,
+        backgroundColor: teamCardColors.glowRight,
     },
 
     diagonalLineOne: {
@@ -134,7 +154,7 @@ const styles = StyleSheet.create({
         width: 12,
         height: 190,
 
-        backgroundColor: teamCardBlueColors.diagonalPrimary,
+        backgroundColor: teamCardColors.diagonalPrimary,
         transform: [{rotate: "28deg"}],
     },
 
@@ -146,7 +166,7 @@ const styles = StyleSheet.create({
         width: 4,
         height: 180,
 
-        backgroundColor: teamCardBlueColors.diagonalAccent,
+        backgroundColor: teamCardColors.diagonalAccent,
         transform: [{rotate: "28deg"}],
     },
 
@@ -158,7 +178,7 @@ const styles = StyleSheet.create({
         width: 2,
         height: 180,
 
-        backgroundColor: teamCardBlueColors.diagonalSecondary,
+        backgroundColor: teamCardColors.diagonalSecondary,
         transform: [{rotate: "28deg"}],
     },
 
@@ -172,7 +192,7 @@ const styles = StyleSheet.create({
 
         borderRadius: 50,
 
-        backgroundColor: teamCardBlueColors.brush,
+        backgroundColor: teamCardColors.brush,
         transform: [
             {rotate: "-12deg"},
             {scaleX: 1.3},
@@ -208,7 +228,7 @@ const styles = StyleSheet.create({
     },
 
     teamName: {
-        color: teamCardBlueColors.title,
+        color: teamCardColors.title,
         fontSize: 12,
         lineHeight: 13,
         fontWeight: "800",
@@ -225,7 +245,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 5,
         borderBottomRightRadius: 5,
 
-        backgroundColor: teamCardBlueColors.yellowAccent,
+        backgroundColor: teamCardColors.accent,
     },
 
     accentRight: {
@@ -234,11 +254,9 @@ const styles = StyleSheet.create({
         top: 10,
         height: 42,
         width: 4,
-
         borderTopLeftRadius: 5,
         borderBottomLeftRadius: 5,
-
-        backgroundColor: teamCardBlueColors.yellowAccent,
+        backgroundColor: teamCardColors.accent,
     },
 });
 

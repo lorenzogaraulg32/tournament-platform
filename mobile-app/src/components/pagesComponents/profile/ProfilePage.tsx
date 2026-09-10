@@ -10,17 +10,18 @@ import InfoLabel from "@/src/components/common/labels/InfoLabel";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {loadUserTeams, TeamInfo} from "@/src/services/teams/teamService";
-import CarouselContainer from "@/src/components/common/carousel&cards/CarouselContainer";
-import TeamCardVertical from "@/src/components/pagesComponents/teams/TeamCardVertical";
+import CardListContainer from "@/src/components/common/carousel&cards/CardListContainer";
+import TeamCardVertical from "@/src/components/pagesComponents/teams/cards/TeamCardVertical";
 import LoadingSection from "@/src/components/common/loading/LoadingSection";
 import ErrorSection from "@/src/components/common/errors/ErrorSection";
 
 type ProfilePageProps = {
     userId: string;
     isOwnProfile: boolean
+    canBack: boolean
 };
 
-export default function ProfilePage({userId, isOwnProfile}: ProfilePageProps) {
+export default function ProfilePage({userId, isOwnProfile, canBack}: ProfilePageProps) {
 
     const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
     const [userAuthInfo, setUserAuthInfo] = useState<AuthInfo | null>(null);
@@ -28,7 +29,6 @@ export default function ProfilePage({userId, isOwnProfile}: ProfilePageProps) {
     const [error, setError] = useState<string | null>(null);
     const [userTeams, setUserTeams] = useState<TeamInfo[]>([])
     const requestIdRef = useRef(0);
-
 
     const loadProfile = useCallback(async () => {
 
@@ -78,9 +78,6 @@ export default function ProfilePage({userId, isOwnProfile}: ProfilePageProps) {
         };
     }, [loadProfile]);
 
-
-    console.log("ProfilePage", { userId, isOwnProfile });
-
     return (
         <PageLayout
             header={
@@ -98,6 +95,7 @@ export default function ProfilePage({userId, isOwnProfile}: ProfilePageProps) {
                             userInfo={userInfo}
                             authInfo={userAuthInfo}
                             canEdit={isOwnProfile}
+                            canBack={canBack}
                         />
                     )}
                 </HeaderContainer>}>
@@ -113,7 +111,7 @@ export default function ProfilePage({userId, isOwnProfile}: ProfilePageProps) {
                             {!isOwnProfile ? (
                                 <View style={styles.section}>
                                     <InfoLabel text={"Squadre"} labelIconName={"shirt-outline"}/>
-                                    <CarouselContainer
+                                    <CardListContainer
                                         items={userTeams?.map((team) => (
                                             <TeamCardVertical
                                                 key={team.id}
@@ -122,6 +120,7 @@ export default function ProfilePage({userId, isOwnProfile}: ProfilePageProps) {
                                         isLoading={isLoading}
                                         emptyMsg={"Crea una squadra oppure\n unisciti tramite il codice d'invito"}
                                         error={error}
+                                        orientation={"horizontal"}
                                     />
                                 </View>
                             ) : (

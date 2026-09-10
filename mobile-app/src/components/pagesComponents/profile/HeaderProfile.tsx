@@ -1,9 +1,10 @@
-import {Pressable, StyleSheet, Text, View} from "react-native";
+import {StyleSheet, Text, View} from "react-native";
 import {UserInfo} from "@/src/services/users/userService";
 import {AuthInfo} from "@/src/services/users/authService";
 import Picture from "@/src/components/common/images/Picture";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import {router} from "expo-router";
+import SettingsButton from "@/src/components/common/buttons/SettingsButton";
+import BackButton from "@/src/components/common/buttons/BackButton";
 
 
 /**
@@ -17,16 +18,18 @@ export type ProfileHeaderProps = {
     userInfo: UserInfo
     authInfo: AuthInfo,
     canEdit: boolean,
+    canBack: boolean,
 }
 
 
 export default function HeaderProfile({
                                           userInfo,
                                           authInfo,
-                                          canEdit
+                                          canEdit,
+                                          canBack
                                       }: ProfileHeaderProps) {
 
-    
+
     const onBackPress = () => {
         if (router.canGoBack()) {
             router.back();
@@ -51,19 +54,9 @@ export default function HeaderProfile({
     return (
         <View>
 
-            <Pressable
-                onPress={onBackPress}
-                hitSlop={16}
-                style={[
-                    styles.backButton,
-                ]}
-            >
-                <Ionicons
-                    name="chevron-back"
-                    size={28}
-                    color="#FFFFFF"
-                />
-            </Pressable>
+            {canBack &&
+                <BackButton onPress={onBackPress}/>
+            }
 
             <View style={styles.container}>
 
@@ -86,22 +79,7 @@ export default function HeaderProfile({
                         </Text>
 
                         {canEdit && (
-                            <Pressable
-                                onPress={onOptionsPress}
-                                accessibilityRole="button"
-                                accessibilityLabel="Modifica profilo"
-                                hitSlop={10}
-                                style={({pressed}) => [
-                                    styles.editButton,
-                                    pressed && styles.editButtonPressed,
-                                ]}
-                            >
-                                <Ionicons
-                                    name="pencil-outline"
-                                    size={18}
-                                    color="#FFFFFF"
-                                />
-                            </Pressable>
+                            <SettingsButton onPress={onOptionsPress}/>
                         )}
                     </View>
 
@@ -185,6 +163,7 @@ const styles = StyleSheet.create({
 
     titleRow: {
         flexDirection: "row",
+        justifyContent: "space-between",
         alignItems: "center",
         gap: 8,
         minWidth: 0,
@@ -241,43 +220,6 @@ const styles = StyleSheet.create({
         color: "#FFFFFF",
         fontSize: 11,
         fontWeight: "800",
-    },
-
-
-    backButton: {
-        position: "absolute",
-
-        left: 0,
-        zIndex: 10,
-
-        width: 35,
-        height: 35,
-
-        alignItems: "center",
-        justifyContent: "center",
-
-        borderRadius: 18,
-
-        backgroundColor: "rgba(255,255,255,0.14)",
-
-    },
-
-
-    editButton: {
-        width: 33,
-        height: 33,
-
-        borderRadius: 18,
-
-        alignItems: "center",
-        justifyContent: "center",
-
-        backgroundColor: "rgba(255,255,255,0.10)",
-    },
-
-    editButtonPressed: {
-        backgroundColor: "rgba(255,255,255,0.20)",
-        transform: [{scale: 0.94}],
     },
 
 

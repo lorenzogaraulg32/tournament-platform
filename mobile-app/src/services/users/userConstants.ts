@@ -1,3 +1,5 @@
+import {UserEntity} from "@/src/services/users/userService";
+
 export enum Sport {
     FOOTBALL = "FOOTBALL",
     BEACH_VOLLEY = "BEACH_VOLLEY",
@@ -80,6 +82,22 @@ export const ROLE_LABELS: Record<SportRole, string> = {
     [SportRole.FILL_BK]: "Jolly",
 };
 
+export function getRoleBySport(
+    player: UserEntity,
+    sport: Sport,
+): SportRole {
+    return (
+        player.userInfo.roles.find(
+            item => item.sport === sport,
+        )?.role ?? fallbackRoleBySport[sport]
+    );
+}
+
+const fallbackRoleBySport: Record<Sport, SportRole> = {
+    [Sport.FOOTBALL]: SportRole.FILL_FB,
+    [Sport.BEACH_VOLLEY]: SportRole.FILL_BV,
+    [Sport.BASKETBALL]: SportRole.FILL_BK,
+};
 
 export enum Gender {
     MALE = "MALE",

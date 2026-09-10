@@ -1,4 +1,17 @@
-import {Redirect, Tabs} from "expo-router";
+import {Redirect, usePathname, withLayoutContext} from "expo-router";
+
+import {
+    createMaterialTopTabNavigator,
+    MaterialTopTabBar,
+    type MaterialTopTabBarProps,
+    type MaterialTopTabNavigationEventMap,
+    type MaterialTopTabNavigationOptions,
+    type MaterialTopTabNavigationProp,
+} from "expo-router/js-top-tabs";
+
+import {type ParamListBase, StackActions, type TabNavigationState,} from "expo-router/react-navigation";
+
+
 import {ImageBackground, StyleSheet, View} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {useCallback, useEffect, useRef, useState} from "react";
@@ -8,14 +21,34 @@ import {loadCurrentUserId} from "@/src/services/users/authService";
 import ErrorScreen from "@/src/components/common/errors/ErrorScreen";
 import LoadingScreen from "@/src/components/common/loading/LoadingScreen";
 
-import {type ColorVariant, variants} from "@/src/constants/bkManager";
+import {type BKVariant, variants} from "@/src/constants/bkManager";
 
+const TAB_ROOT_PATHS = new Set([
+    "/home",
+    "/teams",
+    "/tournaments",
+    "/profile",
+]);
 
 type ProfileState =
     | "checking"
     | "available"
     | "missing"
     | "error";
+
+const {Navigator} = createMaterialTopTabNavigator();
+
+const SwipeTabs = withLayoutContext<
+    MaterialTopTabNavigationOptions,
+    typeof Navigator,
+    TabNavigationState<ParamListBase>,
+    MaterialTopTabNavigationEventMap
+>(Navigator);
+
+type TabListenerArgs = {
+    navigation: MaterialTopTabNavigationProp<ParamListBase>;
+    route: TabNavigationState<ParamListBase>["routes"][number];
+};
 
 
 export default function RootLayout() {
@@ -56,6 +89,9 @@ export default function RootLayout() {
         }
     }, []);
 
+    const pathname = usePathname();
+    const isTabRoot = TAB_ROOT_PATHS.has(pathname);
+
 
     useEffect(() => {
         isMounted.current = true;
@@ -66,6 +102,7 @@ export default function RootLayout() {
             isMounted.current = false;
         };
     }, [resolveProfileState]);
+
 
     if (profileState === "checking") {
         return <LoadingScreen message="Caricamento in corso..."/>;
@@ -90,88 +127,127 @@ export default function RootLayout() {
 
 
     return (
-        <Tabs
-            screenOptions={({route}) => {
-                const config = variants[route.name as ColorVariant] ?? variants.home;
+        <SwipeTabs
+            backBehavior="none"
+            tabBarPosition="bottom"
+            screenListeners={({navigation, route}: TabListenerArgs) => ({
+                blur: () => {
+                    const tab = navigation
+                        .getState()
+                        .routes.find((item) => item.key === route.key);
 
-                return {
-                    popToTopOnBlur: true,
-                    headerShown: false,
-                    tabBarStyle: styles.tabsBar,
-                    tabBarActiveTintColor: "#ffffff",
-                    tabBarInactiveTintColor: "#ffffff",
-                    tabBarLabelStyle: styles.barLabel,
-                    tabBarShowLabel: true,
+                    const stack = tab?.state;
 
-                    tabBarBackground: () => (
-                        <ImageBackground
-                            source={config.background}
-                            style={StyleSheet.absoluteFill}
-                            resizeMode="cover"
-                        >
-                            <View style={styles.backgroundOverlay}/>
-                        </ImageBackground>
-                    ),
-                };
+                    if (
+                        stack?.type === "stack" &&
+                        stack.key &&
+                        (stack.index ?? 0) > 0
+                    ) {
+                        navigation.dispatch({
+                            ...StackActions.popToTop(),
+                            target: stack.key,
+                        });
+                    }
+                },
+            })}
+            screenOptions={{
+                swipeEnabled: isTabRoot,
+                lazy: true,
+                tabBarShowIcon: true,
+                tabBarShowLabel: true,
+                tabBarActiveTintColor: "#ffffff",
+                tabBarInactiveTintColor: "#ffffff",
+                tabBarLabelStyle: styles.barLabel,
+                tabBarStyle: {
+                    backgroundColor: "transparent",
+                    elevation: 0,
+                    shadowOpacity: 0,
+                },
+                tabBarIndicatorStyle: {
+                    height: 0,
+                },
+            }}
+            tabBar={(props: MaterialTopTabBarProps) => {
+                const route = props.state.routes[props.state.index];
+                const config =
+                    variants[route.name as BKVariant] ?? variants.home;
+
+                return (
+                    <ImageBackground
+                        source={config.background}
+                        resizeMode="cover"
+                        style={{
+                            paddingBottom: 15,
+                            borderTopWidth: 1,
+                            borderTopColor: "rgba(255, 255, 255, 0.35)",
+                        }}
+                    >
+                        <View
+                            pointerEvents="none"
+                            style={styles.backgroundOverlay}
+                        />
+
+                        <MaterialTopTabBar {...props} />
+                    </ImageBackground>
+                );
             }}
         >
-            <Tabs.Screen
+            <SwipeTabs.Screen
                 name="home"
                 options={{
                     title: "Home",
-                    tabBarIcon: ({color, size, focused}) => (
+                    tabBarIcon: ({color, focused}) => (
                         <Ionicons
                             name={focused ? "home" : "home-outline"}
-                            size={size}
+                            size={24}
                             color={color}
                         />
                     ),
                 }}
             />
 
-            <Tabs.Screen
+            <SwipeTabs.Screen
                 name="teams"
                 options={{
                     title: "Squadre",
-                    tabBarIcon: ({color, size, focused}) => (
+                    tabBarIcon: ({color, focused}) => (
                         <Ionicons
                             name={focused ? "people" : "people-outline"}
-                            size={size}
+                            size={24}
                             color={color}
                         />
                     ),
                 }}
             />
 
-            <Tabs.Screen
+            <SwipeTabs.Screen
                 name="tournaments"
                 options={{
                     title: "Tornei",
-                    tabBarIcon: ({color, size, focused}) => (
+                    tabBarIcon: ({color, focused}) => (
                         <Ionicons
                             name={focused ? "trophy" : "trophy-outline"}
-                            size={size}
+                            size={24}
                             color={color}
                         />
                     ),
                 }}
             />
 
-            <Tabs.Screen
+            <SwipeTabs.Screen
                 name="profile"
                 options={{
                     title: "Profilo",
-                    tabBarIcon: ({color, size, focused}) => (
+                    tabBarIcon: ({color, focused}) => (
                         <Ionicons
                             name={focused ? "person" : "person-outline"}
-                            size={size}
+                            size={24}
                             color={color}
                         />
                     ),
                 }}
             />
-        </Tabs>
-
+        </SwipeTabs>
     );
 }
 

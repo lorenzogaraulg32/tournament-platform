@@ -1,22 +1,20 @@
-import {loadCurrentUserId} from "@/src/services/users/authService";
 import {useCallback, useEffect, useRef, useState} from "react";
-import ProfilePage from "@/src/components/pagesComponents/profile/ProfilePage";
+import {loadCurrentUserId} from "@/src/services/users/authService";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {Alert} from "react-native";
-import {Redirect, router} from "expo-router";
+import {Redirect, router, useLocalSearchParams} from "expo-router";
 import LoadingScreen from "@/src/components/common/loading/LoadingScreen";
+import ProfilePage from "@/src/components/pagesComponents/profile/ProfilePage";
 
-export default function Index() {
-
-    const [userId, setUserId] = useState<string>("")
-    const [isLoadingUserId, setLoadingUserId] = useState<boolean>(true)
-
+export default function PlayerProfileScreen() {
+    const {profileId: userId} = useLocalSearchParams<{ profileId: string }>();
+    const [isLoadingUserInfo, setLoadingUserInfo] = useState<boolean>(true)
+    const [isOwnProfile, setIsOwnProfile] = useState<boolean>(false)
     const requestIdRef = useRef(0);
 
+    const loadUserInfo = useCallback(async () => {
 
-    const loadId = useCallback(async () => {
-
-        setLoadingUserId(true)
+        setLoadingUserInfo(true)
         const requestId = ++requestIdRef.current;
 
         try {
@@ -27,8 +25,9 @@ export default function Index() {
                 return;
             }
 
-            setUserId(String(currentUserId));
-            setLoadingUserId(false);
+            setIsOwnProfile(String(currentUserId) === userId);
+
+            setLoadingUserInfo(false);
         } catch (error) {
             // Il componente è stato smontato o è partita un'altra richiesta
             if (requestId !== requestIdRef.current) {
@@ -48,7 +47,7 @@ export default function Index() {
                 [
                     {
                         text: "Riprova",
-                        onPress: () => void loadId(),
+                        onPress: () => void loadUserInfo(),
                     },
                     {
                         text: "Annulla",
@@ -62,17 +61,18 @@ export default function Index() {
                 },
             );
         }
-    }, []);
+    }, [userId]);
 
     useEffect(() => {
-        void loadId();
+        void loadUserInfo();
 
         return () => {
             requestIdRef.current++;
         };
-    }, [loadId]);
+    }, [loadUserInfo]);
 
-    if (isLoadingUserId) {
+
+    if (isLoadingUserInfo) {
         return <LoadingScreen message="Caricamento profilo..."/>;
     }
 
@@ -80,7 +80,6 @@ export default function Index() {
         return <Redirect href="/(app)/home"/>;
     }
 
-    return <ProfilePage userId={userId} isOwnProfile={true} canBack={false}/>;
 
-
+    return <ProfilePage userId={userId} isOwnProfile={isOwnProfile} canBack={true}/>
 }

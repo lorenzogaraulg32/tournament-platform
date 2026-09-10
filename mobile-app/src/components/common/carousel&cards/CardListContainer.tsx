@@ -7,36 +7,49 @@ type CarouselContainerProps = {
     isLoading: boolean;
     error?: string | null;
     emptyMsg: string;
+    orientation?: "horizontal" | "vertical";
 }
 
-export default function CarouselContainer({
+export default function CardListContainer({
                                               items,
                                               style,
                                               isLoading,
                                               error,
                                               emptyMsg,
+                                              orientation = "horizontal",
                                           }: CarouselContainerProps) {
     const isEmpty = !items || items.length === 0;
-
+    const isHorizontal = orientation === "horizontal";
 
     return (
-        <View style={[styles.container, style]}>
+        <View style={[
+            styles.container,
+            !isHorizontal && styles.verticalContainer,
+            style,
+        ]}>
             {isLoading ? (
-                <ActivityIndicator size="large" color="#ffffff"/>
+                <ActivityIndicator
+                    size="large"
+                    color="#ffffff"
+                />
             ) : error ? (
-                <View> </View>
+                <View/>
             ) : isEmpty ? (
                 <Text style={styles.emptyText}>
                     {emptyMsg}
                 </Text>
-            ) : (
+            ) : isHorizontal ? (
                 <ScrollView
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={styles.scrollContent}
+                    contentContainerStyle={styles.horizontalContent}
                 >
                     {items}
                 </ScrollView>
+            ) : (
+                <View style={styles.verticalContent}>
+                    {items}
+                </View>
             )}
         </View>
     )
@@ -49,17 +62,27 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
     },
 
-    scrollContent: {
-        justifyContent: "space-evenly",
+    verticalContainer: {
+        flexDirection: "column",
+        width: "100%",
+    },
+
+    horizontalContent: {
         flexDirection: "row",
+        justifyContent: "space-evenly",
         gap: 5,
     },
 
+    verticalContent: {
+        width: "100%",
+        gap: 8,
+    },
+
     emptyText: {
+        flex: 1,
         fontSize: 15,
         fontWeight: "600",
         textAlign: "center",
         color: "#7c7c7c",
-        flex: 1,
     },
 });
