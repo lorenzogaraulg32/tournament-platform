@@ -6,7 +6,7 @@ import {Redirect, router, useLocalSearchParams} from "expo-router";
 import LoadingScreen from "@/src/components/common/loading/LoadingScreen";
 import ProfilePage from "@/src/components/pagesComponents/profile/ProfilePage";
 
-export default function PlayerProfileScreen() {
+export default function ProfileDetailsPage() {
     const {profileId: userId} = useLocalSearchParams<{ profileId: string }>();
     const [isLoadingUserInfo, setLoadingUserInfo] = useState<boolean>(true)
     const [isOwnProfile, setIsOwnProfile] = useState<boolean>(false)

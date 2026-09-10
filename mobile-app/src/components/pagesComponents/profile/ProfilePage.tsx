@@ -6,7 +6,6 @@ import PageLayout from "@/src/components/common/PageLayout";
 import {Pressable, ScrollView, StyleSheet, View} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {colors} from "@/src/constants/theme";
-import InfoLabel from "@/src/components/common/labels/InfoLabel";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {loadUserTeams, TeamInfo} from "@/src/services/teams/teamService";
@@ -14,6 +13,7 @@ import CardListContainer from "@/src/components/common/carousel&cards/CardListCo
 import TeamCardVertical from "@/src/components/pagesComponents/teams/cards/TeamCardVertical";
 import LoadingSection from "@/src/components/common/loading/LoadingSection";
 import ErrorSection from "@/src/components/common/errors/ErrorSection";
+import CollapsableSection from "@/src/components/common/CollapsableSection";
 
 type ProfilePageProps = {
     userId: string;
@@ -110,18 +110,19 @@ export default function ProfilePage({userId, isOwnProfile, canBack}: ProfilePage
                         <View style={styles.profileContent}>
                             {!isOwnProfile ? (
                                 <View style={styles.section}>
-                                    <InfoLabel text={"Squadre"} labelIconName={"shirt-outline"}/>
-                                    <CardListContainer
-                                        items={userTeams?.map((team) => (
-                                            <TeamCardVertical
-                                                key={team.id}
-                                                teamDetails={team}/>
-                                        ))}
-                                        isLoading={isLoading}
-                                        emptyMsg={"Crea una squadra oppure\n unisciti tramite il codice d'invito"}
-                                        error={error}
-                                        orientation={"horizontal"}
-                                    />
+                                    <CollapsableSection label={"Squadre"} iconName={"shirt-outline"}>
+                                        <CardListContainer
+                                            items={userTeams?.map((team) => (
+                                                <TeamCardVertical
+                                                    key={team.id}
+                                                    teamDetails={team}/>
+                                            ))}
+                                            isLoading={isLoading}
+                                            emptyMsg={"Crea una squadra oppure\n unisciti tramite il codice d'invito"}
+                                            error={error}
+                                            orientation={"horizontal"}
+                                        />
+                                    </CollapsableSection>
                                 </View>
                             ) : (
                                 <View>

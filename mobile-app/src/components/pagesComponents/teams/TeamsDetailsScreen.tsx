@@ -9,11 +9,11 @@ import {normalizeApiRequestError} from "@/src/services/errorService";
 import PageLayout from "@/src/components/common/PageLayout";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import HeaderTeam from "@/src/components/pagesComponents/teams/HeaderTeam";
-import InfoLabel from "@/src/components/common/labels/InfoLabel";
 import CardListContainer from "@/src/components/common/carousel&cards/CardListContainer";
 import PlayersCard from "@/src/components/pagesComponents/profile/cards/PlayersCard";
 import {Sport} from "@/src/services/users/userConstants";
 import AdminsCard from "@/src/components/pagesComponents/profile/cards/AdminsCard";
+import CollapsableSection from "@/src/components/common/CollapsableSection";
 
 
 export default function TeamsDetailsScreen() {
@@ -155,11 +155,7 @@ export default function TeamsDetailsScreen() {
                         <View></View>
                     )}
 
-                    <View style={styles.section}>
-                        <InfoLabel
-                            text={"Players"}
-                            labelIconName={"people-outline"}
-                        />
+                    <CollapsableSection label={"Players"} iconName={"people-outline"}>
                         {team && (
                             <CardListContainer
                                 items={teamPlayers.map((player) => (
@@ -172,17 +168,15 @@ export default function TeamsDetailsScreen() {
                                 emptyMsg={"Nessun giocatore nella squadra"}
                                 isLoading={isLoading}
                                 error={error}
-                                orientation={"vertical"}/>
+                                orientation={"vertical"}
+                                style={styles.section}/>
+
                         )}
-                    </View>
+
+                    </CollapsableSection>
 
 
-                    <View style={styles.section}>
-                        <InfoLabel
-                            text={"Admin"}
-                            labelIconName={"shield-checkmark-outline"}
-                        />
-
+                    <CollapsableSection label={"Admin"} iconName={"shield-checkmark-outline"}>
 
                         {team && (
                             <CardListContainer
@@ -195,9 +189,10 @@ export default function TeamsDetailsScreen() {
                                 emptyMsg={"Nessun admin nella squadra"}
                                 isLoading={isLoading}
                                 error={error}
-                                orientation={"vertical"}/>
+                                orientation={"vertical"}
+                                style={styles.section}/>
                         )}
-                    </View>
+                    </CollapsableSection>
                 </View>
             </ScrollView>
         </PageLayout>
@@ -213,18 +208,14 @@ const styles = StyleSheet.create({
     },
 
     scrollContent: {
-        gap: 24,
-        paddingBottom: 30,
+        gap: 20,
+
     },
 
-    section: {},
-
-    teamCarousel: {
-        marginHorizontal: 0,
-        backgroundColor: "transparent",
-        borderWidth: 0,
-        borderRadius: 0,
+    section: {
+        maxHeight: 280
     },
+
 
     descriptionContainer: {
         flexDirection: "row",

@@ -47,9 +47,11 @@ export default function CardListContainer({
                     {items}
                 </ScrollView>
             ) : (
-                <View style={styles.verticalContent}>
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={styles.verticalContent}>
                     {items}
-                </View>
+                </ScrollView>
             )}
         </View>
     )

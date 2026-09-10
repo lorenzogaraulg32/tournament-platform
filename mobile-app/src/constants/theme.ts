@@ -1,6 +1,7 @@
 export const colors = {
     orangeDefault: "#C8480A",
     orangeDefaultBK: "#FFF1E8",
+
     mustardDefault: "#C89200",
     mustardDefaultBK: "#FFF7DD",
 
@@ -9,6 +10,7 @@ export const colors = {
 
     grayBK: "#F0F3F1",
 
+    greenBK:"",
 
     background: "#012613",
 

@@ -1,9 +1,8 @@
 import PageLayout from "@/src/components/common/PageLayout";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {getTeamDetails, teamDetailsToTeamInfo, TeamInfo} from "@/src/services/teams/teamService";
 import {ScrollView, StyleSheet, Text, View} from "react-native";
 import {router, useLocalSearchParams} from "expo-router";
-import InfoLabel from "@/src/components/common/labels/InfoLabel";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {loadCurrentUserId} from "@/src/services/users/authService";
@@ -14,6 +13,8 @@ import {TournamentDetails} from "@/src/services/tournaments/tournamentsDTO";
 import {loadTournamentDetails} from "@/src/services/tournaments/tournamentsService";
 import HeaderTournament from "@/src/components/pagesComponents/tournaments/HeaderTournament";
 import {colors} from "@/src/constants/theme";
+import TeamCardHorizontal from "@/src/components/pagesComponents/teams/cards/TeamCardHorizontal";
+import CollapsableSection from "../../common/CollapsableSection";
 
 
 export default function TournamentDetailsPage() {
@@ -21,7 +22,7 @@ export default function TournamentDetailsPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    const {teamId} = useLocalSearchParams<{ teamId: string }>();
+    const {tournamentId} = useLocalSearchParams<{ tournamentId: string }>();
     const [tournament, setTournament] = useState<TournamentDetails | null>(null);
     const [tournamentTeams, setTournamentTeams] = useState<TeamInfo[]>([])
     const [tournamentAdmins, setTournamentAdmins] = useState<UserEntity[]>([])
@@ -45,10 +46,10 @@ export default function TournamentDetailsPage() {
                 setError(null)
                 setTournament(null);
                 setIsCurrentUserTournamentAdmin(false);
-
+                setIsCurrentUserTournamentOwner(false);
 
                 const [loadedTournament, currentUserId] = await Promise.all([
-                    loadTournamentDetails(teamId),
+                    loadTournamentDetails(tournamentId),
                     loadCurrentUserId(),
                 ]);
 
@@ -75,13 +76,17 @@ export default function TournamentDetailsPage() {
                     return;
                 }
 
-                if (loadedTournament.adminsId.includes(currentUserId)) {
-                    setIsCurrentUserTournamentAdmin(true)
-                }
+                const normalizedUserId = String(currentUserId);
 
-                if (loadedTournament.createdById === currentUserId) {
-                    setIsCurrentUserTournamentOwner(true)
-                }
+                setIsCurrentUserTournamentAdmin(
+                    loadedTournament.adminsId.some(
+                        (id) => String(id) === normalizedUserId
+                    )
+                );
+
+                setIsCurrentUserTournamentOwner(
+                    String(loadedTournament.createdById) === normalizedUserId
+                );
 
                 setTournamentAdmins(loadedAdmins)
                 setTournamentTeams(loadedTeams)
@@ -91,7 +96,8 @@ export default function TournamentDetailsPage() {
                 if (!isActive) {
                     return;
                 }
-                const apiError = normalizeApiRequestError(error)
+
+                const apiError = normalizeApiRequestError(error);
 
                 // Redirect già gestito da authenticatedFetch
                 if (apiError.status === 401) {
@@ -112,7 +118,7 @@ export default function TournamentDetailsPage() {
             isActive = false;
         };
 
-    }, [teamId])
+    }, [tournamentId])
 
 
     return (
@@ -145,20 +151,29 @@ export default function TournamentDetailsPage() {
                         <View></View>
                     )}
 
-                    <View style={styles.section}>
-                        <InfoLabel
-                            text={"Squadre"}
-                            labelIconName={"people-outline"}
-                        />
-                    </View>
+                    <CollapsableSection label={"Squadre"} iconName={"people-outline"}>
+
+                        {tournament && (
+                            <CardListContainer
+                                items={tournamentTeams.map((team) => (
+                                    <TeamCardHorizontal
+                                        key={team.id}
+                                        id={team.id}
+                                        name={team.name}
+                                        logoUrl={team.logoUrl ?? undefined}
+                                        playersCount={team.numberOfPlayers}
+                                    />
+                                ))}
+                                emptyMsg={"Nessun admin del torneo"}
+                                isLoading={isLoading}
+                                error={error}
+                                orientation={"vertical"}
+                                style={styles.section}/>
+                        )}
+                    </CollapsableSection>
 
 
-                    <View style={styles.section}>
-                        <InfoLabel
-                            text={"Admin"}
-                            labelIconName={"shield-checkmark-outline"}
-                        />
-
+                    <CollapsableSection label={"Admin"} iconName={"shield-checkmark-outline"}>
 
                         {tournament && (
                             <CardListContainer
@@ -166,15 +181,17 @@ export default function TournamentDetailsPage() {
                                     <AdminsCard
                                         key={player.id}
                                         admin={player}
-                                        isOwner={isCurrentUserTournamentOwner}/>
+                                        isOwner={
+                                            String(player.id) === String(tournament.createdById)}/>
                                 ))}
                                 emptyMsg={"Nessun admin del torneo"}
                                 isLoading={isLoading}
                                 error={error}
-                                orientation={"vertical"}/>
+                                orientation={"vertical"}
+                                style={styles.section}/>
                         )}
 
-                    </View>
+                    </CollapsableSection>
 
 
                 </View>
@@ -195,7 +212,10 @@ const styles = StyleSheet.create({
         paddingBottom: 30,
     },
 
-    section: {},
+    section: {
+        maxHeight: 280
+    },
+
 
     teamCarousel: {
         marginHorizontal: 0,

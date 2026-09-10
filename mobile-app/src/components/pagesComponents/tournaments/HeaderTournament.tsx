@@ -6,6 +6,8 @@ import * as Clipboard from "expo-clipboard";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {TournamentDetails} from "@/src/services/tournaments/tournamentsDTO";
 import {refreshCodeTournament} from "@/src/services/tournaments/tournamentsService";
+import BackButton from "@/src/components/common/buttons/BackButton";
+import SettingsButton from "@/src/components/common/buttons/SettingsButton";
 
 type TournamentHeaderProps = {
     tournament: TournamentDetails | null;
@@ -21,7 +23,6 @@ type TournamentHeaderProps = {
  * @param team la squadra selezionata
  * @param isLoading se la squadra sta caricando
  * @param error se c'è stato un errore nel caricamento della squadra
- * @param onInviteFriendPress
  * @constructor
  */
 export default function HeaderTournament({
@@ -43,123 +44,96 @@ export default function HeaderTournament({
         }
         return ""
 
-}
+    }
 
-const onBackPress = () => {
-    onBack()
-}
-
-
-const onOptionsPress = () => {
-    console.log("options premuto")
-}
+    const onBackPress = () => {
+        onBack()
+    }
 
 
-return (
-    <View>
-        <Pressable
-            onPress={onBackPress}
-            hitSlop={16}
-            style={[
-                styles.backButton,
-            ]}
-        >
-            <Ionicons
-                name="chevron-back"
-                size={28}
-                color="#FFFFFF"
-            />
-        </Pressable>
+    const onOptionsPress = () => {
+        console.log("options premuto")
+    }
 
-        {isLoading ? (
-            <View style={styles.feedbackContainer}>
-                <ActivityIndicator
-                    size="large"
-                    color="#FFFFFF"
-                />
 
-                <Text style={styles.feedbackText}>
-                    Caricamento torneo...
-                </Text>
-            </View>
-        ) : error ? (
-            <View style={styles.feedbackContainer}>
-                <Ionicons
-                    name="alert-circle-outline"
-                    size={30}
-                    color="#FFFFFF"
-                />
+    return (
+        <View>
+            <BackButton onPress={onBackPress}/>
 
-                <Text style={styles.feedbackText}>
-                    {error}
-                </Text>
-            </View>
-        ) : !tournament ? (
-            <View style={styles.feedbackContainer}>
-                <Text style={styles.feedbackText}>
-                    Torneo non disponibile
-                </Text>
-            </View>
-        ) : (
-            <View style={styles.container}>
-                <View style={styles.imageContainer}>
-                    <Picture
-                        variant={"team"}
-                        logoUrl={tournament.logoUrl}
-                        style={styles.logo}
+
+            {isLoading ? (
+                <View style={styles.feedbackContainer}>
+                    <ActivityIndicator
+                        size="large"
+                        color="#FFFFFF"
                     />
+
+                    <Text style={styles.feedbackText}>
+                        Caricamento torneo...
+                    </Text>
                 </View>
+            ) : error ? (
+                <View style={styles.feedbackContainer}>
+                    <Ionicons
+                        name="alert-circle-outline"
+                        size={30}
+                        color="#FFFFFF"
+                    />
 
-                <View style={styles.rightContainer}>
-                    <View style={styles.nameRow}>
-
-                        <Text
-                            style={styles.teamName}
-                            numberOfLines={1}
-                        >
-                            {tournament.name}
-                        </Text>
-
-                        {canEdit && (
-                            <Pressable
-                                onPress={onOptionsPress}
-                                accessibilityRole="button"
-                                accessibilityLabel="Modifica squadra"
-                                hitSlop={10}
-                                style={({pressed}) => [
-                                    styles.editButton,
-                                    pressed && styles.editButtonPressed,
-                                ]}
-                            >
-                                <Ionicons
-                                    name="pencil-outline"
-                                    size={18}
-                                    color="#FFFFFF"
-                                />
-                            </Pressable>
-                        )}
-
+                    <Text style={styles.feedbackText}>
+                        {error}
+                    </Text>
+                </View>
+            ) : !tournament ? (
+                <View style={styles.feedbackContainer}>
+                    <Text style={styles.feedbackText}>
+                        Torneo non disponibile
+                    </Text>
+                </View>
+            ) : (
+                <View style={styles.container}>
+                    <View style={styles.imageContainer}>
+                        <Picture
+                            variant={"tournament"}
+                            logoUrl={tournament.logoUrl}
+                            style={styles.logo}
+                        />
                     </View>
 
-                    <Text
-                        style={styles.teamLocation}
-                        numberOfLines={1}
-                    >
-                        {formatLocationLabel(tournament.locationLabel)}
-                    </Text>
+                    <View style={styles.rightContainer}>
+                        <View style={styles.nameRow}>
+
+                            <Text
+                                style={styles.tournamentName}
+                                numberOfLines={1}
+                            >
+                                {tournament.name}
+                            </Text>
+
+                            {canEdit && <SettingsButton onPress={onOptionsPress}/>}
 
 
-                    <InviteFriendBadge
-                        tournament={tournament}
-                        canRefresh={canEdit}
-                    />
+                        </View>
+
+                        <Text
+                            style={styles.teamLocation}
+                            numberOfLines={1}
+                        >
+                            {formatLocationLabel(tournament.locationLabel)}
+                        </Text>
 
 
+                        <InviteFriendBadge
+                            tournament={tournament}
+                            canRefresh={canEdit}
+                        />
+
+
+                    </View>
                 </View>
-            </View>
-        )}
-    </View>
-);
+            )}
+        </View>
+    );
 }
 
 type InviteFriendBadgeProps = {
@@ -402,56 +376,21 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
 
-    backButton: {
-        position: "absolute",
-
-        left: 0,
-        zIndex: 10,
-
-        width: 35,
-        height: 35,
-
-        alignItems: "center",
-        justifyContent: "center",
-
-        borderRadius: 18,
-
-        backgroundColor: "rgba(255,255,255,0.14)",
-
-    },
-
     nameRow: {
         flexDirection: "row",
         alignItems: "center",
         gap: 8,
-
+        justifyContent: "space-between",
         minWidth: 0,
     },
 
-    teamName: {
+    tournamentName: {
         flexShrink: 1,
 
         color: "#FFFFFF",
         fontSize: 22,
         lineHeight: 28,
         fontWeight: "800",
-    },
-
-    editButton: {
-        width: 33,
-        height: 33,
-
-        borderRadius: 18,
-
-        alignItems: "center",
-        justifyContent: "center",
-
-        backgroundColor: "rgba(255,255,255,0.10)",
-    },
-
-    editButtonPressed: {
-        backgroundColor: "rgba(255,255,255,0.20)",
-        transform: [{scale: 0.94}],
     },
 
 
