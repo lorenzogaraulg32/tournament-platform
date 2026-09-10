@@ -27,7 +27,7 @@ export default function TournamentCardHorizontal({
         router.push({
             pathname: "/tournaments/[tournamentId]",
             params: {
-                teamId: id,
+                tournamentId: id,
             },
         })
     }

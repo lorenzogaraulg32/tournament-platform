@@ -79,6 +79,8 @@ export default function ProfilePage({userId, isOwnProfile}: ProfilePageProps) {
     }, [loadProfile]);
 
 
+    console.log("ProfilePage", { userId, isOwnProfile });
+
     return (
         <PageLayout
             header={

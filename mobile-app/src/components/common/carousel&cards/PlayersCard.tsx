@@ -1,8 +1,14 @@
-import {Pressable, StyleSheet, Text, View} from "react-native";
+import {Alert, Pressable, StyleSheet, Text, View} from "react-native";
 import Picture from "@/src/components/common/images/Picture";
 import {colors, teamCardGreenColors} from "@/src/constants/theme";
 import {UserEntity} from "@/src/services/users/userService";
 import {ROLE_LABELS, Sport, SportRole} from "@/src/services/users/userConstants";
+import LoadingScreen from "@/src/components/common/loading/LoadingScreen";
+import {Redirect, router} from "expo-router";
+import ProfilePage from "@/src/components/pagesComponents/profile/ProfilePage";
+import {useCallback, useEffect, useRef, useState} from "react";
+import {loadCurrentUserId} from "@/src/services/users/authService";
+import {normalizeApiRequestError} from "@/src/services/errorService";
 
 
 type PlayerCardProps = {
@@ -17,6 +23,8 @@ export default function PlayersCard({
                                     }: PlayerCardProps
 ) {
 
+
+
     function getRoleBySport(player: UserEntity, sport: Sport): SportRole | undefined {
         return player.userInfo.roles.find(
             item => item.sport === sport
@@ -30,7 +38,15 @@ export default function PlayersCard({
     const role = playerRole ? ROLE_LABELS[playerRole] : "Jolly";
 
     function handlePress() {
-        //todo:
+        if (!player?.id) {
+            router.replace("/(app)/home");
+            return;
+        }
+
+        router.push({
+            pathname: "/(app)/profile/[profileId]",
+            params: { profileId: player.id },
+        });
     }
 
     return (

@@ -18,11 +18,11 @@ public interface TournamentRepository extends JpaRepository<Tournament, Long> {
         SELECT DISTINCT tournament
         FROM Tournament tournament
         LEFT JOIN tournament.adminsById adminId
-        WHERE tournament.createdByUserId = :userId
-           OR adminId = :userId
+        WHERE tournament.createdByUserId = :profileId
+           OR adminId = :profileId
     """)
     List<Tournament> findManagedByUserId(
-            @Param("userId") String userId
+            @Param("profileId") String profileId
     );
 
     @Query("""

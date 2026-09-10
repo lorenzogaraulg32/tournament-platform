@@ -95,6 +95,7 @@ export default function RootLayout() {
                 const config = variants[route.name as ColorVariant] ?? variants.home;
 
                 return {
+                    popToTopOnBlur: true,
                     headerShown: false,
                     tabBarStyle: styles.tabsBar,
                     tabBarActiveTintColor: "#ffffff",

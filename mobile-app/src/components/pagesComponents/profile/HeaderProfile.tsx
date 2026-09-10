@@ -26,11 +26,14 @@ export default function HeaderProfile({
                                           canEdit
                                       }: ProfileHeaderProps) {
 
-
+    
     const onBackPress = () => {
-        router.back()
-    }
-
+        if (router.canGoBack()) {
+            router.back();
+        } else {
+            router.replace("/(app)/home");
+        }
+    };
 
     const onOptionsPress = () => {
         console.log("options premuto")

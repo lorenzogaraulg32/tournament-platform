@@ -17,11 +17,11 @@ public interface TeamsRepository extends JpaRepository<Team, Long> {
                 FROM Team team
                 LEFT JOIN team.playerIds playerId
                 LEFT JOIN team.adminIds adminId
-                WHERE team.creatorId = :userId
-                   OR playerId = :userId
-                   OR adminId = :userId
+                WHERE team.creatorId = :profileId
+                   OR playerId = :profileId
+                   OR adminId = :profileId
             """)
-    List<Team> findAllByPlayerIds(@Param("userId") String userId);
+    List<Team> findAllByPlayerIds(@Param("profileId") String profileId);
 
     boolean existsByInvitationCode(String invitationCode);
 
