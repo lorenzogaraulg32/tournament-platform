@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Now every section  in every page is collapsable">
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/common/FullPage.tsx" afterDir="false" />
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Now the collapsable section has a pressable that can render the entire content of the scroll">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/CollapsableSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/CollapsableSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/TeamsDetailsScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/TeamsDetailsScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/tournaments/TournamentDetailsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/tournaments/TournamentDetailsPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(onboarding)/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(onboarding)/_layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/_layout.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -340,15 +338,7 @@
       <workItem from="1788788211309" duration="6389000" />
       <workItem from="1788853409731" duration="1669000" />
       <workItem from="1788960844790" duration="18217000" />
-      <workItem from="1789032385830" duration="20643000" />
-    </task>
-    <task id="LOCAL-00023" summary="Buig Update, now frontend is connected, forgot to commit before&#10;&#10;User registration and login is working (backend-frontend)&#10;&#10;Now frontend fetches and displays the user teams&#10;&#10;Now working on the teams section">
-      <option name="closed" value="true" />
-      <created>1785146676395</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1785146676395</updated>
+      <workItem from="1789032385830" duration="20871000" />
     </task>
     <task id="LOCAL-00024" summary="Big Update, now frontend is connected, forgot to commit before&#10;&#10;User registration and login is working (backend-frontend)&#10;&#10;Now frontend fetches and displays the user teams&#10;&#10;Now working on the teams section">
       <option name="closed" value="true" />
@@ -734,7 +724,15 @@
       <option name="project" value="LOCAL" />
       <updated>1789055876828</updated>
     </task>
-    <option name="localTasksCounter" value="72" />
+    <task id="LOCAL-00072" summary="Now the collapsable section has a pressable that can render the entire content of the scroll">
+      <option name="closed" value="true" />
+      <created>1789057647631</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1789057647632</updated>
+    </task>
+    <option name="localTasksCounter" value="73" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -752,7 +750,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Worked on userService and a generic horizontal carousel for reuse" />
     <MESSAGE value="modified tests after changing entity structure" />
     <MESSAGE value="Restructured Profile page, added the possibility to visualize a generic user teams but blocking current user teams in profile, to limit redundancy" />
     <MESSAGE value="Adjusted graphic, added friend invitation code for teams" />
@@ -777,7 +774,8 @@
     <MESSAGE value="Now PlayerCard redirect to profile on click" />
     <MESSAGE value="Adjusted main layout&#10;Fixed navigation between scenes&#10;Now its possible to navigate between tabs with swipe motion" />
     <MESSAGE value="Now every section  in every page is collapsable" />
-    <option name="LAST_COMMIT_MESSAGE" value="Now every section  in every page is collapsable" />
+    <MESSAGE value="Now the collapsable section has a pressable that can render the entire content of the scroll" />
+    <option name="LAST_COMMIT_MESSAGE" value="Now the collapsable section has a pressable that can render the entire content of the scroll" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
