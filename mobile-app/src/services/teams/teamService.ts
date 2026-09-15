@@ -1,4 +1,5 @@
 import {authenticatedFetch} from "@/src/services/fetchService";
+import {RecruitmentStatus} from "@/src/services/teams/teamCreationService";
 
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
@@ -16,6 +17,7 @@ export type TeamDetails = {
     id: number;
     name: string;
     description: string;
+    status : RecruitmentStatus;
     locationLabel: string;
     latitude:number;
     longitude:number;
@@ -40,6 +42,7 @@ export async function getCurrentUserTeams(): Promise<TeamInfo[]> {
 
     return await response.json() as TeamInfo[];
 }
+
 
 export async function loadUserTeams(userId: string): Promise<TeamInfo[]> {
     const response = await authenticatedFetch(
@@ -101,7 +104,6 @@ export async function getTeamDetails(id: string): Promise<TeamDetails> {
     return await response.json() as TeamDetails;
 }
 
-
 export function teamDetailsToTeamInfo(team : TeamDetails) : TeamInfo{
     return {
         id: team.id,
@@ -109,4 +111,16 @@ export function teamDetailsToTeamInfo(team : TeamDetails) : TeamInfo{
         logoUrl: team.logoUrl ? team.logoUrl : null,
         numberOfPlayers: team.playerIds.length,
     }
+}
+
+export async function removeTeamPlayer(
+    teamId: string,
+    userId: string
+): Promise<void> {
+    await authenticatedFetch(
+        `${API_URL}/teams/${encodeURIComponent(teamId)}/players/${encodeURIComponent(userId)}`,
+        {
+            method: "DELETE",
+        }
+    );
 }

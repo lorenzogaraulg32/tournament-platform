@@ -1,14 +1,14 @@
 package com.tournamentplatform.teamservice.service;
 
-import com.tournamentplatform.teamservice.dto.TeamGetDetailsResponse;
-import com.tournamentplatform.teamservice.dto.TeamGetResponse;
-import com.tournamentplatform.teamservice.dto.TeamNamePatchRequest;
 import com.tournamentplatform.teamservice.dto.teamCreation.TeamCreationRequest;
 import com.tournamentplatform.teamservice.dto.teamCreation.TeamCreationResponse;
 import com.tournamentplatform.teamservice.dto.teamCreation.TeamLocationRequest;
+import com.tournamentplatform.teamservice.dto.teamGet.TeamGetDetailsResponse;
+import com.tournamentplatform.teamservice.dto.teamGet.TeamGetResponse;
+import com.tournamentplatform.teamservice.dto.teamModify.TeamUpdateRequest;
 import com.tournamentplatform.teamservice.entity.Team;
+import com.tournamentplatform.teamservice.errorHandling.teamsExceptions.TeamNameAlreadyExistsException;
 import com.tournamentplatform.teamservice.repository.TeamsRepository;
-import jakarta.validation.Valid;
 import org.springframework.core.io.Resource;
 import org.springframework.http.CacheControl;
 import org.springframework.http.MediaType;
@@ -92,6 +92,66 @@ public class TeamService {
         return new TeamCreationResponse(String.valueOf(savedTeam.getId()));
     }
 
+    @Transactional
+    public void updateTeam(String teamId, TeamUpdateRequest request, MultipartFile logo) {
+        Team team = servicesHelper.getTeamEntityOrThrow(teamId);
+
+        teamAuthorizationHelper.checkTeamAdmin(team);
+
+        if (request.getName() != null) {
+            String name = request.getName().trim();
+
+            if (!name.equals(team.getName())) {
+                checkTeamName(name);
+                team.setName(name);
+            }
+        }
+
+        if (request.getDescription() != null) {
+            team.setDescription(request.getDescription().trim());
+        }
+
+        if (request.getStatus() != null) {
+            team.setStatus(request.getStatus());
+        }
+
+        if (request.isLocationProvided()) {
+            TeamLocationRequest location = request.getLocation();
+
+            team.setLocationLabel(
+                    location != null ? location.getLabel() : null
+            );
+            team.setLatitude(
+                    location != null ? location.getLatitude() : null
+            );
+            team.setLongitude(
+                    location != null ? location.getLongitude() : null
+            );
+        }
+
+        if (logo != null && !logo.isEmpty()) {
+            String logoUrl = logoStorageService.storeTeamLogo(
+                    team.getId(),
+                    logo
+            );
+
+            team.setLogoUrl(logoUrl);
+        } else if ("REMOVE".equals(request.getLogoUrl())) {
+            logoStorageService.deleteTeamLogo(team.getId());
+            team.setLogoUrl(null);
+        }
+
+        teamsRepository.save(team);
+    }
+
+    public String checkTeamName(String teamName) {
+        if (teamsRepository.existsByName(teamName)) {
+            throw new TeamNameAlreadyExistsException();
+        }
+
+        return "valid";
+    }
+
     public TeamGetDetailsResponse getTeam(String id) {
 
         Team team = servicesHelper.getTeamEntityOrThrow(id);
@@ -119,19 +179,6 @@ public class TeamService {
                 .contentType(contentType)
                 .cacheControl(CacheControl.noStore())
                 .body(logo);
-    }
-
-    public TeamGetDetailsResponse patchTeamName(String id, @Valid TeamNamePatchRequest request) {
-
-        Team team = servicesHelper.getTeamEntityOrThrow(id);
-
-        teamAuthorizationHelper.checkTeamAdmin(team);
-
-        team.setName(request.getName());
-
-        Team savedTeam = teamsRepository.save(team);
-
-        return servicesHelper.toTeamGetDetailsResponse(savedTeam);
     }
 
     public TeamGetDetailsResponse patchTeamCode(String id) {

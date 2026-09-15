@@ -1,7 +1,7 @@
 package com.tournamentplatform.teamservice.service;
 
-import com.tournamentplatform.teamservice.dto.TeamGetDetailsResponse;
-import com.tournamentplatform.teamservice.dto.TeamGetResponse;
+import com.tournamentplatform.teamservice.dto.teamGet.TeamGetDetailsResponse;
+import com.tournamentplatform.teamservice.dto.teamGet.TeamGetResponse;
 import com.tournamentplatform.teamservice.entity.Team;
 import com.tournamentplatform.teamservice.errorHandling.teamsExceptions.TeamNotFoundException;
 import com.tournamentplatform.teamservice.repository.TeamsRepository;
@@ -28,6 +28,7 @@ public class ServicesHelper {
                 team.getId(),
                 team.getName(),
                 team.getDescription(),
+                team.getStatus(),
                 team.getLocationLabel(),
                 buildPublicLogoUrl(team),
                 team.getCreatorId(),

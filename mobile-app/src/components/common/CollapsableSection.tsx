@@ -7,19 +7,25 @@ import {SafeAreaView} from "react-native-safe-area-context";
 
 type CollapsableSectionProps = {
     label: string,
-    iconName: keyof typeof Ionicons.glyphMap;
-    children: ReactNode
+    iconName: keyof typeof Ionicons.glyphMap,
+    children: ReactNode | ((isMod: boolean) => ReactNode),
+    canMod?: boolean,
+    feedback?: ReactNode,
 }
 
 
 export default function CollapsableSection({
                                                label,
                                                iconName,
-                                               children
+                                               children,
+                                               canMod = false,
+                                               feedback
                                            }: CollapsableSectionProps) {
 
     const [isExpanded, setExpanded] = useState<boolean>(true)
     const [isFullPageVisible, setFullPageVisible] = useState(false);
+    const [isMod, setMod] = useState(false);
+
 
     const goToFullPage = () => {
         setFullPageVisible(true);
@@ -27,7 +33,14 @@ export default function CollapsableSection({
 
     const closeFullPage = () => {
         setFullPageVisible(false);
+        setMod(false);
     };
+
+    function renderContent(modify: boolean) {
+        return typeof children === "function"
+            ? children(modify)
+            : children;
+    }
 
     return (
         <>
@@ -76,7 +89,7 @@ export default function CollapsableSection({
                 </View>
                 {isExpanded && (
                     <View style={styles.section}>
-                        {children}
+                        {renderContent(false)}
                     </View>
                 )}
             </ScrollView>
@@ -89,37 +102,62 @@ export default function CollapsableSection({
             >
                 <SafeAreaView style={styles.fullPage}>
                     <View style={styles.fullPageHeader}>
-                        <Pressable
-                            onPress={closeFullPage}
-                            accessibilityRole="button"
-                            accessibilityLabel="Chiudi vista completa"
-                            hitSlop={8}
-                            style={({pressed}) => [
-                                styles.iconButton,
-                                pressed && {opacity: 0.65},
-                            ]}
-                        >
-                            <Ionicons
-                                name="chevron-back"
-                                size={20}
-                                color={colors.labelInfo}
-                            />
-                        </Pressable>
+                        <View style={styles.iconAndTitle}>
+                            <Pressable
+                                onPress={closeFullPage}
+                                accessibilityRole="button"
+                                accessibilityLabel="Chiudi vista completa"
+                                hitSlop={8}
+                                style={({pressed}) => [
+                                    styles.iconButton,
+                                    pressed && {opacity: 0.65},
+                                ]}
+                            >
+                                <Ionicons
+                                    name="chevron-back"
+                                    size={20}
+                                    color={colors.labelInfo}
+                                />
+                            </Pressable>
 
-                        <View style={styles.fullPageTitle}>
-                            <InfoLabel
-                                text={label}
-                                labelIconName={iconName}
-                            />
+                            <View style={styles.fullPageTitle}>
+                                <InfoLabel
+                                    text={label}
+                                    labelIconName={iconName}
+                                />
+                            </View>
                         </View>
+                        {canMod && (
+                            <Pressable
+                                onPress={() => setMod((previous) => !previous)}
+                                accessibilityRole="button"
+                                accessibilityLabel={
+                                    isMod ? "Termina modifica" : "Modifica elenco"
+                                }
+                                accessibilityState={{selected: isMod}}
+                                hitSlop={8}
+                                style={({pressed}) => [
+                                    styles.modButton,
+                                    pressed && {opacity: 0.65},
+                                ]}
+                            >
+                                <Ionicons
+                                    name={isMod ? "checkmark-outline" : "create-outline"}
+                                    size={22}
+                                    color={colors.error}
+                                />
+                            </Pressable>
+                        )}
+
                     </View>
 
                     <ScrollView
                         style={styles.fullPageScroll}
                         contentContainerStyle={styles.fullPageContent}
                     >
-                        {children}
+                        {renderContent(canMod && isMod)}
                     </ScrollView>
+                    {feedback}
                 </SafeAreaView>
             </Modal>
         </>
@@ -162,7 +200,7 @@ const styles = StyleSheet.create({
     fullPageHeader: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 12,
+        justifyContent: "space-between",
         paddingHorizontal: 16,
         paddingVertical: 12,
         borderBottomWidth: 1,
@@ -186,5 +224,21 @@ const styles = StyleSheet.create({
         maxHeight: 280
     },
 
+    iconAndTitle: {
+        flex: 1,
+        flexDirection: "row",
+        gap: 12,
+    },
+
+    modButton: {
+        width: 35,
+        height: 35,
+        borderRadius: 17,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: colors.errorBK,
+        borderWidth: 1,
+        borderColor: colors.error
+    },
 
 })

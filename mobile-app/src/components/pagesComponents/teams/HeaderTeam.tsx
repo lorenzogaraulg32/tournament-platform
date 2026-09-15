@@ -6,7 +6,8 @@ import {useEffect, useRef, useState} from "react";
 import * as Clipboard from "expo-clipboard";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import BackButton from "@/src/components/common/buttons/BackButton";
-import SettingsButton from "@/src/components/common/buttons/SettingsButton";
+import OptionsMenu from "@/src/components/common/OptionsMenu";
+import {router} from "expo-router";
 
 type TeamHeaderProps = {
     team: TeamDetails | null;
@@ -33,6 +34,31 @@ export default function HeaderTeam({
                                        onBack
                                    }: TeamHeaderProps) {
 
+    const [optionsVisible, setOptionsVisible] = useState(false);
+
+    const onOptionsPress = () => {
+        setOptionsVisible((previous) => !previous);
+    };
+
+    const onModClicked = () => {
+
+        if (!team) {
+            return;
+        }
+
+        router.push({
+            pathname: "/teams/modify",
+            params: {
+                teamId: String(team.id),
+            },
+        });
+    };
+
+    const onDeleteClicked = () => {
+        setOptionsVisible(false);
+        console.log("Elimina cliccato!")
+
+    };
 
     function formatLocationLabel(location: string): string {
         return location
@@ -44,11 +70,6 @@ export default function HeaderTeam({
 
     const onBackPress = () => {
         onBack()
-    }
-
-
-    const onOptionsPress = () => {
-        console.log("options premuto")
     }
 
 
@@ -105,7 +126,12 @@ export default function HeaderTeam({
                                 {team.name}
                             </Text>
 
-                            {canEdit && <SettingsButton onPress={onOptionsPress}/>}
+                            {canEdit &&
+                                <OptionsMenu
+                                    onEdit={onModClicked}
+                                    onDelete={onDeleteClicked}
+                                />}
+
 
                         </View>
 

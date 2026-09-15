@@ -9,6 +9,16 @@ public enum TeamErrorCode implements ErrorCode {
             "Team non trovato"
     ),
 
+    TEAM_NAME_ALREADY(
+            "TEAM_NAME_ALREADY",
+            "Esiste già una squadra con questo nome"
+    ),
+
+    ADMIN_REMOVES_ADMIN(
+            "ADMIN_REMOVES_ADMIN",
+            "Solo il creatore può rimuovere gli admin dalla squadra"
+    ),
+
     USER_IS_NOT_ADMIN(
             "TEAM_USER_IS_NOT_ADMIN",
             "L'utente non è un amministratore della squadra, non può effettuare quest'operazione"

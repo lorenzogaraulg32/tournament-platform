@@ -1,4 +1,4 @@
-package com.tournamentplatform.teamservice.dto;
+package com.tournamentplatform.teamservice.dto.teamGet;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

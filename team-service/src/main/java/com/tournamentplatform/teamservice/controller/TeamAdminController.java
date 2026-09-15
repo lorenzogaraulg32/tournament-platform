@@ -1,6 +1,6 @@
 package com.tournamentplatform.teamservice.controller;
 
-import com.tournamentplatform.teamservice.dto.TeamGetDetailsResponse;
+import com.tournamentplatform.teamservice.dto.teamGet.TeamGetDetailsResponse;
 import com.tournamentplatform.teamservice.service.TeamAdminService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

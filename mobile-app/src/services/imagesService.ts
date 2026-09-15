@@ -1,4 +1,5 @@
 import {authenticatedFetch} from "@/src/services/fetchService";
+import {File as ExpoFile} from "expo-file-system";
 
 export type SelectedImage = {
     uri: string;
@@ -13,15 +14,9 @@ export async function uploadProfilePicture(
     image: SelectedImage
 ): Promise<void> {
     const formData = new FormData();
+    const imageFile = new ExpoFile(image.uri);
 
-    formData.append(
-        "file",
-        {
-            uri: image.uri,
-            name: image.fileName,
-            type: image.mimeType,
-        } as unknown as Blob
-    );
+    formData.append("file", imageFile, image.fileName);
 
     await authenticatedFetch(
         `${API_URL}/users/me/profile-picture`,
@@ -30,6 +25,7 @@ export async function uploadProfilePicture(
             body: formData,
         }
     );
+
 }
 
 

@@ -1,6 +1,5 @@
 import {ReactNode} from "react";
 import {Pressable, StyleProp, StyleSheet, View, ViewStyle} from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import {SportRole} from "@/src/services/users/userConstants";
 import {
     adminCardColors,
@@ -15,6 +14,7 @@ import {
     tournamentCardColors,
     yellowRoleCardColors
 } from "@/src/constants/cardPalettes";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 type HorizontalCardContainerProps = {
     onPress: () => void,
@@ -23,6 +23,7 @@ type HorizontalCardContainerProps = {
     style?: StyleProp<ViewStyle>
     role?: SportRole
     authority?: TeamAuthority
+    modify?: () => void
 }
 
 
@@ -32,7 +33,8 @@ export default function HorizontalCardContainer({
                                                     children,
                                                     style,
                                                     role,
-                                                    authority
+                                                    authority,
+                                                    modify
                                                 }:
                                                     HorizontalCardContainerProps) {
 
@@ -89,7 +91,7 @@ export default function HorizontalCardContainer({
                 (style && style) || styles.card,
                 pressed && styles.cardPressed,
             ]}
-            onPress={onPress}
+            onPress={modify ? modify : onPress}
         >
             {renderBK()}
             {children}
@@ -101,11 +103,21 @@ export default function HorizontalCardContainer({
                     },
                 ]}
             >
-                <Ionicons
-                    name="chevron-forward"
-                    size={17}
-                    color={palette.accent}
-                />
+
+                {modify ? (
+                        <Ionicons
+                            name="trash-outline"
+                            size={17}
+                            color={"#FF7474"}
+                        />
+                    )
+                    : (
+                        <Ionicons
+                            name="chevron-forward"
+                            size={17}
+                            color={palette.accent}
+                        />
+                    )}
             </View>
 
         </Pressable>

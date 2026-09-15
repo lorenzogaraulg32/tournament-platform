@@ -1,5 +1,6 @@
-package com.tournamentplatform.teamservice.dto;
+package com.tournamentplatform.teamservice.dto.teamGet;
 
+import com.tournamentplatform.teamservice.entity.Team;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,8 @@ public class TeamGetDetailsResponse {
     private String name;
 
     private String description;
+
+    private Team.RecruitmentStatus status;
 
     private String locationLabel;
 

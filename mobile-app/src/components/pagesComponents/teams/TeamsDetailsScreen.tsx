@@ -2,7 +2,7 @@ import {ScrollView, StyleSheet, Text, View} from "react-native";
 import {colors} from "@/src/constants/theme";
 import {router, useLocalSearchParams} from "expo-router";
 import {useEffect, useState} from "react";
-import {getTeamDetails, TeamDetails} from "@/src/services/teams/teamService";
+import {getTeamDetails, removeTeamPlayer, TeamDetails} from "@/src/services/teams/teamService";
 import {loadUserInfo, UserEntity} from "@/src/services/users/userService";
 import {loadCurrentUserId} from "@/src/services/users/authService";
 import {normalizeApiRequestError} from "@/src/services/errorService";
@@ -26,6 +26,23 @@ export default function TeamsDetailsScreen() {
     const [error, setError] = useState<string | null>(null);
     const [isCurrentUserTeamAdmin, setIsCurrentUserTeamAdmin] = useState<boolean>(false)
     const [isCurrentUserTeamOwner, setIsCurrentUserTeamOwner] = useState<boolean>(false)
+
+    const [removingPlayerId, setRemovingPlayerId] = useState<string | null>(null);
+
+    const [toast, setToast] = useState<{
+        message: string;
+        success: boolean;
+    } | null>(null);
+
+    useEffect(() => {
+        if (!toast) {
+            return;
+        }
+
+        const timeout = setTimeout(() => setToast(null), 3000);
+
+        return () => clearTimeout(timeout);
+    }, [toast]);
 
     const onBack = () => {
         if (router.canGoBack()) {
@@ -124,6 +141,53 @@ export default function TeamsDetailsScreen() {
     }, [teamId])
 
 
+    async function removePlayerFromTeam(id: string): Promise<void> {
+        if (!team || removingPlayerId !== null) {
+            return;
+        }
+
+        setRemovingPlayerId(id);
+        setToast(null);
+
+        try {
+            await removeTeamPlayer(String(team.id), id);
+
+            setTeamPlayers((previous) =>
+                previous.filter((player) => String(player.id) !== String(id))
+            );
+
+            setTeam((previous) =>
+                previous
+                    ? {
+                        ...previous,
+                        playerIds: previous.playerIds.filter(
+                            (playerId) => String(playerId) !== String(id)
+                        ),
+                    }
+                    : previous
+            );
+
+            setToast({
+                message: "Eliminazione completata",
+                success: true,
+            });
+        } catch (error) {
+            const apiError = normalizeApiRequestError(error);
+
+            // Redirect già gestito dal fetch autenticato.
+            if (apiError.status === 401) {
+                return;
+            }
+
+            setToast({
+                message: "C'è stato un errore",
+                success: false,
+            });
+        } finally {
+            setRemovingPlayerId(null);
+        }
+    }
+
     return (
         <PageLayout
             header={
@@ -155,28 +219,58 @@ export default function TeamsDetailsScreen() {
                         <View></View>
                     )}
 
-                    <CollapsableSection label={"Players"} iconName={"people-outline"}>
-                        {team && (
-                            <CardListContainer
-                                items={teamPlayers.map((player) => (
-                                    <PlayersCard
-                                        key={player.id}
-                                        player={player}
-                                        //todo: l'entità squadra deve avere uno sport!
-                                        sport={Sport.FOOTBALL}/>
-                                ))}
-                                emptyMsg={"Nessun giocatore nella squadra"}
-                                isLoading={isLoading}
-                                error={error}
-                                orientation={"vertical"}
-                            />
-
+                    <CollapsableSection
+                        label="Players"
+                        iconName="people-outline"
+                        canMod={isCurrentUserTeamAdmin}
+                        feedback={
+                            toast && (
+                                <View
+                                    pointerEvents="none"
+                                    style={[
+                                        styles.toast,
+                                        {
+                                            backgroundColor: toast.success
+                                                ? "#166534"
+                                                : "#B42318",
+                                        },
+                                    ]}
+                                    accessibilityLiveRegion="polite"
+                                >
+                                    <Text style={styles.toastText}>
+                                        {toast.message}
+                                    </Text>
+                                </View>
+                            )
+                        }
+                    >
+                        {(isMod) => (
+                            team && (
+                                <CardListContainer
+                                    items={teamPlayers.map((player) => (
+                                        <PlayersCard
+                                            key={player.id}
+                                            player={player}
+                                            sport={Sport.FOOTBALL}
+                                            modify={isMod
+                                                ? () => {
+                                                    void removePlayerFromTeam(String(player.id));
+                                                }
+                                                : undefined}
+                                        />
+                                    ))}
+                                    emptyMsg="Nessun giocatore nella squadra"
+                                    isLoading={isLoading}
+                                    error={error}
+                                    orientation="vertical"
+                                />
+                            )
                         )}
-
                     </CollapsableSection>
 
 
-                    <CollapsableSection label={"Admin"} iconName={"shield-checkmark-outline"}>
+                    <CollapsableSection label={"Admin"} iconName={"shield-checkmark-outline"}
+                                        canMod={isCurrentUserTeamOwner}>
 
                         {team && (
                             <CardListContainer
@@ -235,6 +329,29 @@ const styles = StyleSheet.create({
         lineHeight: 23,
         fontWeight: "400",
         color: "#3F3F46",
+    },
+
+    toast: {
+        position: "absolute",
+        bottom: 40,
+        left: 24,
+        right: 24,
+        paddingHorizontal: 18,
+        paddingVertical: 14,
+        borderRadius: 14,
+        alignItems: "center",
+        elevation: 6,
+        shadowColor: "#000",
+        shadowOffset: {width: 0, height: 3},
+        shadowOpacity: 0.18,
+        shadowRadius: 6,
+    },
+
+    toastText: {
+        color: "#FFFFFF",
+        fontSize: 14,
+        fontWeight: "600",
+        textAlign: "center",
     },
 
 });

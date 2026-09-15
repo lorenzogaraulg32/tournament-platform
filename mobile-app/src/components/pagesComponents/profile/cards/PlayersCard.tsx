@@ -11,6 +11,7 @@ import HorizontalCardContainer, {
 type PlayerCardProps = {
     player: UserEntity
     sport: Sport
+    modify?: () => void
 }
 
 const playerRoutes = {
@@ -25,7 +26,8 @@ function isTabName(value: string): value is keyof typeof playerRoutes {
 
 export default function PlayersCard({
                                         player,
-                                        sport
+                                        sport,
+                                        modify
                                     }: PlayerCardProps
 ) {
 
@@ -37,6 +39,12 @@ export default function PlayersCard({
 
 
     function handlePress() {
+
+        if (modify) {
+            modify();
+            return;
+        }
+
         const appIndex = segments.indexOf("(app)");
         const tab = segments[appIndex + 1];
 
@@ -58,6 +66,7 @@ export default function PlayersCard({
             role={playerRole}
             style={styles.card}
             onPress={handlePress}
+            modify={modify ? modify : undefined}
         >
             <View style={styles.content}>
                 <Text

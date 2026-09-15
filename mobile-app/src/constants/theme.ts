@@ -28,6 +28,7 @@ export const colors = {
     iconGlowColor: "rgba(0,86,40,0.3)",
 
     error: "#FF4D4D",
+    errorBK: "rgba(255,77,77,0.08)",
     success: "#43A047",
 
 };

@@ -1,6 +1,6 @@
 package com.tournamentplatform.teamservice.service;
 
-import com.tournamentplatform.teamservice.dto.TeamGetDetailsResponse;
+import com.tournamentplatform.teamservice.dto.teamGet.TeamGetDetailsResponse;
 import com.tournamentplatform.teamservice.entity.Team;
 import com.tournamentplatform.teamservice.errorHandling.teamsExceptions.OwnerRemovalExcpetion;
 import com.tournamentplatform.teamservice.errorHandling.teamsExceptions.UserNotMemberException;

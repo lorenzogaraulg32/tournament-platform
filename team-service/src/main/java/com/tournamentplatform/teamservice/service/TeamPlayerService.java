@@ -1,7 +1,8 @@
 package com.tournamentplatform.teamservice.service;
 
-import com.tournamentplatform.teamservice.dto.TeamGetDetailsResponse;
+import com.tournamentplatform.teamservice.dto.teamGet.TeamGetDetailsResponse;
 import com.tournamentplatform.teamservice.entity.Team;
+import com.tournamentplatform.teamservice.errorHandling.teamsExceptions.AdminRemovesAdminException;
 import com.tournamentplatform.teamservice.errorHandling.teamsExceptions.OwnerRemovalExcpetion;
 import com.tournamentplatform.teamservice.errorHandling.teamsExceptions.TeamNotFoundException;
 import com.tournamentplatform.teamservice.repository.TeamsRepository;
@@ -36,7 +37,7 @@ public class TeamPlayerService {
         return servicesHelper.toTeamGetDetailsResponse(savedTeam);
     }
 
-    public TeamGetDetailsResponse addPlayerInTeamInvitationCode( String invitationCode) {
+    public TeamGetDetailsResponse addPlayerInTeamInvitationCode(String invitationCode) {
 
         Team team = teamsRepository
                 .findByInvitationCode(invitationCode)
@@ -51,7 +52,7 @@ public class TeamPlayerService {
         return servicesHelper.toTeamGetDetailsResponse(savedTeam);
     }
 
-    public TeamGetDetailsResponse removePlayerFromTeam(String teamId, String playerId) {
+    public String removePlayerFromTeam(String teamId, String playerId) {
 
         Team team = servicesHelper.getTeamEntityOrThrow(teamId);
 
@@ -61,12 +62,19 @@ public class TeamPlayerService {
             throw new OwnerRemovalExcpetion();
         }
 
+
+        //un admin non può essere rimosso da un altro admin ma solo dal creatore
+        if (teamAuthorizationHelper.checkTeamAdmin(team, playerId) && !teamAuthorizationHelper.checkTeamCreator(team)) {
+            throw new AdminRemovesAdminException();
+        }
+
+
         team.getPlayerIds().remove(playerId);
         team.getAdminIds().remove(playerId);
 
-        Team savedTeam = teamsRepository.save(team);
+        teamsRepository.save(team);
 
-        return servicesHelper.toTeamGetDetailsResponse(savedTeam);
+        return "Eliminato";
     }
 
 

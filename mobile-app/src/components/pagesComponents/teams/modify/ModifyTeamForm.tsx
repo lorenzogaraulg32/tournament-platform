@@ -1,6 +1,14 @@
-import {useState} from "react";
+import {ComponentProps, useRef, useState} from "react";
+import {Image} from "expo-image";
+import {View} from "react-native";
 import {router} from "expo-router";
-import {createTeam, TeamCreationRequest, TeamLogoUpload,} from "@/src/services/teams/teamCreationService";
+import {
+    checkTeamNameAlreadyExists,
+    editTeam,
+    TeamCreationRequest,
+    TeamLogoUpload,
+    TeamUpdateRequest,
+} from "@/src/services/teams/teamCreationService";
 import {normalizeApiRequestError, printApiRequestError,} from "@/src/services/errorService";
 import FormLayout from "@/src/components/common/forms/FormLayout";
 import HeaderCreateTeam from "@/src/components/pagesComponents/teams/createTeam/HeaderCreateTeam";
@@ -9,9 +17,15 @@ import NameAndDescStep from "@/src/components/pagesComponents/teams/createTeam/s
 import FormProgressBar from "@/src/components/common/forms/FormProgressBar";
 import PositionStep from "@/src/components/pagesComponents/teams/createTeam/steps/PositionStep";
 import LogoStep from "@/src/components/pagesComponents/teams/createTeam/steps/LogoStep";
-import {checkTeamNameAlreadyExists} from "@/src/services/teams/teamCreationService";
+import {TeamDetails} from "@/src/services/teams/teamService";
 
-type TeamCreationFieldErrors = {
+type TeamEditProps = {
+    team: TeamDetails;
+    // Passare una sorgente con URL assoluto e headers se il logo è protetto.
+    existingLogoSource?: ComponentProps<typeof Image>["source"];
+};
+
+type TeamEditFieldErrors = {
     name?: string;
     description?: string;
     status?: string;
@@ -20,35 +34,43 @@ type TeamCreationFieldErrors = {
 };
 
 
-type TeamCreationStep = 0 | 1 | 2;
+type TeamEditStep = 0 | 1 | 2;
 
-const FIRST_STEP: TeamCreationStep = 0;
-const LAST_STEP: TeamCreationStep = 2;
+const FIRST_STEP: TeamEditStep = 0;
+const LAST_STEP: TeamEditStep = 2;
 
-const STEPS: TeamCreationStep[] = [0, 1, 2];
+const STEPS: TeamEditStep[] = [0, 1, 2];
 
-export default function CreateTeam() {
+export default function ModifyTeamForm({team, existingLogoSource}: TeamEditProps) {
     const [currentStep, setCurrentStep] =
-        useState<TeamCreationStep>(FIRST_STEP);
+        useState<TeamEditStep>(FIRST_STEP);
 
-    const [teamData, setTeamData] =
-        useState<TeamCreationRequest>({
-            name: "",
-            description: "",
-            status: "CLOSED",
-            location: undefined,
-        });
+    const [teamData, setTeamData] = useState<TeamCreationRequest>(() => ({
+        name: team.name,
+        description: team.description ?? "",
+        status: team.status,
+        location:
+            team.latitude != null && team.longitude != null
+                ? {
+                    label: team.locationLabel ?? "",
+                    latitude: team.latitude,
+                    longitude: team.longitude,
+                }
+                : undefined,
+    }));
 
     const [logo, setLogo] = useState<TeamLogoUpload | null>(null);
-
+    const [removeExistingLogo, setRemoveExistingLogo] = useState(false);
 
     const [fieldErrors, setFieldErrors] =
-        useState<TeamCreationFieldErrors>({});
+        useState<TeamEditFieldErrors>({});
 
 
     const [apiError, setApiError] = useState<string>("");
 
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const submissionLock = useRef(false);
+    const currentLogoSource = existingLogoSource ?? (team.logoUrl || undefined);
 
     function updateTeamData<K extends keyof TeamCreationRequest>(
         field: K,
@@ -67,12 +89,8 @@ export default function CreateTeam() {
         setApiError("");
     }
 
-    //validazione puramente frontend
+    // Validazione locale e controllo disponibilità del nome modificato.
     async function validateNameAndDescription(): Promise<boolean> {
-        if (isSubmitting) {
-            return false;
-        }
-
         const trimmedName = teamData.name.trim();
         const trimmedDescription = teamData.description?.trim() ?? "";
 
@@ -98,9 +116,11 @@ export default function CreateTeam() {
             return false;
         }
 
-        try {
-            setIsSubmitting(true);
+        if (trimmedName === team.name.trim()) {
+            return true;
+        }
 
+        try {
             await checkTeamNameAlreadyExists(trimmedName);
 
             return true;
@@ -123,8 +143,6 @@ export default function CreateTeam() {
 
             setApiError(apiError.message);
             return false;
-        } finally {
-            setIsSubmitting(false);
         }
     }
 
@@ -170,7 +188,7 @@ export default function CreateTeam() {
         return true;
     }
 
-    async function validateStep(step: TeamCreationStep): Promise<boolean> {
+    async function validateStep(step: TeamEditStep): Promise<boolean> {
 
         switch (step) {
             case 0:
@@ -198,7 +216,7 @@ export default function CreateTeam() {
     function handleBack() {
         if (
             currentStep === FIRST_STEP ||
-            isSubmitting
+            submissionLock.current
         ) {
             return;
         }
@@ -206,68 +224,53 @@ export default function CreateTeam() {
         setApiError("");
 
         setCurrentStep(
-            (currentStep - 1) as TeamCreationStep,
+            (currentStep - 1) as TeamEditStep,
         );
     }
 
     async function handleNext() {
-        if (isSubmitting) {
+        if (submissionLock.current) {
             return;
         }
 
+        submissionLock.current = true;
+        setIsSubmitting(true);
         setApiError("");
 
-        if (currentStep === LAST_STEP) {
-            await handleCreateTeam();
-            return;
+        try {
+            if (currentStep === LAST_STEP) {
+                await handleEditTeam();
+            } else if (await validateStep(currentStep)) {
+                setCurrentStep((currentStep + 1) as TeamEditStep);
+            }
+        } finally {
+            submissionLock.current = false;
+            setIsSubmitting(false);
         }
-
-        if (!(await validateStep(currentStep))) {
-            return;
-        }
-
-        setCurrentStep((currentStep + 1) as TeamCreationStep);
     }
 
-    async function handleCreateTeam() {
-        if (isSubmitting) {
+    async function handleEditTeam() {
+        if (!(await validateForm())) {
             return;
         }
 
-        setApiError("");
-
-        if (!await validateForm()) {
-            setApiError("Form non valido!")
-            return;
-        }
-
-        const selectedLocation = teamData.location;
-
-        const request: TeamCreationRequest = {
+        const request: TeamUpdateRequest = {
             name: teamData.name.trim(),
-            description:
-                teamData.description?.trim() || undefined,
+            description: teamData.description?.trim() ?? "",
             status: teamData.status,
-            location: selectedLocation
-                ? {
-                    label: selectedLocation.label,
-                    latitude: selectedLocation.latitude,
-                    longitude: selectedLocation.longitude,
-                }
-                : undefined,
+            location: teamData.location ?? null,
+            logoUrl: removeExistingLogo ? "REMOVE" : undefined,
         };
 
         try {
-            setIsSubmitting(true);
-
-            const response = await createTeam(
+            await editTeam(
+                String(team.id),
                 request,
                 logo
             );
 
-            router.replace(`/teams/${response.id}`);
+            router.back();
         } catch (error) {
-
 
             const apiError = normalizeApiRequestError(error);
 
@@ -275,17 +278,40 @@ export default function CreateTeam() {
             if (apiError.status === 401) {
                 return;
             }
-            printApiRequestError(apiError)
+            printApiRequestError(apiError);
+
+            if (apiError.status === 409) {
+                setFieldErrors((previous) => ({
+                    ...previous,
+                    name: apiError.message,
+                }));
+                setCurrentStep(FIRST_STEP);
+                return;
+            }
+
             setApiError(apiError.message);
-        } finally {
-            setIsSubmitting(false);
         }
     }
 
     function updateLogo(newLogo: TeamLogoUpload | null) {
         setLogo(newLogo);
-        setFieldErrors((previousErrors) => ({
-            ...previousErrors,
+
+        if (newLogo) {
+            setRemoveExistingLogo(false);
+        }
+
+        setFieldErrors((previous) => ({
+            ...previous,
+            logo: undefined,
+        }));
+        setApiError("");
+    }
+
+    function removeLogo() {
+        setLogo(null);
+        setRemoveExistingLogo(true);
+        setFieldErrors((previous) => ({
+            ...previous,
             logo: undefined,
         }));
         setApiError("");
@@ -329,6 +355,10 @@ export default function CreateTeam() {
                 return (
                     <LogoStep
                         value={logo}
+                        existingLogoSource={
+                            removeExistingLogo ? undefined : currentLogoSource
+                        }
+                        onRemove={removeLogo}
                         onChange={updateLogo}
                         disabled={isSubmitting}
                         errorMessage={fieldErrors.logo}
@@ -359,7 +389,9 @@ export default function CreateTeam() {
                 isSubmitting={isSubmitting}
                 step={formStep}
                 apiError={apiError}>
-                {renderStep()}
+                <View pointerEvents={isSubmitting ? "none" : "auto"}>
+                    {renderStep()}
+                </View>
             </FormContent>
         </FormLayout>
     );

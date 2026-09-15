@@ -158,6 +158,31 @@ public class GlobalExceptionHandler {
         );
     }
 
+
+    @ExceptionHandler(TeamNameAlreadyExistsException.class)
+    public ResponseEntity<ApiErrorResponse> handleTeamNameAlreadyExists(
+            TeamNameAlreadyExistsException exception,
+            HttpServletRequest request
+    ) {
+        return buildResponse(
+                HttpStatus.CONFLICT,
+                exception,
+                request
+        );
+    }
+
+    @ExceptionHandler(AdminRemovesAdminException.class)
+    public ResponseEntity<ApiErrorResponse> handleAdminRemovesAdmin(
+            AdminRemovesAdminException exception,
+            HttpServletRequest request
+    ) {
+        return buildResponse(
+                HttpStatus.FORBIDDEN,
+                exception,
+                request
+        );
+    }
+
     @ExceptionHandler(UserNotAdminException.class)
     public ResponseEntity<ApiErrorResponse> handleUserNotAdmin(
             UserNotAdminException exception,

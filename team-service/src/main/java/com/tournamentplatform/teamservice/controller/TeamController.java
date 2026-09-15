@@ -1,10 +1,10 @@
 package com.tournamentplatform.teamservice.controller;
 
-import com.tournamentplatform.teamservice.dto.TeamGetDetailsResponse;
-import com.tournamentplatform.teamservice.dto.TeamGetResponse;
-import com.tournamentplatform.teamservice.dto.TeamNamePatchRequest;
 import com.tournamentplatform.teamservice.dto.teamCreation.TeamCreationRequest;
 import com.tournamentplatform.teamservice.dto.teamCreation.TeamCreationResponse;
+import com.tournamentplatform.teamservice.dto.teamGet.TeamGetDetailsResponse;
+import com.tournamentplatform.teamservice.dto.teamGet.TeamGetResponse;
+import com.tournamentplatform.teamservice.dto.teamModify.TeamUpdateRequest;
 import com.tournamentplatform.teamservice.service.TeamService;
 import jakarta.validation.Valid;
 import org.springframework.core.io.Resource;
@@ -48,6 +48,14 @@ public class TeamController {
                 .body(response);
     }
 
+
+    @PostMapping("/name/{team_name}")
+    public ResponseEntity<String> checkTeamName(@PathVariable String team_name) {
+        String response = teamService.checkTeamName(team_name);
+
+        return ResponseEntity.status(200).body(response);
+    }
+
     @GetMapping("/my-teams")
     public ResponseEntity<List<TeamGetResponse>> getCurrentUserTeams() {
         List<TeamGetResponse> response = teamService.getCurrentUserTeams();
@@ -73,10 +81,18 @@ public class TeamController {
         return teamService.getTeamLogo(id);
     }
 
-    @PatchMapping("/name/{id}")
-    public ResponseEntity<TeamGetDetailsResponse> patchTeamName(@PathVariable String id, @RequestBody @Valid TeamNamePatchRequest patchRequest) {
-        TeamGetDetailsResponse response = teamService.patchTeamName(id, patchRequest);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+    @PatchMapping(
+            value = "/{teamId}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
+    public ResponseEntity<Void> updateTeam(
+            @PathVariable String teamId,
+            @Valid @RequestPart("team") TeamUpdateRequest request,
+            @RequestPart(value = "logo", required = false) MultipartFile logo
+    ) {
+        teamService.updateTeam(teamId, request, logo);
+
+        return ResponseEntity.noContent().build();
     }
 
     @PatchMapping(

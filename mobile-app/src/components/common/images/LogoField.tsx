@@ -21,8 +21,10 @@ type variant = "createTeam" | "createUser"
 type LogoFieldProps = {
     variant: variant
     value: SelectedImage | null;
+    onRemove?: () => void
     onChange: (logo: SelectedImage | null) => void;
     placeholderIcon?: ComponentProps<typeof Ionicons>["name"];
+    existingLogoSource?: ComponentProps<typeof Image>["source"];
     label?: string;
     optional?: boolean;
     disabled?: boolean;
@@ -32,10 +34,12 @@ type LogoFieldProps = {
 export default function LogoField({
                                       variant,
                                       value,
+                                      onRemove,
                                       onChange,
                                       label = "Picture",
                                       optional = true,
                                       placeholderIcon = "image-outline",
+                                      existingLogoSource,
                                       disabled = false,
                                       errorMessage,
                                   }: LogoFieldProps) {
@@ -45,6 +49,12 @@ export default function LogoField({
     const visibleError = errorMessage ?? pickerError;
 
     const isCreateUser = variant === "createUser";
+
+    const previewSource = value
+        ? {uri: value.uri}
+        : existingLogoSource;
+
+    const hasPreview = Boolean(previewSource);
 
     async function selectLogo() {
         try {
@@ -114,7 +124,11 @@ export default function LogoField({
 
     function removeLogo() {
         setPickerError(null);
-        onChange(null);
+        if (onRemove) {
+            onRemove()
+        } else {
+            onChange(null);
+        }
     }
 
     return (
@@ -159,9 +173,9 @@ export default function LogoField({
                         styles.previewContainerCreateUser,
                     ]}
                 >
-                    {value ? (
+                    {hasPreview ? (
                         <Image
-                            source={{uri: value.uri}}
+                            source={previewSource}
                             style={styles.previewImage}
                             contentFit="cover"
                         />
@@ -169,11 +183,7 @@ export default function LogoField({
                         <Ionicons
                             name={placeholderIcon}
                             size={34}
-                            color={
-                                isCreateUser
-                                    ? "#FFFFFF"
-                                    : "#C8480A"
-                            }
+                            color={isCreateUser ? "#FFFFFF" : "#C8480A"}
                         />
                     )}
                 </View>
@@ -188,10 +198,14 @@ export default function LogoField({
                         {value
                             ? isCreateUser
                                 ? "Foto selezionata"
-                                : "Picture selezionato"
-                            : isCreateUser
-                                ? "Aggiungi una foto"
-                                : "Aggiungi un logo"}
+                                : "Logo selezionato"
+                            : hasPreview
+                                ? isCreateUser
+                                    ? "Foto attuale"
+                                    : "Logo attuale"
+                                : isCreateUser
+                                    ? "Aggiungi una foto"
+                                    : "Aggiungi un logo"}
                     </Text>
 
                     <Text
@@ -204,7 +218,9 @@ export default function LogoField({
                     >
                         {value
                             ? value.fileName
-                            : "PNG, JPG o WebP · massimo 2 MB"}
+                            : hasPreview
+                                ? "Scegli un’immagine per sostituirlo"
+                                : "PNG, JPG o WebP · massimo 2 MB"}
                     </Text>
 
                     <View style={styles.actions}>
@@ -218,17 +234,13 @@ export default function LogoField({
                             ]}
                         >
                             <Ionicons
-                                name={
-                                    value
-                                        ? "images-outline"
-                                        : "cloud-upload-outline"
-                                }
+                                name={hasPreview ? "images-outline" : "cloud-upload-outline"}
                                 size={17}
                                 color="#FFFFFF"
                             />
 
                             <Text style={styles.selectButtonText}>
-                                {value
+                                {hasPreview
                                     ? "Cambia"
                                     : isCreateUser
                                         ? "Scegli foto"

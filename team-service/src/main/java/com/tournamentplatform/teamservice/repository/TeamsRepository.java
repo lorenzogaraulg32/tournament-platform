@@ -27,4 +27,5 @@ public interface TeamsRepository extends JpaRepository<Team, Long> {
 
     Optional<Team> findByInvitationCode(String invitationCode);
 
+    boolean existsByName(String name);
 }

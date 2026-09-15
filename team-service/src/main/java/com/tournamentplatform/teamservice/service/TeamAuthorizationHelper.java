@@ -25,6 +25,10 @@ public class TeamAuthorizationHelper {
         }
     }
 
+    public boolean checkTeamAdmin(Team team, String id) {
+        return team.getAdminIds().contains(id);
+    }
+
     public void checkTeamPlayer(Team team) {
         String currentUserId = currentUserProvider.getCurrentUserId();
         if (!team.getPlayerIds().contains(currentUserId)) {
@@ -32,11 +36,12 @@ public class TeamAuthorizationHelper {
         }
     }
 
-    public void checkTeamCreator(Team team) {
+    public boolean checkTeamCreator(Team team) {
         String currentUserId = currentUserProvider.getCurrentUserId();
         if (!team.getCreatorId().equals(currentUserId)) {
             throw new UserNotOwnerException();
         }
+        return true;
     }
 
     public String getCurrentUserId() {

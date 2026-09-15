@@ -1,6 +1,6 @@
 package com.tournamentplatform.teamservice.controller;
 
-import com.tournamentplatform.teamservice.dto.TeamGetDetailsResponse;
+import com.tournamentplatform.teamservice.dto.teamGet.TeamGetDetailsResponse;
 import com.tournamentplatform.teamservice.service.TeamPlayerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,11 +44,11 @@ public class TeamPlayersController {
 
 
     @DeleteMapping("/{teamId}/players/{userId}")
-    public ResponseEntity<TeamGetDetailsResponse> removePlayer(
+    public ResponseEntity<String> removePlayer(
             @PathVariable String teamId,
             @PathVariable String userId
     ) {
-        TeamGetDetailsResponse response = teamPlayerService.removePlayerFromTeam(teamId, userId);
+        String response = teamPlayerService.removePlayerFromTeam(teamId, userId);
         return ResponseEntity.ok(response);
     }
 }
