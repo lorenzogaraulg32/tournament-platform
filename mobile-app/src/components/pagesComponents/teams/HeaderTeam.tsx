@@ -7,14 +7,16 @@ import * as Clipboard from "expo-clipboard";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import BackButton from "@/src/components/common/buttons/BackButton";
 import OptionsMenu from "@/src/components/common/OptionsMenu";
-import {router} from "expo-router";
 
 type TeamHeaderProps = {
-    team: TeamDetails | null;
-    isLoading?: boolean;
-    error?: string | null;
-    canEdit: boolean;
-    onBack: () => void;
+    team: TeamDetails | null,
+    isLoading?: boolean,
+    error?: string | null,
+    canEdit: boolean,
+    onBack: () => void,
+    onMod?: () => void,
+    onLeave?: () => void,
+    onDelete?: () => void,
 };
 
 
@@ -31,28 +33,12 @@ export default function HeaderTeam({
                                        isLoading = false,
                                        error = null,
                                        canEdit,
-                                       onBack
+                                       onBack,
+                                       onMod,
+                                       onLeave,
+                                       onDelete,
                                    }: TeamHeaderProps) {
 
-    const onModClicked = () => {
-
-        if (!team) {
-            return;
-        }
-
-        router.push({
-            pathname: "/teams/modify",
-            params: {
-                teamId: String(team.id),
-            },
-        });
-    };
-
-    const onDeleteClicked = () => {
-
-        console.log("Elimina cliccato!")
-
-    };
 
     function formatLocationLabel(location: string): string {
         return location
@@ -122,8 +108,9 @@ export default function HeaderTeam({
 
                             {canEdit &&
                                 <OptionsMenu
-                                    onEdit={onModClicked}
-                                    onDelete={onDeleteClicked}
+                                    onEdit={onMod}
+                                    onDelete={onDelete}
+                                    onLeave={onLeave}
                                 />}
 
 

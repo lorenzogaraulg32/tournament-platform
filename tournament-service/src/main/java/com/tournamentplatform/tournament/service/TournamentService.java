@@ -4,6 +4,7 @@ package com.tournamentplatform.tournament.service;
 import com.tournamentplatform.tournament.dto.tournaments.*;
 import com.tournamentplatform.tournament.entity.Tournament;
 import com.tournamentplatform.tournament.entity.TournamentStatus;
+import com.tournamentplatform.tournament.errorHandling.tournamentExceptions.TournamentInProgressException;
 import com.tournamentplatform.tournament.repository.TournamentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -184,5 +185,41 @@ public class TournamentService {
         Tournament savedTeam = tournamentRepository.save(team);
 
         return tournamentHelper.toTournamentGetResponse(savedTeam);
+    }
+
+    public List<String> canDeleteTeam(String teamId) {
+
+        List<Tournament> participatingTournaments =
+                tournamentRepository.findParticipatedByTeamIds(
+                        Set.of(Long.parseLong(teamId))
+                );
+
+        for (Tournament tournament : participatingTournaments) {
+            if (tournament.getStatus().equals(TournamentStatus.DRAFTING_MATCHES) || tournament.getStatus().equals(TournamentStatus.IN_PROGRESS)) {
+                throw new TournamentInProgressException();
+            }
+        }
+
+
+        return participatingTournaments.stream()
+                .map(tournament -> String.valueOf(tournament.getId()))
+                .toList();
+
+    }
+
+    public String leaveTournament(String teamId, String tournamentId) {
+
+        Tournament tournament = tournamentHelper.findOrThrow(tournamentId);
+
+        if (tournament.getStatus().equals(TournamentStatus.DRAFTING_MATCHES) || tournament.getStatus().equals(TournamentStatus.IN_PROGRESS)) {
+            throw new TournamentInProgressException();
+        }
+
+
+        tournament.getRegisteredTeamIds().remove(Long.valueOf(teamId));
+
+        return "Eliminato";
+
+
     }
 }

@@ -84,4 +84,27 @@ public class TeamPlayerService {
         return team.getPlayerIds();
     }
 
+    public String leaveTeam(String teamId) {
+
+        String currentUserId = teamAuthorizationHelper.getCurrentUserId();
+
+        Team team = servicesHelper.getTeamEntityOrThrow(teamId);
+
+        if (teamAuthorizationHelper.checkTeamCreator(team)) {
+            throw new OwnerRemovalExcpetion();
+        }
+
+        if (teamAuthorizationHelper.checkTeamAdmin(team, currentUserId)) {
+            team.getAdminIds().remove(currentUserId);
+        }
+
+        team.getPlayerIds().remove(currentUserId);
+
+
+        teamsRepository.save(team);
+
+
+        return "Squadra abbandonata";
+
+    }
 }

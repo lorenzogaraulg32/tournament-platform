@@ -1,8 +1,14 @@
-import {ScrollView, StyleSheet, Text, View} from "react-native";
+import {Alert, ScrollView, StyleSheet, Text, View} from "react-native";
 import {colors} from "@/src/constants/theme";
 import {router, useLocalSearchParams} from "expo-router";
 import {useEffect, useState} from "react";
-import {getTeamDetails, removeTeamAdmin, removeTeamPlayer, TeamDetails} from "@/src/services/teams/teamService";
+import {
+    getTeamDetails,
+    leaveTeam,
+    removeTeamAdmin,
+    removeTeamPlayer,
+    TeamDetails
+} from "@/src/services/teams/teamService";
 import {loadUserInfo, UserEntity} from "@/src/services/users/userService";
 import {loadCurrentUserId} from "@/src/services/users/authService";
 import {normalizeApiRequestError} from "@/src/services/errorService";
@@ -142,6 +148,20 @@ export default function TeamsDetailsScreen() {
 
     }, [teamId])
 
+    async function onMod(){
+        if (!team) {
+            return;
+        }
+
+        router.push({
+            pathname: "/teams/modify",
+            params: {
+                teamId: String(team.id),
+            },
+        });
+    }
+
+
     function canRemovePlayer(playerId: string): boolean {
         if (!team || currentUserId === null) {
             return false;
@@ -170,15 +190,12 @@ export default function TeamsDetailsScreen() {
     }
 
     async function removePlayerFromTeam(id: string): Promise<void> {
-        if (!team || removingPlayerId !== null) {
-            return;
-        }
 
         setRemovingPlayerId(id);
         setToast(null);
 
         try {
-            await removeTeamPlayer(String(team.id), id);
+            await removeTeamPlayer(String(team?.id), id);
 
             setTeamPlayers((previous) =>
                 previous.filter((player) => String(player.id) !== String(id))
@@ -268,6 +285,44 @@ export default function TeamsDetailsScreen() {
         }
     }
 
+    function canLeave(){
+        if(currentUserId && team?.adminIds.includes(currentUserId)){
+            return false;
+        }
+        return currentUserId !== String(team?.creatorId);
+    }
+
+    async function onLeave(): Promise<void> {
+        if (!team) {
+            return;
+        }
+
+        try {
+            await leaveTeam(String(team.id));
+
+            router.replace("/(app)/teams");
+        } catch (error) {
+            const apiError = normalizeApiRequestError(error);
+
+            // Redirect già gestito dal fetch autenticato.
+            if (apiError.status === 401) {
+                return;
+            }
+
+            Alert.alert(
+                "Impossibile abbandonare la squadra",
+                apiError.message
+            );
+        }
+    }
+
+    function onDelete() {
+        router.push({
+            pathname: "/teams/delete",
+            params: {teamId: String(team?.id)},
+        });
+    }
+
     return (
         <PageLayout
             header={
@@ -278,6 +333,9 @@ export default function TeamsDetailsScreen() {
                         error={error}
                         canEdit={isCurrentUserTeamAdmin}
                         onBack={onBack}
+                        onMod={onMod}
+                        onDelete={onDelete}
+                        onLeave={canLeave() ? () => onLeave() : undefined}
                     />
                 </HeaderContainer>
             }

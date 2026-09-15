@@ -4,15 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Implemented team modification and player list modification, next up is admin modification">
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/common/Toast.tsx" afterDir="false" />
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Better visuals for users you canm remove from players and admins list&#10;now owner of a team can remove admins from admins list">
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/delete.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/common/DeleteScreen.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/errorHandling/tournamentExceptions/TournamentInProgressException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/cards/AdminsCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/cards/AdminsCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/OptionsMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/OptionsMenu.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/HeaderTeam.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/HeaderTeam.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/TeamsDetailsScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/TeamsDetailsScreen.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/services/teams/teamService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/teams/teamService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/controller/TeamAdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/controller/TeamAdminController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamAdminService.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamAdminService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/tournaments/tournamentsService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/tournaments/tournamentsService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/controller/TeamPlayersController.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/controller/TeamPlayersController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamPlayerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamPlayerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/controller/TournamentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/controller/TournamentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/errorHandling/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/errorHandling/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/errorHandling/TournamentErrorCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/errorHandling/TournamentErrorCode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/service/TournamentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/service/TournamentService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +101,7 @@
     "Spring Boot.UserServiceApplication.executor": "Run",
     "jdk.selected.JAVA_MODULE": "21",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Lombax/Desktop/Progetto Gestione Tornei Calcetto/mobile-app/src/components/pagesComponents/teams",
+    "last_opened_file_path": "C:/Users/Lombax/Desktop/Progetto Gestione Tornei Calcetto/mobile-app/src/components/common",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -127,9 +134,9 @@
       <recent name="com.tournamentplatform.tournament.DTO" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\common" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\pagesComponents\teams" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\app\(app)\teams" />
-      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\common" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\app\(app)\profile\tournament" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\app\(app)\teams\tournament" />
     </key>
@@ -344,15 +351,7 @@
       <workItem from="1788853409731" duration="1669000" />
       <workItem from="1788960844790" duration="18217000" />
       <workItem from="1789032385830" duration="21653000" />
-      <workItem from="1789474320827" duration="13261000" />
-    </task>
-    <task id="LOCAL-00026" summary="little graphical fix">
-      <option name="closed" value="true" />
-      <created>1785230630269</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1785230630269</updated>
+      <workItem from="1789474320827" duration="18726000" />
     </task>
     <task id="LOCAL-00027" summary="Your team section is now collapsable">
       <option name="closed" value="true" />
@@ -738,7 +737,15 @@
       <option name="project" value="LOCAL" />
       <updated>1789487478892</updated>
     </task>
-    <option name="localTasksCounter" value="75" />
+    <task id="LOCAL-00075" summary="Better visuals for users you canm remove from players and admins list&#10;now owner of a team can remove admins from admins list">
+      <option name="closed" value="true" />
+      <created>1789490126484</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1789490126484</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -756,7 +763,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Adjusted graphic, added friend invitation code for teams" />
     <MESSAGE value="Removed global header, refined specific headers" />
     <MESSAGE value="Graphical improvements, need to also do the profile" />
     <MESSAGE value="Structured headers for re-using and coerence, rebuilt teamCreation page to dived it into steps, like onboarding" />
@@ -781,7 +787,8 @@
     <MESSAGE value="Now the collapsable section has a pressable that can render the entire content of the scroll" />
     <MESSAGE value="fixed minor warning regarding layout" />
     <MESSAGE value="Implemented team modification and player list modification, next up is admin modification" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implemented team modification and player list modification, next up is admin modification" />
+    <MESSAGE value="Better visuals for users you canm remove from players and admins list&#10;now owner of a team can remove admins from admins list" />
+    <option name="LAST_COMMIT_MESSAGE" value="Better visuals for users you canm remove from players and admins list&#10;now owner of a team can remove admins from admins list" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -4,13 +4,15 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import SettingsButton from "@/src/components/common/buttons/SettingsButton";
 
 type OptionsMenuProps = {
-    onEdit: () => void;
-    onDelete: () => void;
+    onEdit?: () => void;
+    onDelete?: () => void;
+    onLeave?: () => void;
 };
 
 export default function OptionsMenu({
                                         onEdit,
                                         onDelete,
+                                        onLeave
                                     }: OptionsMenuProps) {
     const [isVisible, setIsVisible] = useState(false);
 
@@ -25,43 +27,78 @@ export default function OptionsMenu({
 
             {isVisible && (
                 <View style={styles.menu}>
-                    <Pressable
-                        onPress={() => selectOption(onEdit)}
-                        accessibilityRole="button"
-                        style={({pressed}) => [
-                            styles.item,
-                            pressed && styles.itemPressed,
-                        ]}
-                    >
-                        <Ionicons
-                            name="create-outline"
-                            size={20}
-                            color="#FFFFFF"
-                        />
+                    {onEdit &&
+                        (
+                            <View>
+                                <Pressable
+                                    onPress={() => selectOption(onEdit)}
+                                    accessibilityRole="button"
+                                    style={({pressed}) => [
+                                        styles.item,
+                                        pressed && styles.itemPressed,
+                                    ]}
+                                >
+                                    <Ionicons
+                                        name="create-outline"
+                                        size={20}
+                                        color="#FFFFFF"
+                                    />
 
-                        <Text style={styles.label}>Modifica</Text>
-                    </Pressable>
+                                    <Text style={styles.label}>Modifica</Text>
+                                </Pressable>
+                            </View>
+                        )}
 
-                    <View style={styles.divider} />
 
-                    <Pressable
-                        onPress={() => selectOption(onDelete)}
-                        accessibilityRole="button"
-                        style={({pressed}) => [
-                            styles.item,
-                            pressed && styles.deletePressed,
-                        ]}
-                    >
-                        <Ionicons
-                            name="trash-outline"
-                            size={20}
-                            color="#FF7474"
-                        />
+                    {onDelete && (
+                        <View>
+                            <View style={styles.divider}/>
+                            <Pressable
+                                onPress={() => selectOption(onDelete)}
+                                accessibilityRole="button"
+                                style={({pressed}) => [
+                                    styles.item,
+                                    pressed && styles.deletePressed,
+                                ]}
+                            >
+                                <Ionicons
+                                    name="trash-outline"
+                                    size={20}
+                                    color="#FF7474"
+                                />
 
-                        <Text style={[styles.label, styles.deleteLabel]}>
-                            Elimina
-                        </Text>
-                    </Pressable>
+                                <Text style={[styles.label, styles.deleteLabel]}>
+                                    Elimina
+                                </Text>
+                            </Pressable>
+                        </View>
+                    )}
+
+
+                    {onLeave && (
+
+                        <View>
+                            <View style={styles.divider}/>
+                            <Pressable
+                                onPress={() => selectOption(onLeave)}
+                                accessibilityRole="button"
+                                style={({pressed}) => [
+                                    styles.item,
+                                    pressed && styles.deletePressed,
+                                ]}
+                            >
+                                <Ionicons
+                                    name="exit-outline"
+                                    size={20}
+                                    color="#FF7474"
+                                />
+
+                                <Text style={[styles.label, styles.deleteLabel]}>
+                                    Abbandona
+                                </Text>
+                            </Pressable>
+                        </View>
+                    )}
                 </View>
             )}
         </View>

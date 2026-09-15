@@ -40,6 +40,13 @@ public class TeamPlayersController {
         return ResponseEntity.ok(response);
     }
 
+    @DeleteMapping("/leave/{teamId}")
+            public ResponseEntity<String> leaveTeam(
+            @PathVariable String teamId
+    ) {
+        String response = teamPlayerService.leaveTeam(teamId);
+        return ResponseEntity.ok(response);
+    }
 
 
 
@@ -51,4 +58,7 @@ public class TeamPlayersController {
         String response = teamPlayerService.removePlayerFromTeam(teamId, userId);
         return ResponseEntity.ok(response);
     }
+
+
+
 }

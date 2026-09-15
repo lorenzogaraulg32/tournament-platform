@@ -14,6 +14,12 @@ public enum TournamentErrorCode implements ErrorCode {
             "L'utente è già un'amministratore del torneo"
     ),
 
+    TOURNAMENT_IN_PROGRESS(
+            "TOURNAMENT_IN_PROGRESS",
+            "Impossibile eliminare la squadra, è iscritta ad un torneo in corso"
+    ),
+
+
     CANT_REMOVE_OWNER(
             "TOURNAMENT_CANT_REMOVE_OWNER",
             "Impossibile rimuovere il creatore del torneo dagli admin"

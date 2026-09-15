@@ -1,13 +1,8 @@
-import {
-    CreateTournamentRequest,
-    TournamentDetails,
-    UserTournamentsResponse
-} from "@/src/services/tournaments/tournamentsDTO";
+import {TournamentDetails, UserTournamentsResponse} from "@/src/services/tournaments/tournamentsDTO";
 import {authenticatedFetch} from "@/src/services/fetchService";
-import {getCurrentUserTeams, TeamDetails} from "@/src/services/teams/teamService";
+import {getCurrentUserTeams} from "@/src/services/teams/teamService";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
-
 
 
 export async function refreshCodeTournament(
@@ -26,8 +21,17 @@ export async function refreshCodeTournament(
     return await response.json() as TournamentDetails;
 }
 
-export async function createTournament(tournament: CreateTournamentRequest) {
+export async function leaveTournament(teamId: string, tournamentId: string) {
 
+    await authenticatedFetch(
+        `${API_URL}/tournaments/leave/${encodeURIComponent(tournamentId)}/${encodeURIComponent(teamId)}`,
+        {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+            },
+        }
+    );
 
 }
 
@@ -60,7 +64,7 @@ export async function getCurrentUserTournaments(): Promise<UserTournamentsRespon
 }
 
 
-export async function loadTournamentDetails(id : string): Promise<TournamentDetails> {
+export async function loadTournamentDetails(id: string): Promise<TournamentDetails> {
     const response = await authenticatedFetch(
         `${API_URL}/tournaments/${id}`,
         {

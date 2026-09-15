@@ -64,6 +64,29 @@ public class TournamentController {
         );
     }
 
+
+    @DeleteMapping("/leave/{tournamentId}/{teamId}")
+    public ResponseEntity<String> leaveTournament(
+            @PathVariable String tournamentId,
+             @PathVariable String teamId
+    ) {
+       String response = tournamentService.leaveTournament(teamId, tournamentId);
+        return ResponseEntity.ok(response);
+
+    }
+
+
+
+    @GetMapping("/can_delete_team/{teamId}")
+    public ResponseEntity<List<String>> canDeleteTeam(
+            @PathVariable String teamId
+    ) {
+        List<String> response = tournamentService.canDeleteTeam(teamId);
+        return ResponseEntity.ok(response);
+
+    }
+
+
     //restituisce il torneo aggiornato come fosse una get
     @PatchMapping("/{id}")
     public ResponseEntity<TournamentGetResponse> patchTournament(@PathVariable String id, @RequestBody @Valid TournamentPatchRequest patchRequest) {

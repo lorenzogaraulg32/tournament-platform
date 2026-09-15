@@ -159,6 +159,21 @@ public class GlobalExceptionHandler {
         );
     }
 
+
+
+    @ExceptionHandler(TournamentInProgressException.class)
+    public ResponseEntity<ApiErrorResponse> handleTournamentInProgress(
+            TournamentInProgressException exception,
+            HttpServletRequest request
+    ) {
+        return buildResponse(
+                HttpStatus.FORBIDDEN,
+                exception,
+                request
+        );
+    }
+
+
     @ExceptionHandler(UserAlreadyAdminException.class)
     public ResponseEntity<ApiErrorResponse> handleUserAlreadyAdmin(
             UserAlreadyAdminException exception,

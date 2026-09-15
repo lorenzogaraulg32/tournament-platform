@@ -1,5 +1,6 @@
 import {authenticatedFetch} from "@/src/services/fetchService";
 import {RecruitmentStatus} from "@/src/services/teams/teamCreationService";
+import {leaveTournament} from "@/src/services/tournaments/tournamentsService";
 
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
@@ -17,10 +18,10 @@ export type TeamDetails = {
     id: number;
     name: string;
     description: string;
-    status : RecruitmentStatus;
+    status: RecruitmentStatus;
     locationLabel: string;
-    latitude:number;
-    longitude:number;
+    latitude: number;
+    longitude: number;
     logoUrl?: string | null;
     creatorId: string;
     playerIds: string[];
@@ -104,7 +105,7 @@ export async function getTeamDetails(id: string): Promise<TeamDetails> {
     return await response.json() as TeamDetails;
 }
 
-export function teamDetailsToTeamInfo(team : TeamDetails) : TeamInfo{
+export function teamDetailsToTeamInfo(team: TeamDetails): TeamInfo {
     return {
         id: team.id,
         name: team.name,
@@ -135,4 +136,48 @@ export async function removeTeamAdmin(
             method: "DELETE",
         }
     );
+}
+
+
+export async function leaveTeam(teamId: string) {
+    await authenticatedFetch(
+        `${API_URL}/teams/leave/${encodeURIComponent(teamId)}`,
+        {
+            method: "DELETE",
+        }
+    );
+}
+
+
+export async function deleteTeam(teamId: string) {
+
+
+    const tournamentIds = await canDeleteTeam(teamId);
+
+    if (tournamentIds.length > 0) {
+        for (const tournamentId of tournamentIds) {
+            await leaveTournament(teamId, tournamentId);
+        }
+    }
+    await authenticatedFetch(
+        `${API_URL}/teams/${encodeURIComponent(teamId)}`,
+        {
+            method: "DELETE",
+        }
+    );
+}
+
+
+export async function canDeleteTeam(teamId: string): Promise<string[]> {
+    const response = await authenticatedFetch(
+        `${API_URL}/tournaments/can_delete_team/${encodeURIComponent(teamId)}`,
+        {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+            },
+        }
+    );
+
+    return await response.json() as string[];
 }
