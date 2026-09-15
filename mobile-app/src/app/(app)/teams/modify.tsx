@@ -27,6 +27,7 @@ export default function ModifyTeamPage() {
         let isActive = true;
 
         async function loadTeam() {
+
             if (!teamId) {
                 setState({status: "error", teamId, message: "ID della squadra mancante."});
                 return;

@@ -70,7 +70,7 @@ export default function ModifyTeamForm({team, existingLogoSource}: TeamEditProps
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const submissionLock = useRef(false);
-    const currentLogoSource = existingLogoSource ?? (team.logoUrl || undefined);
+
 
     function updateTeamData<K extends keyof TeamCreationRequest>(
         field: K,
@@ -132,7 +132,7 @@ export default function ModifyTeamForm({team, existingLogoSource}: TeamEditProps
                 return false;
             }
 
-            if (apiError.status === 409) {
+            if (apiError.status === 409 && apiError.code === "TEAM_NAME_ALREADY") {
                 setFieldErrors((previousErrors) => ({
                     ...previousErrors,
                     name: apiError.message,
@@ -251,15 +251,25 @@ export default function ModifyTeamForm({team, existingLogoSource}: TeamEditProps
 
     async function handleEditTeam() {
         if (!(await validateForm())) {
+            console.log("Fallito validate form")
             return;
         }
 
+        const selectedLocation = teamData.location;
+
+
         const request: TeamUpdateRequest = {
             name: teamData.name.trim(),
-            description: teamData.description?.trim() ?? "",
+            description:
+                teamData.description?.trim() || undefined,
             status: teamData.status,
-            location: teamData.location ?? null,
-            logoUrl: removeExistingLogo ? "REMOVE" : undefined,
+            location: selectedLocation
+                ? {
+                    label: selectedLocation.label,
+                    latitude: selectedLocation.latitude,
+                    longitude: selectedLocation.longitude,
+                }
+                : undefined,
         };
 
         try {
@@ -280,7 +290,7 @@ export default function ModifyTeamForm({team, existingLogoSource}: TeamEditProps
             }
             printApiRequestError(apiError);
 
-            if (apiError.status === 409) {
+            if (apiError.status === 409 && apiError.code === "TEAM_NAME_ALREADY") {
                 setFieldErrors((previous) => ({
                     ...previous,
                     name: apiError.message,
@@ -355,9 +365,7 @@ export default function ModifyTeamForm({team, existingLogoSource}: TeamEditProps
                 return (
                     <LogoStep
                         value={logo}
-                        existingLogoSource={
-                            removeExistingLogo ? undefined : currentLogoSource
-                        }
+                        existingLogoSource={team.logoUrl || undefined}
                         onRemove={removeLogo}
                         onChange={updateLogo}
                         disabled={isSubmitting}

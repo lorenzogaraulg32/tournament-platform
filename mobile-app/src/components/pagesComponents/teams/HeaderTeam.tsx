@@ -97,28 +97,16 @@ export default function HeaderTeam({
                     </View>
 
                     <View style={styles.rightContainer}>
-                        <View style={styles.nameRow}>
-
-                            <Text
-                                style={styles.teamName}
-                                numberOfLines={1}
-                            >
-                                {team.name}
-                            </Text>
-
-                            {canEdit &&
-                                <OptionsMenu
-                                    onEdit={onMod}
-                                    onDelete={onDelete}
-                                    onLeave={onLeave}
-                                />}
-
-
-                        </View>
+                        <Text
+                            style={styles.teamName}
+                            numberOfLines={1}
+                        >
+                            {team.name}
+                        </Text>
 
                         <Text
                             style={styles.teamLocation}
-                            numberOfLines={1}
+                            numberOfLines={2}
                         >
                             {formatLocationLabel(team.locationLabel)}
                         </Text>
@@ -128,11 +116,19 @@ export default function HeaderTeam({
                             team={team}
                             canRefresh={canEdit}
                         />
-
-
                     </View>
                 </View>
             )}
+            {canEdit &&
+                <View style={styles.editButton}>
+                    <OptionsMenu
+                        onEdit={onMod}
+                        onDelete={onDelete}
+                        onLeave={onLeave}
+                    />
+                </View>
+            }
+
         </View>
     );
 }
@@ -394,15 +390,6 @@ const styles = StyleSheet.create({
 
     },
 
-    nameRow: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        gap: 8,
-
-        minWidth: 0,
-    },
-
     teamName: {
         flexShrink: 1,
 
@@ -413,15 +400,8 @@ const styles = StyleSheet.create({
     },
 
     editButton: {
-        width: 33,
-        height: 33,
-
-        borderRadius: 18,
-
-        alignItems: "center",
-        justifyContent: "center",
-
-        backgroundColor: "rgba(255,255,255,0.10)",
+        position: "absolute",
+        right: 0
     },
 
     editButtonPressed: {

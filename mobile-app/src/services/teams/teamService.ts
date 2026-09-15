@@ -1,6 +1,6 @@
 import {authenticatedFetch} from "@/src/services/fetchService";
 import {RecruitmentStatus} from "@/src/services/teams/teamCreationService";
-import {leaveTournament} from "@/src/services/tournaments/tournamentsService";
+import {leaveTournament} from "@/src/services/tournaments/tournamentParticipationService";
 
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
@@ -44,7 +44,6 @@ export async function getCurrentUserTeams(): Promise<TeamInfo[]> {
     return await response.json() as TeamInfo[];
 }
 
-
 export async function loadUserTeams(userId: string): Promise<TeamInfo[]> {
     const response = await authenticatedFetch(
         `${API_URL}/teams/user/${encodeURIComponent(userId)}`,
@@ -75,9 +74,7 @@ export async function addCurrentUserToTeamViaCode(
     return await response.json() as TeamDetails;
 }
 
-export async function refreshCodeTeam(
-    teamId: number
-): Promise<TeamDetails> {
+export async function refreshCodeTeam(teamId: number): Promise<TeamDetails> {
     const response = await authenticatedFetch(
         `${API_URL}/teams/${teamId}/change_code`,
         {
@@ -150,8 +147,6 @@ export async function leaveTeam(teamId: string) {
 
 
 export async function deleteTeam(teamId: string) {
-
-
     const tournamentIds = await canDeleteTeam(teamId);
 
     if (tournamentIds.length > 0) {

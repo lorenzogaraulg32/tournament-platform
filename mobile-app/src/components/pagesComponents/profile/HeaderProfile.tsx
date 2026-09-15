@@ -3,8 +3,8 @@ import {UserInfo} from "@/src/services/users/userService";
 import {AuthInfo} from "@/src/services/users/authService";
 import Picture from "@/src/components/common/images/Picture";
 import {router} from "expo-router";
-import SettingsButton from "@/src/components/common/buttons/SettingsButton";
 import BackButton from "@/src/components/common/buttons/BackButton";
+import OptionsMenu from "@/src/components/common/OptionsMenu";
 
 
 /**
@@ -19,6 +19,8 @@ export type ProfileHeaderProps = {
     authInfo: AuthInfo,
     canEdit: boolean,
     canBack: boolean,
+    onMod?: () => void,
+    onDelete?: () => void,
 }
 
 
@@ -26,7 +28,9 @@ export default function HeaderProfile({
                                           userInfo,
                                           authInfo,
                                           canEdit,
-                                          canBack
+                                          canBack,
+                                          onMod,
+                                          onDelete,
                                       }: ProfileHeaderProps) {
 
 
@@ -53,7 +57,6 @@ export default function HeaderProfile({
 
     return (
         <View>
-
             {canBack &&
                 <BackButton onPress={onBackPress}/>
             }
@@ -78,9 +81,7 @@ export default function HeaderProfile({
                             {`${userInfo.firstName} ${userInfo.lastName}`}
                         </Text>
 
-                        {canEdit && (
-                            <SettingsButton onPress={onOptionsPress}/>
-                        )}
+
                     </View>
 
                     <Text
@@ -93,7 +94,7 @@ export default function HeaderProfile({
                     {userInfo.location && (
                         <Text
                             style={styles.location}
-                            numberOfLines={1}
+                            numberOfLines={2}
                         >
                             {formatLocationLabel(userInfo.location.label)}
                         </Text>
@@ -115,7 +116,14 @@ export default function HeaderProfile({
                 </View>
 
             </View>
-        </View>
+            {canEdit &&
+                <View style={styles.editButton}>
+                    <OptionsMenu
+                        onEdit={onMod}
+                        onDelete={onDelete}
+                    />
+                </View>
+            }        </View>
 
     );
 }
@@ -222,5 +230,9 @@ const styles = StyleSheet.create({
         fontWeight: "800",
     },
 
+    editButton: {
+        position: "absolute",
+        right: 0
+    },
 
 });

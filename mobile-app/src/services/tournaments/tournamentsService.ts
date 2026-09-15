@@ -21,19 +21,7 @@ export async function refreshCodeTournament(
     return await response.json() as TournamentDetails;
 }
 
-export async function leaveTournament(teamId: string, tournamentId: string) {
 
-    await authenticatedFetch(
-        `${API_URL}/tournaments/leave/${encodeURIComponent(tournamentId)}/${encodeURIComponent(teamId)}`,
-        {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-            },
-        }
-    );
-
-}
 
 
 export async function getCurrentUserTournaments(): Promise<UserTournamentsResponse> {

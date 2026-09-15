@@ -5,6 +5,7 @@ import * as ImagePicker from "expo-image-picker";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import FormLabel from "@/src/components/common/labels/FormLabel";
 import {SelectedImage} from "@/src/services/imagesService";
+import Picture from "@/src/components/common/images/Picture";
 
 const MAX_LOGO_SIZE = 2 * 1024 * 1024;
 
@@ -24,7 +25,7 @@ type LogoFieldProps = {
     onRemove?: () => void
     onChange: (logo: SelectedImage | null) => void;
     placeholderIcon?: ComponentProps<typeof Ionicons>["name"];
-    existingLogoSource?: ComponentProps<typeof Image>["source"];
+    existingLogoSource?: string;
     label?: string;
     optional?: boolean;
     disabled?: boolean;
@@ -174,10 +175,10 @@ export default function LogoField({
                     ]}
                 >
                     {hasPreview ? (
-                        <Image
-                            source={previewSource}
+                        <Picture
+                            variant="player"
+                            logoUrl={existingLogoSource}
                             style={styles.previewImage}
-                            contentFit="cover"
                         />
                     ) : (
                         <Ionicons

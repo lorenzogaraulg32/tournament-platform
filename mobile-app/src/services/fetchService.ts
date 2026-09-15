@@ -72,6 +72,7 @@ export async function fetchWithTimeout(
             console.log("Stack:", error.stack);
             console.log("Cause:", error.cause);
         }
+
         if (didTimeout) {
             throw new ApiRequestError(
                 "La richiesta sta impiegando troppo tempo. Controlla la connessione.",

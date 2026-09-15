@@ -70,6 +70,14 @@ export default function ProfilePage({userId, isOwnProfile, canBack}: ProfilePage
         }
     }, [userId])
 
+    const deleteUser = () =>{
+        console.log("Delete premuto")
+    }
+
+    const modUser = () =>{
+        console.log("Mod premuto")
+    }
+
     useEffect(() => {
         void loadProfile();
 
@@ -96,6 +104,8 @@ export default function ProfilePage({userId, isOwnProfile, canBack}: ProfilePage
                             authInfo={userAuthInfo}
                             canEdit={isOwnProfile}
                             canBack={canBack}
+                            onDelete={deleteUser}
+                            onMod={modUser}
                         />
                     )}
                 </HeaderContainer>}>

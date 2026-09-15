@@ -5,7 +5,7 @@ import {TeamLogoUpload} from "@/src/services/teams/teamCreationService";
 
 type LogoStepProps = {
     value: TeamLogoUpload | null;
-    existingLogoSource?: ComponentProps<typeof Image>["source"];
+    existingLogoSource?: string;
     onChange: (logo: TeamLogoUpload | null) => void;
     onRemove?: () => void;
     disabled: boolean;
