@@ -12,6 +12,7 @@ import {UserEntity} from "@/src/services/users/userService";
 type AdminsCardProps = {
     admin: UserEntity;
     isOwner: boolean;
+    modify?: () => void
 };
 
 const adminRoutes = {
@@ -27,6 +28,7 @@ function isTabName(value: string): value is keyof typeof adminRoutes {
 export default function AdminsCard({
                                        admin,
                                        isOwner,
+                                       modify
                                    }: AdminsCardProps) {
     const authority: TeamAuthority = isOwner ? "OWNER" : "ADMIN";
     const palette = authorityCardPalettes[authority];
@@ -35,6 +37,12 @@ export default function AdminsCard({
 
 
     function handlePress() {
+
+        if (modify) {
+            modify();
+            return;
+        }
+
         const appIndex = segments.indexOf("(app)");
         const tab = segments[appIndex + 1];
 
@@ -56,6 +64,7 @@ export default function AdminsCard({
             authority={authority}
             style={styles.card}
             onPress={handlePress}
+            modify={modify ? modify : undefined}
         >
             <View style={styles.content}>
                 <Text

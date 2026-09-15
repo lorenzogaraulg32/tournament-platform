@@ -40,9 +40,11 @@ public class TeamAdminService {
 
     }
 
-    public TeamGetDetailsResponse removeAdmin(String teamId, String userId) {
+    //solo il creatore può rimuovere altri admin
+    public String removeAdmin(String teamId, String userId) {
 
         Team team = servicesHelper.getTeamEntityOrThrow(teamId);
+
         teamAuthorizationHelper.checkTeamCreator(team);
 
         if (team.getCreatorId().equals(userId)) {
@@ -51,9 +53,9 @@ public class TeamAdminService {
 
         team.getAdminIds().remove(userId);
 
-        Team savedTeam = teamsRepository.save(team);
+        teamsRepository.save(team);
 
-        return servicesHelper.toTeamGetDetailsResponse(savedTeam);
+        return "Eliminato";
 
     }
 

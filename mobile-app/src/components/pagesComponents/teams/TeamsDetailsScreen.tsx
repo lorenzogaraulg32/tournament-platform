@@ -2,7 +2,7 @@ import {ScrollView, StyleSheet, Text, View} from "react-native";
 import {colors} from "@/src/constants/theme";
 import {router, useLocalSearchParams} from "expo-router";
 import {useEffect, useState} from "react";
-import {getTeamDetails, removeTeamPlayer, TeamDetails} from "@/src/services/teams/teamService";
+import {getTeamDetails, removeTeamAdmin, removeTeamPlayer, TeamDetails} from "@/src/services/teams/teamService";
 import {loadUserInfo, UserEntity} from "@/src/services/users/userService";
 import {loadCurrentUserId} from "@/src/services/users/authService";
 import {normalizeApiRequestError} from "@/src/services/errorService";
@@ -14,6 +14,7 @@ import PlayersCard from "@/src/components/pagesComponents/profile/cards/PlayersC
 import {Sport} from "@/src/services/users/userConstants";
 import AdminsCard from "@/src/components/pagesComponents/profile/cards/AdminsCard";
 import CollapsableSection from "@/src/components/common/CollapsableSection";
+import Toast from "../../common/Toast";
 
 
 export default function TeamsDetailsScreen() {
@@ -26,8 +27,9 @@ export default function TeamsDetailsScreen() {
     const [error, setError] = useState<string | null>(null);
     const [isCurrentUserTeamAdmin, setIsCurrentUserTeamAdmin] = useState<boolean>(false)
     const [isCurrentUserTeamOwner, setIsCurrentUserTeamOwner] = useState<boolean>(false)
-
     const [removingPlayerId, setRemovingPlayerId] = useState<string | null>(null);
+    const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+
 
     const [toast, setToast] = useState<{
         message: string;
@@ -51,7 +53,6 @@ export default function TeamsDetailsScreen() {
             router.replace("/(app)/teams");
         }
     }
-
 
     useEffect(() => {
         let isActive = true
@@ -98,6 +99,7 @@ export default function TeamsDetailsScreen() {
                 }
 
                 const normalizedUserId = String(currentUserId);
+                setCurrentUserId(normalizedUserId);
 
                 setIsCurrentUserTeamAdmin(
                     loadedTeam.adminIds.some(
@@ -140,6 +142,32 @@ export default function TeamsDetailsScreen() {
 
     }, [teamId])
 
+    function canRemovePlayer(playerId: string): boolean {
+        if (!team || currentUserId === null) {
+            return false;
+        }
+
+        const targetId = String(playerId);
+
+        // Non mostrare se stessi né il creatore tra i rimovibili.
+        if (
+            targetId === currentUserId ||
+            targetId === String(team.creatorId)
+        ) {
+            return false;
+        }
+
+        // Il creatore può rimuovere tutti gli altri.
+        if (isCurrentUserTeamOwner) {
+            return true;
+        }
+
+        // Un admin può rimuovere soltanto giocatori non admin.
+        return (
+            isCurrentUserTeamAdmin &&
+            !team.adminIds.some((id) => String(id) === targetId)
+        );
+    }
 
     async function removePlayerFromTeam(id: string): Promise<void> {
         if (!team || removingPlayerId !== null) {
@@ -169,6 +197,58 @@ export default function TeamsDetailsScreen() {
 
             setToast({
                 message: "Eliminazione completata",
+                success: true,
+            });
+        } catch (error) {
+            const apiError = normalizeApiRequestError(error);
+
+            // Redirect già gestito dal fetch autenticato.
+            if (apiError.status === 401) {
+                return;
+            }
+
+            setToast({
+                message: "C'è stato un errore",
+                success: false,
+            });
+        } finally {
+            setRemovingPlayerId(null);
+        }
+    }
+
+    async function removeAdminFromTeam(id: string): Promise<void> {
+        if (
+            !team ||
+            removingPlayerId !== null ||
+            !isCurrentUserTeamOwner ||
+            String(id) === String(team.creatorId)
+        ) {
+            return;
+        }
+
+        setRemovingPlayerId(id);
+        setToast(null);
+
+        try {
+            await removeTeamAdmin(String(team.id), id);
+
+            setTeamAdmins((previous) =>
+                previous.filter((admin) => String(admin.id) !== String(id))
+            );
+
+            setTeam((previous) =>
+                previous
+                    ? {
+                        ...previous,
+                        adminIds: previous.adminIds.filter(
+                            (adminId) => String(adminId) !== String(id)
+                        ),
+                    }
+                    : previous
+            );
+
+            setToast({
+                message: "Ruolo admin rimosso",
                 success: true,
             });
         } catch (error) {
@@ -222,44 +302,37 @@ export default function TeamsDetailsScreen() {
                     <CollapsableSection
                         label="Players"
                         iconName="people-outline"
-                        canMod={isCurrentUserTeamAdmin}
-                        feedback={
-                            toast && (
-                                <View
-                                    pointerEvents="none"
-                                    style={[
-                                        styles.toast,
-                                        {
-                                            backgroundColor: toast.success
-                                                ? "#166534"
-                                                : "#B42318",
-                                        },
-                                    ]}
-                                    accessibilityLiveRegion="polite"
-                                >
-                                    <Text style={styles.toastText}>
-                                        {toast.message}
-                                    </Text>
-                                </View>
-                            )
-                        }
+                        canMod={isCurrentUserTeamAdmin || isCurrentUserTeamOwner}
+                        feedback={toast && <Toast message={toast.message} success={toast.success}/>}
                     >
                         {(isMod) => (
                             team && (
                                 <CardListContainer
-                                    items={teamPlayers.map((player) => (
-                                        <PlayersCard
-                                            key={player.id}
-                                            player={player}
-                                            sport={Sport.FOOTBALL}
-                                            modify={isMod
-                                                ? () => {
-                                                    void removePlayerFromTeam(String(player.id));
+                                    items={teamPlayers
+                                        .filter((player) =>
+                                            !isMod || canRemovePlayer(String(player.id))
+                                        )
+                                        .map((player) => (
+                                            <PlayersCard
+                                                key={player.id}
+                                                player={player}
+                                                sport={Sport.FOOTBALL}
+                                                modify={
+                                                    isMod
+                                                        ? () => {
+                                                            void removePlayerFromTeam(
+                                                                String(player.id)
+                                                            );
+                                                        }
+                                                        : undefined
                                                 }
-                                                : undefined}
-                                        />
-                                    ))}
-                                    emptyMsg="Nessun giocatore nella squadra"
+                                            />
+                                        ))}
+                                    emptyMsg={
+                                        isMod
+                                            ? "Nessun giocatore che puoi rimuovere"
+                                            : "Nessun giocatore nella squadra"
+                                    }
                                     isLoading={isLoading}
                                     error={error}
                                     orientation="vertical"
@@ -269,23 +342,50 @@ export default function TeamsDetailsScreen() {
                     </CollapsableSection>
 
 
-                    <CollapsableSection label={"Admin"} iconName={"shield-checkmark-outline"}
-                                        canMod={isCurrentUserTeamOwner}>
+                    <CollapsableSection
+                        label="Admin"
+                        iconName="shield-checkmark-outline"
+                        canMod={isCurrentUserTeamOwner}
+                    >
+                        {(isMod) => {
+                            const canRemove = isMod && isCurrentUserTeamOwner;
 
-                        {team && (
-                            <CardListContainer
-                                items={teamAdmins.map((player) => (
-                                    <AdminsCard
-                                        key={player.id}
-                                        admin={player}
-                                        isOwner={String(team.creatorId) === String(player.id)}/>
-                                ))}
-                                emptyMsg={"Nessun admin nella squadra"}
-                                isLoading={isLoading}
-                                error={error}
-                                orientation={"vertical"}
-                            />
-                        )}
+                            return team && (
+                                <CardListContainer
+                                    items={teamAdmins
+                                        .filter((admin) =>
+                                            !canRemove ||
+                                            String(admin.id) !== String(team.creatorId)
+                                        )
+                                        .map((admin) => (
+                                            <AdminsCard
+                                                key={admin.id}
+                                                admin={admin}
+                                                isOwner={
+                                                    String(team.creatorId) === String(admin.id)
+                                                }
+                                                modify={
+                                                    canRemove
+                                                        ? () => {
+                                                            void removeAdminFromTeam(
+                                                                String(admin.id)
+                                                            );
+                                                        }
+                                                        : undefined
+                                                }
+                                            />
+                                        ))}
+                                    emptyMsg={
+                                        canRemove
+                                            ? "Nessun admin che puoi rimuovere"
+                                            : "Nessun admin nella squadra"
+                                    }
+                                    isLoading={isLoading}
+                                    error={error}
+                                    orientation="vertical"
+                                />
+                            );
+                        }}
                     </CollapsableSection>
                 </View>
             </ScrollView>
@@ -331,27 +431,5 @@ const styles = StyleSheet.create({
         color: "#3F3F46",
     },
 
-    toast: {
-        position: "absolute",
-        bottom: 40,
-        left: 24,
-        right: 24,
-        paddingHorizontal: 18,
-        paddingVertical: 14,
-        borderRadius: 14,
-        alignItems: "center",
-        elevation: 6,
-        shadowColor: "#000",
-        shadowOffset: {width: 0, height: 3},
-        shadowOpacity: 0.18,
-        shadowRadius: 6,
-    },
-
-    toastText: {
-        color: "#FFFFFF",
-        fontSize: 14,
-        fontWeight: "600",
-        textAlign: "center",
-    },
 
 });

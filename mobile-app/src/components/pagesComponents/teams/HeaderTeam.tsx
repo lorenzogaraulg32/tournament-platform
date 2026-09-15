@@ -34,12 +34,6 @@ export default function HeaderTeam({
                                        onBack
                                    }: TeamHeaderProps) {
 
-    const [optionsVisible, setOptionsVisible] = useState(false);
-
-    const onOptionsPress = () => {
-        setOptionsVisible((previous) => !previous);
-    };
-
     const onModClicked = () => {
 
         if (!team) {
@@ -55,7 +49,7 @@ export default function HeaderTeam({
     };
 
     const onDeleteClicked = () => {
-        setOptionsVisible(false);
+
         console.log("Elimina cliccato!")
 
     };

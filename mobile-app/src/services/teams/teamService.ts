@@ -124,3 +124,15 @@ export async function removeTeamPlayer(
         }
     );
 }
+
+export async function removeTeamAdmin(
+    teamId: string,
+    userId: string
+): Promise<void> {
+    await authenticatedFetch(
+        `${API_URL}/teams/${encodeURIComponent(teamId)}/admins/${encodeURIComponent(userId)}`,
+        {
+            method: "DELETE",
+        }
+    );
+}

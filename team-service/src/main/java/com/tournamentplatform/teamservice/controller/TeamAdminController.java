@@ -36,11 +36,11 @@ public class TeamAdminController {
     }
 
     @DeleteMapping("/{teamId}/admins/{userId}")
-    public ResponseEntity<TeamGetDetailsResponse> removeAdmin(
+    public ResponseEntity<String> removeAdmin(
             @PathVariable String teamId,
             @PathVariable String userId
     ) {
-        TeamGetDetailsResponse response = teamAdminService.removeAdmin(teamId, userId);
+        String response = teamAdminService.removeAdmin(teamId, userId);
         return ResponseEntity.ok(response);
     }
 
