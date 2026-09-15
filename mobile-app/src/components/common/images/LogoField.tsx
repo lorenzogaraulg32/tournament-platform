@@ -1,6 +1,5 @@
-import {ComponentProps, useState} from "react";
+import {ComponentProps, useEffect, useState} from "react";
 import {Pressable, StyleSheet, Text, View,} from "react-native";
-import {Image} from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import FormLabel from "@/src/components/common/labels/FormLabel";
@@ -30,6 +29,7 @@ type LogoFieldProps = {
     optional?: boolean;
     disabled?: boolean;
     errorMessage?: string;
+    local?: boolean
 };
 
 export default function LogoField({
@@ -43,18 +43,14 @@ export default function LogoField({
                                       existingLogoSource,
                                       disabled = false,
                                       errorMessage,
+                                      local
                                   }: LogoFieldProps) {
     const [pickerError, setPickerError] =
         useState<string | null>(null);
 
     const visibleError = errorMessage ?? pickerError;
-
     const isCreateUser = variant === "createUser";
-
-    const previewSource = value
-        ? {uri: value.uri}
-        : existingLogoSource;
-
+    const previewSource = value?.uri ?? existingLogoSource;
     const hasPreview = Boolean(previewSource);
 
     async function selectLogo() {
@@ -125,6 +121,7 @@ export default function LogoField({
 
     function removeLogo() {
         setPickerError(null);
+
         if (onRemove) {
             onRemove()
         } else {
@@ -176,9 +173,10 @@ export default function LogoField({
                 >
                     {hasPreview ? (
                         <Picture
-                            variant="player"
-                            logoUrl={existingLogoSource}
+                            variant={isCreateUser ? "player" : "team"}
+                            logoUrl={previewSource}
                             style={styles.previewImage}
+                            local={local}
                         />
                     ) : (
                         <Ionicons
@@ -249,7 +247,7 @@ export default function LogoField({
                             </Text>
                         </Pressable>
 
-                        {value && (
+                        {previewSource && (
                             <Pressable
                                 onPress={removeLogo}
                                 disabled={disabled}

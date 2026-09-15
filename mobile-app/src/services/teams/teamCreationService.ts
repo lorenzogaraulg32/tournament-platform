@@ -19,7 +19,7 @@ export type TeamUpdateRequest = {
     description?: string;
     status?: RecruitmentStatus;
     location?: LocationRequest | null;
-    logoUrl?: "REMOVE";
+    newLogoUrl?: string;
 };
 
 
@@ -113,6 +113,7 @@ export async function editTeam(
         teamFile.write(JSON.stringify(request));
 
         const formData = new FormData();
+
 
         // File reale, non un oggetto convertito tramite cast.
         formData.append("team", teamFile, teamFile.name);

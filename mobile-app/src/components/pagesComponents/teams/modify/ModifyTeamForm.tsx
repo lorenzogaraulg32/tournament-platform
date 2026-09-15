@@ -41,11 +41,11 @@ const LAST_STEP: TeamEditStep = 2;
 
 const STEPS: TeamEditStep[] = [0, 1, 2];
 
-export default function ModifyTeamForm({team, existingLogoSource}: TeamEditProps) {
+export default function ModifyTeamForm({team}: TeamEditProps) {
     const [currentStep, setCurrentStep] =
         useState<TeamEditStep>(FIRST_STEP);
 
-    const [teamData, setTeamData] = useState<TeamCreationRequest>(() => ({
+    const [teamData, setTeamData] = useState<TeamUpdateRequest>({
         name: team.name,
         description: team.description ?? "",
         status: team.status,
@@ -57,15 +57,13 @@ export default function ModifyTeamForm({team, existingLogoSource}: TeamEditProps
                     longitude: team.longitude,
                 }
                 : undefined,
-    }));
+    });
 
     const [logo, setLogo] = useState<TeamLogoUpload | null>(null);
-    const [removeExistingLogo, setRemoveExistingLogo] = useState(false);
+    const [logoRemoved, setLogoRemoved] = useState(false);
 
     const [fieldErrors, setFieldErrors] =
         useState<TeamEditFieldErrors>({});
-
-
     const [apiError, setApiError] = useState<string>("");
 
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -91,6 +89,11 @@ export default function ModifyTeamForm({team, existingLogoSource}: TeamEditProps
 
     // Validazione locale e controllo disponibilità del nome modificato.
     async function validateNameAndDescription(): Promise<boolean> {
+
+        if (!teamData.name) {
+            teamData.name = team.name
+        }
+
         const trimmedName = teamData.name.trim();
         const trimmedDescription = teamData.description?.trim() ?? "";
 
@@ -251,11 +254,14 @@ export default function ModifyTeamForm({team, existingLogoSource}: TeamEditProps
 
     async function handleEditTeam() {
         if (!(await validateForm())) {
-            console.log("Fallito validate form")
             return;
         }
 
         const selectedLocation = teamData.location;
+
+        if (!teamData.name) {
+            teamData.name = team.name
+        }
 
 
         const request: TeamUpdateRequest = {
@@ -270,6 +276,7 @@ export default function ModifyTeamForm({team, existingLogoSource}: TeamEditProps
                     longitude: selectedLocation.longitude,
                 }
                 : undefined,
+            newLogoUrl: teamData.newLogoUrl,
         };
 
         try {
@@ -305,25 +312,35 @@ export default function ModifyTeamForm({team, existingLogoSource}: TeamEditProps
 
     function updateLogo(newLogo: TeamLogoUpload | null) {
         setLogo(newLogo);
+        setLogoRemoved(false);
 
-        if (newLogo) {
-            setRemoveExistingLogo(false);
-        }
+        setTeamData(previous => ({
+            ...previous,
+            newLogoUrl: undefined,
+        }));
 
-        setFieldErrors((previous) => ({
+        setFieldErrors(previous => ({
             ...previous,
             logo: undefined,
         }));
+
         setApiError("");
     }
 
     function removeLogo() {
         setLogo(null);
-        setRemoveExistingLogo(true);
-        setFieldErrors((previous) => ({
+        setLogoRemoved(true);
+
+        setTeamData(previous => ({
+            ...previous,
+            newLogoUrl: "REMOVE",
+        }));
+
+        setFieldErrors(previous => ({
             ...previous,
             logo: undefined,
         }));
+
         setApiError("");
     }
 
@@ -332,9 +349,9 @@ export default function ModifyTeamForm({team, existingLogoSource}: TeamEditProps
             case 0:
                 return (
                     <NameAndDescStep
-                        nameValue={teamData.name}
+                        nameValue={teamData.name ?? team.name}
                         descValue={teamData.description ?? ""}
-                        switchValue={teamData.status}
+                        switchValue={teamData.status ?? team.status}
                         onChangeName={(name) =>
                             updateTeamData("name", name)
                         }
@@ -353,7 +370,7 @@ export default function ModifyTeamForm({team, existingLogoSource}: TeamEditProps
             case 1:
                 return (
                     <PositionStep
-                        value={teamData.location}
+                        value={teamData.location || undefined}
                         onChange={(newLocation) =>
                             updateTeamData("location", newLocation)
                         }
@@ -365,11 +382,14 @@ export default function ModifyTeamForm({team, existingLogoSource}: TeamEditProps
                 return (
                     <LogoStep
                         value={logo}
-                        existingLogoSource={team.logoUrl || undefined}
+                        existingLogoSource={
+                            logoRemoved ? undefined : (team.logoUrl || undefined)
+                        }
                         onRemove={removeLogo}
                         onChange={updateLogo}
                         disabled={isSubmitting}
                         errorMessage={fieldErrors.logo}
+                        local={logo !== null}
                     />
                 );
         }

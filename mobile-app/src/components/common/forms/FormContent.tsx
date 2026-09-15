@@ -44,7 +44,7 @@ export default function FormContent({step, children, isSubmitting, handleBack, h
                 disabled={isSubmitting}
                 text={
                     step === "last"
-                        ? "Crea"
+                        ? "Termina"
                         : "Avanti"
                 }
             />

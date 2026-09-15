@@ -14,12 +14,14 @@ type PictureProps = {
     logoUrl?: string | null;
     style?: StyleProp<ImageStyle>;
     variant: "player" | "team" | "tournament";
+    local?: boolean
 };
 
 export default function Picture({
                                     logoUrl,
                                     style,
-                                    variant
+                                    variant,
+                                    local
                                 }: PictureProps) {
     const [authorization, setAuthorization] =
         useState<string | null>(null);
@@ -32,7 +34,7 @@ export default function Picture({
 
         setHasError(false);
 
-        if (!logoUrl) {
+        if (!logoUrl || local) {
             setAuthorization(null);
 
             return () => {
@@ -60,52 +62,85 @@ export default function Picture({
         return () => {
             isMounted = false;
         };
-    }, [logoUrl]);
+    }, [logoUrl, local]);
 
     const completeLogoUrl = useMemo(() => {
-        if (!logoUrl || !API_URL) {
+        if (!logoUrl) {
             return null;
         }
 
         if (
+            local ||
             logoUrl.startsWith("http://") ||
             logoUrl.startsWith("https://")
         ) {
             return logoUrl;
         }
 
-        const baseUrl =
-            API_URL.replace(/\/+$/, "");
+        if (!API_URL) {
+            return null;
+        }
 
-        const relativeUrl =
-            logoUrl.replace(/^\/+/, "");
+        const baseUrl = API_URL.replace(/\/+$/, "");
+        const relativeUrl = logoUrl.replace(/^\/+/, "");
 
         return `${baseUrl}/${relativeUrl}`;
-    }, [logoUrl]);
+    }, [logoUrl, local]);
 
     const shouldShowPlaceholder =
-        !completeLogoUrl ||
-        !authorization ||
-        hasError;
+        !logoUrl ||
+        hasError ||
+        (!local && (!completeLogoUrl || !authorization));
 
     const placeholder =
         variant === "team"
             ? placeholderLogoTeam
             : variant == "player" ? placeholderLogoPlayer
-            : placeholderTournamentLogo
+                : placeholderTournamentLogo
 
 
-    if (shouldShowPlaceholder) {
+    function renderPlaceholder() {
         return (
             <Image
                 source={placeholder}
                 style={style}
                 contentFit="cover"
-            />)
+            />
+        );
+    }
+
+    if (!completeLogoUrl || hasError) {
+        return renderPlaceholder();
+    }
+
+    if (local) {
+        return (
+            <Image
+                key={`local:${completeLogoUrl}`}
+                source={{uri: completeLogoUrl}}
+                style={style}
+                contentFit="cover"
+                cachePolicy="none"
+                transition={150}
+                onError={(event) => {
+                    console.error("Errore caricamento preview:", {
+                        url: completeLogoUrl,
+                        error: event.error,
+                    });
+
+                    setHasError(true);
+                }}
+            />
+        );
+    }
+
+    if (!authorization) {
+        return renderPlaceholder();
     }
 
     return (
         <Image
+            key={`remote:${completeLogoUrl}`}
             source={{
                 uri: completeLogoUrl,
                 headers: {
@@ -117,13 +152,10 @@ export default function Picture({
             cachePolicy="none"
             transition={150}
             onError={(event) => {
-                console.error(
-                    "Errore caricamento logo:",
-                    {
-                        url: completeLogoUrl,
-                        error: event.error,
-                    }
-                );
+                console.error("Errore caricamento logo:", {
+                    url: completeLogoUrl,
+                    error: event.error,
+                });
 
                 setHasError(true);
             }}

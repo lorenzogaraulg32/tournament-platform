@@ -1,5 +1,3 @@
-import {ComponentProps} from "react";
-import {Image} from "expo-image";
 import LogoField from "@/src/components/common/images/LogoField";
 import {TeamLogoUpload} from "@/src/services/teams/teamCreationService";
 
@@ -10,6 +8,7 @@ type LogoStepProps = {
     onRemove?: () => void;
     disabled: boolean;
     errorMessage?: string;
+    local?: boolean
 };
 
 export default function LogoStep({
@@ -19,6 +18,7 @@ export default function LogoStep({
                                      onRemove,
                                      disabled,
                                      errorMessage,
+                                     local
                                  }: LogoStepProps) {
     return (
         <LogoField
@@ -29,6 +29,7 @@ export default function LogoStep({
             onChange={onChange}
             disabled={disabled}
             errorMessage={errorMessage}
+            local={local}
         />
     );
 }

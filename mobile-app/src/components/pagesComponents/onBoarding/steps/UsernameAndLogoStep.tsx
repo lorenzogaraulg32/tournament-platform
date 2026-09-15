@@ -53,6 +53,7 @@ export default function UsernameAndLogoStep({
                             value={profileLogo}
                             onChange={onProfileLogoChange}
                             errorMessage={profileLogoError}
+                            local
                         />
                     </View>
 
