@@ -75,7 +75,8 @@ public class TeamService {
                 locationLabel,
                 latitude,
                 longitude,
-                servicesHelper.generateUniqueInvitationCode()
+                servicesHelper.generateUniqueInvitationCode(),
+                request.getSport()
         );
 
         Team savedTeam = teamsRepository.save(team);
@@ -136,7 +137,7 @@ public class TeamService {
             );
 
             team.setLogoUrl(logoUrl);
-        } else if ("REMOVE".equals(request.getLogoUrl())) {
+        } else if ("REMOVE".equals(request.getNewLogoUrl())) {
             logoStorageService.deleteTeamLogo(team.getId());
             team.setLogoUrl(null);
         }
@@ -194,7 +195,6 @@ public class TeamService {
         return servicesHelper.toTeamGetDetailsResponse(savedTeam);
     }
 
-
     public TeamGetDetailsResponse patchTeamLogo(String id, MultipartFile file) {
 
         Team team = servicesHelper.getTeamEntityOrThrow(id);
@@ -226,7 +226,6 @@ public class TeamService {
         logoStorageService.deleteTeamLogo(teamId);
     }
 
-
     public List<TeamGetResponse> getCurrentUserTeams() {
         return teamsRepository
                 .findAllByPlayerIds(teamAuthorizationHelper.getCurrentUserId())
@@ -234,7 +233,6 @@ public class TeamService {
                 .map(servicesHelper::toTeamGetResponse)
                 .toList();
     }
-
 
     public List<TeamGetResponse> getUserTeams(String playerId) {
 

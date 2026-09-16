@@ -28,6 +28,12 @@ public class Team {
         CLOSED
     }
 
+    public enum Sport {
+        FOOTBALL,
+        BEACH_VOLLEY,
+        BASKETBALL
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "team_id")
@@ -92,8 +98,12 @@ public class Team {
     @Column(name = "invitation_code", nullable = false, unique = true)
     private String invitationCode;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "sport", nullable = false)
+    private Sport sport;
 
-    public Team(String name, String description, String creatorId, Set<String> playerIds, Set<String> adminIds, RecruitmentStatus status, String locationLabel, BigDecimal latitude, BigDecimal longitude, String invitationCode) {
+
+    public Team(String name, String description, String creatorId, Set<String> playerIds, Set<String> adminIds, RecruitmentStatus status, String locationLabel, BigDecimal latitude, BigDecimal longitude, String invitationCode, Sport sport) {
         this.name = name;
         this.description = description;
         this.creatorId = creatorId;
@@ -104,6 +114,7 @@ public class Team {
         this.latitude = latitude;
         this.longitude = longitude;
         this.invitationCode = invitationCode;
+        this.sport = sport;
     }
 
 }

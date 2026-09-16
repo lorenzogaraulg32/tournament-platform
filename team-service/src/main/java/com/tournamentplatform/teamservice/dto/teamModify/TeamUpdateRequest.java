@@ -45,7 +45,7 @@ public class TeamUpdateRequest {
             regexp = "^REMOVE$",
             message = "Operazione sul logo non valida"
     )
-    private String logoUrl;
+    private String newLogoUrl;
 
     @JsonIgnore
     private boolean locationProvided;

@@ -34,4 +34,6 @@ public class TeamGetDetailsResponse {
 
     private String invitationCode;
 
+    private Team.Sport sport;
+
 }

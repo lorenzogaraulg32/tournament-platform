@@ -401,7 +401,7 @@ const styles = StyleSheet.create({
 
     editButton: {
         position: "absolute",
-        right: 0
+        right: -20
     },
 
     editButtonPressed: {

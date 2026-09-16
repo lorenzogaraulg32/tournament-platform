@@ -1,6 +1,7 @@
 import {authenticatedFetch} from "@/src/services/fetchService";
 import {RecruitmentStatus} from "@/src/services/teams/teamCreationService";
 import {leaveTournament} from "@/src/services/tournaments/tournamentParticipationService";
+import {Sport} from "@/src/services/users/userConstants";
 
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
@@ -27,6 +28,7 @@ export type TeamDetails = {
     playerIds: string[];
     adminIds: string[];
     invitationCode: string;
+    sport: Sport;
 };
 
 

@@ -17,7 +17,6 @@ import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import HeaderTeam from "@/src/components/pagesComponents/teams/HeaderTeam";
 import CardListContainer from "@/src/components/common/carousel&cards/CardListContainer";
 import PlayersCard from "@/src/components/pagesComponents/profile/cards/PlayersCard";
-import {Sport} from "@/src/services/users/userConstants";
 import AdminsCard from "@/src/components/pagesComponents/profile/cards/AdminsCard";
 import CollapsableSection from "@/src/components/common/CollapsableSection";
 import Toast from "../../common/Toast";
@@ -148,7 +147,7 @@ export default function TeamsDetailsScreen() {
 
     }, [teamId])
 
-    async function onMod(){
+    async function onMod() {
         if (!team) {
             return;
         }
@@ -161,6 +160,43 @@ export default function TeamsDetailsScreen() {
         });
     }
 
+    function canLeave() {
+        if (currentUserId && team?.adminIds.includes(currentUserId)) {
+            return false;
+        }
+        return currentUserId !== String(team?.creatorId);
+    }
+
+    async function onLeave(): Promise<void> {
+        if (!team) {
+            return;
+        }
+
+        try {
+            await leaveTeam(String(team.id));
+
+            router.replace("/(app)/teams");
+        } catch (error) {
+            const apiError = normalizeApiRequestError(error);
+
+            // Redirect già gestito dal fetch autenticato.
+            if (apiError.status === 401) {
+                return;
+            }
+
+            Alert.alert(
+                "Impossibile abbandonare la squadra",
+                apiError.message
+            );
+        }
+    }
+
+    function onDelete() {
+        router.push({
+            pathname: "/teams/delete",
+            params: {teamId: String(team?.id)},
+        });
+    }
 
     function canRemovePlayer(playerId: string): boolean {
         if (!team || currentUserId === null) {
@@ -285,43 +321,6 @@ export default function TeamsDetailsScreen() {
         }
     }
 
-    function canLeave(){
-        if(currentUserId && team?.adminIds.includes(currentUserId)){
-            return false;
-        }
-        return currentUserId !== String(team?.creatorId);
-    }
-
-    async function onLeave(): Promise<void> {
-        if (!team) {
-            return;
-        }
-
-        try {
-            await leaveTeam(String(team.id));
-
-            router.replace("/(app)/teams");
-        } catch (error) {
-            const apiError = normalizeApiRequestError(error);
-
-            // Redirect già gestito dal fetch autenticato.
-            if (apiError.status === 401) {
-                return;
-            }
-
-            Alert.alert(
-                "Impossibile abbandonare la squadra",
-                apiError.message
-            );
-        }
-    }
-
-    function onDelete() {
-        router.push({
-            pathname: "/teams/delete",
-            params: {teamId: String(team?.id)},
-        });
-    }
 
     return (
         <PageLayout
@@ -374,7 +373,7 @@ export default function TeamsDetailsScreen() {
                                             <PlayersCard
                                                 key={player.id}
                                                 player={player}
-                                                sport={Sport.FOOTBALL}
+                                                sport={team.sport}
                                                 modify={
                                                     isMod
                                                         ? () => {

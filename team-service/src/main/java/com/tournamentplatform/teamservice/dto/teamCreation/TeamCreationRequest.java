@@ -32,4 +32,8 @@ public class TeamCreationRequest {
     private TeamLocationRequest location;
 
 
+    @Valid
+    @NotNull(message = "Lo sport della squadra è obbligatorio")
+    private Team.Sport sport;
+
 }

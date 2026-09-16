@@ -34,7 +34,8 @@ public class ServicesHelper {
                 team.getCreatorId(),
                 team.getPlayerIds(),
                 team.getAdminIds(),
-                team.getInvitationCode()
+                team.getInvitationCode(),
+                team.getSport()
         );
     }
 

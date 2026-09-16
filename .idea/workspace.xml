@@ -4,15 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Minor fixes on team mod and deletion, initial setup on profile CRUD">
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Fixed image modification in team modification">
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/createTeam/steps/SportStep.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/forms/FormContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/forms/FormContent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/images/LogoField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/images/LogoField.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/images/Picture.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/images/Picture.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/onBoarding/steps/UsernameAndLogoStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/onBoarding/steps/UsernameAndLogoStep.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/createTeam/steps/LogoStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/createTeam/steps/LogoStep.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/modify/ModifyTeamForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/modify/ModifyTeamForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/create.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/create.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/HeaderProfile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/HeaderProfile.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/HeaderTeam.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/HeaderTeam.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/TeamsDetailsScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/TeamsDetailsScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/createTeam/CreateTeamInputField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/createTeam/CreateTeamInputField.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/services/teams/teamCreationService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/teams/teamCreationService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/teams/teamService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/teams/teamService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/dto/teamCreation/TeamCreationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/dto/teamCreation/TeamCreationRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/dto/teamGet/TeamGetDetailsResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/dto/teamGet/TeamGetDetailsResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/dto/teamModify/TeamUpdateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/dto/teamModify/TeamUpdateRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/entity/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/entity/Team.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/ServicesHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/ServicesHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamService.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -346,15 +353,8 @@
       <workItem from="1789032385830" duration="21653000" />
       <workItem from="1789474320827" duration="19044000" />
       <workItem from="1789496680720" duration="1462000" />
-      <workItem from="1789504798986" duration="6498000" />
-    </task>
-    <task id="LOCAL-00029" summary="Added in TeamInfoSection.tsx 2 badges one for admin and one for players, so on the click the user can check them out. Routes not yet implemented">
-      <option name="closed" value="true" />
-      <created>1785233868640</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1785233868640</updated>
+      <workItem from="1789504798986" duration="6610000" />
+      <workItem from="1789569474749" duration="3829000" />
     </task>
     <task id="LOCAL-00030" summary="Fixed team Deletion">
       <option name="closed" value="true" />
@@ -740,7 +740,15 @@
       <option name="project" value="LOCAL" />
       <updated>1789507100520</updated>
     </task>
-    <option name="localTasksCounter" value="78" />
+    <task id="LOCAL-00078" summary="Fixed image modification in team modification">
+      <option name="closed" value="true" />
+      <created>1789511475824</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1789511475824</updated>
+    </task>
+    <option name="localTasksCounter" value="79" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -758,7 +766,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Structured headers for re-using and coerence, rebuilt teamCreation page to dived it into steps, like onboarding" />
     <MESSAGE value="Restructured folders for better managment" />
     <MESSAGE value="Big Improvements on code organization, reduced coupling between classes, and cleaned up code.&#10;&#10;Also centralized error managment" />
     <MESSAGE value="Big Improvements on frontend services, now they are more separated and with single responsabilty. Also reworked errors and errors parsing and managment" />
@@ -783,7 +790,8 @@
     <MESSAGE value="Better visuals for users you canm remove from players and admins list&#10;now owner of a team can remove admins from admins list" />
     <MESSAGE value="Now you can delete a torunament" />
     <MESSAGE value="Minor fixes on team mod and deletion, initial setup on profile CRUD" />
-    <option name="LAST_COMMIT_MESSAGE" value="Minor fixes on team mod and deletion, initial setup on profile CRUD" />
+    <MESSAGE value="Fixed image modification in team modification" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed image modification in team modification" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -88,7 +88,7 @@ export default function HeaderProfile({
                         style={styles.username}
                         numberOfLines={1}
                     >
-                        @{userInfo.username}
+                        {userInfo.username}
                     </Text>
 
                     {userInfo.location && (
@@ -123,7 +123,8 @@ export default function HeaderProfile({
                         onDelete={onDelete}
                     />
                 </View>
-            }        </View>
+            }
+        </View>
 
     );
 }
@@ -232,7 +233,7 @@ const styles = StyleSheet.create({
 
     editButton: {
         position: "absolute",
-        right: 0
+        right: -20
     },
 
 });

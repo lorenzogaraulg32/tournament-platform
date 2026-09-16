@@ -1,7 +1,6 @@
 import {StyleProp, StyleSheet, Text, TextInput, TextInputProps, TextStyle, View} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {useState} from "react";
-import {fonts} from "@/src/constants/theme";
 import FormLabel from "@/src/components/common/labels/FormLabel";
 
 type CreateTeamFieldProps = TextInputProps & {
@@ -112,21 +111,6 @@ const styles = StyleSheet.create({
         gap: 10,
     },
 
-    iconContainer: {
-        width: 40,
-        height: 40,
-        alignItems: "center",
-        justifyContent: "center",
-
-        borderRadius: 20,
-        backgroundColor: "rgba(200, 72, 10, 0.12)",
-    },
-
-    fieldLabel: {
-        color: "#1C1C1C",
-        fontSize: fonts.label,
-        fontWeight: "800",
-    },
 
     fieldInput: {
         width: "100%",

@@ -1,6 +1,11 @@
 import {useState} from "react";
 import {router} from "expo-router";
-import {createTeam, TeamCreationRequest, TeamLogoUpload,} from "@/src/services/teams/teamCreationService";
+import {
+    checkTeamNameAlreadyExists,
+    createTeam,
+    TeamCreationRequest,
+    TeamLogoUpload,
+} from "@/src/services/teams/teamCreationService";
 import {normalizeApiRequestError, printApiRequestError,} from "@/src/services/errorService";
 import FormLayout from "@/src/components/common/forms/FormLayout";
 import HeaderCreateTeam from "@/src/components/pagesComponents/teams/createTeam/HeaderCreateTeam";
@@ -9,7 +14,7 @@ import NameAndDescStep from "@/src/components/pagesComponents/teams/createTeam/s
 import FormProgressBar from "@/src/components/common/forms/FormProgressBar";
 import PositionStep from "@/src/components/pagesComponents/teams/createTeam/steps/PositionStep";
 import LogoStep from "@/src/components/pagesComponents/teams/createTeam/steps/LogoStep";
-import {checkTeamNameAlreadyExists} from "@/src/services/teams/teamCreationService";
+import SportStep from "@/src/components/pagesComponents/teams/createTeam/steps/SportStep";
 
 type TeamCreationFieldErrors = {
     name?: string;
@@ -17,15 +22,16 @@ type TeamCreationFieldErrors = {
     status?: string;
     location?: string;
     logo?: string;
+    sport?: string;
 };
 
 
-type TeamCreationStep = 0 | 1 | 2;
+type TeamCreationStep = 0 | 1 | 2 | 3;
 
 const FIRST_STEP: TeamCreationStep = 0;
-const LAST_STEP: TeamCreationStep = 2;
+const LAST_STEP: TeamCreationStep = 3;
 
-const STEPS: TeamCreationStep[] = [0, 1, 2];
+const STEPS: TeamCreationStep[] = [0, 1, 2, 3];
 
 export default function CreateTeam() {
     const [currentStep, setCurrentStep] =
@@ -37,6 +43,7 @@ export default function CreateTeam() {
             description: "",
             status: "CLOSED",
             location: undefined,
+            sport: undefined,
         });
 
     const [logo, setLogo] = useState<TeamLogoUpload | null>(null);
@@ -170,6 +177,11 @@ export default function CreateTeam() {
         return true;
     }
 
+    function validateSport(): boolean {
+        const sport = teamData.sport
+        return !!sport;
+    }
+
     async function validateStep(step: TeamCreationStep): Promise<boolean> {
 
         switch (step) {
@@ -181,6 +193,9 @@ export default function CreateTeam() {
 
             case 2:
                 return validateLogo();
+
+            case 3:
+                return validateSport();
         }
     }
 
@@ -255,6 +270,7 @@ export default function CreateTeam() {
                     longitude: selectedLocation.longitude,
                 }
                 : undefined,
+            sport: teamData.sport
         };
 
         try {
@@ -334,6 +350,24 @@ export default function CreateTeam() {
                         errorMessage={fieldErrors.logo}
                     />
                 );
+
+            case 3:
+                return (
+                    <SportStep
+                        onChange={(newSport) => {
+                            console.log(newSport);
+                            if (newSport === teamData.sport) {
+                                updateTeamData("sport", undefined)
+                            } else {
+                                updateTeamData("sport", newSport)
+                            }
+                        }
+                        }
+                        errorMessage={fieldErrors.sport}
+                        selectedSport={teamData.sport}
+                    />
+
+                )
         }
     }
 

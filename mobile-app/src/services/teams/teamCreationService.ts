@@ -1,6 +1,7 @@
 import {File, Paths} from "expo-file-system";
 import {authenticatedFetch} from "@/src/services/fetchService";
 import {LocationRequest} from "@/src/services/common";
+import {Sport} from "@/src/services/users/userConstants";
 
 
 export type RecruitmentStatus = "OPEN" | "CLOSED";
@@ -12,6 +13,7 @@ export type TeamCreationRequest = {
     description?: string;
     status: RecruitmentStatus;
     location?: LocationRequest;
+    sport?: Sport
 };
 
 export type TeamUpdateRequest = {
@@ -114,7 +116,7 @@ export async function editTeam(
 
         const formData = new FormData();
 
-
+        console.log(request)
         // File reale, non un oggetto convertito tramite cast.
         formData.append("team", teamFile, teamFile.name);
 
