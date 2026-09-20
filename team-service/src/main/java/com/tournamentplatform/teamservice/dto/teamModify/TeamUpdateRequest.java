@@ -2,8 +2,8 @@ package com.tournamentplatform.teamservice.dto.teamModify;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.tournamentplatform.teamservice.dto.teamCreation.TeamLocationRequest;
-import com.tournamentplatform.teamservice.entity.Team;
+import com.tournamentplatform.teamservice.dto.position.GeoLocationRequest;
+import com.tournamentplatform.teamservice.entity.utils.RecruitmentStatus;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -35,23 +35,23 @@ public class TeamUpdateRequest {
     private String description;
 
     @Setter
-    private Team.RecruitmentStatus status;
+    private RecruitmentStatus status;
 
     @Valid
-    private TeamLocationRequest location;
+    private GeoLocationRequest location;
 
     @Setter
     @Pattern(
             regexp = "^REMOVE$",
             message = "Operazione sul logo non valida"
     )
-    private String newLogoUrl;
+    private String newImageUrl;
 
     @JsonIgnore
     private boolean locationProvided;
 
     @JsonSetter("location")
-    public void setLocation(TeamLocationRequest location) {
+    public void setLocation(GeoLocationRequest location) {
         this.location = location;
         this.locationProvided = true;
     }

@@ -4,7 +4,6 @@ import {
     checkTeamNameAlreadyExists,
     createTeam,
     TeamCreationRequest,
-    TeamLogoUpload,
 } from "@/src/services/teams/teamCreationService";
 import {normalizeApiRequestError, printApiRequestError,} from "@/src/services/errorService";
 import FormLayout from "@/src/components/common/forms/FormLayout";
@@ -15,6 +14,7 @@ import FormProgressBar from "@/src/components/common/forms/FormProgressBar";
 import PositionStep from "@/src/components/pagesComponents/teams/createTeam/steps/PositionStep";
 import LogoStep from "@/src/components/pagesComponents/teams/createTeam/steps/LogoStep";
 import SportStep from "@/src/components/pagesComponents/teams/createTeam/steps/SportStep";
+import {SelectedImage} from "@/src/services/imagesService";
 
 type TeamCreationFieldErrors = {
     name?: string;
@@ -46,7 +46,7 @@ export default function CreateTeam() {
             sport: undefined,
         });
 
-    const [logo, setLogo] = useState<TeamLogoUpload | null>(null);
+    const [logo, setLogo] = useState<SelectedImage | null>(null);
 
 
     const [fieldErrors, setFieldErrors] =
@@ -298,7 +298,7 @@ export default function CreateTeam() {
         }
     }
 
-    function updateLogo(newLogo: TeamLogoUpload | null) {
+    function updateLogo(newLogo: SelectedImage | null) {
         setLogo(newLogo);
         setFieldErrors((previousErrors) => ({
             ...previousErrors,
@@ -381,7 +381,7 @@ export default function CreateTeam() {
     return (
         <FormLayout
             header={<HeaderCreateTeam/>}
-            variant={"team"}>
+            variant={"teams"}>
             <FormProgressBar
                 step={currentStep + 1}
                 totalSteps={STEPS.length}

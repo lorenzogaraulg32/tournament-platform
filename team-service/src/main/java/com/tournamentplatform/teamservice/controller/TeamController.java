@@ -1,9 +1,7 @@
 package com.tournamentplatform.teamservice.controller;
 
 import com.tournamentplatform.teamservice.dto.teamCreation.TeamCreationRequest;
-import com.tournamentplatform.teamservice.dto.teamCreation.TeamCreationResponse;
-import com.tournamentplatform.teamservice.dto.teamGet.TeamGetDetailsResponse;
-import com.tournamentplatform.teamservice.dto.teamGet.TeamGetResponse;
+import com.tournamentplatform.teamservice.dto.teamGet.TeamResponse;
 import com.tournamentplatform.teamservice.dto.teamModify.TeamUpdateRequest;
 import com.tournamentplatform.teamservice.service.TeamService;
 import jakarta.validation.Valid;
@@ -30,7 +28,7 @@ public class TeamController {
     @PostMapping(
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
-    public ResponseEntity<TeamCreationResponse> createTeam(
+    public ResponseEntity<TeamResponse> createTeam(
             @RequestPart("team")
             @Valid
             TeamCreationRequest request,
@@ -41,7 +39,7 @@ public class TeamController {
             )
             MultipartFile logo
     ) {
-        TeamCreationResponse response = teamService.createTeam(request, logo);
+        TeamResponse response = teamService.createTeam(request, logo);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -56,21 +54,15 @@ public class TeamController {
         return ResponseEntity.status(200).body(response);
     }
 
-    @GetMapping("/my-teams")
-    public ResponseEntity<List<TeamGetResponse>> getCurrentUserTeams() {
-        List<TeamGetResponse> response = teamService.getCurrentUserTeams();
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
-
     @GetMapping("/user/{user_id}")
-    public ResponseEntity<List<TeamGetResponse>> getUserTeams(@PathVariable String user_id) {
-        List<TeamGetResponse> response = teamService.getUserTeams(user_id);
+    public ResponseEntity<List<TeamResponse>> getUserTeams(@PathVariable String user_id) {
+        List<TeamResponse> response = teamService.getUserTeams(user_id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TeamGetDetailsResponse> getTeam(@PathVariable String id) {
-        TeamGetDetailsResponse response = teamService.getTeam(id);
+    public ResponseEntity<TeamResponse> getTeam(@PathVariable String id) {
+        TeamResponse response = teamService.getTeam(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
@@ -85,31 +77,33 @@ public class TeamController {
             value = "/{teamId}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
-    public ResponseEntity<Void> updateTeam(
+    public ResponseEntity<TeamResponse> updateTeam(
             @PathVariable String teamId,
             @Valid @RequestPart("team") TeamUpdateRequest request,
             @RequestPart(value = "logo", required = false) MultipartFile logo
     ) {
-        teamService.updateTeam(teamId, request, logo);
+        TeamResponse response = teamService.updateTeam(teamId, request, logo);
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
     }
 
     @PatchMapping(
             value = "/logo/{id}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
-    public ResponseEntity<TeamGetDetailsResponse> patchTeamLogo(@PathVariable String id, @RequestParam("file") MultipartFile file) {
-        TeamGetDetailsResponse response = teamService.patchTeamLogo(id, file);
+    public ResponseEntity<TeamResponse> patchTeamLogo(@PathVariable String id, @RequestParam("file") MultipartFile file) {
+        TeamResponse response = teamService.patchTeamLogo(id, file);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 
     @PostMapping("/{id}/change_code")
-    public ResponseEntity<TeamGetDetailsResponse> changeInvitationCode(
+    public ResponseEntity<TeamResponse> changeInvitationCode(
             @PathVariable String id
     ) {
-        TeamGetDetailsResponse response = teamService.patchTeamCode(id);
+        TeamResponse response = teamService.patchTeamCode(id);
         return ResponseEntity.ok(response);
     }
 

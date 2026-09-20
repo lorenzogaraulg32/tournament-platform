@@ -1,10 +1,11 @@
 package com.tournamentplatform.teamservice.service;
 
-import com.tournamentplatform.teamservice.dto.teamGet.TeamGetDetailsResponse;
+import com.tournamentplatform.teamservice.dto.teamGet.TeamResponse;
 import com.tournamentplatform.teamservice.entity.Team;
 import com.tournamentplatform.teamservice.errorHandling.teamsExceptions.AdminRemovesAdminException;
 import com.tournamentplatform.teamservice.errorHandling.teamsExceptions.OwnerRemovalExcpetion;
 import com.tournamentplatform.teamservice.errorHandling.teamsExceptions.TeamNotFoundException;
+import com.tournamentplatform.teamservice.mapper.TeamMapper;
 import com.tournamentplatform.teamservice.repository.TeamsRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +17,17 @@ public class TeamPlayerService {
     private final ServicesHelper servicesHelper;
     private final TeamsRepository teamsRepository;
     private final TeamAuthorizationHelper teamAuthorizationHelper;
+    private final TeamMapper mapper;
 
-    public TeamPlayerService(ServicesHelper servicesHelper, TeamsRepository teamsRepository, TeamAuthorizationHelper teamAuthorizationHelper) {
+    public TeamPlayerService(ServicesHelper servicesHelper, TeamsRepository teamsRepository, TeamAuthorizationHelper teamAuthorizationHelper, TeamMapper mapper) {
         this.servicesHelper = servicesHelper;
         this.teamsRepository = teamsRepository;
         this.teamAuthorizationHelper = teamAuthorizationHelper;
+        this.mapper = mapper;
     }
 
 
-    public TeamGetDetailsResponse addPlayerInTeam(String teamId, String playerId) {
+    public TeamResponse addPlayerInTeam(String teamId, String playerId) {
 
         Team team = servicesHelper.getTeamEntityOrThrow(teamId);
 
@@ -34,10 +37,10 @@ public class TeamPlayerService {
 
         Team savedTeam = teamsRepository.save(team);
 
-        return servicesHelper.toTeamGetDetailsResponse(savedTeam);
+        return mapper.toTeamResponse(savedTeam);
     }
 
-    public TeamGetDetailsResponse addPlayerInTeamInvitationCode(String invitationCode) {
+    public TeamResponse addPlayerInTeamInvitationCode(String invitationCode) {
 
         Team team = teamsRepository
                 .findByInvitationCode(invitationCode)
@@ -49,7 +52,7 @@ public class TeamPlayerService {
 
         Team savedTeam = teamsRepository.save(team);
 
-        return servicesHelper.toTeamGetDetailsResponse(savedTeam);
+        return  mapper.toTeamResponse(savedTeam);
     }
 
     public String removePlayerFromTeam(String teamId, String playerId) {

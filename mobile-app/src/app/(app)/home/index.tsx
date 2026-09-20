@@ -2,7 +2,7 @@ import {Alert, ScrollView, StyleSheet, View} from "react-native";
 import PageLayout from "@/src/components/common/PageLayout";
 import {corners} from "@/src/constants/theme";
 import CodeInput from "@/src/components/pagesComponents/home/CodeInput";
-import {addCurrentUserToTeamViaCode} from "@/src/services/teams/teamService";
+import {addPlayer} from "@/src/services/teams/teamService";
 import {router} from "expo-router";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import HeaderPage from "@/src/components/common/headers/HeaderPage";
@@ -13,7 +13,7 @@ export default function Homepage() {
 
     async function joinTeam(code: string) {
         try {
-            const team = await addCurrentUserToTeamViaCode(code)
+            const team = await addPlayer(code)
             router.push({
                 pathname: "/teams/[teamId]",
                 params: {

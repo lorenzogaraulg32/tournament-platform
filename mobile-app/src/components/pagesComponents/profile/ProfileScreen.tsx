@@ -1,13 +1,13 @@
 import {useCallback, useEffect, useRef, useState} from "react";
 import {loadCurrentUserId} from "@/src/services/users/authService";
 import {normalizeApiRequestError} from "@/src/services/errorService";
-import {Alert} from "react-native";
-import {Redirect, router, useLocalSearchParams} from "expo-router";
+import {Redirect} from "expo-router";
 import LoadingScreen from "@/src/components/common/loading/LoadingScreen";
 import ProfilePage from "@/src/components/pagesComponents/profile/ProfilePage";
+import showAlert from "@/src/components/common/errors/Alert";
 
-export default function ProfileDetailsPage() {
-    const {profileId: userId} = useLocalSearchParams<{ profileId: string }>();
+export default function ProfileScreen() {
+
     const [isLoadingUserInfo, setLoadingUserInfo] = useState<boolean>(true)
     const [isOwnProfile, setIsOwnProfile] = useState<boolean>(false)
     const requestIdRef = useRef(0);
@@ -37,29 +37,13 @@ export default function ProfileDetailsPage() {
             const apiError = normalizeApiRequestError(error);
 
             // Redirect già gestito
-            if (apiError.status === 401) {
-                return;
+            if (!(apiError.status === 401)) {
+                showAlert(
+                    "Impossibile caricare l’utente",
+                    apiError.message,
+                    () => void loadUserInfo(),
+                )
             }
-
-            Alert.alert(
-                "Impossibile caricare l’utente",
-                apiError.message,
-                [
-                    {
-                        text: "Riprova",
-                        onPress: () => void loadUserInfo(),
-                    },
-                    {
-                        text: "Annulla",
-                        style: "cancel",
-                        onPress: () =>
-                            router.replace("/(app)/home"),
-                    },
-                ],
-                {
-                    cancelable: false,
-                },
-            );
         }
     }, [userId]);
 
@@ -81,5 +65,5 @@ export default function ProfileDetailsPage() {
     }
 
 
-    return <ProfilePage userId={userId} isOwnProfile={isOwnProfile} canBack={true}/>
+    return <ProfilePage userId={userId} isOwnProfile={isOwnProfile}/>
 }

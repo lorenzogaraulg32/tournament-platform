@@ -8,6 +8,9 @@ export const colors = {
     purpleDefault: "#8331c9",
     purpleBK: "#F4E9FF",
 
+    redDefault:"#C62828",
+    redDefaultBK:"rgba(200, 72, 10, 0.12)",
+
     grayBK: "#F0F3F1",
 
     greenBK:"",
@@ -17,10 +20,12 @@ export const colors = {
     textSecondary: "#F2FFF8",
     textThird: "#D8F5E3",
     textFourth: "#102016",
-    textOffWhite: "#dedede",
 
-    labelForm: "#1C1C1C",
-    labelInfo: "#005628",
+
+
+    label: "#1C1C1C",
+    labelSecondary: "#a8a8a8",
+    textOffWhite: "#dedede",
 
 
     textLightGreen: "#8dc00c",
@@ -33,8 +38,10 @@ export const colors = {
 
 };
 
+
 export const fonts = {
     label: 17,
+    labelWeight: "800"
 }
 
 

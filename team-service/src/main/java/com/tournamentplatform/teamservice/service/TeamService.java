@@ -1,13 +1,11 @@
 package com.tournamentplatform.teamservice.service;
 
 import com.tournamentplatform.teamservice.dto.teamCreation.TeamCreationRequest;
-import com.tournamentplatform.teamservice.dto.teamCreation.TeamCreationResponse;
-import com.tournamentplatform.teamservice.dto.teamCreation.TeamLocationRequest;
-import com.tournamentplatform.teamservice.dto.teamGet.TeamGetDetailsResponse;
-import com.tournamentplatform.teamservice.dto.teamGet.TeamGetResponse;
+import com.tournamentplatform.teamservice.dto.teamGet.TeamResponse;
 import com.tournamentplatform.teamservice.dto.teamModify.TeamUpdateRequest;
 import com.tournamentplatform.teamservice.entity.Team;
 import com.tournamentplatform.teamservice.errorHandling.teamsExceptions.TeamNameAlreadyExistsException;
+import com.tournamentplatform.teamservice.mapper.TeamMapper;
 import com.tournamentplatform.teamservice.repository.TeamsRepository;
 import org.springframework.core.io.Resource;
 import org.springframework.http.CacheControl;
@@ -18,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,16 +29,23 @@ public class TeamService {
     private final TeamAuthorizationHelper teamAuthorizationHelper;
     private final LogoStorageService logoStorageService;
     private final ServicesHelper servicesHelper;
+    private final TeamMapper mapper;
 
-    public TeamService(TeamsRepository teamsRepository, TeamAuthorizationHelper teamAuthorizationHelper, LogoStorageService logoStorageService, ServicesHelper servicesHelper) {
+    public TeamService(
+            TeamsRepository teamsRepository,
+            TeamAuthorizationHelper teamAuthorizationHelper,
+            LogoStorageService logoStorageService,
+            ServicesHelper servicesHelper,
+            TeamMapper mapper) {
         this.teamsRepository = teamsRepository;
         this.teamAuthorizationHelper = teamAuthorizationHelper;
         this.logoStorageService = logoStorageService;
         this.servicesHelper = servicesHelper;
+        this.mapper = mapper;
     }
 
     @Transactional
-    public TeamCreationResponse createTeam(TeamCreationRequest request, MultipartFile logo) {
+    public TeamResponse createTeam(TeamCreationRequest request, MultipartFile logo) {
 
         String currentUserId = teamAuthorizationHelper.getCurrentUserId();
 
@@ -52,19 +56,6 @@ public class TeamService {
         admins.add(currentUserId);
 
 
-        TeamLocationRequest location = request.getLocation();
-
-        String locationLabel = null;
-        BigDecimal latitude = null;
-        BigDecimal longitude = null;
-
-        if (location != null) {
-            locationLabel = location.getLabel();
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
-        }
-
-
         Team team = new Team(
                 request.getName(),
                 request.getDescription(),
@@ -72,9 +63,7 @@ public class TeamService {
                 players,
                 admins,
                 request.getStatus(),
-                locationLabel,
-                latitude,
-                longitude,
+                mapper.toGeoLocation(request.getLocation()),
                 servicesHelper.generateUniqueInvitationCode(),
                 request.getSport()
         );
@@ -87,14 +76,14 @@ public class TeamService {
                     logo
             );
 
-            savedTeam.setLogoUrl(logoUrl);
+            savedTeam.setImageUrl(logoUrl);
         }
 
-        return new TeamCreationResponse(String.valueOf(savedTeam.getId()));
+        return mapper.toTeamResponse(savedTeam);
     }
 
     @Transactional
-    public void updateTeam(String teamId, TeamUpdateRequest request, MultipartFile logo) {
+    public TeamResponse updateTeam(String teamId, TeamUpdateRequest request, MultipartFile logo) {
         Team team = servicesHelper.getTeamEntityOrThrow(teamId);
 
         teamAuthorizationHelper.checkTeamAdmin(team);
@@ -117,17 +106,7 @@ public class TeamService {
         }
 
         if (request.isLocationProvided()) {
-            TeamLocationRequest location = request.getLocation();
-
-            team.setLocationLabel(
-                    location != null ? location.getLabel() : null
-            );
-            team.setLatitude(
-                    location != null ? location.getLatitude() : null
-            );
-            team.setLongitude(
-                    location != null ? location.getLongitude() : null
-            );
+            team.setLocation(mapper.toGeoLocation(request.getLocation()));
         }
 
         if (logo != null && !logo.isEmpty()) {
@@ -136,13 +115,14 @@ public class TeamService {
                     logo
             );
 
-            team.setLogoUrl(logoUrl);
-        } else if ("REMOVE".equals(request.getNewLogoUrl())) {
+            team.setImageUrl(logoUrl);
+        } else if ("REMOVE".equals(request.getNewImageUrl())) {
             logoStorageService.deleteTeamLogo(team.getId());
-            team.setLogoUrl(null);
+            team.setImageUrl(null);
         }
 
-        teamsRepository.save(team);
+        Team savedTeam = teamsRepository.save(team);
+        return mapper.toTeamResponse(savedTeam);
     }
 
     public String checkTeamName(String teamName) {
@@ -153,11 +133,11 @@ public class TeamService {
         return "valid";
     }
 
-    public TeamGetDetailsResponse getTeam(String id) {
+    public TeamResponse getTeam(String id) {
 
         Team team = servicesHelper.getTeamEntityOrThrow(id);
 
-        return servicesHelper.toTeamGetDetailsResponse(team);
+        return mapper.toTeamResponse(team);
     }
 
     public ResponseEntity<Resource> getTeamLogo(String teamId) {
@@ -168,7 +148,7 @@ public class TeamService {
 
         Resource logo =
                 logoStorageService.loadTeamLogo(
-                        team.getLogoUrl()
+                        team.getImageUrl()
                 );
 
         MediaType contentType = MediaTypeFactory
@@ -182,7 +162,7 @@ public class TeamService {
                 .body(logo);
     }
 
-    public TeamGetDetailsResponse patchTeamCode(String id) {
+    public TeamResponse patchTeamCode(String id) {
 
         Team team = servicesHelper.getTeamEntityOrThrow(id);
 
@@ -192,10 +172,10 @@ public class TeamService {
 
         Team savedTeam = teamsRepository.save(team);
 
-        return servicesHelper.toTeamGetDetailsResponse(savedTeam);
+        return mapper.toTeamResponse(savedTeam);
     }
 
-    public TeamGetDetailsResponse patchTeamLogo(String id, MultipartFile file) {
+    public TeamResponse patchTeamLogo(String id, MultipartFile file) {
 
         Team team = servicesHelper.getTeamEntityOrThrow(id);
 
@@ -203,11 +183,11 @@ public class TeamService {
 
         String logoUrl = logoStorageService.storeTeamLogo(team.getId(), file);
 
-        team.setLogoUrl(logoUrl);
+        team.setImageUrl(logoUrl);
 
         Team savedTeam = teamsRepository.save(team);
 
-        return servicesHelper.toTeamGetDetailsResponse(savedTeam);
+        return mapper.toTeamResponse(savedTeam);
     }
 
     @Transactional
@@ -226,20 +206,12 @@ public class TeamService {
         logoStorageService.deleteTeamLogo(teamId);
     }
 
-    public List<TeamGetResponse> getCurrentUserTeams() {
-        return teamsRepository
-                .findAllByPlayerIds(teamAuthorizationHelper.getCurrentUserId())
-                .stream()
-                .map(servicesHelper::toTeamGetResponse)
-                .toList();
-    }
-
-    public List<TeamGetResponse> getUserTeams(String playerId) {
+    public List<TeamResponse> getUserTeams(String playerId) {
 
         return teamsRepository
                 .findAllByPlayerIds(playerId)
                 .stream()
-                .map(servicesHelper::toTeamGetResponse)
+                .map(mapper::toTeamResponse)
                 .toList();
     }
 

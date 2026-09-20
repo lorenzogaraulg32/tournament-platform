@@ -6,11 +6,11 @@ import HorizontalCardContainer, {
     TeamAuthority
 } from "@/src/components/common/carousel&cards/HorizontalCardContainer";
 
-import {UserEntity} from "@/src/services/users/userService";
+import {UserInfo} from "@/src/services/users/userService";
 
 
 type AdminsCardProps = {
-    admin: UserEntity;
+    admin: UserInfo;
     isOwner: boolean;
     modify?: () => void
 };
@@ -77,7 +77,7 @@ export default function AdminsCard({
                     numberOfLines={1}
                     ellipsizeMode="tail"
                 >
-                    {admin.userInfo.firstName + " " + admin.userInfo.lastName}
+                    {admin.firstName + " " + admin.lastName}
                 </Text>
 
                 <View

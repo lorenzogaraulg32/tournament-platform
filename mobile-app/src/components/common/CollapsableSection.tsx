@@ -10,7 +10,6 @@ type CollapsableSectionProps = {
     iconName: keyof typeof Ionicons.glyphMap,
     children: ReactNode | ((isMod: boolean) => ReactNode),
     canMod?: boolean,
-    feedback?: ReactNode,
 }
 
 
@@ -19,7 +18,6 @@ export default function CollapsableSection({
                                                iconName,
                                                children,
                                                canMod = false,
-                                               feedback
                                            }: CollapsableSectionProps) {
 
     const [isExpanded, setExpanded] = useState<boolean>(true)
@@ -65,7 +63,7 @@ export default function CollapsableSection({
                             <Ionicons
                                 name="chevron-forward"
                                 size={20}
-                                color={colors.labelInfo}
+                                color={colors.label}
                             />
                         </Pressable>
                     </View>
@@ -83,7 +81,7 @@ export default function CollapsableSection({
                         <Ionicons
                             name={isExpanded ? "chevron-up" : "chevron-down"}
                             size={20}
-                            color={colors.labelInfo}
+                            color={colors.label}
                         />
                     </Pressable>
                 </View>
@@ -116,7 +114,7 @@ export default function CollapsableSection({
                                 <Ionicons
                                     name="chevron-back"
                                     size={20}
-                                    color={colors.labelInfo}
+                                    color={colors.label}
                                 />
                             </Pressable>
 
@@ -157,7 +155,6 @@ export default function CollapsableSection({
                     >
                         {renderContent(canMod && isMod)}
                     </ScrollView>
-                    {feedback}
                 </SafeAreaView>
             </Modal>
         </>

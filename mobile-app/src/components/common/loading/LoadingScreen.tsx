@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        color: colors.labelForm,
+        color: colors.label,
         fontSize: 22,
         fontWeight: "800",
         textAlign: "center",

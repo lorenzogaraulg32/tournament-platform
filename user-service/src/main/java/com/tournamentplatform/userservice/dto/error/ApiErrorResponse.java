@@ -1,4 +1,4 @@
-package com.tournamentplatform.userservice.dto;
+package com.tournamentplatform.userservice.dto.error;
 
 
 import java.time.Instant;

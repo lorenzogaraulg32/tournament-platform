@@ -1,5 +1,7 @@
 package com.tournamentplatform.userservice.dto;
 
+import com.tournamentplatform.userservice.dto.position.GeoLocationRequest;
+import com.tournamentplatform.userservice.dto.sport_roles.UserSportRoleRequest;
 import com.tournamentplatform.userservice.entity.utils.Gender;
 import com.tournamentplatform.userservice.entity.utils.Sport;
 import jakarta.validation.Valid;

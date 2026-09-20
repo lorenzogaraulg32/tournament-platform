@@ -5,7 +5,7 @@ import {SafeAreaView} from "react-native-safe-area-context";
 import {TeamDetails} from "@/src/services/teams/teamService";
 import {authenticatedFetch} from "@/src/services/fetchService";
 import {normalizeApiRequestError} from "@/src/services/errorService";
-import ModifyTeamForm from "@/src/components/pagesComponents/teams/modify/ModifyTeamForm";
+import ModifyTeam from "@/src/components/pagesComponents/teams/modify/ModifyTeam";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -118,7 +118,7 @@ export default function ModifyTeamPage() {
     }
 
     // Lo stato del form viene inizializzato solo dopo il caricamento.
-    return <ModifyTeamForm key={teamId} team={state.team} />;
+    return <ModifyTeam key={teamId} team={state.team} />;
 }
 
 const styles = StyleSheet.create({

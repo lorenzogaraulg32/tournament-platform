@@ -1,40 +1,15 @@
 import {authenticatedFetch} from "@/src/services/fetchService";
-import {RecruitmentStatus} from "@/src/services/teams/teamCreationService";
 import {leaveTournament} from "@/src/services/tournaments/tournamentParticipationService";
-import {Sport} from "@/src/services/users/userConstants";
+import {TeamCreationRequest, TeamDetails, TeamUpdateRequest} from "@/src/services/teams/teamsConst";
+import {SelectedImage} from "@/src/services/imagesService";
+import {File, Paths} from "expo-file-system";
+import {API_URL} from "@/src/services/common";
 
 
-const API_URL = process.env.EXPO_PUBLIC_API_URL;
-
-
-export type TeamInfo = {
-    id: number;
-    name: string;
-    logoUrl: string | null;
-    numberOfPlayers: number;
-};
-
-
-export type TeamDetails = {
-    id: number;
-    name: string;
-    description: string;
-    status: RecruitmentStatus;
-    locationLabel: string;
-    latitude: number;
-    longitude: number;
-    logoUrl?: string | null;
-    creatorId: string;
-    playerIds: string[];
-    adminIds: string[];
-    invitationCode: string;
-    sport: Sport;
-};
-
-
-export async function getCurrentUserTeams(): Promise<TeamInfo[]> {
+/* CRUD */
+export async function fetchTeam(teamId: string): Promise<TeamDetails> {
     const response = await authenticatedFetch(
-        `${API_URL}/teams/my-teams`,
+        `${API_URL}/teams/${encodeURIComponent(teamId)}`,
         {
             method: "GET",
             headers: {
@@ -43,10 +18,106 @@ export async function getCurrentUserTeams(): Promise<TeamInfo[]> {
         }
     );
 
-    return await response.json() as TeamInfo[];
+    return await response.json() as TeamDetails;
 }
 
-export async function loadUserTeams(userId: string): Promise<TeamInfo[]> {
+
+export async function createTeam(
+    request: TeamCreationRequest,
+    logo?: SelectedImage | null
+): Promise<TeamDetails> {
+
+
+    const teamFile = new File(
+        Paths.cache,
+        `team-${Date.now()}.json`
+    );
+
+    try {
+        teamFile.create({
+            overwrite: true,
+        });
+
+        teamFile.write(
+            JSON.stringify(request)
+        );
+
+        const formData = new FormData();
+
+        formData.append("team", teamFile, teamFile.name);
+
+        if (logo) {
+            const logoFile = new File(logo.uri);
+
+            formData.append("logo", logoFile, logo.fileName);
+        }
+
+        const response = await authenticatedFetch(
+            `${API_URL}/teams`,
+            {
+                method: "POST",
+                body: formData,
+            }
+        );
+
+        return await response.json() as TeamDetails;
+    } finally {
+        if (teamFile.exists) {
+            teamFile.delete();
+        }
+    }
+}
+
+
+export async function editTeam(
+    teamId: string,
+    request: TeamUpdateRequest,
+    logo?: SelectedImage | null
+): Promise<TeamDetails> {
+    const teamFile = new File(
+        Paths.cache,
+        `team-update-${Date.now()}.json`
+    );
+
+    try {
+        teamFile.create({overwrite: true});
+        teamFile.write(JSON.stringify(request));
+
+        const formData = new FormData();
+
+        formData.append("team", teamFile, teamFile.name);
+
+        if (logo) {
+            const logoFile = new File(logo.uri);
+
+            formData.append(
+                "logo",
+                logoFile,
+                logo.fileName
+            );
+        }
+
+        const response = await authenticatedFetch(
+            `${API_URL}/teams/${encodeURIComponent(teamId)}`,
+            {
+                method: "PATCH",
+                body: formData,
+            }
+        );
+
+        return await response.json() as TeamDetails;
+
+    } finally {
+        if (teamFile.exists) {
+            teamFile.delete();
+        }
+    }
+}
+
+
+export async function fetchUserTeams(
+    userId: string
+): Promise<TeamDetails[]> {
     const response = await authenticatedFetch(
         `${API_URL}/teams/user/${encodeURIComponent(userId)}`,
         {
@@ -57,14 +128,14 @@ export async function loadUserTeams(userId: string): Promise<TeamInfo[]> {
         }
     );
 
-    return await response.json() as TeamInfo[];
+    return await response.json() as TeamDetails[];
 }
 
-export async function addCurrentUserToTeamViaCode(
-    code: string
+export async function addPlayer(
+    invitationCode: string
 ): Promise<TeamDetails> {
     const response = await authenticatedFetch(
-        `${API_URL}/teams/players/${encodeURIComponent(code)}`,
+        `${API_URL}/teams/players/${encodeURIComponent(invitationCode)}`,
         {
             method: "POST",
             headers: {
@@ -76,7 +147,7 @@ export async function addCurrentUserToTeamViaCode(
     return await response.json() as TeamDetails;
 }
 
-export async function refreshCodeTeam(teamId: number): Promise<TeamDetails> {
+export async function refreshInvitationCode(teamId: string): Promise<TeamDetails> {
     const response = await authenticatedFetch(
         `${API_URL}/teams/${teamId}/change_code`,
         {
@@ -90,28 +161,6 @@ export async function refreshCodeTeam(teamId: number): Promise<TeamDetails> {
     return await response.json() as TeamDetails;
 }
 
-export async function getTeamDetails(id: string): Promise<TeamDetails> {
-    const response = await authenticatedFetch(
-        `${API_URL}/teams/${encodeURIComponent(id)}`,
-        {
-            method: "GET",
-            headers: {
-                Accept: "application/json",
-            },
-        }
-    );
-
-    return await response.json() as TeamDetails;
-}
-
-export function teamDetailsToTeamInfo(team: TeamDetails): TeamInfo {
-    return {
-        id: team.id,
-        name: team.name,
-        logoUrl: team.logoUrl ? team.logoUrl : null,
-        numberOfPlayers: team.playerIds.length,
-    }
-}
 
 export async function removeTeamPlayer(
     teamId: string,
@@ -165,6 +214,8 @@ export async function deleteTeam(teamId: string) {
 }
 
 
+/* utils endpoints */
+
 export async function canDeleteTeam(teamId: string): Promise<string[]> {
     const response = await authenticatedFetch(
         `${API_URL}/tournaments/can_delete_team/${encodeURIComponent(teamId)}`,
@@ -178,3 +229,20 @@ export async function canDeleteTeam(teamId: string): Promise<string[]> {
 
     return await response.json() as string[];
 }
+
+
+export async function checkTeamNameAlreadyExists(teamName: string): Promise<string> {
+
+    const response = await authenticatedFetch(
+        `${API_URL}/teams/name/${encodeURIComponent(teamName)}`,
+        {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+            },
+        }
+    );
+    return await response.text();
+}
+
+

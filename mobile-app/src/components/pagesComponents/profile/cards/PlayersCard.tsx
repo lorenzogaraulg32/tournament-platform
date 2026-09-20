@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View} from "react-native";
-import {UserEntity} from "@/src/services/users/userService";
+import {UserInfo} from "@/src/services/users/userService";
 import {getRoleBySport, ROLE_LABELS, Sport} from "@/src/services/users/userConstants";
 import {router, useSegments} from "expo-router";
 
@@ -9,7 +9,7 @@ import HorizontalCardContainer, {
 
 
 type PlayerCardProps = {
-    player: UserEntity
+    player: UserInfo
     sport: Sport
     modify?: () => void
 }
@@ -79,7 +79,7 @@ export default function PlayersCard({
                     numberOfLines={1}
                     ellipsizeMode="tail"
                 >
-                    {player.userInfo.firstName + " " + player.userInfo.lastName}
+                    {player.firstName + " " + player.lastName}
                 </Text>
 
                 <View

@@ -1,4 +1,4 @@
-package com.tournamentplatform.userservice.dto;
+package com.tournamentplatform.userservice.dto.sport_roles;
 
 import com.tournamentplatform.userservice.entity.utils.Sport;
 import com.tournamentplatform.userservice.entity.utils.SportRole;

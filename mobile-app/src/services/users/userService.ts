@@ -1,5 +1,6 @@
-import {Gender, GeoLocation, Sport, UserSportRole} from "@/src/services/users/userConstants";
+import {Gender, Sport, UserSportRole} from "@/src/services/users/userConstants";
 import {authenticatedFetch} from "@/src/services/fetchService";
+import {GeoLocation} from "@/src/services/common";
 
 //Usato solo per la creazione utente non contiene logoUrl
 export type UserOnBoardingInfo = {
@@ -13,8 +14,20 @@ export type UserOnBoardingInfo = {
     location: GeoLocation | null;
 };
 
+
+export type UserModInfo = {
+    username: string;
+    firstName: string;
+    lastName: string;
+    sports: Sport[];
+    roles: UserSportRole[];
+    location: GeoLocation | null;
+    newPicUrl: string | undefined;
+};
+
 //Rappresenta la info dell'utente senza i dettagli di autenticazione
 export type UserInfo = {
+    id: string
     username: string;
     firstName: string;
     lastName: string;
@@ -26,11 +39,6 @@ export type UserInfo = {
     profilePicUrl?: string,
 };
 
-
-export type UserEntity = {
-    id: string
-    userInfo: UserInfo
-}
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -71,6 +79,9 @@ export async function loadUserInfo(
 }
 
 
+export async function modUser(userData: UserModInfo){
+
+}
 
 
 

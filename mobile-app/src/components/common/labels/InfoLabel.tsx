@@ -18,16 +18,9 @@ export default function InfoLabel({
             <View style={styles.labelContainer}>
                 <View style={styles.iconContainer}>
                     <Ionicons
-                        style={styles.iconGlow}
                         name={labelIconName}
                         size={24}
-                        color="rgba(0, 168, 89, 0.15)"
-                    />
-
-                    <Ionicons
-                        name={labelIconName}
-                        size={24}
-                        color={colors.labelInfo}
+                        color={colors.label}
                     />
                 </View>
                 <Text style={styles.label}>
@@ -61,7 +54,7 @@ const styles = StyleSheet.create({
     },
 
     label: {
-        color: colors.labelInfo,
+        color: colors.label,
         fontSize: fonts.label,
         fontWeight: "800",
         textShadowColor: "rgba(0,86,40,0.18)",
@@ -74,11 +67,6 @@ const styles = StyleSheet.create({
 
     iconContainer: {
         position: "relative",
-    },
-
-    iconGlow: {
-        position: "absolute",
-        transform: [{ scale: 1.06 }],
     },
 
 });

@@ -1,5 +1,5 @@
 import {View} from "react-native";
-import CreateTeamInputField from "@/src/components/pagesComponents/teams/createTeam/CreateTeamInputField";
+import FormInputField from "@/src/components/common/forms/FormInputField";
 import Switch from "@/src/components/pagesComponents/teams/createTeam/Switch";
 import {RecruitmentStatus} from "@/src/services/teams/teamCreationService";
 
@@ -29,7 +29,7 @@ export default function NameAndDescStep({
                                         }: NameAndDescStepProps) {
     return (
         <View>
-            <CreateTeamInputField
+            <FormInputField
                 label="Nome squadra"
                 labelIconName="shield-outline"
                 placeholder="Es. FC Bar Ci Siamo"
@@ -41,7 +41,7 @@ export default function NameAndDescStep({
                 editable={editable}
             />
 
-            <CreateTeamInputField
+            <FormInputField
                 label="Descrizione"
                 optional
                 labelIconName="chatbubble-ellipses-outline"

@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
 
     message: {
         marginTop: 12,
-        color: colors.labelInfo,
+        color: colors.label,
         fontSize: 15,
         lineHeight: 22,
         textAlign: "center",

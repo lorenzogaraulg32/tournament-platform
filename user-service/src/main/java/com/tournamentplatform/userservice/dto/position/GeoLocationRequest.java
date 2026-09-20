@@ -1,4 +1,4 @@
-package com.tournamentplatform.userservice.dto;
+package com.tournamentplatform.userservice.dto.position;
 
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;

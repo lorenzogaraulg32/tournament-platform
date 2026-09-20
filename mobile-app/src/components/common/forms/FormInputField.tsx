@@ -1,10 +1,12 @@
 import {StyleProp, StyleSheet, Text, TextInput, TextInputProps, TextStyle, View} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {useState} from "react";
+import {colors} from "@/src/constants/theme";
 import FormLabel from "@/src/components/common/labels/FormLabel";
 
 type CreateTeamFieldProps = TextInputProps & {
     label: string;
+    variant?: "team" | "profile";
     optional?: boolean,
     errorMessage?: string;
     labelIconName?: keyof typeof Ionicons.glyphMap;
@@ -15,17 +17,18 @@ type CreateTeamFieldProps = TextInputProps & {
 
 //Doppio container, perchè external consente di posizionare icone/info aggiuntive a destra
 
-export default function CreateTeamInputField({
-                                   label,
-                                   optional = false,
-                                   errorMessage,
-                                   labelIconName = "shield-outline",
-                                   inputStyle,
-                                   minLength,
-                                   maxLength,
-                                   value,
-                                   ...props
-                               }: CreateTeamFieldProps) {
+export default function FormInputField({
+                                           label,
+                                           optional = false,
+                                           variant = "team",
+                                           errorMessage,
+                                           labelIconName = "shield-outline",
+                                           inputStyle,
+                                           minLength,
+                                           maxLength,
+                                           value,
+                                           ...props
+                                       }: CreateTeamFieldProps) {
 
     const [isFocused, setIsFocused] = useState(false);
 
@@ -35,12 +38,13 @@ export default function CreateTeamInputField({
 
             <FormLabel
                 text={label}
+                variant={variant}
                 optional={optional}
                 labelIconName={labelIconName}/>
 
             <TextInput
                 placeholderTextColor="#929292"
-                selectionColor="#C8480A"
+                selectionColor={variant === "profile" ? colors.redDefault : colors.orangeDefault}
 
                 value={value}
 
@@ -56,6 +60,7 @@ export default function CreateTeamInputField({
                 style={[
                     styles.fieldInput,
                     isFocused && styles.fieldInputFocused,
+                    isFocused && variant === "profile" && styles.fieldInputProfileFocused,
                     Boolean(errorMessage) && styles.fieldInputError,
                     inputStyle,
                 ]}
@@ -79,6 +84,10 @@ export default function CreateTeamInputField({
                             typeof value === "string" &&
                             value.length < (minLength ?? 0) &&
                             styles.characterCounterInvalid,
+                            typeof value === "string" &&
+                            value.length < (minLength ?? 0) &&
+                            variant === "profile" &&
+                            styles.characterCounterProfileInvalid,
                         ]}
                     >
                         {typeof value === "string" ? value.length : 0}
@@ -144,13 +153,18 @@ const styles = StyleSheet.create({
         elevation: 1,
     },
 
+    fieldInputProfileFocused: {
+        borderColor: colors.redDefault,
+        shadowColor: colors.redDefault,
+    },
+
     fieldInputError: {
         borderColor: "#B42318",
         backgroundColor: "#FFF7F6",
     },
 
     optionalText: {
-        color: "#a8a8a8",
+        color: colors.labelSecondary,
     },
 
 
@@ -175,6 +189,10 @@ const styles = StyleSheet.create({
 
     characterCounterInvalid: {
         color: "#C8480A",
+    },
+
+    characterCounterProfileInvalid: {
+        color: colors.redDefault,
     },
 
     errorText: {

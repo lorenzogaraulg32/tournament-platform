@@ -1,202 +1,103 @@
-import {Alert, ScrollView, StyleSheet, Text, View} from "react-native";
-import {colors} from "@/src/constants/theme";
-import {router, useLocalSearchParams} from "expo-router";
-import {useEffect, useState} from "react";
-import {
-    getTeamDetails,
-    leaveTeam,
-    removeTeamAdmin,
-    removeTeamPlayer,
-    TeamDetails
-} from "@/src/services/teams/teamService";
-import {loadUserInfo, UserEntity} from "@/src/services/users/userService";
-import {loadCurrentUserId} from "@/src/services/users/authService";
-import {normalizeApiRequestError} from "@/src/services/errorService";
+//questa sarà la view del team, che contiene header ecc.
+
+import {ScrollView, StyleSheet, Text, View} from "react-native";
 import PageLayout from "@/src/components/common/PageLayout";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
-import HeaderTeam from "@/src/components/pagesComponents/teams/HeaderTeam";
+import HeaderEntity from "@/src/components/common/headers/HeaderEntity";
+import CollapsableSection from "@/src/components/common/CollapsableSection";
 import CardListContainer from "@/src/components/common/carousel&cards/CardListContainer";
 import PlayersCard from "@/src/components/pagesComponents/profile/cards/PlayersCard";
 import AdminsCard from "@/src/components/pagesComponents/profile/cards/AdminsCard";
-import CollapsableSection from "@/src/components/common/CollapsableSection";
-import Toast from "../../common/Toast";
+import {colors} from "@/src/constants/theme";
+import {TeamDetails} from "@/src/services/teams/teamsConst";
+import {loadUserInfo, UserInfo} from "@/src/services/users/userService";
+import {Dispatch, SetStateAction, useCallback, useEffect, useRef, useState} from "react";
+import {normalizeApiRequestError} from "@/src/services/errorService";
+import {removeTeamAdmin, removeTeamPlayer} from "@/src/services/teams/teamService";
+import showAlert from "@/src/components/common/errors/Alert";
+import {useToast} from "@/src/components/common/ToastProvider";
 
 
-export default function TeamsDetailsScreen() {
-
-    const {teamId} = useLocalSearchParams<{ teamId: string }>();
-    const [team, setTeam] = useState<TeamDetails | null>(null);
-    const [teamPlayers, setTeamPlayers] = useState<UserEntity[]>([])
-    const [teamAdmins, setTeamAdmins] = useState<UserEntity[]>([])
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    const [isCurrentUserTeamAdmin, setIsCurrentUserTeamAdmin] = useState<boolean>(false)
-    const [isCurrentUserTeamOwner, setIsCurrentUserTeamOwner] = useState<boolean>(false)
-    const [removingPlayerId, setRemovingPlayerId] = useState<string | null>(null);
-    const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+type TeamPageProps = {
+    team: TeamDetails;
+    setTeam: Dispatch<SetStateAction<TeamDetails | null>>;
+    onRefreshCode: () => Promise<string>;
+    isTeamAdmin: boolean;
+    isTeamOwner: boolean;
+    currentUserId: string;
+};
 
 
-    const [toast, setToast] = useState<{
-        message: string;
-        success: boolean;
-    } | null>(null);
-
-    useEffect(() => {
-        if (!toast) {
-            return;
-        }
-
-        const timeout = setTimeout(() => setToast(null), 3000);
-
-        return () => clearTimeout(timeout);
-    }, [toast]);
-
-    const onBack = () => {
-        if (router.canGoBack()) {
-            router.back();
-        } else {
-            router.replace("/(app)/teams");
-        }
-    }
-
-    useEffect(() => {
-        let isActive = true
-
-        async function loadTeamInfo() {
-            try {
-                setIsLoading(true)
-                setError(null)
-                setTeam(null);
-                setIsCurrentUserTeamAdmin(false);
+export default function TeamPage({
+                                     team,
+                                     setTeam,
+                                     onRefreshCode,
+                                     isTeamAdmin,
+                                     isTeamOwner,
+                                     currentUserId
+                                 }: TeamPageProps) {
 
 
-                const [loadedTeam, currentUserId] = await Promise.all([
-                    getTeamDetails(teamId),
-                    loadCurrentUserId(),
-                ]);
+    const {showToast} = useToast();
 
-                const loadedPlayers = await Promise.all(
-                    loadedTeam.playerIds.map(async (id) => {
-                        const userInfo =
-                            await loadUserInfo(id);
+    const [isLoading, setLoading] = useState<boolean>(true)
+    const [error, setError] = useState<string>("");
+    //componenti team
+    const componentsRequestIdRef = useRef(0);
+    const removalInProgressRef = useRef(false);
+    const [teamPlayers, setTeamPlayers] = useState<UserInfo[] | null>([])
+    const [teamAdmins, setTeamAdmins] = useState<UserInfo[] | null>([])
+    const fetchTeamComponents = useCallback(async () => {
+        const requestId = ++componentsRequestIdRef.current;
 
-                        return {
-                            id,
-                            userInfo,
-                        };
-                    })
-                );
-
-                const loadedAdmins = await Promise.all(
-                    loadedTeam.adminIds.map(async (id) => {
-                        const userInfo =
-                            await loadUserInfo(id);
-
-                        return {
-                            id,
-                            userInfo,
-                        };
-                    })
-                );
-
-                if (!isActive) {
-                    return;
-                }
-
-                const normalizedUserId = String(currentUserId);
-                setCurrentUserId(normalizedUserId);
-
-                setIsCurrentUserTeamAdmin(
-                    loadedTeam.adminIds.some(
-                        (id) => String(id) === normalizedUserId
-                    )
-                );
-
-                setIsCurrentUserTeamOwner(
-                    String(loadedTeam.creatorId) === normalizedUserId
-                );
-
-                setTeamPlayers(loadedPlayers)
-                setTeamAdmins(loadedAdmins)
-                setTeam(loadedTeam);
-
-            } catch (error) {
-                if (!isActive) {
-                    return;
-                }
-                const apiError = normalizeApiRequestError(error)
-
-                // Redirect già gestito da authenticatedFetch
-                if (apiError.status === 401) {
-                    return;
-                }
-
-                setError(apiError.message)
-            } finally {
-                if (isActive) {
-                    setIsLoading(false);
-                }
-            }
-        }
-
-        void loadTeamInfo()
-
-        return () => {
-            isActive = false;
-        };
-
-    }, [teamId])
-
-    async function onMod() {
-        if (!team) {
-            return;
-        }
-
-        router.push({
-            pathname: "/teams/modify",
-            params: {
-                teamId: String(team.id),
-            },
-        });
-    }
-
-    function canLeave() {
-        if (currentUserId && team?.adminIds.includes(currentUserId)) {
-            return false;
-        }
-        return currentUserId !== String(team?.creatorId);
-    }
-
-    async function onLeave(): Promise<void> {
-        if (!team) {
-            return;
-        }
+        setLoading(true);
+        setError("");
 
         try {
-            await leaveTeam(String(team.id));
+            setTeamPlayers(null);
+            setTeamAdmins(null);
 
-            router.replace("/(app)/teams");
-        } catch (error) {
-            const apiError = normalizeApiRequestError(error);
-
-            // Redirect già gestito dal fetch autenticato.
-            if (apiError.status === 401) {
+            if (!team) {
                 return;
             }
 
-            Alert.alert(
-                "Impossibile abbandonare la squadra",
-                apiError.message
-            );
-        }
-    }
+            const [loadedPlayers, loadedAdmins] = await Promise.all([
+                Promise.all(team.playerIds.map((id) => loadUserInfo(id))),
+                Promise.all(team.adminIds.map((id) => loadUserInfo(id))),
+            ]);
 
-    function onDelete() {
-        router.push({
-            pathname: "/teams/delete",
-            params: {teamId: String(team?.id)},
-        });
-    }
+            if (requestId !== componentsRequestIdRef.current) {
+                return;
+            }
+
+            setTeamPlayers(loadedPlayers);
+            setTeamAdmins(loadedAdmins);
+        } catch (error) {
+            if (requestId !== componentsRequestIdRef.current) {
+                return;
+            }
+
+            const apiError = normalizeApiRequestError(error);
+
+            if (apiError.status !== 401) {
+                setError(apiError.message);
+            }
+
+        } finally {
+            if (requestId === componentsRequestIdRef.current) {
+                setLoading(false);
+            }
+        }
+    }, [team.playerIds, team.adminIds]);
+
+    useEffect(() => {
+        void fetchTeamComponents();
+
+        return () => {
+            componentsRequestIdRef.current++;
+        };
+    }, [fetchTeamComponents]);
+
 
     function canRemovePlayer(playerId: string): boolean {
         if (!team || currentUserId === null) {
@@ -214,80 +115,93 @@ export default function TeamsDetailsScreen() {
         }
 
         // Il creatore può rimuovere tutti gli altri.
-        if (isCurrentUserTeamOwner) {
+        if (isTeamOwner) {
             return true;
         }
 
         // Un admin può rimuovere soltanto giocatori non admin.
         return (
-            isCurrentUserTeamAdmin &&
+            Boolean(isTeamAdmin) &&
             !team.adminIds.some((id) => String(id) === targetId)
         );
     }
 
     async function removePlayerFromTeam(id: string): Promise<void> {
 
-        setRemovingPlayerId(id);
-        setToast(null);
+        if (removalInProgressRef.current || !canRemovePlayer(id)) {
+            return;
+        }
+
+        removalInProgressRef.current = true;
 
         try {
             await removeTeamPlayer(String(team?.id), id);
 
+
             setTeamPlayers((previous) =>
-                previous.filter((player) => String(player.id) !== String(id))
+                previous
+                    ? previous.filter((player) => String(player.id) !== String(id))
+                    : previous
+            );
+
+
+            setTeamAdmins((previous) =>
+                previous
+                    ? previous.filter((admin) => String(admin.id) !== String(id))
+                    : previous
             );
 
             setTeam((previous) =>
                 previous
                     ? {
                         ...previous,
+                        adminIds: previous.adminIds.filter(
+                            (adminId) => String(adminId) !== String(id)
+                        ),
                         playerIds: previous.playerIds.filter(
                             (playerId) => String(playerId) !== String(id)
-                        ),
+                        )
                     }
                     : previous
             );
 
-            setToast({
-                message: "Eliminazione completata",
-                success: true,
-            });
+            showToast("Eliminazione completata", true);
         } catch (error) {
             const apiError = normalizeApiRequestError(error);
 
             // Redirect già gestito dal fetch autenticato.
-            if (apiError.status === 401) {
-                return;
+            if (apiError.status !== 401) {
+                showAlert(
+                    "Impossibile rimuovere il giocatore",
+                    apiError.message,
+                )
             }
-
-            setToast({
-                message: "C'è stato un errore",
-                success: false,
-            });
         } finally {
-            setRemovingPlayerId(null);
+            removalInProgressRef.current = false;
         }
     }
 
     async function removeAdminFromTeam(id: string): Promise<void> {
+
         if (
-            !team ||
-            removingPlayerId !== null ||
-            !isCurrentUserTeamOwner ||
+            removalInProgressRef.current ||
+            !isTeamOwner || !team ||
             String(id) === String(team.creatorId)
         ) {
             return;
         }
 
-        setRemovingPlayerId(id);
-        setToast(null);
+        removalInProgressRef.current = true;
 
         try {
             await removeTeamAdmin(String(team.id), id);
 
             setTeamAdmins((previous) =>
-                previous.filter((admin) => String(admin.id) !== String(id))
+                previous
+                    ? previous.filter((admin) => String(admin.id) !== String(id))
+                    : previous
             );
+
 
             setTeam((previous) =>
                 previous
@@ -300,45 +214,45 @@ export default function TeamsDetailsScreen() {
                     : previous
             );
 
-            setToast({
-                message: "Ruolo admin rimosso",
-                success: true,
-            });
+            showToast("Admin rimosso correttamente", true);
+
         } catch (error) {
             const apiError = normalizeApiRequestError(error);
 
-            // Redirect già gestito dal fetch autenticato.
-            if (apiError.status === 401) {
-                return;
+            if (apiError.status !== 401) {
+                showAlert(
+                    "Impossibile rimuovere l'amministratore",
+                    apiError.message,
+                )
             }
-
-            setToast({
-                message: "C'è stato un errore",
-                success: false,
-            });
         } finally {
-            setRemovingPlayerId(null);
+            removalInProgressRef.current = false;
         }
     }
+
+
+    //funzioni per interagire con l'entità squadra
 
 
     return (
         <PageLayout
             header={
-                <HeaderContainer variant={"teams"}>
-                    <HeaderTeam
-                        team={team}
-                        isLoading={isLoading}
-                        error={error}
-                        canEdit={isCurrentUserTeamAdmin}
-                        onBack={onBack}
-                        onMod={onMod}
-                        onDelete={onDelete}
-                        onLeave={canLeave() ? () => onLeave() : undefined}
+                <HeaderContainer
+                    variant={"teams"}
+                >
+                    <HeaderEntity
+                        variant={"team"}
+                        name={team.name}
+                        imageUrl={team.imageUrl}
+                        position={team.location?.label}
+                        invitationCode={team.invitationCode}
+                        onRefreshCode={isTeamAdmin || isTeamOwner ? onRefreshCode : undefined}
                     />
                 </HeaderContainer>
             }
         >
+
+
             <ScrollView style={styles.scroll}>
                 <View style={styles.scrollContent}>
 
@@ -359,13 +273,11 @@ export default function TeamsDetailsScreen() {
                     <CollapsableSection
                         label="Players"
                         iconName="people-outline"
-                        canMod={isCurrentUserTeamAdmin || isCurrentUserTeamOwner}
-                        feedback={toast && <Toast message={toast.message} success={toast.success}/>}
+                        canMod={isTeamAdmin || isTeamOwner}
                     >
-                        {(isMod) => (
-                            team && (
+                        {(isMod) => ((
                                 <CardListContainer
-                                    items={teamPlayers
+                                    items={(teamPlayers ?? [])
                                         .filter((player) =>
                                             !isMod || canRemovePlayer(String(player.id))
                                         )
@@ -402,14 +314,14 @@ export default function TeamsDetailsScreen() {
                     <CollapsableSection
                         label="Admin"
                         iconName="shield-checkmark-outline"
-                        canMod={isCurrentUserTeamOwner}
+                        canMod={isTeamOwner}
                     >
                         {(isMod) => {
-                            const canRemove = isMod && isCurrentUserTeamOwner;
+                            const canRemove = isMod && isTeamOwner;
 
-                            return team && (
+                            return (
                                 <CardListContainer
-                                    items={teamAdmins
+                                    items={(teamAdmins ?? [])
                                         .filter((admin) =>
                                             !canRemove ||
                                             String(admin.id) !== String(team.creatorId)

@@ -2,9 +2,9 @@ import {loadCurrentUserId} from "@/src/services/users/authService";
 import {useCallback, useEffect, useRef, useState} from "react";
 import ProfilePage from "@/src/components/pagesComponents/profile/ProfilePage";
 import {normalizeApiRequestError} from "@/src/services/errorService";
-import {Alert} from "react-native";
-import {Redirect, router} from "expo-router";
+import {Redirect} from "expo-router";
 import LoadingScreen from "@/src/components/common/loading/LoadingScreen";
+import showAlert from "@/src/components/common/errors/Alert";
 
 export default function Index() {
 
@@ -37,30 +37,14 @@ export default function Index() {
 
             const apiError = normalizeApiRequestError(error);
 
-            // Redirect già gestito
-            if (apiError.status === 401) {
-                return;
-            }
 
-            Alert.alert(
-                "Impossibile caricare l’utente",
-                apiError.message,
-                [
-                    {
-                        text: "Riprova",
-                        onPress: () => void loadId(),
-                    },
-                    {
-                        text: "Annulla",
-                        style: "cancel",
-                        onPress: () =>
-                            router.replace("/(app)/home"),
-                    },
-                ],
-                {
-                    cancelable: false,
-                },
-            );
+            if (!(apiError.status === 401)) {
+                showAlert(
+                    "Impossibile caricare l'id dell’utente",
+                    apiError.message,
+                    () => void loadId(),
+                )
+            }
         }
     }, []);
 
@@ -80,7 +64,7 @@ export default function Index() {
         return <Redirect href="/(app)/home"/>;
     }
 
-    return <ProfilePage userId={userId} isOwnProfile={true} canBack={false}/>;
+    return <ProfilePage userId={userId} isOwnProfile={true}/>;
 
 
 }

@@ -1,6 +1,6 @@
 package com.tournamentplatform.userservice.exceptions;
 
-import com.tournamentplatform.userservice.dto.ApiErrorResponse;
+import com.tournamentplatform.userservice.dto.error.ApiErrorResponse;
 import com.tournamentplatform.userservice.exceptions.imageExceptions.InvalidProfilePictureException;
 import com.tournamentplatform.userservice.exceptions.imageExceptions.ProfilePictureNotFoundException;
 import com.tournamentplatform.userservice.exceptions.imageExceptions.ProfilePictureStorageException;

@@ -1,6 +1,6 @@
 package com.tournamentplatform.teamservice.controller;
 
-import com.tournamentplatform.teamservice.dto.teamGet.TeamGetDetailsResponse;
+import com.tournamentplatform.teamservice.dto.teamGet.TeamResponse;
 import com.tournamentplatform.teamservice.service.TeamAdminService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,11 +27,11 @@ public class TeamAdminController {
 
 
     @PostMapping("/{teamId}/admins/{userId}")
-    public ResponseEntity<TeamGetDetailsResponse> addAdmin(
+    public ResponseEntity<TeamResponse> addAdmin(
             @PathVariable String teamId,
             @PathVariable String userId
     ) {
-        TeamGetDetailsResponse response = teamAdminService.addAdmin(teamId, userId);
+        TeamResponse response = teamAdminService.addAdmin(teamId, userId);
         return ResponseEntity.ok(response);
     }
 

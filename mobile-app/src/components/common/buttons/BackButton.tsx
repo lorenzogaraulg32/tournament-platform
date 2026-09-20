@@ -30,18 +30,14 @@ export default function BackButton({onPress}: BackButtonProps) {
 const styles = StyleSheet.create({
     backButton: {
         position: "absolute",
-
-        left: 0,
+        top: 50,
+        left: 20,
         zIndex: 10,
-
         width: 38,
         height: 38,
-
         alignItems: "center",
         justifyContent: "center",
-
         borderRadius: 22,
-
         borderColor: "rgba(255,255,255,0.30)",
         backgroundColor: "rgba(124,124,124,0.6)",
         borderWidth: 5

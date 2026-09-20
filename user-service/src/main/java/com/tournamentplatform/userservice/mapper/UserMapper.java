@@ -1,6 +1,11 @@
 package com.tournamentplatform.userservice.mapper;
 
 import com.tournamentplatform.userservice.dto.*;
+import com.tournamentplatform.userservice.dto.UserResponse;
+import com.tournamentplatform.userservice.dto.position.GeoLocationRequest;
+import com.tournamentplatform.userservice.dto.position.GeoLocationResponse;
+import com.tournamentplatform.userservice.dto.sport_roles.UserSportRoleRequest;
+import com.tournamentplatform.userservice.dto.sport_roles.UserSportRoleResponse;
 import com.tournamentplatform.userservice.entity.User;
 import com.tournamentplatform.userservice.entity.utils.GeoLocation;
 import com.tournamentplatform.userservice.entity.utils.UserSportRole;

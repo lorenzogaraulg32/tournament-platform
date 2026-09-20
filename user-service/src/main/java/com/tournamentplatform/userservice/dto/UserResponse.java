@@ -1,5 +1,7 @@
 package com.tournamentplatform.userservice.dto;
 
+import com.tournamentplatform.userservice.dto.position.GeoLocationResponse;
+import com.tournamentplatform.userservice.dto.sport_roles.UserSportRoleResponse;
 import com.tournamentplatform.userservice.entity.utils.Gender;
 import com.tournamentplatform.userservice.entity.utils.Sport;
 

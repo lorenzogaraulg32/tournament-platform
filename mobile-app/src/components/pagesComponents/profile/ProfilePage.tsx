@@ -1,4 +1,3 @@
-import HeaderProfile from "@/src/components/pagesComponents/profile/HeaderProfile";
 import {useCallback, useEffect, useRef, useState} from "react";
 import {AuthInfo, handleLogout, loadUserAuthInfo} from "@/src/services/users/authService";
 import {loadUserInfo, UserInfo} from "@/src/services/users/userService";
@@ -8,26 +7,26 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import {colors} from "@/src/constants/theme";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import {normalizeApiRequestError} from "@/src/services/errorService";
-import {loadUserTeams, TeamInfo} from "@/src/services/teams/teamService";
+import {fetchUserTeams} from "@/src/services/teams/teamService";
 import CardListContainer from "@/src/components/common/carousel&cards/CardListContainer";
 import TeamCardVertical from "@/src/components/pagesComponents/teams/cards/TeamCardVertical";
-import LoadingSection from "@/src/components/common/loading/LoadingSection";
-import ErrorSection from "@/src/components/common/errors/ErrorSection";
 import CollapsableSection from "@/src/components/common/CollapsableSection";
+import {router} from "expo-router";
+import HeaderEntity from "@/src/components/common/headers/HeaderEntity";
+import {TeamDetails} from "@/src/services/teams/teamsConst";
 
 type ProfilePageProps = {
     userId: string;
     isOwnProfile: boolean
-    canBack: boolean
 };
 
-export default function ProfilePage({userId, isOwnProfile, canBack}: ProfilePageProps) {
+export default function ProfilePage({userId, isOwnProfile}: ProfilePageProps) {
 
     const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
     const [userAuthInfo, setUserAuthInfo] = useState<AuthInfo | null>(null);
     const [isLoading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [userTeams, setUserTeams] = useState<TeamInfo[]>([])
+    const [userTeams, setUserTeams] = useState<TeamDetails[]>([])
     const requestIdRef = useRef(0);
 
     const loadProfile = useCallback(async () => {
@@ -41,7 +40,7 @@ export default function ProfilePage({userId, isOwnProfile, canBack}: ProfilePage
                 await Promise.all([
                     loadUserAuthInfo(userId),
                     loadUserInfo(userId),
-                    loadUserTeams(userId)
+                    fetchUserTeams(userId)
                 ]);
 
 
@@ -70,12 +69,22 @@ export default function ProfilePage({userId, isOwnProfile, canBack}: ProfilePage
         }
     }, [userId])
 
-    const deleteUser = () =>{
+    const onBack = () => {
+        if (router.canGoBack()) {
+            router.back();
+        } else {
+            router.replace("/(app)/home");
+        }
+    };
+
+    const onDelete = () => {
         console.log("Delete premuto")
     }
 
-    const modUser = () =>{
-        console.log("Mod premuto")
+    const onMod = () => {
+        router.push({
+            pathname: "/profile/modify",
+        });
     }
 
     useEffect(() => {
@@ -89,25 +98,19 @@ export default function ProfilePage({userId, isOwnProfile, canBack}: ProfilePage
     return (
         <PageLayout
             header={
-                <HeaderContainer variant={"profile"}>
-                    {isLoading ? (
-                        <LoadingSection text={"Caricamento profilo..."}/>
-                    ) : error ? (
-                        <ErrorSection text={error} onRetry={loadProfile} variant={"error"}/>
-
-                    ) : !userInfo || !userAuthInfo ? (
-                        <ErrorSection text={"Utente non disponibile"} variant={"warning"}/>
-
-                    ) : (
-                        <HeaderProfile
-                            userInfo={userInfo}
-                            authInfo={userAuthInfo}
-                            canEdit={isOwnProfile}
-                            canBack={canBack}
-                            onDelete={deleteUser}
-                            onMod={modUser}
-                        />
-                    )}
+                <HeaderContainer
+                    variant={"profile"}
+                    onBack={onBack}
+                    canEdit={isOwnProfile}
+                    onMod={onMod}
+                    onDelete={onDelete}
+                >
+                    <HeaderEntity
+                        variant={"player"}
+                        entity={userInfo}
+                        isLoading={isLoading}
+                        error={error}
+                    />
                 </HeaderContainer>}>
 
             {userInfo &&

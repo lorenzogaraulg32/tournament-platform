@@ -6,10 +6,10 @@ import HorizontalCardContainer from "@/src/components/common/carousel&cards/Hori
 import {teamCardColors} from "@/src/constants/cardPalettes";
 
 type TeamCardSmallProps = {
-    id: number
+    id: string
     name: string;
     playersCount: number;
-    logoUrl?: string;
+    imageUrl?: string;
 }
 
 const teamRoutes = {
@@ -26,7 +26,7 @@ function isTabName(value: string): value is keyof typeof teamRoutes {
 export default function TeamCardHorizontal({
                                                id,
                                                name,
-                                               logoUrl,
+                                               imageUrl,
                                                playersCount,
                                            }: TeamCardSmallProps) {
 
@@ -58,7 +58,7 @@ export default function TeamCardHorizontal({
         >
 
             <View style={styles.logoContainer}>
-                <Picture variant={"team"} style={styles.logo} logoUrl={logoUrl}/>
+                <Picture variant={"team"} style={styles.logo} logoUrl={imageUrl}/>
             </View>
 
             <View style={styles.teamInfo}>

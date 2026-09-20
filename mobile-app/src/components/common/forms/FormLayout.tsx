@@ -2,41 +2,42 @@ import {ReactNode} from "react";
 import PageLayout from "@/src/components/common/PageLayout";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import {KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View} from "react-native";
+import {BKVariant} from "@/src/constants/PaletteManager";
 
 type FormLayoutProps = {
-    header : ReactNode
+    header: ReactNode
     children: ReactNode
-    variant : "team" | "tournament"
+    variant: BKVariant
 }
 
 
-export default function FormLayout( {header, children, variant} : FormLayoutProps) {
+export default function FormLayout({header, children, variant}: FormLayoutProps) {
 
-    return(
-       <PageLayout header={
-           <HeaderContainer variant={(variant === "team" ? "teams" : "tournaments")}>
-               {header}
-           </HeaderContainer>
-       }  >
-           <View style={styles.container}>
-               <KeyboardAvoidingView
-                   style={styles.keyboardContainer}
-                   behavior={Platform.OS === "ios" ? "padding" : "height"}
-                   keyboardVerticalOffset={Platform.OS === "ios" ? 20 : 0}
-               >
-                   <ScrollView
-                       style={styles.scrollView}
-                       contentContainerStyle={styles.scrollContent}
-                       showsVerticalScrollIndicator={false}
-                       keyboardShouldPersistTaps="handled"
-                       automaticallyAdjustKeyboardInsets
-                   >
-                       {children}
-                   </ScrollView>
-               </KeyboardAvoidingView>
-           </View>
+    return (
+        <PageLayout header={
+            <HeaderContainer variant={variant}>
+                {header}
+            </HeaderContainer>
+        }>
+            <View style={styles.container}>
+                <KeyboardAvoidingView
+                    style={styles.keyboardContainer}
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    keyboardVerticalOffset={Platform.OS === "ios" ? 20 : 0}
+                >
+                    <ScrollView
+                        style={styles.scrollView}
+                        contentContainerStyle={styles.scrollContent}
+                        showsVerticalScrollIndicator={false}
+                        keyboardShouldPersistTaps="handled"
+                        automaticallyAdjustKeyboardInsets
+                    >
+                        {children}
+                    </ScrollView>
+                </KeyboardAvoidingView>
+            </View>
 
-       </PageLayout>
+        </PageLayout>
     )
 }
 

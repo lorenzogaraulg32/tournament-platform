@@ -64,7 +64,7 @@ export default function TeamCardVertical({
 
 
             <View style={styles.logoContainer}>
-                <Picture variant={"team"} style={styles.logo} logoUrl={teamDetails.logoUrl}/>
+                <Picture variant={"team"} style={styles.logo} logoUrl={teamDetails.imageUrl}/>
             </View>
 
             <View style={styles.teamInfo}>

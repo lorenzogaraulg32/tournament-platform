@@ -1,10 +1,10 @@
 import {SPORT_ROLES} from "@/src/services/users/userConstants";
-import {UserOnBoardingInfo} from "@/src/services/users/userService";
+import {UserModInfo, UserOnBoardingInfo} from "@/src/services/users/userService";
 import {SelectedImage} from "@/src/services/imagesService";
 
 // Location opzionale, ma se presente deve essere valida
 export function validateUserLocation(
-    userData: UserOnBoardingInfo
+    userData: UserModInfo| UserOnBoardingInfo
 ): string {
     if (!userData.location) {
         return "";
@@ -30,7 +30,7 @@ export function validateUserLocation(
 
 // Sport
 // Ogni sport deve avere almeno un ruolo
-export function validateUserSportsAndRoles(userData: UserOnBoardingInfo): string {
+export function validateUserSportsAndRoles(userData: UserModInfo| UserOnBoardingInfo): string {
 
     if (userData.sports.length === 0) {
         return "Seleziona almeno uno sport";
@@ -65,6 +65,7 @@ export function validateUserSportsAndRoles(userData: UserOnBoardingInfo): string
     return ""
 }
 
+
 export function validateBirthDate(userData: UserOnBoardingInfo): string {
     if (!userData.birthDate) {
         return "La data di nascita è obbligatoria";
@@ -81,7 +82,8 @@ export function validateBirthDate(userData: UserOnBoardingInfo): string {
     return ""
 }
 
-export function validateUsername(userData: UserOnBoardingInfo): string {
+
+export function validateUsername(userData: UserModInfo | UserOnBoardingInfo): string {
     const username = userData.username.trim()
     if (!username) {
         return "L'username è obbligatorio";
@@ -92,7 +94,7 @@ export function validateUsername(userData: UserOnBoardingInfo): string {
     return ""
 }
 
-export function validateFirstName(userData: UserOnBoardingInfo): string {
+export function validateFirstName(userData: UserModInfo | UserOnBoardingInfo): string {
 
     const firstName = userData.firstName.trim()
 
@@ -105,7 +107,7 @@ export function validateFirstName(userData: UserOnBoardingInfo): string {
     return ""
 }
 
-export function validateLastName(userData: UserOnBoardingInfo): string {
+export function validateLastName(userData: UserModInfo| UserOnBoardingInfo): string {
 
     const lastName = userData.lastName.trim()
 

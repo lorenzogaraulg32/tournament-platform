@@ -1,5 +1,8 @@
 package com.tournamentplatform.teamservice.entity;
 
+import com.tournamentplatform.teamservice.entity.utils.GeoLocation;
+import com.tournamentplatform.teamservice.entity.utils.RecruitmentStatus;
+import com.tournamentplatform.teamservice.entity.utils.Sport;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,7 +10,6 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,22 +19,6 @@ import java.util.Set;
 
 @NoArgsConstructor
 public class Team {
-
-
-    private static final String DEFAULT_TEAM_LOGO_URL = "/uploads/team-logos/default_team_logo.png";
-
-    //Open -> accetta nuovi partecipanti
-    //closed -> non accetta nuovi partecipanti
-    public enum RecruitmentStatus {
-        OPEN,
-        CLOSED
-    }
-
-    public enum Sport {
-        FOOTBALL,
-        BEACH_VOLLEY,
-        BASKETBALL
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,9 +31,41 @@ public class Team {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "image_url", length = 500)
+    private String imageUrl = null;
 
-    @Column(name = "logo_url", length = 500)
-    private String logoUrl = null;
+    @Enumerated(EnumType.STRING)
+    @Column(
+            name = "recruitment_status",
+            nullable = false,
+            length = 10
+    )
+    private RecruitmentStatus status;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(
+                    name = "label",
+                    column = @Column(name = "location_label")
+            ),
+            @AttributeOverride(
+                    name = "latitude",
+                    column = @Column(name = "location_latitude")
+            ),
+            @AttributeOverride(
+                    name = "longitude",
+                    column = @Column(name = "location_longitude")
+            )
+    })
+    private GeoLocation location;
+
+    @Column(name = "invitation_code", nullable = false, unique = true)
+    private String invitationCode;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "sport", nullable = false)
+    private Sport sport;
+
 
     @Column(name = "creator_id")
     private String creatorId;
@@ -70,49 +88,16 @@ public class Team {
     @Column(name = "admin_id")
     private Set<String> adminIds = new HashSet<>();
 
-    @Enumerated(EnumType.STRING)
-    @Column(
-            name = "recruitment_status",
-            nullable = false,
-            length = 10
-    )
-    private RecruitmentStatus status;
-
-    @Column(name = "location_label", length = 120)
-    private String locationLabel;
-
-    @Column(
-            name = "latitude",
-            precision = 9,
-            scale = 6
-    )
-    private BigDecimal latitude;
-
-    @Column(
-            name = "longitude",
-            precision = 9,
-            scale = 6
-    )
-    private BigDecimal longitude;
-
-    @Column(name = "invitation_code", nullable = false, unique = true)
-    private String invitationCode;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "sport", nullable = false)
-    private Sport sport;
 
 
-    public Team(String name, String description, String creatorId, Set<String> playerIds, Set<String> adminIds, RecruitmentStatus status, String locationLabel, BigDecimal latitude, BigDecimal longitude, String invitationCode, Sport sport) {
+    public Team(String name, String description, String creatorId, Set<String> playerIds, Set<String> adminIds, RecruitmentStatus status, GeoLocation location, String invitationCode, Sport sport) {
         this.name = name;
         this.description = description;
         this.creatorId = creatorId;
         this.playerIds = playerIds;
         this.adminIds = adminIds;
         this.status = status;
-        this.locationLabel = locationLabel;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.location = location;
         this.invitationCode = invitationCode;
         this.sport = sport;
     }

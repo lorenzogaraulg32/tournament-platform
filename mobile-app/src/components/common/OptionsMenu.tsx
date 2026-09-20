@@ -107,9 +107,11 @@ export default function OptionsMenu({
 
 const styles = StyleSheet.create({
     container: {
-        position: "relative",
+        position: "absolute",
         alignItems: "flex-end",
         zIndex: 100,
+        right : 16,
+        top: 55
     },
 
     trigger: {

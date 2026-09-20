@@ -1,6 +1,6 @@
 import PageLayout from "@/src/components/common/PageLayout";
 import React, {useEffect, useState} from "react";
-import {getTeamDetails, teamDetailsToTeamInfo, TeamInfo} from "@/src/services/teams/teamService";
+import {fetchTeam, teamDetailsToTeamInfo, TeamInfo} from "@/src/services/teams/teamService";
 import {ScrollView, StyleSheet, Text, View} from "react-native";
 import {router, useLocalSearchParams} from "expo-router";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
@@ -56,7 +56,7 @@ export default function TournamentDetailsPage() {
 
                 const loadedTeams = await Promise.all(
                     loadedTournament.registeredTeamIds.map(async (id) => {
-                        const teamDetails = await getTeamDetails(id);
+                        const teamDetails = await fetchTeam(id);
                         return teamDetailsToTeamInfo(teamDetails)
                     })
                 );
@@ -160,7 +160,7 @@ export default function TournamentDetailsPage() {
                                         key={team.id}
                                         id={team.id}
                                         name={team.name}
-                                        logoUrl={team.logoUrl ?? undefined}
+                                        imageUrl={team.imageUrl ?? undefined}
                                         playersCount={team.numberOfPlayers}
                                     />
                                 ))}

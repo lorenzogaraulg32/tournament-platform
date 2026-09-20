@@ -1,6 +1,8 @@
 package com.tournamentplatform.teamservice.dto.teamCreation;
 
-import com.tournamentplatform.teamservice.entity.Team;
+import com.tournamentplatform.teamservice.dto.position.GeoLocationRequest;
+import com.tournamentplatform.teamservice.entity.utils.RecruitmentStatus;
+import com.tournamentplatform.teamservice.entity.utils.Sport;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -25,15 +27,15 @@ public class TeamCreationRequest {
 
     @Valid
     @NotNull(message = "Lo stato della squadra è obbligatorio")
-    private Team.RecruitmentStatus status;
+    private RecruitmentStatus status;
 
 
     @Valid
-    private TeamLocationRequest location;
+    private GeoLocationRequest location;
 
 
     @Valid
     @NotNull(message = "Lo sport della squadra è obbligatorio")
-    private Team.Sport sport;
+    private Sport sport;
 
 }

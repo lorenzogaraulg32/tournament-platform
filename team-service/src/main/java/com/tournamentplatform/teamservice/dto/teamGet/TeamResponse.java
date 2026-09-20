@@ -1,6 +1,8 @@
 package com.tournamentplatform.teamservice.dto.teamGet;
 
-import com.tournamentplatform.teamservice.entity.Team;
+import com.tournamentplatform.teamservice.dto.position.GeoLocationResponse;
+import com.tournamentplatform.teamservice.entity.utils.RecruitmentStatus;
+import com.tournamentplatform.teamservice.entity.utils.Sport;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +13,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeamGetDetailsResponse {
+public class TeamResponse {
 
     private Long id;
 
@@ -19,11 +21,11 @@ public class TeamGetDetailsResponse {
 
     private String description;
 
-    private Team.RecruitmentStatus status;
+    private RecruitmentStatus status;
 
-    private String locationLabel;
+    GeoLocationResponse location;
 
-    private String logoUrl;
+    private String imageUrl;
 
     private String creatorId;
 
@@ -34,6 +36,6 @@ public class TeamGetDetailsResponse {
 
     private String invitationCode;
 
-    private Team.Sport sport;
+    private Sport sport;
 
 }

@@ -1,1 +1,1 @@
-export { default } from "@/src/components/pagesComponents/profile/ProfileDetailsPage";
+export { default } from "@/src/components/pagesComponents/profile/ProfileScreen";

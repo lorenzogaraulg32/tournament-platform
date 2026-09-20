@@ -91,7 +91,7 @@ export default function MyTeams() {
                 key={team.id}
                 id={team.id}
                 name={team.name}
-                logoUrl={team.logoUrl ?? undefined}
+                imageUrl={team.imageUrl ?? undefined}
                 playersCount={team.numberOfPlayers}
             />
         ));

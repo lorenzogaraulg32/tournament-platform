@@ -1,4 +1,4 @@
-import {UserEntity} from "@/src/services/users/userService";
+import { UserInfo } from "./userService";
 
 export enum Sport {
     FOOTBALL = "FOOTBALL",
@@ -83,12 +83,12 @@ export const ROLE_LABELS: Record<SportRole, string> = {
 };
 
 export function getRoleBySport(
-    player: UserEntity,
+    player: UserInfo,
     sport: Sport,
 ): SportRole {
     return (
-        player.userInfo.roles.find(
-            item => item.sport === sport,
+        player.roles.find(
+            (player: { sport: Sport; }) => player.sport === sport,
         )?.role ?? fallbackRoleBySport[sport]
     );
 }
@@ -107,8 +107,3 @@ export enum Gender {
 }
 
 
-export type GeoLocation = {
-    label: string;
-    latitude: number;
-    longitude: number;
-};

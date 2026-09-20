@@ -1,10 +1,10 @@
 import LogoField from "@/src/components/common/images/LogoField";
-import {TeamLogoUpload} from "@/src/services/teams/teamCreationService";
+import {SelectedImage} from "@/src/services/imagesService";
 
 type LogoStepProps = {
-    value: TeamLogoUpload | null;
+    value: SelectedImage | null;
     existingLogoSource?: string;
-    onChange: (logo: TeamLogoUpload | null) => void;
+    onChange: (logo: SelectedImage | null) => void;
     onRemove?: () => void;
     disabled: boolean;
     errorMessage?: string;

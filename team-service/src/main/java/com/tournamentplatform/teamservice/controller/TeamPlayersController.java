@@ -1,6 +1,6 @@
 package com.tournamentplatform.teamservice.controller;
 
-import com.tournamentplatform.teamservice.dto.teamGet.TeamGetDetailsResponse;
+import com.tournamentplatform.teamservice.dto.teamGet.TeamResponse;
 import com.tournamentplatform.teamservice.service.TeamPlayerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,19 +24,19 @@ public class TeamPlayersController {
     }
 
     @PostMapping("/{teamId}/players/{userId}")
-    public ResponseEntity<TeamGetDetailsResponse> addPlayer(
+    public ResponseEntity<TeamResponse> addPlayer(
             @PathVariable String teamId,
             @PathVariable String userId
     ) {
-        TeamGetDetailsResponse response = teamPlayerService.addPlayerInTeam(teamId, userId);
+        TeamResponse response = teamPlayerService.addPlayerInTeam(teamId, userId);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/players/{invitationCode}")
-    public ResponseEntity<TeamGetDetailsResponse> addPlayerInvitationCode(
+    public ResponseEntity<TeamResponse> addPlayerInvitationCode(
             @PathVariable String invitationCode
     ) {
-        TeamGetDetailsResponse response = teamPlayerService.addPlayerInTeamInvitationCode(invitationCode);
+        TeamResponse response = teamPlayerService.addPlayerInTeamInvitationCode(invitationCode);
         return ResponseEntity.ok(response);
     }
 

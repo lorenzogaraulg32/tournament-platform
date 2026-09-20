@@ -21,7 +21,9 @@ import {loadCurrentUserId} from "@/src/services/users/authService";
 import ErrorScreen from "@/src/components/common/errors/ErrorScreen";
 import LoadingScreen from "@/src/components/common/loading/LoadingScreen";
 
-import {type BKVariant, variants} from "@/src/constants/bkManager";
+import {type BKVariant, variants} from "@/src/constants/PaletteManager";
+import ToastProvider from "@/src/components/common/ToastProvider";
+import {SafeAreaProvider} from "react-native-safe-area-context";
 
 const TAB_ROOT_PATHS = new Set([
     "/home",
@@ -127,127 +129,131 @@ export default function RootLayout() {
 
 
     return (
-        <SwipeTabs
-            backBehavior="none"
-            tabBarPosition="bottom"
-            screenListeners={({navigation, route}: TabListenerArgs) => ({
-                blur: () => {
-                    const tab = navigation
-                        .getState()
-                        .routes.find((item) => item.key === route.key);
+        <SafeAreaProvider>
+            <ToastProvider>
+                <SwipeTabs
+                    backBehavior="none"
+                    tabBarPosition="bottom"
+                    screenListeners={({navigation, route}: TabListenerArgs) => ({
+                        blur: () => {
+                            const tab = navigation
+                                .getState()
+                                .routes.find((item) => item.key === route.key);
 
-                    const stack = tab?.state;
+                            const stack = tab?.state;
 
-                    if (
-                        stack?.type === "stack" &&
-                        stack.key &&
-                        (stack.index ?? 0) > 0
-                    ) {
-                        navigation.dispatch({
-                            ...StackActions.popToTop(),
-                            target: stack.key,
-                        });
-                    }
-                },
-            })}
-            screenOptions={{
-                swipeEnabled: isTabRoot,
-                lazy: true,
-                tabBarShowIcon: true,
-                tabBarShowLabel: true,
-                tabBarActiveTintColor: "#ffffff",
-                tabBarInactiveTintColor: "#ffffff",
-                tabBarLabelStyle: styles.barLabel,
-                tabBarStyle: {
-                    backgroundColor: "transparent",
-                    elevation: 0,
-                    shadowOpacity: 0,
-                },
-                tabBarIndicatorStyle: {
-                    height: 0,
-                },
-            }}
-            tabBar={(props: MaterialTopTabBarProps) => {
-                const route = props.state.routes[props.state.index];
-                const config =
-                    variants[route.name as BKVariant] ?? variants.home;
+                            if (
+                                stack?.type === "stack" &&
+                                stack.key &&
+                                (stack.index ?? 0) > 0
+                            ) {
+                                navigation.dispatch({
+                                    ...StackActions.popToTop(),
+                                    target: stack.key,
+                                });
+                            }
+                        },
+                    })}
+                    screenOptions={{
+                        swipeEnabled: isTabRoot,
+                        lazy: true,
+                        tabBarShowIcon: true,
+                        tabBarShowLabel: true,
+                        tabBarActiveTintColor: "#ffffff",
+                        tabBarInactiveTintColor: "#ffffff",
+                        tabBarLabelStyle: styles.barLabel,
+                        tabBarStyle: {
+                            backgroundColor: "transparent",
+                            elevation: 0,
+                            shadowOpacity: 0,
+                        },
+                        tabBarIndicatorStyle: {
+                            height: 0,
+                        },
+                    }}
+                    tabBar={(props: MaterialTopTabBarProps) => {
+                        const route = props.state.routes[props.state.index];
+                        const config =
+                            variants[route.name as BKVariant] ?? variants.home;
 
-                return (
-                    <ImageBackground
-                        source={config.background}
-                        resizeMode="cover"
-                        style={{
-                            paddingBottom: 15,
-                            borderTopWidth: 1,
-                            borderTopColor: "rgba(255, 255, 255, 0.35)",
+                        return (
+                            <ImageBackground
+                                source={config.background}
+                                resizeMode="cover"
+                                style={{
+                                    paddingBottom: 15,
+                                    borderTopWidth: 1,
+                                    borderTopColor: "rgba(255, 255, 255, 0.35)",
+                                }}
+                            >
+                                <View
+                                    pointerEvents="none"
+                                    style={styles.backgroundOverlay}
+                                />
+
+                                <MaterialTopTabBar {...props} />
+                            </ImageBackground>
+                        );
+                    }}
+                >
+                    <SwipeTabs.Screen
+                        name="home"
+                        options={{
+                            title: "Home",
+                            tabBarIcon: ({color, focused}) => (
+                                <Ionicons
+                                    name={focused ? "home" : "home-outline"}
+                                    size={24}
+                                    color={color}
+                                />
+                            ),
                         }}
-                    >
-                        <View
-                            pointerEvents="none"
-                            style={styles.backgroundOverlay}
-                        />
+                    />
 
-                        <MaterialTopTabBar {...props} />
-                    </ImageBackground>
-                );
-            }}
-        >
-            <SwipeTabs.Screen
-                name="home"
-                options={{
-                    title: "Home",
-                    tabBarIcon: ({color, focused}) => (
-                        <Ionicons
-                            name={focused ? "home" : "home-outline"}
-                            size={24}
-                            color={color}
-                        />
-                    ),
-                }}
-            />
+                    <SwipeTabs.Screen
+                        name="teams"
+                        options={{
+                            title: "Squadre",
+                            tabBarIcon: ({color, focused}) => (
+                                <Ionicons
+                                    name={focused ? "people" : "people-outline"}
+                                    size={24}
+                                    color={color}
+                                />
+                            ),
+                        }}
+                    />
 
-            <SwipeTabs.Screen
-                name="teams"
-                options={{
-                    title: "Squadre",
-                    tabBarIcon: ({color, focused}) => (
-                        <Ionicons
-                            name={focused ? "people" : "people-outline"}
-                            size={24}
-                            color={color}
-                        />
-                    ),
-                }}
-            />
+                    <SwipeTabs.Screen
+                        name="tournaments"
+                        options={{
+                            title: "Tornei",
+                            tabBarIcon: ({color, focused}) => (
+                                <Ionicons
+                                    name={focused ? "trophy" : "trophy-outline"}
+                                    size={24}
+                                    color={color}
+                                />
+                            ),
+                        }}
+                    />
 
-            <SwipeTabs.Screen
-                name="tournaments"
-                options={{
-                    title: "Tornei",
-                    tabBarIcon: ({color, focused}) => (
-                        <Ionicons
-                            name={focused ? "trophy" : "trophy-outline"}
-                            size={24}
-                            color={color}
-                        />
-                    ),
-                }}
-            />
-
-            <SwipeTabs.Screen
-                name="profile"
-                options={{
-                    title: "Profilo",
-                    tabBarIcon: ({color, focused}) => (
-                        <Ionicons
-                            name={focused ? "person" : "person-outline"}
-                            size={24}
-                            color={color}
-                        />
-                    ),
-                }}
-            />
-        </SwipeTabs>
+                    <SwipeTabs.Screen
+                        name="profile"
+                        options={{
+                            title: "Profilo",
+                            tabBarIcon: ({color, focused}) => (
+                                <Ionicons
+                                    name={focused ? "person" : "person-outline"}
+                                    size={24}
+                                    color={color}
+                                />
+                            ),
+                        }}
+                    />
+                </SwipeTabs>
+            </ToastProvider>
+        </SafeAreaProvider>
     );
 }
 

@@ -1,10 +1,11 @@
 import {Alert, Pressable, StyleSheet, Text, View} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import {fonts} from "@/src/constants/theme";
+import {colors, fonts} from "@/src/constants/theme";
 
 
 type LabelProps = {
     text: string;
+    variant?: "team" | "profile";
     optional?: boolean,
     infoTitle?: string,
     infoMessage?: string,
@@ -12,22 +13,22 @@ type LabelProps = {
 };
 
 export default function FormLabel({
-                                  text,
-                                  optional = false,
-
-                                  infoTitle,
-                                  infoMessage,
-                                  labelIconName = "shield-outline",
-                              }: LabelProps) {
+                                      text,
+                                      optional = false,
+                                      variant = "team",
+                                      infoTitle,
+                                      infoMessage,
+                                      labelIconName = "help-outline",
+                                  }: LabelProps) {
     return (
         <View style={styles.externalLabelContainer}>
 
             <View style={styles.labelContainer}>
-                <View style={styles.iconContainer}>
+                <View style={[styles.iconContainer, variant === "profile" && styles.profileIconContainer]}>
                     <Ionicons
                         name={labelIconName}
                         size={22}
-                        color="#C8480A"
+                        color={variant === "profile" ? colors.redDefaultBK : colors.redDefaultBK}
                     />
                 </View>
 
@@ -93,11 +94,15 @@ const styles = StyleSheet.create({
         justifyContent: "center",
 
         borderRadius: 20,
-        backgroundColor: "rgba(200, 72, 10, 0.12)",
+        backgroundColor:"rgba(200, 72, 10, 0.12)",
+    },
+
+    profileIconContainer: {
+        backgroundColor: colors.redDefaultBK,
     },
 
     label: {
-        color: "#1C1C1C",
+        color: colors.label,
         fontSize: fonts.label,
         fontWeight: "800",
     },

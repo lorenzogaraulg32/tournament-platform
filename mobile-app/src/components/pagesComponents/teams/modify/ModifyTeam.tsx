@@ -6,7 +6,6 @@ import {
     checkTeamNameAlreadyExists,
     editTeam,
     TeamCreationRequest,
-    TeamLogoUpload,
     TeamUpdateRequest,
 } from "@/src/services/teams/teamCreationService";
 import {normalizeApiRequestError, printApiRequestError,} from "@/src/services/errorService";
@@ -18,6 +17,7 @@ import FormProgressBar from "@/src/components/common/forms/FormProgressBar";
 import PositionStep from "@/src/components/pagesComponents/teams/createTeam/steps/PositionStep";
 import LogoStep from "@/src/components/pagesComponents/teams/createTeam/steps/LogoStep";
 import {TeamDetails} from "@/src/services/teams/teamService";
+import {SelectedImage} from "@/src/services/imagesService";
 
 type TeamEditProps = {
     team: TeamDetails;
@@ -41,7 +41,7 @@ const LAST_STEP: TeamEditStep = 2;
 
 const STEPS: TeamEditStep[] = [0, 1, 2];
 
-export default function ModifyTeamForm({team}: TeamEditProps) {
+export default function ModifyTeam({team}: TeamEditProps) {
     const [currentStep, setCurrentStep] =
         useState<TeamEditStep>(FIRST_STEP);
 
@@ -59,7 +59,7 @@ export default function ModifyTeamForm({team}: TeamEditProps) {
                 : undefined,
     });
 
-    const [logo, setLogo] = useState<TeamLogoUpload | null>(null);
+    const [logo, setLogo] = useState<SelectedImage | null>(null);
     const [logoRemoved, setLogoRemoved] = useState(false);
 
     const [fieldErrors, setFieldErrors] =
@@ -276,7 +276,7 @@ export default function ModifyTeamForm({team}: TeamEditProps) {
                     longitude: selectedLocation.longitude,
                 }
                 : undefined,
-            newLogoUrl: teamData.newLogoUrl,
+            newImageUrl: teamData.newImageUrl,
         };
 
         try {
@@ -310,7 +310,7 @@ export default function ModifyTeamForm({team}: TeamEditProps) {
         }
     }
 
-    function updateLogo(newLogo: TeamLogoUpload | null) {
+    function updateLogo(newLogo: SelectedImage | null) {
         setLogo(newLogo);
         setLogoRemoved(false);
 
@@ -383,7 +383,7 @@ export default function ModifyTeamForm({team}: TeamEditProps) {
                     <LogoStep
                         value={logo}
                         existingLogoSource={
-                            logoRemoved ? undefined : (team.logoUrl || undefined)
+                            logoRemoved ? undefined : (team.imageUrl || undefined)
                         }
                         onRemove={removeLogo}
                         onChange={updateLogo}
@@ -405,7 +405,7 @@ export default function ModifyTeamForm({team}: TeamEditProps) {
     return (
         <FormLayout
             header={<HeaderCreateTeam/>}
-            variant={"team"}>
+            variant={"teams"}>
             <FormProgressBar
                 step={currentStep + 1}
                 totalSteps={STEPS.length}
