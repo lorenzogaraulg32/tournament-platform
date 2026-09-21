@@ -1,11 +1,11 @@
 import {Pressable, StyleSheet, Text, View} from "react-native";
 import {router, useSegments} from "expo-router";
 import Picture from "@/src/components/common/images/Picture";
-import {TeamInfo} from "@/src/services/teams/teamService";
 import {teamCardColors} from "@/src/constants/cardPalettes";
+import {TeamDetails} from "@/src/services/teams/teamsConst";
 
 type TeamCardVerticalProps = {
-    teamDetails: TeamInfo
+    teamDetails: TeamDetails
 }
 
 const teamRoutes = {
@@ -64,7 +64,7 @@ export default function TeamCardVertical({
 
 
             <View style={styles.logoContainer}>
-                <Picture variant={"team"} style={styles.logo} logoUrl={teamDetails.imageUrl}/>
+                <Picture variant={"teams"} style={styles.logo} logoUrl={teamDetails.imageUrl}/>
             </View>
 
             <View style={styles.teamInfo}>

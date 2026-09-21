@@ -1,32 +1,35 @@
-import LogoField from "@/src/components/common/images/LogoField";
-import {SelectedImage} from "@/src/services/imagesService";
+import FormImageField from "@/src/components/common/forms/components/FormImageField";
+import type { SelectedImage } from "@/src/services/imagesService";
+import type { Variant } from "@/src/constants/PaletteManager";
 
 type LogoStepProps = {
+    variant: Variant;
     value: SelectedImage | null;
     existingLogoSource?: string;
     onChange: (logo: SelectedImage | null) => void;
     onRemove?: () => void;
     disabled: boolean;
     errorMessage?: string;
-    local?: boolean
+    local?: boolean;
 };
 
 export default function LogoStep({
+                                     variant,
                                      value,
-                                     onChange,
                                      existingLogoSource,
+                                     onChange,
                                      onRemove,
                                      disabled,
                                      errorMessage,
-                                     local
+                                     local,
                                  }: LogoStepProps) {
     return (
-        <LogoField
-            variant="createTeam"
+        <FormImageField
+            variant={variant}
             value={value}
             existingLogoSource={existingLogoSource}
-            onRemove={onRemove}
             onChange={onChange}
+            onRemove={onRemove}
             disabled={disabled}
             errorMessage={errorMessage}
             local={local}

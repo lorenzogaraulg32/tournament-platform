@@ -66,7 +66,7 @@ export default function TournamentCardHorizontal({
         >
 
             <View style={styles.logoContainer}>
-                <Picture variant={"tournament"} style={styles.logo} logoUrl={logoUrl}/>
+                <Picture variant={"tournaments"} style={styles.logo} logoUrl={logoUrl}/>
             </View>
 
             <View style={styles.tournamentInfo}>

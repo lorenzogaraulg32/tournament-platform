@@ -24,7 +24,7 @@ function isTabName(value: string): value is keyof typeof playerRoutes {
     return Object.prototype.hasOwnProperty.call(playerRoutes, value);
 }
 
-export default function PlayersCard({
+export default function PlayerCard({
                                         player,
                                         sport,
                                         modify

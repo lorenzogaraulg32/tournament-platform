@@ -2,18 +2,13 @@ import {useEffect, useMemo, useState} from "react";
 import {ImageStyle, StyleProp,} from "react-native";
 import {Image} from "expo-image";
 import {getAuthorizationHeader} from "@/src/services/users/sessionService";
-
-const API_URL = process.env.EXPO_PUBLIC_API_URL;
-
-const placeholderLogoTeam = require("@/assets/images/placeholders/logoPlaceholder.png");
-const placeholderLogoPlayer = require("@/assets/images/placeholders/profilePlaceholder.png");
-const placeholderTournamentLogo = require("@/assets/images/placeholders/tournamentPlaceholder.jpg");
-
+import {paletteVariants, Variant} from "@/src/constants/PaletteManager";
+import {API_URL} from "@/src/services/common";
 
 type PictureProps = {
     logoUrl?: string | null;
     style?: StyleProp<ImageStyle>;
-    variant: "player" | "team" | "tournament";
+    variant: Variant;
     local?: boolean
 };
 
@@ -23,6 +18,8 @@ export default function Picture({
                                     variant,
                                     local
                                 }: PictureProps) {
+    const {palette, placeholder, background} = paletteVariants[variant];
+
     const [authorization, setAuthorization] =
         useState<string | null>(null);
 
@@ -88,18 +85,12 @@ export default function Picture({
     }, [logoUrl, local]);
 
     const shouldShowPlaceholder =
-        !logoUrl ||
+        !completeLogoUrl ||
         hasError ||
-        (!local && (!completeLogoUrl || !authorization));
-
-    const placeholder =
-        variant === "team"
-            ? placeholderLogoTeam
-            : variant == "player" ? placeholderLogoPlayer
-                : placeholderTournamentLogo
+        (!local && !authorization);
 
 
-    function renderPlaceholder() {
+    if (shouldShowPlaceholder) {
         return (
             <Image
                 source={placeholder}
@@ -109,54 +100,21 @@ export default function Picture({
         );
     }
 
-    if (!completeLogoUrl || hasError) {
-        return renderPlaceholder();
-    }
-
-    if (local) {
-        return (
-            <Image
-                key={`local:${completeLogoUrl}`}
-                source={{uri: completeLogoUrl}}
-                style={style}
-                contentFit="cover"
-                cachePolicy="none"
-                transition={150}
-                onError={(event) => {
-                    console.error("Errore caricamento preview:", {
-                        url: completeLogoUrl,
-                        error: event.error,
-                    });
-
-                    setHasError(true);
-                }}
-            />
-        );
-    }
-
-    if (!authorization) {
-        return renderPlaceholder();
-    }
-
     return (
         <Image
-            key={`remote:${completeLogoUrl}`}
+            key={`${local ? "local" : "remote"}:${completeLogoUrl}`}
             source={{
                 uri: completeLogoUrl,
-                headers: {
-                    Authorization: authorization,
-                },
+                ...(!local && authorization
+                    ? {headers: {Authorization: authorization}}
+                    : {}),
             }}
             style={style}
             contentFit="cover"
             cachePolicy="none"
             transition={150}
             onError={(event) => {
-                console.error("Errore caricamento logo:", {
-                    url: completeLogoUrl,
-                    error: event.error,
-                });
-
+                console.error("Errore caricamento immagine:", event.error);
                 setHasError(true);
             }}
         />

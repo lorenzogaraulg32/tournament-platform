@@ -1,11 +1,11 @@
 import {Alert, Pressable, StyleSheet, Text, View} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import {colors, fonts} from "@/src/constants/theme";
+import {paletteVariants, Variant} from "@/src/constants/PaletteManager";
 
 
 type LabelProps = {
     text: string;
-    variant?: "team" | "profile";
+    variant: Variant;
     optional?: boolean,
     infoTitle?: string,
     infoMessage?: string,
@@ -15,70 +15,78 @@ type LabelProps = {
 export default function FormLabel({
                                       text,
                                       optional = false,
-                                      variant = "team",
+                                      variant,
                                       infoTitle,
                                       infoMessage,
                                       labelIconName = "help-outline",
                                   }: LabelProps) {
+
+    const {palette} = paletteVariants[variant];
+
     return (
         <View style={styles.externalLabelContainer}>
-
             <View style={styles.labelContainer}>
-                <View style={[styles.iconContainer, variant === "profile" && styles.profileIconContainer]}>
+                <View
+                    style={[
+                        styles.iconContainer,
+                        {backgroundColor: palette.defaultColorBK},
+                    ]}
+                >
                     <Ionicons
                         name={labelIconName}
                         size={22}
-                        color={variant === "profile" ? colors.redDefaultBK : colors.redDefaultBK}
+                        color={palette.defaultColor}
                     />
                 </View>
 
-                <Text style={styles.label}>
+                <Text
+                    style={{
+                        color: palette.labelColor,
+                        fontSize: palette.labelFontSize,
+                        fontWeight: palette.labelFontWeight,
+                    }}
+                >
                     {text}
                 </Text>
-                {infoTitle && infoMessage && <Pressable
-                    onPress={() =>
-                        Alert.alert(
-                            infoTitle,
-                            infoMessage,
-                            [{text: "Ho capito"}]
-                        )
-                    }
-                    hitSlop={10}
-                    accessibilityRole="button"
-                >
-                    <Ionicons
-                        name="information-circle-outline"
-                        size={20}
-                        color="#9A9A9A"
-                        style={styles.infoIcon}
-                    />
-                </Pressable>}
+
+                {!!infoTitle && !!infoMessage && (
+                    <Pressable
+                        onPress={() =>
+                            Alert.alert(
+                                infoTitle,
+                                infoMessage,
+                                [{text: "Ho capito"}],
+                            )
+                        }
+                        hitSlop={10}
+                        accessibilityRole="button"
+                        accessibilityLabel={`Informazioni su ${text}`}
+                    >
+                        <Ionicons
+                            name="information-circle-outline"
+                            size={20}
+                            color={palette.labelSecondaryColor}
+                            style={styles.infoIcon}
+                        />
+                    </Pressable>
+                )}
             </View>
 
             {optional && (
-                <Text style={styles.optionalText}>
+                <Text style={{color: palette.labelSecondaryColor}}>
                     Opzionale
                 </Text>
-
             )}
-
-
         </View>
     );
-
-
 }
 
-
 const styles = StyleSheet.create({
-
-
     externalLabelContainer: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
         marginBottom: 9,
-
     },
 
     labelContainer: {
@@ -92,35 +100,11 @@ const styles = StyleSheet.create({
         height: 40,
         alignItems: "center",
         justifyContent: "center",
-
         borderRadius: 20,
-        backgroundColor:"rgba(200, 72, 10, 0.12)",
     },
 
-    profileIconContainer: {
-        backgroundColor: colors.redDefaultBK,
-    },
-
-    label: {
-        color: colors.label,
-        fontSize: fonts.label,
-        fontWeight: "800",
-    },
-
-    optionalText: {
-        color: "#a8a8a8",
-    },
-
-    extraContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-around",
-        gap: 10,
-    },
     infoIcon: {
         marginTop: 3,
-        marginLeft: -5
-    }
-
-
+        marginLeft: -5,
+    },
 });

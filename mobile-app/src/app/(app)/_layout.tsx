@@ -21,8 +21,8 @@ import {loadCurrentUserId} from "@/src/services/users/authService";
 import ErrorScreen from "@/src/components/common/errors/ErrorScreen";
 import LoadingScreen from "@/src/components/common/loading/LoadingScreen";
 
-import {type BKVariant, variants} from "@/src/constants/PaletteManager";
-import ToastProvider from "@/src/components/common/ToastProvider";
+import {type Variant, paletteVariants} from "@/src/constants/PaletteManager";
+import ToastProvider from "@/src/components/common/Toast/ToastProvider";
 import {SafeAreaProvider} from "react-native-safe-area-context";
 
 const TAB_ROOT_PATHS = new Set([
@@ -174,7 +174,7 @@ export default function RootLayout() {
                     tabBar={(props: MaterialTopTabBarProps) => {
                         const route = props.state.routes[props.state.index];
                         const config =
-                            variants[route.name as BKVariant] ?? variants.home;
+                            paletteVariants[route.name as Variant] ?? paletteVariants.home;
 
                         return (
                             <ImageBackground

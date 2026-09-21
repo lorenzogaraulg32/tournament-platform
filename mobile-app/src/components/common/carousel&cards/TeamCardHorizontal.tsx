@@ -58,7 +58,7 @@ export default function TeamCardHorizontal({
         >
 
             <View style={styles.logoContainer}>
-                <Picture variant={"team"} style={styles.logo} logoUrl={imageUrl}/>
+                <Picture variant={"teams"} style={styles.logo} logoUrl={imageUrl}/>
             </View>
 
             <View style={styles.teamInfo}>

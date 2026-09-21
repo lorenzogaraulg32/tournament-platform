@@ -1,7 +1,7 @@
 import {View} from "react-native";
 import AuthTextField from "@/src/components/pagesComponents/auth/AuthTextField";
 import AuthContent from "@/src/components/pagesComponents/auth/AuthContent";
-import LogoField from "@/src/components/common/images/LogoField";
+import FormImageField from "@/src/components/common/forms/components/FormImageField";
 import OnBoardingContainer from "@/src/components/pagesComponents/auth/onboarding/OnBoardingContainer";
 import OnBoardingNavigationButtons from "@/src/components/pagesComponents/onBoarding/OnBoardingNavigationButtons";
 import {onboardingStepStyles as styles} from "@/src/components/pagesComponents/onBoarding/onboardingStepStyles"
@@ -45,7 +45,7 @@ export default function UsernameAndLogoStep({
                             errorMessage={usernameError}
                         />
 
-                        <LogoField
+                        <FormImageField
                             variant="createUser"
                             label="Foto profilo"
                             placeholderIcon="person-outline"

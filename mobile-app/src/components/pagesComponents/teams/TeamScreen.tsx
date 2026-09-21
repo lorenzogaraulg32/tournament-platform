@@ -115,7 +115,7 @@ export default function TeamScreen() {
         router.push({
             pathname: "/teams/modify",
             params: {
-                teamId: String(team.id),
+                team: JSON.stringify(team),
             },
         });
     }
@@ -196,7 +196,6 @@ export default function TeamScreen() {
     if (!params.teamId) {
         return <Redirect href="/(app)/home"/>;
     }
-
 
     if (isLoading) {
         return <LoadingScreen message={"Caricamento squadra..."}/>

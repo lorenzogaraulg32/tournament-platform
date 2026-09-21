@@ -1,95 +1,85 @@
-import {ImageSourcePropType} from "react-native";
-import { colors, fonts } from "./theme";
+import type {ImageSourcePropType, TextStyle} from "react-native";
+import {colors, fonts} from "./theme";
 
+export type Variant = "home" | "teams" | "tournaments" | "profile";
 
 export type StandardPalette = {
-    labelFontSize: number
-    labelFontWeight: string
-}
-
-export type VariantPalette = StandardPalette & {
-    labelColor: string
-    borderColor: string;
-    defaultColor: string;
-    defaultColorBK: string
+    labelFontSize: number;
+    labelFontWeight: TextStyle["fontWeight"];
+    labelColor: string;
+    labelSecondaryColor: string;
 };
 
-
-
-
-/* Varianti e palettes associate per le pagine */
-
-export type BKVariant = | "home" | "teams" | "tournaments" | "profile";
+export type VariantPalette = StandardPalette & {
+    borderColor: string;
+    defaultColor: string;
+    defaultColorBK: string;
+};
 
 export type VariantConfig = {
     background: ImageSourcePropType;
+    placeholder?: ImageSourcePropType;
     palette: VariantPalette;
 };
 
-export const standardPalette ={
+// Stili condivisi da tutte le varianti.
+export const standardPalette: StandardPalette = {
     labelFontSize: fonts.label,
     labelFontWeight: fonts.labelWeight,
     labelColor: colors.label,
-    labelSecondaryColor: colors.labelSecondary
-}
+    labelSecondaryColor: colors.labelSecondary,
+};
 
 export const HomePalette: VariantPalette = {
     ...standardPalette,
-    borderColor: "",
-    defaultColor: "",
-    defaultColorBK: ""
-}
+    borderColor: colors.greenBorder,
+    defaultColor: colors.greenDefault,
+    defaultColorBK: colors.greenBK,
+};
 
 export const TeamsPalette: VariantPalette = {
     ...standardPalette,
-    borderColor: "",
-    defaultColor: "",
-    defaultColorBK: ""
-}
+    borderColor: colors.orangeBorder,
+    defaultColor: colors.orangeDefault,
+    defaultColorBK: colors.orangeDefaultBK,
+};
+
+export const TournamentsPalette: VariantPalette = {
+    ...standardPalette,
+    borderColor: colors.purpleBorder,
+    defaultColor: colors.purpleDefault,
+    defaultColorBK: colors.purpleBK,
+};
 
 export const ProfilePalette: VariantPalette = {
     ...standardPalette,
-    borderColor: "",
-    defaultColor: "",
-    defaultColorBK: ""
-}
+    borderColor: colors.redBorder,
+    defaultColor: colors.redDefault,
+    defaultColorBK: colors.redDefaultBK,
+};
 
-export const TournamentsPalette: VariantPalette =  {
-    ...standardPalette,
-    borderColor: "",
-    defaultColor: "",
-    defaultColorBK: ""
-}
-
-
-export const variants: Record<BKVariant, VariantConfig> = {
-
+export const paletteVariants: Record<Variant, VariantConfig> = {
     home: {
         background: require("../../assets/images/backgrounds/greenBackground.png"),
-        palette: HomePalette
+        placeholder: require("../../assets/images/placeholders/logoPlaceholder.png"),
+        palette: HomePalette,
     },
 
     teams: {
         background: require("../../assets/images/backgrounds/orangeBackground.png"),
-        palette: TeamsPalette
+        placeholder: require("../../assets/images/placeholders/logoPlaceholder.png"),
+        palette: TeamsPalette,
     },
 
     tournaments: {
         background: require("../../assets/images/backgrounds/purpleBackground.png"),
-        palette: TournamentsPalette
+        placeholder: require("../../assets/images/placeholders/tournamentPlaceholder.jpg"),
+        palette: TournamentsPalette,
     },
 
     profile: {
         background: require("../../assets/images/backgrounds/redBackground.png"),
+        placeholder: require("../../assets/images/placeholders/profilePlaceholder.png"),
         palette: ProfilePalette,
     },
-
 };
-
-
-
-
-
-
-
-

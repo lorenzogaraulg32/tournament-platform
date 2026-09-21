@@ -1,19 +1,20 @@
-import {StyleSheet, Text, View} from "react-native";
+import {StyleProp, StyleSheet, Text, View, ViewStyle} from "react-native";
 import Picture from "@/src/components/common/images/Picture";
 import {formatLocationLabel} from "@/src/services/common";
 import {colors} from "@/src/constants/theme";
-import {InvitationCodeBadge} from "@/src/components/common/headers/InvitationCodeBadge";
+import {InvitationCodeBadge} from "@/src/components/common/InvitationCodeBadge";
+import {Variant} from "@/src/constants/PaletteManager";
 
 
-//tod: Inserire i campi che compongono l'header delle entità in quanto sono comuni
 type HeaderEntityProps = {
-    variant: "player" | "team" | "tournament";
+    variant: Variant;
     name: string,
     imageUrl?: string | null
     position?: string | null
     email?: string
     invitationCode?: string,
     onRefreshCode?: () => Promise<string>;
+    style?: StyleProp<ViewStyle>;
 };
 
 
@@ -25,13 +26,13 @@ export default function HeaderEntity({
                                          email,
                                          invitationCode,
                                          onRefreshCode,
-
+                                         style,
                                      }: HeaderEntityProps
 ) {
     return (
 
 
-        <View style={styles.container}>
+        <View style={[styles.container, style]}>
             <View style={styles.imageContainer}>
                 <Picture
                     variant={variant}
@@ -61,7 +62,7 @@ export default function HeaderEntity({
                 ) : null}
 
 
-                {variant === "player" ? (
+                {variant === "profile" ? (
                     <View style={styles.subscriptionBadge}>
                         <Text style={styles.subscriptionText}>
                             Piano gratuito
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
         alignItems: "center",
-        paddingTop: 25,
+        paddingTop: 30,
         gap: 25,
     },
 

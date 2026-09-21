@@ -1,41 +1,48 @@
-import {colors} from "@/src/constants/theme";
-import React from "react";
-import {StyleSheet, View} from "react-native";
+import { Fragment } from "react";
+import { StyleSheet, View } from "react-native";
+import { paletteVariants, type Variant } from "@/src/constants/PaletteManager";
 
 type FormProgressBarProps = {
     step: number;
-    totalSteps?: number;
+    totalSteps: number;
+    variant: Variant;
 };
 
 export default function FormProgressBar({
                                             step,
-                                            totalSteps = 5,
+                                            totalSteps,
+                                            variant,
                                         }: FormProgressBarProps) {
+    const { palette } = paletteVariants[variant];
+
     return (
         <View
             style={styles.wrapper}
             accessible
             accessibilityRole="progressbar"
-            accessibilityLabel={`Passaggio ${step} di ${totalSteps}`}
+            accessibilityLabel={`Passaggio ${step + 1} di ${totalSteps}`}
             accessibilityValue={{
                 min: 1,
                 max: totalSteps,
-                now: step,
+                now: step + 1,
             }}
         >
-
             <View style={styles.container}>
-                {Array.from({length: totalSteps}).map((_, index) => {
-                    const stepNumber = index + 1;
-                    const isCompleted = stepNumber < step;
-                    const isCurrent = stepNumber === step;
+                {Array.from({ length: totalSteps }, (_, index) => {
+                    const isCompleted = index < step;
+                    const isCurrent = index === step;
 
                     return (
-                        <React.Fragment key={stepNumber}>
+                        <Fragment key={index}>
                             <View
                                 style={[
                                     styles.dot,
-                                    isCompleted && styles.dotCompleted,
+                                    {
+                                        borderColor: palette.defaultColor,
+                                        backgroundColor: isCompleted
+                                            ? palette.defaultColor
+                                            : palette.defaultColorBK,
+                                    },
                                     isCurrent && styles.dotCurrent,
                                 ]}
                             />
@@ -44,11 +51,16 @@ export default function FormProgressBar({
                                 <View
                                     style={[
                                         styles.bar,
-                                        isCompleted && styles.barCompleted,
+                                        {
+                                            borderColor: palette.borderColor,
+                                            backgroundColor: isCompleted
+                                                ? palette.defaultColor
+                                                : palette.defaultColorBK,
+                                        },
                                     ]}
                                 />
                             )}
-                        </React.Fragment>
+                        </Fragment>
                     );
                 })}
             </View>
@@ -68,21 +80,14 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         flexDirection: "row",
         alignItems: "center",
+        justifyContent: "center",
     },
-
 
     dot: {
         width: 10,
         height: 10,
         borderRadius: 5,
         borderWidth: 1,
-        borderColor: colors.orangeDefault,
-        backgroundColor: "rgba(255, 255, 255)",
-    },
-
-    dotCompleted: {
-        backgroundColor: colors.orangeDefault,
-        borderWidth: 0,
     },
 
     dotCurrent: {
@@ -90,8 +95,6 @@ const styles = StyleSheet.create({
         height: 14,
         borderRadius: 7,
         borderWidth: 3,
-        borderColor: colors.orangeDefault,
-        backgroundColor: "#FFFFFF",
     },
 
     bar: {
@@ -100,12 +103,5 @@ const styles = StyleSheet.create({
         marginHorizontal: 6,
         borderRadius: 2,
         borderWidth: 1,
-        borderColor: colors.orangeDefault,
-        backgroundColor: "rgba(255, 255, 255)",
-    },
-
-    barCompleted: {
-        borderWidth: 0,
-        backgroundColor: colors.orangeDefault,
     },
 });

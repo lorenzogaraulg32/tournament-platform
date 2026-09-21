@@ -3,17 +3,9 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import {useEffect, useState} from "react";
 import * as Location from "expo-location";
 import FormLabel from "@/src/components/common/labels/FormLabel";
-import { colors } from "@/src/constants/theme";
-
-
-type PositionFieldVariant =
-    "createTeam" | "createUser";
-
-export type TeamLocation = {
-    label: string;
-    latitude: number;
-    longitude: number;
-};
+import {colors} from "@/src/constants/theme";
+import {GeoLocation} from "@/src/services/common";
+import {paletteVariants, Variant} from "@/src/constants/PaletteManager";
 
 type LocationSuggestion = {
     placeId: string;
@@ -21,9 +13,9 @@ type LocationSuggestion = {
 };
 
 type TeamLocationSectionProps = {
-    variant: PositionFieldVariant;
-    value: TeamLocation | null;
-    onChange: (location: TeamLocation | null) => void;
+    variant: Variant;
+    value: GeoLocation | null;
+    onChange: (location: GeoLocation | null) => void;
     errorMessage?: string;
 };
 
@@ -36,7 +28,6 @@ export default function TeamLocationSection({
                                                 errorMessage,
                                             }: TeamLocationSectionProps) {
 
-    const isCreateUser = variant === "createUser";
 
     const [isLocating, setIsLocating] = useState(false);
 
@@ -48,7 +39,13 @@ export default function TeamLocationSection({
 
     const [searchError, setSearchError] = useState<string | null>(null);
 
-    const isError = Boolean(errorMessage);
+    const {palette} = paletteVariants[variant];
+    const visibleError = errorMessage || searchError;
+
+    const surfaceStyle = {
+        backgroundColor: palette.defaultColorBK,
+        borderColor: palette.borderColor,
+    };
 
     useEffect(() => {
         const trimmedQuery = query.trim();
@@ -110,7 +107,7 @@ export default function TeamLocationSection({
                     .join(", ")
                 : `${latitude}, ${longitude}`;
 
-            const selectedLocation: TeamLocation = {
+            const selectedLocation: GeoLocation = {
                 label,
                 latitude,
                 longitude,
@@ -223,7 +220,7 @@ export default function TeamLocationSection({
 
             const place = await response.json();
 
-            const selectedLocation: TeamLocation = {
+            const selectedLocation: GeoLocation = {
                 label:
                     place.formattedAddress ??
                     place.displayName?.text ??
@@ -254,53 +251,39 @@ export default function TeamLocationSection({
 
     return (
         <View style={styles.container}>
-            {isCreateUser ? (
-                <View style={styles.createUserLabelContainer}>
-                    <Text style={styles.createUserLabel}>
-                        Posizione
-                    </Text>
+            <FormLabel
+                text="Posizione"
+                variant={variant}
+                optional
+                labelIconName="location-outline"
+            />
 
-                    <Text style={styles.createUserOptional}>
-                        Opzionale
-                    </Text>
-                </View>
-            ) : (
-                <FormLabel
-                    text="Posizione"
-                    optional
-                    labelIconName="location-outline"
-                />
-            )}
             <View
                 style={[
                     styles.inputContainer,
-
-                    isCreateUser &&
-                    styles.inputContainerCreateUser,
-
-                    isFocused &&
-                    (
-                        isCreateUser
-                            ? styles.inputContainerFocusedCreateUser
-                            : styles.inputContainerFocused
-                    ),
-
-                    isError &&
-                    styles.inputContainerError,
+                    {
+                        borderColor: visibleError
+                            ? colors.error
+                            : isFocused
+                                ? palette.defaultColor
+                                : palette.borderColor,
+                        backgroundColor: visibleError
+                            ? colors.errorBK
+                            : isFocused
+                                ? "#FFFFFF"
+                                : palette.defaultColorBK,
+                    },
                 ]}
             >
                 <Ionicons
                     name="search-outline"
                     size={21}
-                    color={
-                        isCreateUser
-                            ? "rgba(255,255,255,0.65)"
-                            : "#929292"
-                    }
+                    color={palette.defaultColor}
                 />
+
                 <TextInput
                     value={query}
-                    onChangeText={(text) => {
+                    onChangeText={text => {
                         setQuery(text);
 
                         if (value) {
@@ -310,22 +293,15 @@ export default function TeamLocationSection({
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
                     placeholder="Cerca città o zona..."
-                    placeholderTextColor={
-                        isCreateUser
-                            ? "rgba(255,255,255,0.50)"
-                            : "#929292"
-                    }
-                    selectionColor="#C8480A"
-                    style={[
-                        styles.input,
-                        isCreateUser && styles.inputCreateUser,
-                    ]}
+                    placeholderTextColor={palette.labelSecondaryColor}
+                    selectionColor={palette.defaultColor}
+                    style={[styles.input, {color: palette.labelColor}]}
                 />
 
                 {isLoading && (
                     <ActivityIndicator
                         size="small"
-                        color="#C8480A"
+                        color={palette.defaultColor}
                     />
                 )}
             </View>
@@ -334,46 +310,32 @@ export default function TeamLocationSection({
                 <View
                     style={[
                         styles.suggestionsContainer,
-                        isCreateUser &&
-                        styles.suggestionsContainerCreateUser,
+                        {borderColor: palette.borderColor},
                     ]}
                 >
-                    {suggestions.map((suggestion) => (
+                    {suggestions.map(suggestion => (
                         <Pressable
                             key={suggestion.placeId}
-                            onPress={() =>
-                                void selectLocation(
-                                    suggestion
-                                )
-                            }
+                            onPress={() => void selectLocation(suggestion)}
+                            accessibilityRole="button"
                             style={({pressed}) => [
                                 styles.suggestion,
-
-                                isCreateUser &&
-                                styles.suggestionCreateUser,
-
-                                pressed &&
-                                (
-                                    isCreateUser
-                                        ? styles.suggestionPressedCreateUser
-                                        : styles.suggestionPressed
-                                ),
+                                {borderBottomColor: palette.borderColor},
+                                pressed && {
+                                    backgroundColor: palette.defaultColorBK,
+                                },
                             ]}
                         >
                             <Ionicons
                                 name="location-outline"
                                 size={19}
-                                color={
-                                    isCreateUser
-                                        ? "#FFFFFF"
-                                        : "#C8480A"
-                                }
+                                color={palette.defaultColor}
                             />
+
                             <Text
                                 style={[
                                     styles.suggestionText,
-                                    isCreateUser &&
-                                    styles.suggestionTextCreateUser,
+                                    {color: palette.labelColor},
                                 ]}
                             >
                                 {suggestion.label}
@@ -386,84 +348,59 @@ export default function TeamLocationSection({
             <Pressable
                 onPress={() => void useCurrentLocation()}
                 disabled={isLocating}
+                accessibilityRole="button"
                 style={({pressed}) => [
                     styles.currentLocationButton,
-
-                    isCreateUser &&
-                    styles.currentLocationButtonCreateUser,
-
-                    pressed &&
-                    styles.currentLocationButtonPressed,
-
-                    isLocating &&
-                    styles.currentLocationButtonDisabled,
+                    surfaceStyle,
+                    pressed && styles.pressed,
+                    isLocating && styles.disabled,
                 ]}
             >
                 {isLocating ? (
                     <ActivityIndicator
                         size="small"
-                        color="#C8480A"
+                        color={palette.defaultColor}
                     />
                 ) : (
                     <Ionicons
                         name="locate-outline"
                         size={20}
-                        color={
-                            isCreateUser
-                                ? "#FFFFFF"
-                                : "#C8480A"
-                        }
+                        color={palette.defaultColor}
                     />
                 )}
 
                 <Text
                     style={[
                         styles.currentLocationText,
-                        isCreateUser &&
-                        styles.currentLocationTextCreateUser,
+                        {color: palette.defaultColor},
                     ]}
                 >
                     Usa la mia posizione
                 </Text>
             </Pressable>
 
-            <View
-                style={[
-                    styles.selectedLocation,
-                    isCreateUser &&
-                    styles.selectedLocationCreateUser,
-                ]}
-            >
+            <View style={[styles.selectedLocation, surfaceStyle]}>
                 <Ionicons
-                    name={
-                        value
-                            ? "location-sharp"
-                            : "location-outline"
-                    }
+                    name={value ? "location-sharp" : "location-outline"}
                     size={24}
                     color={
-                        isCreateUser
-                            ? value
-                                ? "#FFFFFF"
-                                : "rgba(255,255,255,0.55)"
-                            : value
-                                ? "#C8480A"
-                                : "#A0A0A0"
+                        value
+                            ? palette.defaultColor
+                            : palette.labelSecondaryColor
                     }
                 />
 
                 <Text
                     style={[
                         styles.selectedLocationText,
-                        isCreateUser &&
-                        styles.selectedLocationTextCreateUser,
+                        {color: palette.labelColor},
                     ]}
                     numberOfLines={1}
                 >
                     {value?.label ?? "Nessuna posizione selezionata"}
                 </Text>
 
-                {value && (
+                {value !== null && (
                     <Pressable
                         onPress={clearLocation}
                         hitSlop={10}
@@ -471,30 +408,21 @@ export default function TeamLocationSection({
                         accessibilityLabel="Rimuovi posizione"
                         style={({pressed}) => [
                             styles.clearButton,
-
-                            isCreateUser &&
-                            styles.clearButtonCreateUser,
-
-                            pressed &&
-                            styles.clearButtonPressed,
+                            pressed && styles.pressed,
                         ]}
                     >
                         <Ionicons
                             name="close"
                             size={23}
-                            color={
-                                isCreateUser
-                                    ? "#FFFFFF"
-                                    : "#A0A0A0"
-                            }
+                            color={palette.defaultColor}
                         />
                     </Pressable>
                 )}
             </View>
 
-            {(errorMessage || searchError) && (
+            {!!visibleError && (
                 <Text style={styles.errorText}>
-                    {errorMessage ?? searchError}
+                    {visibleError}
                 </Text>
             )}
         </View>
@@ -508,28 +436,6 @@ const styles = StyleSheet.create({
         gap: 5,
     },
 
-    labelContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 10,
-        marginBottom: 9,
-    },
-
-    iconContainer: {
-        width: 40,
-        height: 40,
-        alignItems: "center",
-        justifyContent: "center",
-        borderRadius: 20,
-        backgroundColor: "rgba(200, 72, 10, 0.12)",
-    },
-
-    label: {
-        color: "#1C1C1C",
-        fontSize: 17,
-        fontWeight: "800",
-    },
-
     inputContainer: {
         minHeight: 54,
         flexDirection: "row",
@@ -538,24 +444,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         borderRadius: 18,
         borderWidth: 1.5,
-        borderColor: "#D8D8D8",
-        backgroundColor: "#F5F5F5",
-    },
-
-    inputContainerFocused: {
-        borderColor: "#C8480A",
-        backgroundColor: "#FFFFFF",
-    },
-
-    inputContainerError: {
-        borderColor: "#B42318",
-        backgroundColor: "#FFF7F6",
     },
 
     input: {
         flex: 1,
         minHeight: 52,
-        color: "#1C1C1C",
         fontSize: 16,
         fontWeight: "500",
     },
@@ -565,7 +458,6 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         borderRadius: 14,
         borderWidth: 1,
-        borderColor: "#D8D8D8",
         backgroundColor: "#FFFFFF",
     },
 
@@ -577,42 +469,12 @@ const styles = StyleSheet.create({
         paddingHorizontal: 14,
         paddingVertical: 10,
         borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: "#E2E2E2",
-    },
-
-    suggestionPressed: {
-        backgroundColor: "#F7F1EE",
     },
 
     suggestionText: {
         flex: 1,
-        color: "#1C1C1C",
         fontSize: 14,
     },
-
-    selectedLocation: {
-        minHeight: 58,
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 12,
-
-        marginTop: 10,
-        paddingHorizontal: 16,
-        paddingVertical: 10,
-
-        borderRadius: 16,
-        borderWidth: 1,
-        borderColor: "rgba(200, 72, 10, 0.25)",
-        backgroundColor: "rgba(200, 72, 10, 0.06)",
-    },
-
-    selectedLocationText: {
-        flex: 1,
-        color: "#1C1C1C",
-        fontSize: 15,
-        fontWeight: "700",
-    },
-
 
     currentLocationButton: {
         minHeight: 44,
@@ -620,28 +482,33 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         gap: 8,
-
         marginTop: 8,
         borderRadius: 14,
         borderWidth: 1,
-        borderColor: "rgba(200, 72, 10, 0.28)",
-        backgroundColor: "rgba(200, 72, 10, 0.06)",
-    },
-
-    currentLocationButtonPressed: {
-        opacity: 0.7,
-    },
-
-    currentLocationButtonDisabled: {
-        opacity: 0.6,
     },
 
     currentLocationText: {
-        color: "#C8480A",
         fontSize: 14,
         fontWeight: "700",
     },
 
+    selectedLocation: {
+        minHeight: 58,
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 12,
+        marginTop: 10,
+        paddingHorizontal: 16,
+        paddingVertical: 10,
+        borderRadius: 16,
+        borderWidth: 1,
+    },
+
+    selectedLocationText: {
+        flex: 1,
+        fontSize: 15,
+        fontWeight: "700",
+    },
 
     clearButton: {
         width: 36,
@@ -649,92 +516,21 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 18,
-        backgroundColor: "#EEEEEE",
     },
 
-    clearButtonPressed: {
+    pressed: {
         opacity: 0.7,
     },
+
+    disabled: {
+        opacity: 0.6,
+    },
+
     errorText: {
         marginTop: 6,
         marginLeft: 4,
-        color: "#B42318",
+        color: colors.error,
         fontSize: 13,
         fontWeight: "500",
     },
-
-    createUserLabelContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 6,
-        marginLeft: 10,
-        marginBottom: 13,
-    },
-
-    createUserLabel: {
-        color: "#FFFFFF",
-        fontSize: 16,
-        lineHeight: 20,
-        fontWeight: "800",
-    },
-
-    createUserOptional: {
-        color: "rgba(255,255,255,0.55)",
-        fontSize: 12,
-    },
-
-    inputContainerCreateUser: {
-        backgroundColor: "rgba(255,255,255,0.30)",
-        borderColor: "rgba(255,255,255,0.35)",
-    },
-
-    inputContainerFocusedCreateUser: {
-        borderColor: "#C8480A",
-        backgroundColor: "rgba(255,255,255,0.40)",
-    },
-
-    inputCreateUser: {
-        color: "#FFFFFF",
-    },
-
-
-    suggestionsContainerCreateUser: {
-        backgroundColor: "rgba(20,60,45,0.95)",
-        borderColor: "rgba(255,255,255,0.25)",
-    },
-
-    suggestionCreateUser: {
-        borderBottomColor: "rgba(255,255,255,0.15)",
-    },
-
-    suggestionPressedCreateUser: {
-        backgroundColor: "rgba(255,255,255,0.12)",
-    },
-
-    suggestionTextCreateUser: {
-        color: "#FFFFFF",
-    },
-
-    currentLocationButtonCreateUser: {
-        borderColor: "rgba(255,255,255,0.28)",
-        backgroundColor: colors.orangeDefault,
-    },
-
-    currentLocationTextCreateUser: {
-        color: "#FFFFFF",
-    },
-
-    clearButtonCreateUser: {
-        backgroundColor: "rgba(255,255,255,0.18)",
-    },
-
-    selectedLocationCreateUser: {
-        borderColor: "rgba(255,255,255,0.25)",
-        backgroundColor: "rgba(255,255,255,0.16)",
-    },
-
-    selectedLocationTextCreateUser: {
-        color: "#FFFFFF",
-    },
-
 });

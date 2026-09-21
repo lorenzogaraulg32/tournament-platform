@@ -1,22 +1,32 @@
-import {View} from "react-native";
-import FormInputField from "@/src/components/common/forms/FormInputField";
-import Switch from "@/src/components/pagesComponents/teams/createTeam/Switch";
-import {RecruitmentStatus} from "@/src/services/teams/teamCreationService";
+import { View } from "react-native";
+import FormInputField from "@/src/components/common/forms/components/FormInputField";
+import FormSwitch from "@/src/components/common/forms/components/FormSwitch";
+import type { RecruitmentStatus } from "@/src/services/teams/teamsConst";
+import type { Variant } from "@/src/constants/PaletteManager";
 
+const RECRUITMENT_OPTIONS: {
+    value: RecruitmentStatus;
+    label: string;
+}[] = [
+    { value: "OPEN", label: "Aperte" },
+    { value: "CLOSED", label: "Chiuse" },
+];
 
 type NameAndDescStepProps = {
-    nameValue: string,
-    descValue: string,
-    switchValue: RecruitmentStatus,
-    onChangeName: (name : string) => void
-    onChangeDesc: (desc : string) => void
-    onChangeSwitch: (status : RecruitmentStatus) => void
-    errorMsgName?: string,
-    errorMsgDesc?: string,
-    editable: boolean,
-}
+    variant: Variant;
+    nameValue: string;
+    descValue: string;
+    switchValue: RecruitmentStatus;
+    onChangeName: (name: string) => void;
+    onChangeDesc: (description: string) => void;
+    onChangeSwitch: (status: RecruitmentStatus) => void;
+    errorMsgName?: string;
+    errorMsgDesc?: string;
+    editable: boolean;
+};
 
 export default function NameAndDescStep({
+                                            variant,
                                             nameValue,
                                             descValue,
                                             switchValue,
@@ -25,11 +35,12 @@ export default function NameAndDescStep({
                                             onChangeSwitch,
                                             errorMsgName,
                                             errorMsgDesc,
-                                            editable
+                                            editable,
                                         }: NameAndDescStepProps) {
     return (
         <View>
             <FormInputField
+                variant={variant}
                 label="Nome squadra"
                 labelIconName="shield-outline"
                 placeholder="Es. FC Bar Ci Siamo"
@@ -42,26 +53,30 @@ export default function NameAndDescStep({
             />
 
             <FormInputField
+                variant={variant}
                 label="Descrizione"
                 optional
                 labelIconName="chatbubble-ellipses-outline"
                 placeholder="Racconta qualcosa della tua squadra..."
                 value={descValue}
                 onChangeText={onChangeDesc}
-                multiline
                 errorMessage={errorMsgDesc}
+                multiline
                 maxLength={160}
                 textAlignVertical="top"
                 editable={editable}
-                inputStyle={{
-                    minHeight: 120,
-                }}
+                inputStyle={{ minHeight: 120 }}
             />
 
-            <Switch
+            <FormSwitch
+                variant={variant}
+                label="Iscrizioni"
+                labelIconName="person-add-outline"
+                options={RECRUITMENT_OPTIONS}
                 value={switchValue}
-                onChange={onChangeSwitch
-                }
+                onChange={onChangeSwitch}
+                disabled={!editable}
             />
-        </View>)
+        </View>
+    );
 }

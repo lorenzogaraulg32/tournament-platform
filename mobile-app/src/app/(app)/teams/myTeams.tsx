@@ -1,12 +1,14 @@
 import {ScrollView, StyleSheet, View} from "react-native";
-import {getCurrentUserTeams, TeamInfo} from "@/src/services/teams/teamService";
-import TeamCardHorizontal from "@/src/components/pagesComponents/teams/cards/TeamCardHorizontal";
+import TeamCardHorizontal from "@/src/components/common/carousel&cards/TeamCardHorizontal";
 import {useCallback, useRef, useState} from "react";
 import {router, useFocusEffect} from "expo-router";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import ButtonBackground from "@/src/components/common/buttons/ButtonBackground";
 import LoadingSection from "@/src/components/common/loading/LoadingSection";
 import ErrorSection from "@/src/components/common/errors/ErrorSection";
+import {TeamDetails} from "@/src/services/teams/teamsConst";
+import {fetchUserTeams} from "@/src/services/teams/teamService";
+import {loadCurrentUserId} from "@/src/services/users/authService";
 
 
 /**
@@ -15,7 +17,7 @@ import ErrorSection from "@/src/components/common/errors/ErrorSection";
 export default function MyTeams() {
 
     //states
-    const [userTeams, setUserTeams] = useState<TeamInfo[]>([]);
+    const [userTeams, setUserTeams] = useState<TeamDetails[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -28,7 +30,7 @@ export default function MyTeams() {
             setIsLoading(true);
             setError(null);
 
-            const loadedTeams = await getCurrentUserTeams();
+            const loadedTeams = await fetchUserTeams(await loadCurrentUserId());
 
             if (requestId === requestIdRef.current) {
                 setUserTeams(loadedTeams);
@@ -92,7 +94,7 @@ export default function MyTeams() {
                 id={team.id}
                 name={team.name}
                 imageUrl={team.imageUrl ?? undefined}
-                playersCount={team.numberOfPlayers}
+                playersCount={team.playerIds.length}
             />
         ));
     }

@@ -1,6 +1,7 @@
 package com.tournamentplatform.userservice.mapper;
 
-import com.tournamentplatform.userservice.dto.*;
+import com.tournamentplatform.userservice.dto.CreateUserRequest;
+import com.tournamentplatform.userservice.dto.PatchUserRequest;
 import com.tournamentplatform.userservice.dto.UserResponse;
 import com.tournamentplatform.userservice.dto.position.GeoLocationRequest;
 import com.tournamentplatform.userservice.dto.position.GeoLocationResponse;
@@ -58,6 +59,7 @@ public final class UserMapper {
                 .collect(Collectors.toSet());
 
         return new UserResponse(
+                user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
                 user.getUsername(),

@@ -6,8 +6,8 @@ import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import HeaderEntity from "@/src/components/common/headers/HeaderEntity";
 import CollapsableSection from "@/src/components/common/CollapsableSection";
 import CardListContainer from "@/src/components/common/carousel&cards/CardListContainer";
-import PlayersCard from "@/src/components/pagesComponents/profile/cards/PlayersCard";
-import AdminsCard from "@/src/components/pagesComponents/profile/cards/AdminsCard";
+import PlayerCard from "@/src/components/common/carousel&cards/PlayerCard";
+import AdminCard from "@/src/components/common/carousel&cards/AdminCard";
 import {colors} from "@/src/constants/theme";
 import {TeamDetails} from "@/src/services/teams/teamsConst";
 import {loadUserInfo, UserInfo} from "@/src/services/users/userService";
@@ -15,7 +15,7 @@ import {Dispatch, SetStateAction, useCallback, useEffect, useRef, useState} from
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {removeTeamAdmin, removeTeamPlayer} from "@/src/services/teams/teamService";
 import showAlert from "@/src/components/common/errors/Alert";
-import {useToast} from "@/src/components/common/ToastProvider";
+import {useToast} from "@/src/components/common/Toast/ToastProvider";
 
 
 type TeamPageProps = {
@@ -69,6 +69,9 @@ export default function TeamPage({
             if (requestId !== componentsRequestIdRef.current) {
                 return;
             }
+
+            console.log("ID giocatori:", loadedPlayers.map(player => player.id));
+            console.log("ID amministratori:", loadedAdmins.map(admin => admin.id));
 
             setTeamPlayers(loadedPlayers);
             setTeamAdmins(loadedAdmins);
@@ -231,9 +234,6 @@ export default function TeamPage({
     }
 
 
-    //funzioni per interagire con l'entità squadra
-
-
     return (
         <PageLayout
             header={
@@ -241,7 +241,7 @@ export default function TeamPage({
                     variant={"teams"}
                 >
                     <HeaderEntity
-                        variant={"team"}
+                        variant={"teams"}
                         name={team.name}
                         imageUrl={team.imageUrl}
                         position={team.location?.label}
@@ -282,7 +282,7 @@ export default function TeamPage({
                                             !isMod || canRemovePlayer(String(player.id))
                                         )
                                         .map((player) => (
-                                            <PlayersCard
+                                            <PlayerCard
                                                 key={player.id}
                                                 player={player}
                                                 sport={team.sport}
@@ -327,7 +327,7 @@ export default function TeamPage({
                                             String(admin.id) !== String(team.creatorId)
                                         )
                                         .map((admin) => (
-                                            <AdminsCard
+                                            <AdminCard
                                                 key={admin.id}
                                                 admin={admin}
                                                 isOwner={

@@ -2,7 +2,7 @@ import {KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View} from
 import {StatusBar} from "expo-status-bar";
 import {ReactNode} from "react";
 import {ImageBackground} from "expo-image";
-import FormProgressBar from "@/src/components/common/forms/FormProgressBar";
+import FormProgressBar from "@/src/components/common/forms/components/FormProgressBar";
 
 
 type OnBoardingProps = {

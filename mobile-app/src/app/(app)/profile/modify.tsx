@@ -18,9 +18,9 @@ import {Alert, View} from "react-native";
 import {loadCurrentUserId} from "@/src/services/users/authService";
 import NameAndSurnameModStep from "@/src/components/pagesComponents/profile/modify/steps/NameAndSurnameModStep";
 import UsernameAndLogoModStep from "@/src/components/pagesComponents/profile/modify/steps/UsernameAndLogoModStep";
-import FormLayout from "@/src/components/common/forms/FormLayout";
-import FormProgressBar from "@/src/components/common/forms/FormProgressBar";
-import FormContent from "@/src/components/common/forms/FormContent";
+import FormLayout from "@/src/components/common/forms/ layout/FormLayout";
+import FormProgressBar from "@/src/components/common/forms/components/FormProgressBar";
+import FormContent from "@/src/components/common/forms/ layout/FormContent";
 
 
 const TOTAL_STEPS = 4;

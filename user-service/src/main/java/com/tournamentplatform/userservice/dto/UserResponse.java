@@ -10,6 +10,8 @@ import java.util.Set;
 
 public record UserResponse(
 
+        String id,
+
         String firstName,
 
         String lastName,

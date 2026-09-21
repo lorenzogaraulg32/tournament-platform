@@ -29,6 +29,6 @@ export default function DeleteTeamPage() {
         <DeleteScreen
             message="Vuoi eliminare la squadra? Questa operazione non può essere annullata."
             onDelete={handleDelete}
-        />
+            variant={"teams"}/>
     );
 }

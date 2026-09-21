@@ -22,15 +22,25 @@ export type TeamCreationRequest = {
     name: string;
     description?: string;
     status: RecruitmentStatus;
-    location?: GeoLocation;
+    location: GeoLocation | null;
     sport?: Sport
 };
+
 
 export type TeamUpdateRequest = {
     name?: string;
     description?: string;
     status?: RecruitmentStatus;
-    location?: GeoLocation;
-    newImageUrl?: string;
+    location: GeoLocation | null;
+    sport : Sport,
+    imageUrl?: string;
 };
 
+export type TeamErrorFields = {
+    name?: string;
+    description?: string;
+    status?: string;
+    location?: string;
+    logo?: string;
+    sport?: string;
+}

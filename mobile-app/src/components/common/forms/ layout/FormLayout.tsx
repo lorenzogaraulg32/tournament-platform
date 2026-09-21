@@ -2,12 +2,12 @@ import {ReactNode} from "react";
 import PageLayout from "@/src/components/common/PageLayout";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import {KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View} from "react-native";
-import {BKVariant} from "@/src/constants/PaletteManager";
+import {Variant} from "@/src/constants/PaletteManager";
 
 type FormLayoutProps = {
     header: ReactNode
     children: ReactNode
-    variant: BKVariant
+    variant: Variant
 }
 
 

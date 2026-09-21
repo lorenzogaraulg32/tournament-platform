@@ -1,4 +1,4 @@
-import {Pressable, Text, View} from "react-native";
+import {Text, View} from "react-native";
 import AuthContent from "@/src/components/pagesComponents/auth/AuthContent";
 import OnBoardingContainer from "@/src/components/pagesComponents/auth/onboarding/OnBoardingContainer";
 import OnBoardingNavigationButtons from "@/src/components/pagesComponents/onBoarding/OnBoardingNavigationButtons";
@@ -11,8 +11,11 @@ import {
     type SportRole,
     type UserSportRole,
 } from "@/src/services/users/userConstants";
+import {Variant} from "@/src/constants/PaletteManager";
+import FormSelectionButton from "@/src/components/common/forms/components/FormSelectionButton";
 
 type SportsAndRolesStepProps = {
+    variant?: Variant;
     sports: Sport[];
     roles: UserSportRole[];
     errorMessage?: string;
@@ -23,14 +26,15 @@ type SportsAndRolesStepProps = {
 };
 
 export default function SportsAndRolesStep({
-    sports,
-    roles,
-    errorMessage,
-    onToggleSport,
-    onToggleRole,
-    onBack,
-    onNext,
-}: SportsAndRolesStepProps) {
+                                               variant = "profile",
+                                               sports,
+                                               roles,
+                                               errorMessage,
+                                               onToggleSport,
+                                               onToggleRole,
+                                               onBack,
+                                               onNext,
+                                           }: SportsAndRolesStepProps) {
     return (
         <OnBoardingContainer
             step={4}
@@ -43,34 +47,15 @@ export default function SportsAndRolesStep({
                         </Text>
 
                         <View style={styles.optionsContainer}>
-                            {Object.values(Sport).map(sport => {
-                                const selected =
-                                    sports.includes(sport);
-
-                                return (
-                                    <Pressable
-                                        key={sport}
-                                        style={[
-                                            styles.option,
-                                            selected &&
-                                            styles.optionSelected,
-                                        ]}
-                                        onPress={() =>
-                                            onToggleSport(sport)
-                                        }
-                                    >
-                                        <Text
-                                            style={[
-                                                styles.optionText,
-                                                selected &&
-                                                styles.optionTextSelected,
-                                            ]}
-                                        >
-                                            {SPORT_LABELS[sport]}
-                                        </Text>
-                                    </Pressable>
-                                );
-                            })}
+                            {Object.values(Sport).map(sport => (
+                                <FormSelectionButton
+                                    key={sport}
+                                    label={SPORT_LABELS[sport]}
+                                    variant={variant}
+                                    selected={sports.includes(sport)}
+                                    onPress={() => onToggleSport(sport)}
+                                />
+                            ))}
                         </View>
 
                         {sports.map(sport => (
@@ -83,41 +68,17 @@ export default function SportsAndRolesStep({
                                 </Text>
 
                                 <View style={styles.rolesContainer}>
-                                    {SPORT_ROLES[sport].map(role => {
-                                        const selected = roles.some(
-                                            selectedRole =>
-                                                selectedRole.sport ===
-                                                    sport &&
-                                                selectedRole.role === role
-                                        );
-
-                                        return (
-                                            <Pressable
-                                                key={role}
-                                                style={[
-                                                    styles.roleOption,
-                                                    selected &&
-                                                    styles.optionSelected,
-                                                ]}
-                                                onPress={() =>
-                                                    onToggleRole(
-                                                        sport,
-                                                        role
-                                                    )
-                                                }
-                                            >
-                                                <Text
-                                                    style={[
-                                                        styles.optionText,
-                                                        selected &&
-                                                        styles.optionTextSelected,
-                                                    ]}
-                                                >
-                                                    {ROLE_LABELS[role]}
-                                                </Text>
-                                            </Pressable>
-                                        );
-                                    })}
+                                    {SPORT_ROLES[sport].map(role => (
+                                        <FormSelectionButton
+                                            key={role}
+                                            label={ROLE_LABELS[role]}
+                                            variant={variant}
+                                            selected={roles.some(
+                                                item => item.sport === sport && item.role === role
+                                            )}
+                                            onPress={() => onToggleRole(sport, role)}
+                                        />
+                                    ))}
                                 </View>
                             </View>
                         ))}

@@ -1,7 +1,7 @@
 import {createContext, type ReactNode, useCallback, useContext, useEffect, useRef, useState,} from "react";
 import {StyleSheet, View} from "react-native";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
-import Toast from "@/src/components/common/Toast"; // Adatta il percorso
+import Toast from "@/src/components/common/Toast/Toast"; // Adatta il percorso
 
 type ToastData = {
     message: string;

@@ -1,69 +1,154 @@
-import {useCallback, useEffect, useRef, useState} from "react";
-import {loadCurrentUserId} from "@/src/services/users/authService";
+import {useCallback, useRef, useState} from "react";
+import {router, useFocusEffect, useLocalSearchParams,} from "expo-router";
+
+import {handleLogout, loadCurrentUserId,} from "@/src/services/users/authService";
+import {loadUserInfo, type UserInfo,} from "@/src/services/users/userService";
+import {fetchUserTeams} from "@/src/services/teams/teamService";
+import type {TeamDetails} from "@/src/services/teams/teamsConst";
 import {normalizeApiRequestError} from "@/src/services/errorService";
-import {Redirect} from "expo-router";
+
 import LoadingScreen from "@/src/components/common/loading/LoadingScreen";
+import ErrorScreen from "@/src/components/common/errors/ErrorScreen";
+import BackButton from "@/src/components/common/buttons/BackButton";
+import OptionsMenu from "@/src/components/common/OptionsMenu";
 import ProfilePage from "@/src/components/pagesComponents/profile/ProfilePage";
-import showAlert from "@/src/components/common/errors/Alert";
+
+type ProfileData = {
+    user: UserInfo;
+    teams: TeamDetails[];
+    isOwnProfile: boolean;
+};
 
 export default function ProfileScreen() {
+    const params = useLocalSearchParams<{ profileId?: string }>();
 
-    const [isLoadingUserInfo, setLoadingUserInfo] = useState<boolean>(true)
-    const [isOwnProfile, setIsOwnProfile] = useState<boolean>(false)
+    const profileId = params.profileId;
+
     const requestIdRef = useRef(0);
 
-    const loadUserInfo = useCallback(async () => {
+    const [profile, setProfile] = useState<ProfileData | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState("");
 
-        setLoadingUserInfo(true)
+    const loadProfile = useCallback(async () => {
         const requestId = ++requestIdRef.current;
+
+        setIsLoading(true);
+        setError("");
+        setProfile(null);
 
         try {
             const currentUserId = await loadCurrentUserId();
 
-            // La richiesta non è più valida
             if (requestId !== requestIdRef.current) {
                 return;
             }
 
-            setIsOwnProfile(String(currentUserId) === userId);
+            if (currentUserId === null || currentUserId === undefined) {
+                router.replace("/(auth)");
+                return;
+            }
 
-            setLoadingUserInfo(false);
+            const userId = profileId ?? String(currentUserId);
+            const isOwnProfile = userId === String(currentUserId);
+
+            const [user, teams] = await Promise.all([
+                loadUserInfo(userId),
+                isOwnProfile
+                    ? Promise.resolve<TeamDetails[]>([])
+                    : fetchUserTeams(userId),
+            ]);
+
+            if (requestId !== requestIdRef.current) {
+                return;
+            }
+
+            setProfile({
+                user,
+                teams,
+                isOwnProfile,
+            });
         } catch (error) {
-            // Il componente è stato smontato o è partita un'altra richiesta
             if (requestId !== requestIdRef.current) {
                 return;
             }
 
             const apiError = normalizeApiRequestError(error);
 
-            // Redirect già gestito
-            if (!(apiError.status === 401)) {
-                showAlert(
-                    "Impossibile caricare l’utente",
-                    apiError.message,
-                    () => void loadUserInfo(),
-                )
+            if (apiError.status !== 401) {
+                setError(apiError.message);
+            }
+        } finally {
+            if (requestId === requestIdRef.current) {
+                setIsLoading(false);
             }
         }
-    }, [userId]);
+    }, [profileId]);
 
-    useEffect(() => {
-        void loadUserInfo();
+    useFocusEffect(
+        useCallback(() => {
+            void loadProfile();
 
-        return () => {
-            requestIdRef.current++;
-        };
-    }, [loadUserInfo]);
+            return () => {
+                requestIdRef.current++;
+            };
+        }, [loadProfile]),
+    );
 
+    function onBack() {
+        if (router.canGoBack()) {
+            router.back();
+        } else {
+            router.replace("/(app)/home");
+        }
+    }
 
-    if (isLoadingUserInfo) {
+    function onMod() {
+        if (!profile?.isOwnProfile) {
+            return;
+        }
+
+        router.push({
+            pathname: "/profile/modify",
+        });
+    }
+
+    if (isLoading) {
         return <LoadingScreen message="Caricamento profilo..."/>;
     }
 
-    if (!userId) {
-        return <Redirect href="/(app)/home"/>;
+    if (error) {
+        return (
+            <ErrorScreen
+                title="Impossibile caricare il profilo"
+                message={error}
+                onRetry={loadProfile}
+                isRetrying={isLoading}
+            />
+        );
     }
 
+    if (!profile) {
+        return null;
+    }
 
-    return <ProfilePage userId={userId} isOwnProfile={isOwnProfile}/>
+    return (
+        <>
+            {profileId !== undefined && (
+                <BackButton onPress={onBack}/>
+            )}
+
+            {profile.isOwnProfile && (
+                <OptionsMenu onEdit={onMod}/>
+            )}
+
+            <ProfilePage
+                variant="profile"
+                user={profile.user}
+                userTeams={profile.teams}
+                isOwnProfile={profile.isOwnProfile}
+                onLogout={handleLogout}
+            />
+        </>
+    );
 }

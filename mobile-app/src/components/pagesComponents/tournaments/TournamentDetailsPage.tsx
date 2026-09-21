@@ -1,20 +1,21 @@
 import PageLayout from "@/src/components/common/PageLayout";
 import React, {useEffect, useState} from "react";
-import {fetchTeam, teamDetailsToTeamInfo, TeamInfo} from "@/src/services/teams/teamService";
+import {fetchTeam} from "@/src/services/teams/teamService";
 import {ScrollView, StyleSheet, Text, View} from "react-native";
 import {router, useLocalSearchParams} from "expo-router";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {loadCurrentUserId} from "@/src/services/users/authService";
 import CardListContainer from "@/src/components/common/carousel&cards/CardListContainer";
-import {loadUserInfo, UserEntity} from "@/src/services/users/userService";
-import AdminsCard from "@/src/components/pagesComponents/profile/cards/AdminsCard";
+import {loadUserInfo, UserInfo} from "@/src/services/users/userService";
+import AdminCard from "@/src/components/common/carousel&cards/AdminCard";
 import {TournamentDetails} from "@/src/services/tournaments/tournamentsDTO";
 import {loadTournamentDetails} from "@/src/services/tournaments/tournamentsService";
 import HeaderTournament from "@/src/components/pagesComponents/tournaments/HeaderTournament";
 import {colors} from "@/src/constants/theme";
-import TeamCardHorizontal from "@/src/components/pagesComponents/teams/cards/TeamCardHorizontal";
+import TeamCardHorizontal from "@/src/components/common/carousel&cards/TeamCardHorizontal";
 import CollapsableSection from "../../common/CollapsableSection";
+import {TeamDetails} from "@/src/services/teams/teamsConst";
 
 
 export default function TournamentDetailsPage() {
@@ -24,8 +25,8 @@ export default function TournamentDetailsPage() {
 
     const {tournamentId} = useLocalSearchParams<{ tournamentId: string }>();
     const [tournament, setTournament] = useState<TournamentDetails | null>(null);
-    const [tournamentTeams, setTournamentTeams] = useState<TeamInfo[]>([])
-    const [tournamentAdmins, setTournamentAdmins] = useState<UserEntity[]>([])
+    const [tournamentTeams, setTournamentTeams] = useState<TeamDetails[]>([])
+    const [tournamentAdmins, setTournamentAdmins] = useState<UserInfo[]>([])
     const [isCurrentUserTournamentAdmin, setIsCurrentUserTournamentAdmin] = useState<boolean>(false)
     const [isCurrentUserTournamentOwner, setIsCurrentUserTournamentOwner] = useState<boolean>(false)
 
@@ -56,19 +57,14 @@ export default function TournamentDetailsPage() {
 
                 const loadedTeams = await Promise.all(
                     loadedTournament.registeredTeamIds.map(async (id) => {
-                        const teamDetails = await fetchTeam(id);
-                        return teamDetailsToTeamInfo(teamDetails)
+                        return await fetchTeam(id);
+
                     })
                 );
 
                 const loadedAdmins = await Promise.all(
                     loadedTournament.adminsId.map(async (id) => {
-                        const userInfo =
-                            await loadUserInfo(id);
-                        return {
-                            id,
-                            userInfo,
-                        };
+                        return await loadUserInfo(id);
                     })
                 );
 
@@ -161,14 +157,14 @@ export default function TournamentDetailsPage() {
                                         id={team.id}
                                         name={team.name}
                                         imageUrl={team.imageUrl ?? undefined}
-                                        playersCount={team.numberOfPlayers}
+                                        playersCount={team.playerIds.length}
                                     />
                                 ))}
                                 emptyMsg={"Nessun admin del torneo"}
                                 isLoading={isLoading}
                                 error={error}
                                 orientation={"vertical"}
-                                />
+                            />
                         )}
                     </CollapsableSection>
 
@@ -178,7 +174,7 @@ export default function TournamentDetailsPage() {
                         {tournament && (
                             <CardListContainer
                                 items={tournamentAdmins.map((player) => (
-                                    <AdminsCard
+                                    <AdminCard
                                         key={player.id}
                                         admin={player}
                                         isOwner={
@@ -211,7 +207,6 @@ const styles = StyleSheet.create({
 
         paddingBottom: 30,
     },
-
 
 
     teamCarousel: {

@@ -1,6 +1,6 @@
 import {ActivityIndicator, Text, View} from "react-native";
 import AuthContent from "@/src/components/pagesComponents/auth/AuthContent";
-import PositionField from "@/src/components/pagesComponents/teams/createTeam/PositionField";
+import PositionField from "@/src/components/common/forms/components/FormPositionField";
 import OnBoardingContainer from "@/src/components/pagesComponents/auth/onboarding/OnBoardingContainer";
 import OnBoardingNavigationButtons from "@/src/components/pagesComponents/onBoarding/OnBoardingNavigationButtons";
 import {onboardingStepStyles as styles} from "@/src/components/pagesComponents/onBoarding/onboardingStepStyles"

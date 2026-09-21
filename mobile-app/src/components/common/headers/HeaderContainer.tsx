@@ -1,9 +1,9 @@
 import {ImageBackground, StyleSheet} from "react-native";
 import {ReactNode} from "react";
-import {type BKVariant, variants} from "@/src/constants/PaletteManager";
+import {type Variant, paletteVariants} from "@/src/constants/PaletteManager";
 
 type PageHeaderProps = {
-    variant: BKVariant;
+    variant: Variant;
     children: ReactNode;
 };
 
@@ -13,7 +13,7 @@ export default function HeaderContainer({
                                             children,
                                         }: PageHeaderProps) {
 
-    const config = variants[variant];
+    const config = paletteVariants[variant];
 
     return (
         <ImageBackground

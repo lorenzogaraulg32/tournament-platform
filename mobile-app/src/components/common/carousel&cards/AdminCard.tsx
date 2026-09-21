@@ -25,7 +25,7 @@ function isTabName(value: string): value is keyof typeof adminRoutes {
     return Object.prototype.hasOwnProperty.call(adminRoutes, value);
 }
 
-export default function AdminsCard({
+export default function AdminCard({
                                        admin,
                                        isOwner,
                                        modify
