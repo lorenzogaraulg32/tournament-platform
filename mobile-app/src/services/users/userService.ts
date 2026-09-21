@@ -1,6 +1,8 @@
 import {Gender, Sport, UserSportRole} from "@/src/services/users/userConstants";
 import {authenticatedFetch} from "@/src/services/fetchService";
 import {GeoLocation} from "@/src/services/common";
+import {SelectedImage} from "@/src/services/imagesService";
+import {File, Paths} from "expo-file-system";
 
 //Usato solo per la creazione utente non contiene logoUrl
 export type UserOnBoardingInfo = {
@@ -79,8 +81,45 @@ export async function loadUserInfo(
 }
 
 
-export async function modUser(userData: UserModInfo){
+export async function modUser(userData: UserModInfo, logo: SelectedImage | null,): Promise<UserInfo> {
+    const userFile = new File(
+        Paths.cache,
+        `profile-update-${Date.now()}.json`
+    );
 
+    try {
+        userFile.create({overwrite: true});
+        userFile.write(JSON.stringify(userData));
+
+        const formData = new FormData();
+
+        formData.append("user", userFile, userFile.name);
+
+        if (logo) {
+            const logoFile = new File(logo.uri);
+
+            formData.append(
+                "logo",
+                logoFile,
+                logo.fileName
+            );
+        }
+
+        const response = await authenticatedFetch(
+            `${API_URL}/users/me`,
+            {
+                method: "PATCH",
+                body: formData,
+            }
+        );
+
+        return await response.json() as UserInfo;
+
+    } finally {
+        if (userFile.exists) {
+            userFile.delete();
+        }
+    }
 }
 
 

@@ -33,7 +33,9 @@ public record PatchUserRequest(
         Set<UserSportRoleRequest> roles,
 
         @Valid
-        GeoLocationRequest location
+        GeoLocationRequest location,
+
+        String newPicUrl
 
 ) {
 }

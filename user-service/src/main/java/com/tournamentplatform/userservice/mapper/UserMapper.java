@@ -154,29 +154,37 @@ public final class UserMapper {
         }
 
         if (request.sports() != null) {
-            user.setSports(
-                    new HashSet<>(request.sports())
-            );
-        }
-
-        if (request.location() != null) {
-            user.setLocation(
-                    toGeoLocation(request.location())
-            );
+            user.getSports().clear();
+            user.getSports().addAll(request.sports());
         }
 
         if (request.roles() != null) {
+            // Rimuove soltanto i ruoli non più selezionati.
+            user.getRoles().removeIf(existingRole ->
+                    request.roles().stream().noneMatch(requestedRole ->
+                            requestedRole.sport() == existingRole.getSport()
+                                    && requestedRole.role() == existingRole.getRole()
+                    )
+            );
 
-            user.getRoles().clear();
+            // Aggiunge soltanto i nuovi ruoli.
+            for (UserSportRoleRequest requestedRole : request.roles()) {
+                boolean alreadyPresent = user.getRoles().stream()
+                        .anyMatch(existingRole ->
+                                existingRole.getSport() == requestedRole.sport()
+                                        && existingRole.getRole() == requestedRole.role()
+                        );
 
-            request.roles().forEach(roleRequest -> {
-
-                UserSportRole role =
-                        toUserSportRole(roleRequest, user);
-
-                user.getRoles().add(role);
-            });
+                if (!alreadyPresent) {
+                    user.getRoles().add(
+                            toUserSportRole(requestedRole, user)
+                    );
+                }
+            }
         }
+
+        user.setLocation(toGeoLocation(request.location()));
+
     }
 
 

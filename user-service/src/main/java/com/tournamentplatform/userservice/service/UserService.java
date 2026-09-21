@@ -57,21 +57,52 @@ public class UserService {
         return UserMapper.toResponse(user);
     }
 
-    //TODO: FIX QUANDO IMPLEMENTIAMO LA MODIFICA FRONTEND
     public UserResponse patchUser(
             String userId,
-            PatchUserRequest request
+            PatchUserRequest request,
+            MultipartFile logo
     ) {
-
-        if (userRepository.existsByUsername(request.username())) {
-            throw new IllegalArgumentException("Username già registrato");
-        }
-
         User user = getUserEntity(userId);
+
+
+        if (
+                request.username() != null
+                        && !request.username().equals(user.getUsername())
+                        && userRepository.existsByUsername(request.username())
+        ) {
+            throw new UsernameAlreadyRegisteredException();
+        }
 
         UserMapper.updateEntity(user, request);
 
+
+        System.out.println("Sport ricevuti: " + request.sports());
+        System.out.println("Ruoli ricevuti: " + request.roles());
+
+        System.out.println("Sport dopo mapping: " + user.getSports());
+
+        user.getRoles().forEach(role ->
+                System.out.println(
+                        "Ruolo dopo mapping: sport=" + role.getSport()
+                                + ", ruolo=" + role.getRole()
+                                + ", sport associato al ruolo=" + role.getRole().getSport()
+                )
+        );
+
         validateSportConfiguration(user);
+
+        if (logo != null && !logo.isEmpty()) {
+            String profilePicUrl =
+                    profilePictureStorageService.storeProfilePicture(
+                            userId,
+                            logo
+                    );
+
+            user.setProfilePicUrl(profilePicUrl);
+        } else if ("REMOVE".equals(request.newPicUrl())) {
+            profilePictureStorageService.deleteProfilePicture(userId);
+            user.setProfilePicUrl(null);
+        }
 
         User updatedUser = userRepository.save(user);
 
@@ -94,6 +125,13 @@ public class UserService {
     }
 
     private void validateSportConfiguration(User user) {
+        if (
+                user.getSports() == null || user.getSports().isEmpty()
+                        || user.getRoles() == null || user.getRoles().isEmpty()
+        ) {
+            throw new InvalidSportRoleConfigurationException();
+        }
+
         for (UserSportRole role : user.getRoles()) {
             if (!user.getSports().contains(role.getSport())) {
                 throw new InvalidSportRoleConfigurationException();

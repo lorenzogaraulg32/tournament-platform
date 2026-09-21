@@ -78,16 +78,19 @@ public class UserController {
     }
 
 
-    @PatchMapping("/me")
+    @PatchMapping(
+            value = "/me",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
     public ResponseEntity<UserResponse> patchUser(
             @AuthenticationPrincipal Jwt jwt,
-            @Valid @RequestBody PatchUserRequest request
+            @Valid @RequestPart("user") PatchUserRequest request,
+            @RequestPart(value = "logo", required = false) MultipartFile logo
     ) {
-
         String userId = jwt.getSubject();
 
         UserResponse response =
-                userService.patchUser(userId, request);
+                userService.patchUser(userId, request, logo);
 
         return ResponseEntity.ok(response);
     }
