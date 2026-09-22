@@ -18,7 +18,7 @@ export const onboardingStepStyles = StyleSheet.create({
 
     sectionLabel: {
         marginTop: 14,
-        marginBottom: 3,
+        marginBottom: 10,
         marginLeft: 10,
         fontSize: 16,
         lineHeight: 20,

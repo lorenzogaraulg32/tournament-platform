@@ -46,7 +46,7 @@ export default function UsernameAndLogoStep({
                         />
 
                         <FormImageField
-                            variant="profile"
+                            variant="onBoarding"
                             label="Foto profilo"
                             placeholderIcon="person-outline"
                             optional

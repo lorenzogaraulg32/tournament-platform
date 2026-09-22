@@ -327,6 +327,7 @@ export default function OnBoarding() {
             case 4:
                 return (
                     <SportsAndRolesStep
+                        variant={"onBoarding"}
                         sports={userData.sports}
                         roles={userData.roles}
                         errorMessage={fieldErrors.sports}

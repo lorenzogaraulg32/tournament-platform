@@ -27,27 +27,49 @@ export default function FormSelectionButton({
             style={[
                 styles.button,
                 {
-                    backgroundColor: selected
-                        ? palette.defaultColorBK
-                        : "#FFFFFF",
+                    backgroundColor:
+                        variant === "onBoarding"
+                            ? selected
+                                ? "#FFFFFF"
+                                : palette.defaultColorBK
+                            : selected
+                                ? palette.defaultColorBK
+                                : "#FFFFFF",
+
                     borderColor: selected
                         ? palette.defaultColor
                         : palette.borderColor,
                 },
             ]}
         >
-            <Text
-                style={[
-                    styles.label,
-                    {
-                        color: selected
-                            ? palette.defaultColor
-                            : palette.labelColor,
-                    },
-                ]}
-            >
-                {label}
-            </Text>
+            {variant === "onBoarding" ? (
+                    <Text
+                        style={[
+                            styles.label,
+                            {
+                                color: selected
+                                    ? "#000"
+                                    : "#fff",
+                            },
+                        ]}
+                    >
+                        {label}
+                    </Text>)
+                : (
+                    <Text
+                        style={[
+                            styles.label,
+                            {
+                                color: selected
+                                    ? palette.defaultColor
+                                    : palette.labelColor,
+                            },
+                        ]}
+                    >
+                        {label}
+                    </Text>)}
+
+
         </Pressable>
     );
 }

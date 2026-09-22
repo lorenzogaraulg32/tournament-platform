@@ -16,6 +16,9 @@ export const colors = {
     redBorder: "rgba(198, 40, 40, 0.35)",
     redDefaultBK: "#FDECEC",
 
+    onBoardingDefault:"#fff",
+    onBoardingBK: "rgba(255,255,255,0.30)",
+    onBoardingBorder: "rgba(255,255,255,0.35)",
 
     grayBK: "#F0F3F1",
 

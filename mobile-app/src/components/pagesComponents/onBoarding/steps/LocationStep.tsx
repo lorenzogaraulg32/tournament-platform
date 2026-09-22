@@ -32,7 +32,7 @@ export default function LocationStep({
             content={
                 <AuthContent style={styles.inputFieldsContainer}>
                     <PositionField
-                        variant="profile"
+                        variant="onBoarding"
                         value={location}
                         onChange={onLocationChange}
                         errorMessage={errorMessage}

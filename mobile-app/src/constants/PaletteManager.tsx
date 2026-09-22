@@ -1,7 +1,7 @@
 import type {ImageSourcePropType, TextStyle} from "react-native";
 import {colors, fonts} from "./theme";
 
-export type Variant = "home" | "teams" | "tournaments" | "profile";
+export type Variant = "home" | "teams" | "tournaments" | "profile" | "onBoarding";
 
 export type StandardPalette = {
     labelFontSize: number;
@@ -58,7 +58,21 @@ export const ProfilePalette: VariantPalette = {
     defaultColorBK: colors.redDefaultBK,
 };
 
+export const OnBoardingPalette: VariantPalette = {
+    ...standardPalette,
+    labelColor: colors.onBoardingDefault,
+    borderColor: colors.onBoardingBorder,
+    defaultColor: colors.onBoardingDefault,
+    defaultColorBK: colors.onBoardingBK,
+};
+
 export const paletteVariants: Record<Variant, VariantConfig> = {
+    onBoarding: {
+        background: require("../../assets/images/backgrounds/greenBackground.png"),
+        placeholder: require("../../assets/images/placeholders/logoPlaceholder.png"),
+        palette: OnBoardingPalette,
+    },
+
     home: {
         background: require("../../assets/images/backgrounds/greenBackground.png"),
         placeholder: require("../../assets/images/placeholders/logoPlaceholder.png"),

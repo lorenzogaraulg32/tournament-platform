@@ -1,6 +1,14 @@
-import {StyleSheet, Text, TextInput, TextInputProps, View} from "react-native";
+import {
+    Pressable,
+    StyleSheet,
+    Text,
+    TextInput,
+    TextInputProps,
+    View
+} from "react-native";
 import {colors} from "@/src/constants/theme";
 import {useState} from "react";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 
 type AuthTextFieldProps = TextInputProps & {
@@ -15,35 +23,73 @@ export default function AuthTextField({
                                           style,
                                           onFocus,
                                           onBlur,
+                                          secureTextEntry,
                                           ...props
                                       }: AuthTextFieldProps) {
 
     const [isFocus, setFocus] = useState(false);
+    const [isPasswordVisible, setPasswordVisible] = useState(false);
 
     const isError = Boolean(errorMessage);
+    const isPasswordField = Boolean(secureTextEntry);
 
     return (
-        <View style={[styles.fieldsContainer]}>
+        <View style={styles.fieldsContainer}>
 
             <Text style={styles.label}>{label}</Text>
 
-            <TextInput
-                placeholderTextColor={"rgba(255,255,255,0.50)"}
-                selectionColor={colors.orangeDefault}
-                onFocus={() => setFocus(true)}
-                onBlur={() => setFocus(false)}
-                style={[
-                    styles.fieldInput,
-                    isFocus && styles.fieldInputFocused,
-                    isError && styles.fieldInputError,
-                    style
-                ]}
-                {...props}
-            />
+            <View style={styles.inputContainer}>
+                <TextInput
+                    placeholderTextColor="rgba(255,255,255,0.50)"
+                    selectionColor={colors.orangeDefault}
+                    onFocus={(event) => {
+                        setFocus(true);
+                        onFocus?.(event);
+                    }}
+                    onBlur={(event) => {
+                        setFocus(false);
+                        onBlur?.(event);
+                    }}
+                    secureTextEntry={
+                        isPasswordField && !isPasswordVisible
+                    }
+                    style={[
+                        styles.fieldInput,
+                        isPasswordField && styles.passwordInput,
+                        isFocus && styles.fieldInputFocused,
+                        isError && styles.fieldInputError,
+                        style,
+                    ]}
+                    {...props}
+                />
+
+                {isPasswordField && (
+                    <Pressable
+                        style={styles.passwordToggle}
+                        onPress={() =>
+                            setPasswordVisible((previous) => !previous)
+                        }
+                        hitSlop={10}
+                    >
+                        <Ionicons
+                            name={
+                                isPasswordVisible
+                                    ? "eye-off-outline"
+                                    : "eye-outline"
+                            }
+                            size={22}
+                            color="rgba(255,255,255,0.75)"
+                        />
+                    </Pressable>
+                )}
+            </View>
 
             {errorMessage ? (
-                <Text style={styles.errorLabel}>{errorMessage}</Text>
+                <Text style={styles.errorLabel}>
+                    {errorMessage}
+                </Text>
             ) : null}
+
         </View>
     );
 }
@@ -66,6 +112,10 @@ const styles = StyleSheet.create({
         textAlign: "left"
     },
 
+    inputContainer: {
+        position: "relative",
+        width: "100%",
+    },
 
     errorLabel: {
         marginTop: 6,
@@ -82,12 +132,25 @@ const styles = StyleSheet.create({
         height: 58,
         borderRadius: 18,
         paddingHorizontal: 18,
-        backgroundColor:  "rgba(255,255,255,0.30)",
+        backgroundColor: "rgba(255,255,255,0.30)",
         borderWidth: 1.5,
         borderColor: "rgba(255,255,255,0.35)",
         color: "#ffffff",
         fontSize: 17,
         fontWeight: "500",
+    },
+
+    passwordInput: {
+        paddingRight: 52,
+    },
+
+    passwordToggle: {
+        position: "absolute",
+        right: 18,
+        top: 0,
+        bottom: 0,
+        justifyContent: "center",
+        alignItems: "center",
     },
 
     fieldInputFocused: {
@@ -98,4 +161,4 @@ const styles = StyleSheet.create({
     fieldInputError: {
         borderColor: colors.error,
     },
-})
+});
