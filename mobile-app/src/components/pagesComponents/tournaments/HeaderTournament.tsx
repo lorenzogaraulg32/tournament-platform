@@ -94,7 +94,7 @@ export default function HeaderTournament({
                 <View style={styles.container}>
                     <View style={styles.imageContainer}>
                         <Picture
-                            variant={"tournament"}
+                            variant={"tournaments"}
                             logoUrl={tournament.logoUrl}
                             style={styles.logo}
                         />

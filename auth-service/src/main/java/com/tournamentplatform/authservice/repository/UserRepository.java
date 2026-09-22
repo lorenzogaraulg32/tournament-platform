@@ -1,5 +1,6 @@
-package com.tournamentplatform.authservice.user;
+package com.tournamentplatform.authservice.repository;
 
+import com.tournamentplatform.authservice.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

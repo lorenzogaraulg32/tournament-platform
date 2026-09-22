@@ -36,7 +36,7 @@ public enum TeamErrorCode implements ErrorCode {
 
     OWNER_REMOVAL(
             "TEAM_OWNER_REMOVAL",
-            "L'utente non fa parte della squadra"
+            "Impossibile rimuovere il proprietario della squadra"
     ),
 
     TEAM_INVALID_PIC(

@@ -49,7 +49,6 @@ public class TeamPlayersController {
     }
 
 
-
     @DeleteMapping("/{teamId}/players/{userId}")
     public ResponseEntity<String> removePlayer(
             @PathVariable String teamId,
@@ -59,6 +58,16 @@ public class TeamPlayersController {
         return ResponseEntity.ok(response);
     }
 
+
+    @DeleteMapping("/internal/users/{userId}")
+    public ResponseEntity<Void> removeUserFromTeams(
+            @PathVariable String userId
+    ) {
+
+        teamPlayerService.removeUserFromTeams(userId);
+
+        return ResponseEntity.noContent().build();
+    }
 
 
 }

@@ -5,6 +5,7 @@ import com.tournamentplatform.userservice.dto.PatchUserRequest;
 import com.tournamentplatform.userservice.dto.UserResponse;
 import com.tournamentplatform.userservice.entity.User;
 import com.tournamentplatform.userservice.entity.utils.UserSportRole;
+import com.tournamentplatform.userservice.exceptions.teamServiceException.OwnerRemovalException;
 import com.tournamentplatform.userservice.exceptions.userExceptions.InvalidSportRoleConfigurationException;
 import com.tournamentplatform.userservice.exceptions.userExceptions.UserAlreadyExistException;
 import com.tournamentplatform.userservice.exceptions.userExceptions.UserNotFoundException;
@@ -19,13 +20,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
     private final ProfilePictureStorageService profilePictureStorageService;
+    private final UserDeletionService userDeletionService;
+    private final UserDeletionSagaService userDeletionSagaService;
+
 
     //Username deve essere richiesto alla fine
+    @Transactional
     public UserResponse createUser(
             String userId,
             CreateUserRequest request
@@ -57,6 +61,7 @@ public class UserService {
         return UserMapper.toResponse(user);
     }
 
+    @Transactional
     public UserResponse patchUser(
             String userId,
             PatchUserRequest request,
@@ -109,16 +114,42 @@ public class UserService {
         return UserMapper.toResponse(updatedUser);
     }
 
-
     public void deleteUser(String userId) {
 
-        User user = getUserEntity(userId);
+        userDeletionService.markAsDeleting(userId);
 
-        userRepository.delete(user);
+        try {
 
-        profilePictureStorageService.deleteProfilePicture(userId);
+            userDeletionSagaService.completeDeletion(userId);
+
+        } catch (OwnerRemovalException exception) {
+
+            userDeletionSagaService.cancelDeletion(userId);
+
+            throw exception;
+
+        } catch (Exception exception) {
+
+            System.out.println(
+                    "Deletion saga incomplete for user "
+                            + userId
+                            + ". Recovery scheduler will retry"
+            );
+        }
     }
 
+    @Transactional
+    public void uploadProfilePicture(String userId, MultipartFile file) {
+        User user = getUserEntity(userId);
+
+        String profilePicUrl =
+                profilePictureStorageService
+                        .storeProfilePicture(userId, file);
+
+        user.setProfilePicUrl(profilePicUrl);
+
+        userRepository.save(user);
+    }
 
     private User getUserEntity(String userId) {
         return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
@@ -151,20 +182,10 @@ public class UserService {
         }
     }
 
-    public void uploadProfilePicture(String userId, MultipartFile file) {
-        User user = getUserEntity(userId);
-
-        String profilePicUrl =
-                profilePictureStorageService
-                        .storeProfilePicture(userId, file);
-
-        user.setProfilePicUrl(profilePicUrl);
-
-        userRepository.save(user);
-    }
-
     public Resource getProfilePictureByFilename(String filename) {
         return profilePictureStorageService
                 .loadProfilePicture(filename);
     }
+
+
 }

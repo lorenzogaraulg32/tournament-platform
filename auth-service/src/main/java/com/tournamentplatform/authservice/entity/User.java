@@ -1,4 +1,4 @@
-package com.tournamentplatform.authservice.user;
+package com.tournamentplatform.authservice.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

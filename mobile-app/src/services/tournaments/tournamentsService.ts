@@ -1,6 +1,7 @@
 import {TournamentDetails, UserTournamentsResponse} from "@/src/services/tournaments/tournamentsDTO";
 import {authenticatedFetch} from "@/src/services/fetchService";
-import {getCurrentUserTeams} from "@/src/services/teams/teamService";
+import {fetchUserTeams} from "@/src/services/teams/teamService";
+import {loadCurrentUserId} from "@/src/services/users/authService";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -22,11 +23,9 @@ export async function refreshCodeTournament(
 }
 
 
-
-
 export async function getCurrentUserTournaments(): Promise<UserTournamentsResponse> {
 
-    const myTeams = await getCurrentUserTeams();
+    const myTeams = await fetchUserTeams(await loadCurrentUserId());
 
     const queryParams = new URLSearchParams();
 

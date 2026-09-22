@@ -1,6 +1,6 @@
 package com.tournamentplatform.authservice.dto;
 
-import com.tournamentplatform.authservice.user.GlobalRole;
+import com.tournamentplatform.authservice.entity.GlobalRole;
 
 public record UserResponse (
         Long id,

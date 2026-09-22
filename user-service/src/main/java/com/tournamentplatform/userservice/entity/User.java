@@ -1,9 +1,6 @@
 package com.tournamentplatform.userservice.entity;
 
-import com.tournamentplatform.userservice.entity.utils.Gender;
-import com.tournamentplatform.userservice.entity.utils.GeoLocation;
-import com.tournamentplatform.userservice.entity.utils.Sport;
-import com.tournamentplatform.userservice.entity.utils.UserSportRole;
+import com.tournamentplatform.userservice.entity.utils.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -83,4 +80,14 @@ public class User {
     @Column(name = "profile_pic_url")
     private String profilePicUrl;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private DeletingStatus deletingStatus;
+
+    @PrePersist
+    private void prePersist() {
+        if (deletingStatus == null) {
+            deletingStatus = DeletingStatus.ACTIVE;
+        }
+    }
 }

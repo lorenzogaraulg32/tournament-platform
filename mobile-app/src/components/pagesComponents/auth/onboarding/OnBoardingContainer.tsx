@@ -34,7 +34,7 @@ export default function OnBoardingContainer({label, content, step}: OnBoardingPr
                 >
                     <View style={styles.labelContainer}>
                         <Text style={styles.label}>{label}</Text>
-                        <FormProgressBar step={step} totalSteps={5}/>
+                        <FormProgressBar step={step} totalSteps={5} variant={"teams"}/>
                     </View>
                     <ScrollView
                         contentContainerStyle={styles.scrollContent}

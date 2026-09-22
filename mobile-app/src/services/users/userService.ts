@@ -1,4 +1,4 @@
-import {Gender, Sport, UserSportRole} from "@/src/services/users/userConstants";
+import {DeletingStatus, Gender, Sport, UserSportRole} from "@/src/services/users/userConstants";
 import {authenticatedFetch} from "@/src/services/fetchService";
 import {GeoLocation} from "@/src/services/common";
 import {SelectedImage} from "@/src/services/imagesService";
@@ -39,6 +39,7 @@ export type UserInfo = {
     roles: UserSportRole[];
     location: GeoLocation | null;
     profilePicUrl?: string,
+    deletingStatus: DeletingStatus
 };
 
 
@@ -76,6 +77,7 @@ export async function loadUserInfo(
             },
         }
     );
+
 
     return await response.json() as UserInfo;
 }
@@ -120,6 +122,24 @@ export async function modUser(userData: UserModInfo, logo: SelectedImage | null,
             userFile.delete();
         }
     }
+}
+
+//saga:
+//L'utente viene flaggato come deleting
+//viene mandata una richiesta dallo user service ad auth service
+//viene eliminato l'utente da AuthService
+//viene eliminato l'utente da UserService
+export async function deleteUser() {
+
+    await authenticatedFetch(
+        `${API_URL}/users/me`,
+        {
+            method: "DELETE",
+            headers: {
+                Accept: "application/json",
+            },
+        }
+    );
 }
 
 

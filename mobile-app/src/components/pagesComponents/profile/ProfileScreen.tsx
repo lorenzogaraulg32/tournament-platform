@@ -113,6 +113,17 @@ export default function ProfileScreen() {
         });
     }
 
+    function onDelete() {
+        if (!profile?.isOwnProfile) {
+            return;
+        }
+
+        router.push({
+            pathname: "/profile/delete",
+        });
+    }
+
+
     if (isLoading) {
         return <LoadingScreen message="Caricamento profilo..."/>;
     }
@@ -139,7 +150,9 @@ export default function ProfileScreen() {
             )}
 
             {profile.isOwnProfile && (
-                <OptionsMenu onEdit={onMod}/>
+                <OptionsMenu
+                    onEdit={onMod}
+                    onDelete={onDelete}/>
             )}
 
             <ProfilePage

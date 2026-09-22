@@ -27,9 +27,11 @@ public class SecurityConfig {
 
 
                 .authorizeExchange(auth -> auth
-                        .pathMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .pathMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                        .pathMatchers("/auth/internal/**").denyAll()
+                        .pathMatchers("/teams/internal/**").denyAll()
+                        .pathMatchers(HttpMethod.POST, "/auth/**").permitAll()
                         .pathMatchers("/actuator/health").permitAll()
+
 
                         /*  ESEMPIO DI COME VENGONO POI APPLICATE LE AUTORIZZAZIONI
 

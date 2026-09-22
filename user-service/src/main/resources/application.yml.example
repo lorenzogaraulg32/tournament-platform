@@ -37,3 +37,13 @@ management:
     web:
       exposure:
         include: health,info
+
+internal:
+  auth-service:
+    token: "Auth-Service-Secret"
+  team-service:
+    token: "Team-Service-Secret"
+
+saga:
+  user-deletion:
+    recovery-delay-ms: 60000

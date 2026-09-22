@@ -8,7 +8,9 @@ import com.tournamentplatform.teamservice.errorHandling.teamsExceptions.TeamNotF
 import com.tournamentplatform.teamservice.mapper.TeamMapper;
 import com.tournamentplatform.teamservice.repository.TeamsRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -52,7 +54,7 @@ public class TeamPlayerService {
 
         Team savedTeam = teamsRepository.save(team);
 
-        return  mapper.toTeamResponse(savedTeam);
+        return mapper.toTeamResponse(savedTeam);
     }
 
     public String removePlayerFromTeam(String teamId, String playerId) {
@@ -93,7 +95,7 @@ public class TeamPlayerService {
 
         Team team = servicesHelper.getTeamEntityOrThrow(teamId);
 
-        if (teamAuthorizationHelper.checkTeamCreator(team)) {
+        if (teamAuthorizationHelper.isTeamCreator(team, currentUserId)) {
             throw new OwnerRemovalExcpetion();
         }
 
@@ -110,4 +112,22 @@ public class TeamPlayerService {
         return "Squadra abbandonata";
 
     }
+
+    @Transactional
+    public void removeUserFromTeams(String userId) {
+
+        if (teamsRepository.existsByCreatorId(userId)) {
+            throw new OwnerRemovalExcpetion();
+        }
+
+        List<Team> teams = teamsRepository.findAllByPlayerIds(userId);
+
+        for (Team team : teams) {
+            team.getAdminIds().remove(userId);
+            team.getPlayerIds().remove(userId);
+        }
+
+        teamsRepository.saveAll(teams);
+    }
+
 }
