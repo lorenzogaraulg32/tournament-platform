@@ -79,24 +79,27 @@ export default function LoginPage() {
         setApiError("");
         setFieldErrors({});
 
-        /*
-                if (!validateLoginForm()) {
-                    return
-                }
-        */
+
+        if (!validateLoginForm()) {
+            return
+        }
+
         try {
             setIsLoading(true);
-            /*
-                        const response = await loginUser({
-                            email: email.trim().toLowerCase(),
-                            password
-                        });
-            */
 
+            const response = await loginUser({
+                email: email.trim().toLowerCase(),
+                password
+            });
+
+
+            /*
             const response = await loginUser({
                 email: "lorenzo.garau.lg32@gmail.com",
                 password: "Lombax99"
             });
+            */
+
 
             console.log("Token: " + response.accessToken)
 

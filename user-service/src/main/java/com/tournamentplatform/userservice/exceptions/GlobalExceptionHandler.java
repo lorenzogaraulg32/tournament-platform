@@ -5,6 +5,7 @@ import com.tournamentplatform.userservice.exceptions.imageExceptions.InvalidProf
 import com.tournamentplatform.userservice.exceptions.imageExceptions.ProfilePictureNotFoundException;
 import com.tournamentplatform.userservice.exceptions.imageExceptions.ProfilePictureStorageException;
 import com.tournamentplatform.userservice.exceptions.imageExceptions.ProfilePictureTooLargeException;
+import com.tournamentplatform.userservice.exceptions.teamServiceException.OwnerRemovalException;
 import com.tournamentplatform.userservice.exceptions.userExceptions.InvalidSportRoleConfigurationException;
 import com.tournamentplatform.userservice.exceptions.userExceptions.UserAlreadyExistException;
 import com.tournamentplatform.userservice.exceptions.userExceptions.UserNotFoundException;
@@ -194,6 +195,19 @@ public class GlobalExceptionHandler {
     ) {
         return buildResponse(
                 HttpStatus.BAD_REQUEST,
+                exception,
+                request
+        );
+    }
+
+
+    @ExceptionHandler(OwnerRemovalException.class)
+    public ResponseEntity<ApiErrorResponse> handleOwnerRemoval(
+            OwnerRemovalException exception,
+            HttpServletRequest request
+    ) {
+        return buildResponse(
+                HttpStatus.FORBIDDEN,
                 exception,
                 request
         );

@@ -5,12 +5,13 @@ import com.tournamentplatform.authservice.exception.EmailAlreadyRegisteredExcept
 import com.tournamentplatform.authservice.exception.InvalidCredentialsException;
 import com.tournamentplatform.authservice.exception.UserDisabledException;
 import com.tournamentplatform.authservice.exception.UserNotFoundException;
-import com.tournamentplatform.authservice.user.User;
-import com.tournamentplatform.authservice.user.UserRepository;
+import com.tournamentplatform.authservice.entity.User;
+import com.tournamentplatform.authservice.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import static com.tournamentplatform.authservice.user.GlobalRole.ROLE_USER;
+import static com.tournamentplatform.authservice.entity.GlobalRole.ROLE_USER;
 
 @Service
 public class AuthService {
@@ -73,6 +74,17 @@ public class AuthService {
                 user.isEnabled(),
                 user.getGlobalRole()
         );
+    }
+
+
+    @Transactional
+    public void deleteUser(String userId) {
+
+        if (!userRepository.existsById(Long.valueOf(userId))) {
+            return;
+        }
+
+        userRepository.deleteById(Long.valueOf(userId));
     }
 
 

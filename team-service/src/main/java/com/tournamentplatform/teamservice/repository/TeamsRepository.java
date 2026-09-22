@@ -25,6 +25,8 @@ public interface TeamsRepository extends JpaRepository<Team, Long> {
 
     boolean existsByInvitationCode(String invitationCode);
 
+    boolean existsByCreatorId(String creatorId);
+
     Optional<Team> findByInvitationCode(String invitationCode);
 
     boolean existsByName(String name);

@@ -3,8 +3,8 @@ package com.tournamentplatform.authservice;
 import com.tournamentplatform.authservice.dto.*;
 import com.tournamentplatform.authservice.service.AuthService;
 import com.tournamentplatform.authservice.service.JwtService;
-import com.tournamentplatform.authservice.user.User;
-import com.tournamentplatform.authservice.user.UserRepository;
+import com.tournamentplatform.authservice.entity.User;
+import com.tournamentplatform.authservice.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,9 +12,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.security.auth.login.LoginException;
 import java.util.Optional;
 
-import static com.tournamentplatform.authservice.user.GlobalRole.ROLE_USER;
+import static com.tournamentplatform.authservice.entity.GlobalRole.ROLE_USER;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 

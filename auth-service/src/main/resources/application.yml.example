@@ -23,3 +23,8 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
+
+
+internal:
+  service:
+    token: "un-secret-lungo-e-casuale"

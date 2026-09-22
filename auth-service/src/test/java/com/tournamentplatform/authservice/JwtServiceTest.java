@@ -1,7 +1,7 @@
 package com.tournamentplatform.authservice;
 
 import com.tournamentplatform.authservice.service.JwtService;
-import com.tournamentplatform.authservice.user.User;
+import com.tournamentplatform.authservice.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.test.context.ActiveProfiles;
 
-import static com.tournamentplatform.authservice.user.GlobalRole.ROLE_USER;
+import static com.tournamentplatform.authservice.entity.GlobalRole.ROLE_USER;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest

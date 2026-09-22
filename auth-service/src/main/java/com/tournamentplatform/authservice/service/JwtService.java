@@ -1,6 +1,6 @@
 package com.tournamentplatform.authservice.service;
 
-import com.tournamentplatform.authservice.user.User;
+import com.tournamentplatform.authservice.entity.User;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;

@@ -44,6 +44,10 @@ public class TeamAuthorizationHelper {
         return true;
     }
 
+    public boolean isTeamCreator(Team team, String userId) {
+        return String.valueOf(team.getCreatorId()).equals(userId);
+    }
+
     public String getCurrentUserId() {
         return currentUserProvider.getCurrentUserId();
     }

@@ -1,4 +1,4 @@
-package com.tournamentplatform.authservice.user;
+package com.tournamentplatform.authservice.entity;
 
 public enum GlobalRole {
     ROLE_ADMIN,

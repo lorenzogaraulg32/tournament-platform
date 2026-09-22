@@ -70,8 +70,6 @@ export default function TeamPage({
                 return;
             }
 
-            console.log("ID giocatori:", loadedPlayers.map(player => player.id));
-            console.log("ID amministratori:", loadedAdmins.map(admin => admin.id));
 
             setTeamPlayers(loadedPlayers);
             setTeamAdmins(loadedAdmins);

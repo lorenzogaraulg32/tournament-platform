@@ -42,6 +42,12 @@ public enum UserErrorCode implements ErrorCode {
     USER_PIC_IO_ERROR(
             "USER_PIC_IO_ERROR",
             "Errore nello storage della foto profilo"
+    ),
+
+
+    OWNER_REMOVAL(
+            "TEAM_OWNER_REMOVAL",
+            "Impossibile rimuovere il proprietario della squadra"
     );
 
 

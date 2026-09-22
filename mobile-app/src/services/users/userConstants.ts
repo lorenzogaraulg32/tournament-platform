@@ -1,4 +1,10 @@
-import { UserInfo } from "./userService";
+import {UserInfo} from "./userService";
+
+export enum DeletingStatus {
+    ACTIVE = "ACTIVE",
+    DELETING = "DELETING"
+}
+
 
 export enum Sport {
     FOOTBALL = "FOOTBALL",
