@@ -65,6 +65,7 @@ export default function AdminCard({
             style={styles.card}
             onPress={handlePress}
             modify={modify ? modify : undefined}
+            showArrow
         >
             <View style={styles.content}>
                 <Text
