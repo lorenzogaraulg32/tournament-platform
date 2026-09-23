@@ -3,15 +3,15 @@ import {UserInfo} from "@/src/services/users/userService";
 import {getRoleBySport, ROLE_LABELS, Sport} from "@/src/services/users/userConstants";
 import {router, useSegments} from "expo-router";
 
-import HorizontalCardContainer, {
-    roleCardPalettes
-} from "@/src/components/common/carousel&cards/HorizontalCardContainer";
+import HorizontalCardContainer from "@/src/components/common/carousel&cards/HorizontalCardContainer";
+import {roleCardPalettes} from "@/src/constants/CardPalettesManager";
 
 
 type PlayerCardProps = {
     player: UserInfo
     sport: Sport
     modify?: () => void
+    onClick?: () => void
 }
 
 const playerRoutes = {
@@ -25,10 +25,11 @@ function isTabName(value: string): value is keyof typeof playerRoutes {
 }
 
 export default function PlayerCard({
-                                        player,
-                                        sport,
-                                        modify
-                                    }: PlayerCardProps
+                                       player,
+                                       sport,
+                                       modify,
+                                       onClick,
+                                   }: PlayerCardProps
 ) {
 
 
@@ -39,6 +40,10 @@ export default function PlayerCard({
 
 
     function handlePress() {
+        if (onClick) {
+            onClick()
+            return;
+        }
 
         if (modify) {
             modify();
@@ -67,6 +72,7 @@ export default function PlayerCard({
             style={styles.card}
             onPress={handlePress}
             modify={modify ? modify : undefined}
+            showArrow={!onClick}
         >
             <View style={styles.content}>
                 <Text

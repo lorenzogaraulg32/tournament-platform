@@ -6,8 +6,8 @@ import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import HeaderEntity from "@/src/components/common/headers/HeaderEntity";
 import CollapsableSection from "@/src/components/common/CollapsableSection";
 import CardListContainer from "@/src/components/common/carousel&cards/CardListContainer";
-import PlayerCard from "@/src/components/common/carousel&cards/PlayerCard";
-import AdminCard from "@/src/components/common/carousel&cards/AdminCard";
+import PlayerCard from "@/src/components/common/carousel&cards/userCards/PlayerCard";
+import AdminCard from "@/src/components/common/carousel&cards/userCards/AdminCard";
 import {colors} from "@/src/constants/theme";
 import {TeamDetails} from "@/src/services/teams/teamsConst";
 import {loadUserInfo, UserInfo} from "@/src/services/users/userService";
@@ -16,6 +16,7 @@ import {normalizeApiRequestError} from "@/src/services/errorService";
 import {removeTeamAdmin, removeTeamPlayer} from "@/src/services/teams/teamService";
 import showAlert from "@/src/components/common/errors/Alert";
 import {useToast} from "@/src/components/common/Toast/ToastProvider";
+import FieldLineup from "@/src/components/pagesComponents/teams/Fields/FieldLineup";
 
 
 type TeamPageProps = {
@@ -251,7 +252,8 @@ export default function TeamPage({
         >
 
 
-            <ScrollView style={styles.scroll}>
+            <ScrollView style={styles.scroll}
+                        showsVerticalScrollIndicator={false}>
                 <View style={styles.scrollContent}>
 
                     {team?.description ? (
@@ -267,6 +269,10 @@ export default function TeamPage({
                     ) : (
                         <View></View>
                     )}
+
+                    <View style={styles.fieldContainer}>
+                        <FieldLineup key={team.sport} sport={team.sport} players={teamPlayers ?? []}/>
+                    </View>
 
                     <CollapsableSection
                         label="Players"
@@ -354,6 +360,8 @@ export default function TeamPage({
                             );
                         }}
                     </CollapsableSection>
+
+
                 </View>
             </ScrollView>
         </PageLayout>
@@ -370,7 +378,7 @@ const styles = StyleSheet.create({
 
     scrollContent: {
         gap: 20,
-
+        flex: 1,
     },
 
 
@@ -397,6 +405,10 @@ const styles = StyleSheet.create({
         fontWeight: "400",
         color: "#3F3F46",
     },
+
+    fieldContainer: {
+        marginBottom: 20,
+    }
 
 
 });

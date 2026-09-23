@@ -1,5 +1,5 @@
 import {ScrollView, StyleSheet, View} from "react-native";
-import TeamCardHorizontal from "@/src/components/common/carousel&cards/TeamCardHorizontal";
+import TeamCardHorizontal from "@/src/components/common/carousel&cards/teamCards/TeamCardHorizontal";
 import {useCallback, useRef, useState} from "react";
 import {router, useFocusEffect} from "expo-router";
 import {normalizeApiRequestError} from "@/src/services/errorService";

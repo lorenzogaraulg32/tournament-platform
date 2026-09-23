@@ -1,7 +1,7 @@
 import {Pressable, StyleSheet, Text, View} from "react-native";
 import {router, useSegments} from "expo-router";
 import Picture from "@/src/components/common/images/Picture";
-import {teamCardColors} from "@/src/constants/cardPalettes";
+import {teamCardColors} from "@/src/constants/CardPalettesManager";
 import {TeamDetails} from "@/src/services/teams/teamsConst";
 
 type TeamCardVerticalProps = {

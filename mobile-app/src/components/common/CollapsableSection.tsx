@@ -1,9 +1,9 @@
-import {Modal, Pressable, ScrollView, StyleSheet, View} from "react-native";
+import {Pressable, ScrollView, StyleSheet, View} from "react-native";
 import {ReactNode, useState} from "react";
 import InfoLabel from "@/src/components/common/labels/InfoLabel";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {colors} from "@/src/constants/theme";
-import {SafeAreaView} from "react-native-safe-area-context";
+import FullPageModal from "@/src/components/common/FullPageModal";
 
 type CollapsableSectionProps = {
     label: string,
@@ -92,71 +92,37 @@ export default function CollapsableSection({
                 )}
             </ScrollView>
 
-            <Modal
+            <FullPageModal
                 visible={isFullPageVisible}
-                animationType="slide"
-                presentationStyle="fullScreen"
-                onRequestClose={closeFullPage}
+                onClose={closeFullPage}
+                label={label}
+                iconName={iconName}
+                headerAction={
+                    canMod ? (
+                        <Pressable
+                            onPress={() => setMod((previous) => !previous)}
+                            accessibilityRole="button"
+                            accessibilityLabel={
+                                isMod ? "Termina modifica" : "Modifica elenco"
+                            }
+                            accessibilityState={{selected: isMod}}
+                            hitSlop={8}
+                            style={({pressed}) => [
+                                styles.modButton,
+                                pressed && {opacity: 0.65},
+                            ]}
+                        >
+                            <Ionicons
+                                name={isMod ? "checkmark-outline" : "create-outline"}
+                                size={22}
+                                color={colors.error}
+                            />
+                        </Pressable>
+                    ) : null
+                }
             >
-                <SafeAreaView style={styles.fullPage}>
-                    <View style={styles.fullPageHeader}>
-                        <View style={styles.iconAndTitle}>
-                            <Pressable
-                                onPress={closeFullPage}
-                                accessibilityRole="button"
-                                accessibilityLabel="Chiudi vista completa"
-                                hitSlop={8}
-                                style={({pressed}) => [
-                                    styles.iconButton,
-                                    pressed && {opacity: 0.65},
-                                ]}
-                            >
-                                <Ionicons
-                                    name="chevron-back"
-                                    size={20}
-                                    color={colors.label}
-                                />
-                            </Pressable>
-
-                            <View style={styles.fullPageTitle}>
-                                <InfoLabel
-                                    text={label}
-                                    labelIconName={iconName}
-                                />
-                            </View>
-                        </View>
-                        {canMod && (
-                            <Pressable
-                                onPress={() => setMod((previous) => !previous)}
-                                accessibilityRole="button"
-                                accessibilityLabel={
-                                    isMod ? "Termina modifica" : "Modifica elenco"
-                                }
-                                accessibilityState={{selected: isMod}}
-                                hitSlop={8}
-                                style={({pressed}) => [
-                                    styles.modButton,
-                                    pressed && {opacity: 0.65},
-                                ]}
-                            >
-                                <Ionicons
-                                    name={isMod ? "checkmark-outline" : "create-outline"}
-                                    size={22}
-                                    color={colors.error}
-                                />
-                            </Pressable>
-                        )}
-
-                    </View>
-
-                    <ScrollView
-                        style={styles.fullPageScroll}
-                        contentContainerStyle={styles.fullPageContent}
-                    >
-                        {renderContent(canMod && isMod)}
-                    </ScrollView>
-                </SafeAreaView>
-            </Modal>
+                {renderContent(canMod && isMod)}
+            </FullPageModal>
         </>
     );
 }

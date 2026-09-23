@@ -4,7 +4,7 @@ import Picture from "@/src/components/common/images/Picture";
 import HorizontalCardContainer from "@/src/components/common/carousel&cards/HorizontalCardContainer";
 import {TournamentStatus} from "@/src/services/tournaments/tournamentsDTO";
 import {router, useSegments} from "expo-router";
-import {tournamentCardColors} from "@/src/constants/cardPalettes";
+import {tournamentCardColors} from "@/src/constants/CardPalettesManager";
 
 type TournamentCardHorizontalProps = {
     id: number

@@ -3,17 +3,13 @@ import {Pressable, StyleProp, StyleSheet, View, ViewStyle} from "react-native";
 import {SportRole} from "@/src/services/users/userConstants";
 import {
     adminCardColors,
-    blueRoleCardColors,
     CardBackground,
     CompactCardPalette,
-    greenRoleCardColors,
     ownerCardColors,
-    redRoleCardColors,
-    tealRoleCardColors,
+    roleCardPalettes,
     teamCardColors,
-    tournamentCardColors,
-    yellowRoleCardColors
-} from "@/src/constants/cardPalettes";
+    tournamentCardColors
+} from "@/src/constants/CardPalettesManager";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 type HorizontalCardContainerProps = {
@@ -24,6 +20,7 @@ type HorizontalCardContainerProps = {
     role?: SportRole
     authority?: TeamAuthority
     modify?: () => void
+    showArrow: boolean
 }
 
 
@@ -34,7 +31,8 @@ export default function HorizontalCardContainer({
                                                     style,
                                                     role,
                                                     authority,
-                                                    modify
+                                                    modify,
+                                                    showArrow,
                                                 }:
                                                     HorizontalCardContainerProps) {
 
@@ -95,31 +93,33 @@ export default function HorizontalCardContainer({
         >
             {renderBK()}
             {children}
-            <View
-                style={[
-                    styles.arrowContainer,
-                    {
-                        backgroundColor: palette.accentBackground,
-                    },
-                ]}
-            >
 
-                {modify ? (
-                        <Ionicons
-                            name="trash-outline"
-                            size={17}
-                            color={"#FF7474"}
-                        />
-                    )
-                    : (
-                        <Ionicons
-                            name="chevron-forward"
-                            size={17}
-                            color={palette.accent}
-                        />
-                    )}
-            </View>
+            {showArrow &&
+                <View
+                    style={[
+                        styles.arrowContainer,
+                        {
+                            backgroundColor: palette.accentBackground,
+                        },
+                    ]}
+                >
 
+                    {modify ? (
+                            <Ionicons
+                                name="trash-outline"
+                                size={17}
+                                color={"#FF7474"}
+                            />
+                        )
+                        : (
+                            <Ionicons
+                                name="chevron-forward"
+                                size={17}
+                                color={palette.accent}
+                            />
+                        )}
+                </View>
+            }
         </Pressable>
     )
 }
@@ -134,28 +134,6 @@ function TeamCardBK() {
 }
 
 
-/* Varianti per gli sfondi delle card utente */
-export const roleCardPalettes: Record<SportRole, CompactCardPalette> = {
-    // Calcio
-    [SportRole.GOALKEEPER]: yellowRoleCardColors,
-    [SportRole.DEFENDER]: greenRoleCardColors,
-    [SportRole.MIDFIELDER]: blueRoleCardColors,
-    [SportRole.FORWARD]: redRoleCardColors,
-    [SportRole.FILL_FB]: tealRoleCardColors,
-
-    // Beach volley
-    [SportRole.BLOCKER]: yellowRoleCardColors,
-    [SportRole.BEACH_DEFENDER]: greenRoleCardColors,
-    [SportRole.FILL_BV]: tealRoleCardColors,
-
-    // Basket
-    [SportRole.POINT_GUARD]: blueRoleCardColors,
-    [SportRole.SHOOTING_GUARD]: redRoleCardColors,
-    [SportRole.SMALL_FORWARD]: tealRoleCardColors,
-    [SportRole.POWER_FORWARD]: greenRoleCardColors,
-    [SportRole.CENTER]: yellowRoleCardColors,
-    [SportRole.FILL_BK]: tealRoleCardColors,
-};
 type PlayerCardBKProps = {
     role: SportRole;
 };

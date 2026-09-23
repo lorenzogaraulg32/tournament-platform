@@ -13,7 +13,7 @@ import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import HeaderEntity from "@/src/components/common/headers/HeaderEntity";
 import CollapsableSection from "@/src/components/common/CollapsableSection";
 import CardListContainer from "@/src/components/common/carousel&cards/CardListContainer";
-import TeamCardVertical from "@/src/components/common/carousel&cards/TeamCardVertical";
+import TeamCardVertical from "@/src/components/common/carousel&cards/teamCards/TeamCardVertical";
 
 type ProfilePageProps = {
     variant: Variant;

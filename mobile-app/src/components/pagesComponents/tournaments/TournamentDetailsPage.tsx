@@ -8,12 +8,12 @@ import {normalizeApiRequestError} from "@/src/services/errorService";
 import {loadCurrentUserId} from "@/src/services/users/authService";
 import CardListContainer from "@/src/components/common/carousel&cards/CardListContainer";
 import {loadUserInfo, UserInfo} from "@/src/services/users/userService";
-import AdminCard from "@/src/components/common/carousel&cards/AdminCard";
+import AdminCard from "@/src/components/common/carousel&cards/userCards/AdminCard";
 import {TournamentDetails} from "@/src/services/tournaments/tournamentsDTO";
 import {loadTournamentDetails} from "@/src/services/tournaments/tournamentsService";
 import HeaderTournament from "@/src/components/pagesComponents/tournaments/HeaderTournament";
 import {colors} from "@/src/constants/theme";
-import TeamCardHorizontal from "@/src/components/common/carousel&cards/TeamCardHorizontal";
+import TeamCardHorizontal from "@/src/components/common/carousel&cards/teamCards/TeamCardHorizontal";
 import CollapsableSection from "../../common/CollapsableSection";
 import {TeamDetails} from "@/src/services/teams/teamsConst";
 

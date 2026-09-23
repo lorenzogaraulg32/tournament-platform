@@ -3,7 +3,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import {router, useSegments} from "expo-router";
 import Picture from "@/src/components/common/images/Picture";
 import HorizontalCardContainer from "@/src/components/common/carousel&cards/HorizontalCardContainer";
-import {teamCardColors} from "@/src/constants/cardPalettes";
+import {teamCardColors} from "@/src/constants/CardPalettesManager";
 
 type TeamCardSmallProps = {
     id: string

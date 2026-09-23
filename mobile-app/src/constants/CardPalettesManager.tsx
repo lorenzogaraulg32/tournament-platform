@@ -1,4 +1,5 @@
 import {StyleSheet, View} from "react-native";
+import {SportRole} from "@/src/services/users/userConstants";
 
 export function CardBackground({
                                    palette,
@@ -318,6 +319,86 @@ export const ownerCardColors: CompactCardPalette = {
 
 };
 
+export const roleCardPalettes: Record<SportRole, CompactCardPalette> = {
+    // Calcio
+    [SportRole.GOALKEEPER]: yellowRoleCardColors,
+    [SportRole.DEFENDER]: greenRoleCardColors,
+    [SportRole.MIDFIELDER]: blueRoleCardColors,
+    [SportRole.FORWARD]: redRoleCardColors,
+    [SportRole.FILL_FB]: tealRoleCardColors,
+
+    // Beach volley
+    [SportRole.BLOCKER]: yellowRoleCardColors,
+    [SportRole.BEACH_DEFENDER]: greenRoleCardColors,
+    [SportRole.FILL_BV]: tealRoleCardColors,
+
+    // Basket
+    [SportRole.POINT_GUARD]: blueRoleCardColors,
+    [SportRole.SHOOTING_GUARD]: redRoleCardColors,
+    [SportRole.SMALL_FORWARD]: tealRoleCardColors,
+    [SportRole.POWER_FORWARD]: greenRoleCardColors,
+    [SportRole.CENTER]: yellowRoleCardColors,
+    [SportRole.FILL_BK]: tealRoleCardColors,
+};
+
+export function FieldCardBackground({
+                                        palette,
+                                    }: {
+    palette: CardBackgroundPalette;
+}) {
+    return (
+        <View
+            pointerEvents="none"
+            style={[
+                fieldBackgroundStyles.background,
+                {backgroundColor: palette.background},
+            ]}
+        >
+            <View
+                style={[
+                    fieldBackgroundStyles.glowLeft,
+                    {backgroundColor: palette.glowLeft},
+                ]}
+            />
+
+            <View
+                style={[
+                    fieldBackgroundStyles.glowRight,
+                    {backgroundColor: palette.glowRight},
+                ]}
+            />
+
+            <View
+                style={[
+                    fieldBackgroundStyles.diagonalBand,
+                    {backgroundColor: palette.diagonalAccent},
+                ]}
+            />
+
+            <View
+                style={[
+                    fieldBackgroundStyles.diagonalLine,
+                    {backgroundColor: palette.diagonalSecondary},
+                ]}
+            />
+
+            <View
+                style={[
+                    fieldBackgroundStyles.brush,
+                    {backgroundColor: palette.brush},
+                ]}
+            />
+
+            <View
+                style={[
+                    fieldBackgroundStyles.bottomAccent,
+                    {backgroundColor: palette.accent},
+                ]}
+            />
+        </View>
+    );
+}
+
 
 //stili delle card
 const cardPaletteStyles = StyleSheet.create({
@@ -467,3 +548,64 @@ const compactCardPaletteStyles = StyleSheet.create({
 
 })
 
+const fieldBackgroundStyles = StyleSheet.create({
+    background: {
+        ...StyleSheet.absoluteFill,
+        overflow: "hidden",
+    },
+
+    glowLeft: {
+        position: "absolute",
+        left: -24,
+        top: -30,
+        width: 58,
+        height: 58,
+        borderRadius: 29,
+    },
+
+    glowRight: {
+        position: "absolute",
+        right: -30,
+        bottom: -30,
+        width: 64,
+        height: 64,
+        borderRadius: 32,
+    },
+
+    diagonalBand: {
+        position: "absolute",
+        right: -5,
+        top: -20,
+        width: 18,
+        height: 90,
+        transform: [{rotate: "25deg"}],
+    },
+
+    diagonalLine: {
+        position: "absolute",
+        right: 19,
+        top: -20,
+        width: 2,
+        height: 90,
+        transform: [{rotate: "25deg"}],
+    },
+
+    brush: {
+        position: "absolute",
+        right: -16,
+        bottom: -20,
+        width: 52,
+        height: 30,
+        borderRadius: 18,
+        transform: [{rotate: "-15deg"}],
+    },
+
+    bottomAccent: {
+        position: "absolute",
+        bottom: 0,
+        left: "30%",
+        right: "30%",
+        height: 2,
+        borderRadius: 1,
+    },
+});
