@@ -15,6 +15,7 @@ export type TeamDetails = {
     adminIds: string[];
     invitationCode: string;
     sport: Sport;
+    formation: TeamFormation
 };
 
 
@@ -32,7 +33,7 @@ export type TeamUpdateRequest = {
     description?: string;
     status?: RecruitmentStatus;
     location: GeoLocation | null;
-    sport : Sport,
+    sport: Sport,
     imageUrl?: string;
 };
 
@@ -43,4 +44,11 @@ export type TeamErrorFields = {
     location?: string;
     logo?: string;
     sport?: string;
+}
+
+
+export type TeamFormation = {
+    name: string | null,
+    slotAssignment: Record<string, string>,
+    benchOrder: string[]
 }

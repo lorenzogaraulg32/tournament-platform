@@ -63,6 +63,7 @@ export default function TournamentCardHorizontal({
         <HorizontalCardContainer
             variant={"tournament"}
             onPress={handlePress}
+            showArrow={true}
         >
 
             <View style={styles.logoContainer}>

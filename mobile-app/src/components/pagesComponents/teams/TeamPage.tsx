@@ -9,14 +9,15 @@ import CardListContainer from "@/src/components/common/carousel&cards/CardListCo
 import PlayerCard from "@/src/components/common/carousel&cards/userCards/PlayerCard";
 import AdminCard from "@/src/components/common/carousel&cards/userCards/AdminCard";
 import {colors} from "@/src/constants/theme";
-import {TeamDetails} from "@/src/services/teams/teamsConst";
+import {TeamDetails, TeamFormation} from "@/src/services/teams/teamsConst";
 import {loadUserInfo, UserInfo} from "@/src/services/users/userService";
 import {Dispatch, SetStateAction, useCallback, useEffect, useRef, useState} from "react";
 import {normalizeApiRequestError} from "@/src/services/errorService";
-import {removeTeamAdmin, removeTeamPlayer} from "@/src/services/teams/teamService";
+import {removeTeamAdmin, removeTeamPlayer, updateTeamFormation} from "@/src/services/teams/teamService";
 import showAlert from "@/src/components/common/errors/Alert";
 import {useToast} from "@/src/components/common/Toast/ToastProvider";
 import FieldLineup from "@/src/components/pagesComponents/teams/Fields/FieldLineup";
+import FullPageModal from "@/src/components/common/FullPageModal";
 
 
 type TeamPageProps = {
@@ -26,6 +27,8 @@ type TeamPageProps = {
     isTeamAdmin: boolean;
     isTeamOwner: boolean;
     currentUserId: string;
+    isPlayerModalVisible: boolean
+    setPlayerModalVisible: Dispatch<SetStateAction<boolean>>;
 };
 
 
@@ -35,7 +38,9 @@ export default function TeamPage({
                                      onRefreshCode,
                                      isTeamAdmin,
                                      isTeamOwner,
-                                     currentUserId
+                                     currentUserId,
+                                     isPlayerModalVisible,
+                                     setPlayerModalVisible
                                  }: TeamPageProps) {
 
 
@@ -46,6 +51,7 @@ export default function TeamPage({
     //componenti team
     const componentsRequestIdRef = useRef(0);
     const removalInProgressRef = useRef(false);
+
     const [teamPlayers, setTeamPlayers] = useState<UserInfo[] | null>([])
     const [teamAdmins, setTeamAdmins] = useState<UserInfo[] | null>([])
     const fetchTeamComponents = useCallback(async () => {
@@ -91,6 +97,11 @@ export default function TeamPage({
             }
         }
     }, [team.playerIds, team.adminIds]);
+    //formazione team
+    const formationSaveInProgressRef = useRef(false);
+    const [isRemovingMember, setIsRemovingMember] = useState(false);
+    const [isSavingFormation, setIsSavingFormation] = useState(false);
+    const canEditFormation = isTeamAdmin || isTeamOwner;
 
     useEffect(() => {
         void fetchTeamComponents();
@@ -130,11 +141,16 @@ export default function TeamPage({
 
     async function removePlayerFromTeam(id: string): Promise<void> {
 
-        if (removalInProgressRef.current || !canRemovePlayer(id)) {
+        if (
+            removalInProgressRef.current ||
+            formationSaveInProgressRef.current ||
+            !canRemovePlayer(id)
+        ) {
             return;
         }
 
         removalInProgressRef.current = true;
+        setIsRemovingMember(true);
 
         try {
             await removeTeamPlayer(String(team?.id), id);
@@ -153,6 +169,7 @@ export default function TeamPage({
                     : previous
             );
 
+
             setTeam((previous) =>
                 previous
                     ? {
@@ -162,7 +179,20 @@ export default function TeamPage({
                         ),
                         playerIds: previous.playerIds.filter(
                             (playerId) => String(playerId) !== String(id)
-                        )
+                        ),
+                        formation: {
+                            ...previous.formation,
+
+                            slotAssignment: Object.fromEntries(
+                                Object.entries(previous.formation.slotAssignment)
+                                    .filter(
+                                        ([, playerId]) => String(playerId) !== String(id)
+                                    )
+                            ),
+
+                            benchOrder: previous.formation.benchOrder.filter(
+                                (playerId) => String(playerId) !== String(id))
+                        },
                     }
                     : previous
             );
@@ -180,6 +210,7 @@ export default function TeamPage({
             }
         } finally {
             removalInProgressRef.current = false;
+            setIsRemovingMember(false);
         }
     }
 
@@ -187,14 +218,16 @@ export default function TeamPage({
 
         if (
             removalInProgressRef.current ||
-            !isTeamOwner || !team ||
+            formationSaveInProgressRef.current ||
+            !isTeamOwner ||
+            !team ||
             String(id) === String(team.creatorId)
         ) {
             return;
         }
 
         removalInProgressRef.current = true;
-
+        setIsRemovingMember(true);
         try {
             await removeTeamAdmin(String(team.id), id);
 
@@ -229,9 +262,54 @@ export default function TeamPage({
             }
         } finally {
             removalInProgressRef.current = false;
+            setIsRemovingMember(false);
         }
     }
 
+
+    async function onFormationSave(teamFormation: TeamFormation) {
+
+        if (
+            !canEditFormation ||
+            formationSaveInProgressRef.current ||
+            removalInProgressRef.current ||
+            isLoading ||
+            Boolean(error) ||
+            teamPlayers === null
+        ) {
+            return;
+        }
+
+        formationSaveInProgressRef.current = true;
+        setIsSavingFormation(true);
+
+        try {
+            const savedFormation = await updateTeamFormation(
+                String(team.id),
+                teamFormation
+            );
+
+            setTeam((previous) =>
+                previous
+                    ? {...previous, formation: savedFormation}
+                    : previous
+            );
+
+            showToast("Formazione salvata", true);
+        } catch (error) {
+            const apiError = normalizeApiRequestError(error)
+
+            if (apiError.status !== 401) {
+                showAlert(
+                    "Impossibile salvare la formazione",
+                    apiError.message,
+                )
+            }
+        } finally {
+            formationSaveInProgressRef.current = false;
+            setIsSavingFormation(false);
+        }
+    }
 
     return (
         <PageLayout
@@ -271,48 +349,53 @@ export default function TeamPage({
                     )}
 
                     <View style={styles.fieldContainer}>
-                        <FieldLineup key={team.sport} sport={team.sport} players={teamPlayers ?? []}/>
+                        <FieldLineup
+                            key={team.sport}
+                            sport={team.sport}
+                            players={teamPlayers ?? []}
+                            formation={team.formation}
+                            canEdit={canEditFormation}
+                            isSaving={isSavingFormation}
+                            disabled={
+                                isLoading ||
+                                Boolean(error) ||
+                                teamPlayers === null ||
+                                isRemovingMember
+                            }
+                            onFormationSave={onFormationSave}
+                        />
                     </View>
 
-                    <CollapsableSection
-                        label="Players"
+
+                    <FullPageModal
+                        visible={isPlayerModalVisible}
+                        onClose={() => setPlayerModalVisible(false)}
+                        label="Gestisci giocatori"
                         iconName="people-outline"
-                        canMod={isTeamAdmin || isTeamOwner}
                     >
-                        {(isMod) => ((
-                                <CardListContainer
-                                    items={(teamPlayers ?? [])
-                                        .filter((player) =>
-                                            !isMod || canRemovePlayer(String(player.id))
-                                        )
-                                        .map((player) => (
-                                            <PlayerCard
-                                                key={player.id}
-                                                player={player}
-                                                sport={team.sport}
-                                                modify={
-                                                    isMod
-                                                        ? () => {
-                                                            void removePlayerFromTeam(
-                                                                String(player.id)
-                                                            );
-                                                        }
-                                                        : undefined
-                                                }
-                                            />
-                                        ))}
-                                    emptyMsg={
-                                        isMod
-                                            ? "Nessun giocatore che puoi rimuovere"
-                                            : "Nessun giocatore nella squadra"
-                                    }
-                                    isLoading={isLoading}
-                                    error={error}
-                                    orientation="vertical"
-                                />
-                            )
-                        )}
-                    </CollapsableSection>
+                        <CardListContainer
+                            items={(teamPlayers ?? [])
+                                .filter((player) =>
+                                    canRemovePlayer(String(player.id))
+                                )
+                                .map((player) => (
+                                    <PlayerCard
+                                        key={player.id}
+                                        player={player}
+                                        sport={team.sport}
+                                        modify={() => {
+                                            void removePlayerFromTeam(
+                                                String(player.id)
+                                            );
+                                        }}
+                                    />
+                                ))}
+                            emptyMsg="Nessun giocatore che puoi rimuovere"
+                            isLoading={isLoading}
+                            error={error}
+                            orientation="vertical"
+                        />
+                    </FullPageModal>
 
 
                     <CollapsableSection

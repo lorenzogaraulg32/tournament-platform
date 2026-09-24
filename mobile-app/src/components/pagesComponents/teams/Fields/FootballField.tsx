@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
 
     field: {
         width: "100%",
-        aspectRatio: 0.70,
+        aspectRatio: 0.80,
         position: "relative",
 
         backgroundColor: "rgba(8, 105, 72, 0.30)",

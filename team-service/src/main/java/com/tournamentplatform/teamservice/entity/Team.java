@@ -88,6 +88,8 @@ public class Team {
     @Column(name = "admin_id")
     private Set<String> adminIds = new HashSet<>();
 
+    @Embedded
+    private Formation formation;
 
 
     public Team(String name, String description, String creatorId, Set<String> playerIds, Set<String> adminIds, RecruitmentStatus status, GeoLocation location, String invitationCode, Sport sport) {

@@ -1,9 +1,10 @@
 import {authenticatedFetch} from "@/src/services/fetchService";
 import {leaveTournament} from "@/src/services/tournaments/tournamentParticipationService";
-import {TeamCreationRequest, TeamDetails, TeamUpdateRequest} from "@/src/services/teams/teamsConst";
+import {TeamCreationRequest, TeamDetails, TeamFormation, TeamUpdateRequest} from "@/src/services/teams/teamsConst";
 import {SelectedImage} from "@/src/services/imagesService";
 import {File, Paths} from "expo-file-system";
 import {API_URL} from "@/src/services/common";
+import {throwApiRequestError} from "@/src/services/errorService";
 
 
 /* CRUD */
@@ -129,6 +130,36 @@ export async function fetchUserTeams(
     );
 
     return await response.json() as TeamDetails[];
+}
+
+
+export async function updateTeamFormation(
+    teamId: string,
+    formation: TeamFormation
+): Promise<TeamFormation> {
+    const response = await authenticatedFetch(
+        `${API_URL}/teams/${encodeURIComponent(teamId)}/formation`,
+        {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formation),
+        }
+    );
+
+    if (!response.ok) {
+        const errorBody = await response.json().catch(() => null);
+
+        throwApiRequestError(
+            response.status,
+            errorBody,
+            "Errore impostazione della formazione"
+        );
+    }
+
+    return (await response.json()) as TeamFormation;
 }
 
 export async function addPlayer(

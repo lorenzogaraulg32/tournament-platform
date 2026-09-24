@@ -75,6 +75,9 @@ export default function TeamScreen() {
             }
         }
     }, [teamId]);
+
+    const [isPlayersModalVisible, setIsPlayersModalVisible] = useState(false);
+
     useFocusEffect(
         useCallback(() => {
             void fetchTeamDetails();
@@ -225,6 +228,11 @@ export default function TeamScreen() {
                     onEdit={canEdit ? onMod : undefined}
                     onDelete={canEdit ? onDelete : undefined}
                     onLeave={canLeave() ? onLeave : undefined}
+                    onManagePlayers={
+                        isTeamAdmin || isTeamOwner
+                            ? () => setIsPlayersModalVisible(true)
+                            : undefined
+                    }
                 />
             )}
             <TeamPage
@@ -234,7 +242,8 @@ export default function TeamScreen() {
                 onRefreshCode={onRefreshCode}
                 isTeamAdmin={isTeamAdmin}
                 isTeamOwner={isTeamOwner}
-            />
+                isPlayerModalVisible={isPlayersModalVisible}
+                setPlayerModalVisible={setIsPlayersModalVisible}/>
         </>
     )
 

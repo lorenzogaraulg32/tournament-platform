@@ -28,7 +28,7 @@ public class TeamPlayerService {
         this.mapper = mapper;
     }
 
-
+    @Transactional
     public TeamResponse addPlayerInTeam(String teamId, String playerId) {
 
         Team team = servicesHelper.getTeamEntityOrThrow(teamId);
@@ -42,6 +42,7 @@ public class TeamPlayerService {
         return mapper.toTeamResponse(savedTeam);
     }
 
+    @Transactional
     public TeamResponse addPlayerInTeamInvitationCode(String invitationCode) {
 
         Team team = teamsRepository
@@ -57,6 +58,7 @@ public class TeamPlayerService {
         return mapper.toTeamResponse(savedTeam);
     }
 
+    @Transactional
     public String removePlayerFromTeam(String teamId, String playerId) {
 
         Team team = servicesHelper.getTeamEntityOrThrow(teamId);
@@ -76,7 +78,7 @@ public class TeamPlayerService {
 
         team.getPlayerIds().remove(playerId);
         team.getAdminIds().remove(playerId);
-
+        servicesHelper.removePlayerFromFormation(team, playerId);
         teamsRepository.save(team);
 
         return "Eliminato";
@@ -89,6 +91,7 @@ public class TeamPlayerService {
         return team.getPlayerIds();
     }
 
+    @Transactional
     public String leaveTeam(String teamId) {
 
         String currentUserId = teamAuthorizationHelper.getCurrentUserId();
@@ -104,7 +107,7 @@ public class TeamPlayerService {
         }
 
         team.getPlayerIds().remove(currentUserId);
-
+        servicesHelper.removePlayerFromFormation(team, currentUserId);
 
         teamsRepository.save(team);
 
@@ -125,9 +128,11 @@ public class TeamPlayerService {
         for (Team team : teams) {
             team.getAdminIds().remove(userId);
             team.getPlayerIds().remove(userId);
+            servicesHelper.removePlayerFromFormation(team, userId);
         }
 
         teamsRepository.saveAll(teams);
     }
+
 
 }

@@ -55,6 +55,7 @@ export default function TeamCardHorizontal({
         <HorizontalCardContainer
             variant={"team"}
             onPress={handlePress}
+            showArrow={true}
         >
 
             <View style={styles.logoContainer}>

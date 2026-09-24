@@ -7,12 +7,14 @@ type OptionsMenuProps = {
     onEdit?: () => void;
     onDelete?: () => void;
     onLeave?: () => void;
+    onManagePlayers?: () => void;
 };
 
 export default function OptionsMenu({
                                         onEdit,
                                         onDelete,
-                                        onLeave
+                                        onLeave,
+                                        onManagePlayers
                                     }: OptionsMenuProps) {
     const [isVisible, setIsVisible] = useState(false);
 
@@ -49,6 +51,30 @@ export default function OptionsMenu({
                             </View>
                         )}
 
+                    {onManagePlayers && (
+                        <View>
+                            <View style={styles.divider}/>
+
+                            <Pressable
+                                onPress={() => selectOption(onManagePlayers)}
+                                accessibilityRole="button"
+                                style={({pressed}) => [
+                                    styles.item,
+                                    pressed && styles.itemPressed,
+                                ]}
+                            >
+                                <Ionicons
+                                    name="people-outline"
+                                    size={20}
+                                    color="#FFFFFF"
+                                />
+
+                                <Text style={styles.label}>
+                                    Gestisci giocatori
+                                </Text>
+                            </Pressable>
+                        </View>
+                    )}
 
                     {onDelete && (
                         <View>
@@ -110,7 +136,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         alignItems: "flex-end",
         zIndex: 100,
-        right : 16,
+        right: 16,
         top: 55
     },
 

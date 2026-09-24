@@ -1,5 +1,6 @@
 package com.tournamentplatform.teamservice.dto.teamGet;
 
+import com.tournamentplatform.teamservice.dto.formation.FormationResponse;
 import com.tournamentplatform.teamservice.dto.position.GeoLocationResponse;
 import com.tournamentplatform.teamservice.entity.utils.RecruitmentStatus;
 import com.tournamentplatform.teamservice.entity.utils.Sport;
@@ -37,5 +38,7 @@ public class TeamResponse {
     private String invitationCode;
 
     private Sport sport;
+
+    private FormationResponse formation;
 
 }

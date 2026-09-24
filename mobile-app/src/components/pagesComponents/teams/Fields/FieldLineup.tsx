@@ -1,5 +1,5 @@
-import {useState} from "react";
-import ModuleSelector from "@/src/components/pagesComponents/teams/Fields/ModuleSelector";
+import {useEffect, useState} from "react";
+import FormationSelector from "@/src/components/pagesComponents/teams/Fields/FormationSelector";
 import {Sport} from "@/src/services/users/userConstants";
 import {FORMATIONS_BY_SPORT} from "@/src/components/pagesComponents/teams/Fields/FieldConst";
 import FootballField from "@/src/components/pagesComponents/teams/Fields/FootballField";
@@ -10,60 +10,79 @@ import PlayerCard from "@/src/components/common/carousel&cards/userCards/PlayerC
 import FieldPlayerCard from "@/src/components/common/carousel&cards/userCards/FieldPlayerCard";
 import Sortable from "react-native-sortables";
 import {colors} from "@/src/constants/theme";
+import {TeamFormation} from "@/src/services/teams/teamsConst";
+import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
+
 
 type FieldLineupProps = {
-    sport: Sport
-    players: UserInfo[]
-}
+    sport: Sport;
+    players: UserInfo[];
+    formation: TeamFormation;
+    canEdit: boolean;
+    isSaving: boolean;
+    disabled: boolean;
+    onFormationSave: (formation: TeamFormation) => Promise<void>;
+};
 
 const BENCH_CARD_WIDTH = 72;
 const BENCH_GAP = 12;
 
-export default function FieldLineup({sport, players}: FieldLineupProps) {
+export default function FieldLineup({
+                                        sport,
+                                        players,
+                                        formation,
+                                        canEdit,
+                                        isSaving,
+                                        disabled,
+                                        onFormationSave,
+                                    }: FieldLineupProps) {
 
 
-    const formations = FORMATIONS_BY_SPORT[sport] ?? [];
+    const availableFormations = FORMATIONS_BY_SPORT[sport] ?? [];
 
-    const [formationId, setFormationId] = useState<string | null>(
-        () => formations[0]?.id ?? null
+
+    /*---- Gestione formazione selezionata, questi metodi vengono utilizzati dal formationSelector ----*/
+    const [formationName, setFormationName] = useState<string | null>(null);
+
+    const selectedFormation = availableFormations.find(
+        (formation) => formation.name === formationName
     );
 
-    const selectedFormation = formations.find(
-        (formation) => formation.id === formationId
-    );
+    const onFormationChange = (name: string) => {
+        if (isInteractionDisabled || name === formationName) return;
 
-    const onFormationChange = (id: string) => {
-        setSelectedSlotId(null);
-        setFormationId(id);
+        setSelectedFormationSlotId(null);
+        setSlotAssignment({});
+        setBenchOrder([]);
+        setFormationName(name);
     };
 
-    const [selectedSlotId, setSelectedSlotId] = useState<string | null>(null);
-    const [slotAssignment, setSlotAssignment] = useState<Partial<Record<string, string>>>({})
-    const [benchOrder, setBenchOrder] = useState<string[]>([]);
 
-    const [benchWidth, setBenchWidth] = useState(0);
+    /*---- Gestione degli slot nella formazione ----*/
+    const [selectedFormationSlotId, setSelectedFormationSlotId] = useState<string | null>(null);
+    const [slotAssignment, setSlotAssignment] = useState<Record<string, string>>({})
 
-    const benchColumns = Math.max(
-        1,
-        Math.floor(
-            (benchWidth + BENCH_GAP) /
-            (BENCH_CARD_WIDTH + BENCH_GAP)
-        )
-    );
-
-
+    //rappresenta lo slot selezionato quando dobbiamo assegnarci un giocatore
     const selectedSlot = selectedFormation?.slots.find(
-        (slot) => slot.id === selectedSlotId
+        (formationSlot) => formationSlot.role === selectedFormationSlotId
     );
 
-    function closePlayerSelection() {
-        setSelectedSlotId(null);
-    }
+    // quando si vuole switchare un giocatore bisogna sapere qual'è
+    const selectedPlayerId = selectedFormationSlotId !== null
+        ? slotAssignment[selectedFormationSlotId]
+        : undefined;
 
-    function assignPlayer(playerId: string) {
-        if (!selectedSlotId) return;
+    // id dei giocatori schierati in campo
+    const playersIdOnField = new Set(
+        (selectedFormation?.slots ?? [])
+            .map((slot) => slotAssignment[slot.role])
+            .filter((id): id is string => id !== undefined)
+    );
 
-        const targetSlotId = selectedSlotId;
+    function assignPlayerToSlot(playerId: string) {
+        if (isInteractionDisabled || !selectedFormationSlotId) return;
+
+        const targetSlotId = selectedFormationSlotId;
 
         setSlotAssignment((previous) => {
             const next = {...previous};
@@ -91,13 +110,13 @@ export default function FieldLineup({sport, players}: FieldLineupProps) {
             return next;
         });
 
-        setSelectedSlotId(null);
+        setSelectedFormationSlotId(null);
     }
 
-    function deAssignPlayer() {
-        if (!selectedSlotId) return;
+    function removePlayerFromSlot() {
+        if (isInteractionDisabled || !selectedFormationSlotId) return;
 
-        const slotId = selectedSlotId;
+        const slotId = selectedFormationSlotId;
 
         setSlotAssignment((previous) => {
             const next = {...previous};
@@ -105,19 +124,32 @@ export default function FieldLineup({sport, players}: FieldLineupProps) {
             return next;
         });
 
-        setSelectedSlotId(null);
+        setSelectedFormationSlotId(null);
     }
 
-    const fieldPlayerIds = new Set(
-        (selectedFormation?.slots ?? [])
-            .map((slot) => slotAssignment[slot.id])
-            .filter((id): id is string => id !== undefined)
+    function closePlayerSelection() {
+        setSelectedFormationSlotId(null);
+    }
+
+    /*---- Gestione panchina con suo ordine ----*/
+    const [benchOrder, setBenchOrder] = useState<string[]>([]);
+    const [benchWidth, setBenchWidth] = useState(0);
+
+    const benchColumns = Math.max(
+        1,
+        Math.floor(
+            (benchWidth + BENCH_GAP) /
+            (BENCH_CARD_WIDTH + BENCH_GAP)
+        )
     );
 
+
+    // id dei giocatori in panchina
     const availableBenchPlayers = players.filter(
-        (player) => !fieldPlayerIds.has(String(player.id))
+        (player) => !playersIdOnField.has(String(player.id))
     );
 
+    // ordinamento della panchina
     const benchPositions = new Map(
         benchOrder.map((id, index) => [id, index])
     );
@@ -128,17 +160,30 @@ export default function FieldLineup({sport, players}: FieldLineupProps) {
             (benchPositions.get(String(b.id)) ?? Infinity)
     );
 
-    const selectedPlayerId = selectedSlotId !== null
-        ? slotAssignment[selectedSlotId]
-        : undefined;
+    //init tramite i valori presenti nel team
+    useEffect(() => {
+        setFormationName(formation.name ?? availableFormations[0]?.name ?? null);
+        setSlotAssignment(formation.slotAssignment)
+        setBenchOrder(formation.benchOrder)
+    }, [formation]);
+
+    //Interazione con utente
+    const isInteractionDisabled = !canEdit || disabled || isSaving;
+
+    useEffect(() => {
+        if (isInteractionDisabled) {
+            setSelectedFormationSlotId(null);
+        }
+    }, [isInteractionDisabled]);
+
 
     return (
-        <View style={styles.container}>
-            <ModuleSelector sport={sport} onChange={onFormationChange} value={formationId}/>
+        <View style={styles.container} pointerEvents={isInteractionDisabled ? "none" : "auto"}>
+            <FormationSelector sport={sport} onChange={onFormationChange} value={formationName}/>
             <FootballField>
                 {selectedFormation?.slots.map((slot) => {
 
-                        const assignedPlayerId = slotAssignment[slot.id]
+                        const assignedPlayerId = slotAssignment[slot.role]
 
                         const assignedPlayer = players.find(
                             (player) => String(player.id) === assignedPlayerId
@@ -146,9 +191,10 @@ export default function FieldLineup({sport, players}: FieldLineupProps) {
 
                         return (
                             <Pressable
-                                key={slot.id}
-                                onPress={() => setSelectedSlotId(slot.id)}
+                                key={slot.role}
+                                onPress={() => setSelectedFormationSlotId(slot.role)}
                                 accessibilityRole="button"
+                                disabled={isInteractionDisabled}
                                 accessibilityLabel={`Scegli un giocatore per ${slot.label}`}
                                 style={({pressed}) => [
                                     !assignedPlayer && styles.slotBk,
@@ -175,7 +221,7 @@ export default function FieldLineup({sport, players}: FieldLineupProps) {
                 )}
             </FootballField>
             <FullPageModal
-                visible={selectedSlot !== undefined}
+                visible={!isInteractionDisabled && selectedSlot !== undefined}
                 onClose={closePlayerSelection}
                 label={
                     selectedSlot
@@ -184,11 +230,12 @@ export default function FieldLineup({sport, players}: FieldLineupProps) {
                 }
                 iconName="people-outline"
             >
-                {selectedSlotId !== null &&
-                    slotAssignment[selectedSlotId] !== undefined && (
+                {selectedFormationSlotId !== null &&
+                    slotAssignment[selectedFormationSlotId] !== undefined && (
                         <Pressable
-                            onPress={deAssignPlayer}
+                            onPress={removePlayerFromSlot}
                             accessibilityRole="button"
+                            disabled={isInteractionDisabled}
                             style={{
                                 padding: 14,
                                 borderRadius: 12,
@@ -218,7 +265,7 @@ export default function FieldLineup({sport, players}: FieldLineupProps) {
                                     key={player.id}
                                     player={player}
                                     sport={sport}
-                                    onClick={() => assignPlayer(String(player.id))}
+                                    onClick={() => assignPlayerToSlot(String(player.id))}
                                 />
                             ))
                     )}
@@ -241,10 +288,12 @@ export default function FieldLineup({sport, players}: FieldLineupProps) {
                     }}
                 >
                     {benchPlayers.length === 0 ? (
-                        <Text>Nessun giocatore in panchina</Text>
+                        <Text style={{color: colors.labelSecondary}}>Pochi giocatori, grandi ambizioni. Invita
+                            qualcuno!</Text>
                     ) : benchWidth > 0 ? (
                         <Sortable.Grid
                             columns={benchColumns}
+                            sortEnabled={!isInteractionDisabled}
                             data={benchPlayers}
                             keyExtractor={(player) => String(player.id)}
                             columnGap={BENCH_GAP}
@@ -253,6 +302,8 @@ export default function FieldLineup({sport, players}: FieldLineupProps) {
                             overDrag="none"
                             activeItemScale={1}
                             onDragEnd={({data}) => {
+                                if (isInteractionDisabled) return;
+
                                 setBenchOrder(
                                     data.map((player) => String(player.id))
                                 );
@@ -269,6 +320,34 @@ export default function FieldLineup({sport, players}: FieldLineupProps) {
                     ) : null}
                 </View>
             </View>
+            {canEdit && (
+
+                <ButtonSolid
+                    variant="buttonRegister"
+                    textVariant="textRegister"
+                    disabled={isInteractionDisabled}
+                    accessibilityRole="button"
+                    accessibilityState={{
+                        disabled: isInteractionDisabled,
+                        busy: isSaving,
+                    }}
+                    style={[styles.saveBtn, {opacity: isInteractionDisabled ? 0.5 : 1}]}
+                    onPress={() => {
+                        if (isInteractionDisabled) return;
+
+                        void onFormationSave({
+                            name: formationName,
+                            slotAssignment: {...slotAssignment},
+                            benchOrder: benchPlayers.map(
+                                (player) => String(player.id)
+                            ),
+                        });
+                    }}
+                    text={isSaving ? "Salvataggio…" : "Salva formazione"}
+                />
+
+
+            )}
         </View>
     )
 
@@ -279,7 +358,7 @@ export default function FieldLineup({sport, players}: FieldLineupProps) {
 const styles = StyleSheet.create({
 
     container: {
-        gap: 5,
+        gap: 20,
     },
 
     slot: {
@@ -340,5 +419,10 @@ const styles = StyleSheet.create({
         fontWeight: "800",
         color: colors.orangeDefault,
     },
+
+    saveBtn: {
+        height: 40,
+    }
+
 
 });

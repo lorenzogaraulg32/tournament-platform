@@ -1,9 +1,11 @@
 package com.tournamentplatform.teamservice.service;
 
+import com.tournamentplatform.teamservice.entity.Formation;
 import com.tournamentplatform.teamservice.entity.Team;
 import com.tournamentplatform.teamservice.errorHandling.teamsExceptions.TeamNotFoundException;
 import com.tournamentplatform.teamservice.repository.TeamsRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -34,6 +36,38 @@ public class ServicesHelper {
         } while (teamsRepository.existsByInvitationCode(code));
 
         return code;
+    }
+
+
+    @Transactional
+    public Team resetFormation(Team team) {
+        Formation formation = team.getFormation();
+
+        if (formation != null) {
+            formation.setName(null);
+            formation.getSlotAssignment().clear();
+            formation.getBenchOrder().clear();
+        }
+
+        team.setFormation(formation);
+
+        return teamsRepository.save(team);
+    }
+
+    @Transactional
+    public void removePlayerFromFormation(Team team, String playerId) {
+        Formation formation = team.getFormation();
+
+        if (formation == null) {
+            return;
+        }
+
+        formation.getSlotAssignment()
+                .values()
+                .removeIf(playerId::equals);
+
+        formation.getBenchOrder()
+                .removeIf(playerId::equals);
     }
 
 

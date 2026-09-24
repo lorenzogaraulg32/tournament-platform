@@ -1,5 +1,7 @@
 package com.tournamentplatform.teamservice.controller;
 
+import com.tournamentplatform.teamservice.dto.formation.FormationRequest;
+import com.tournamentplatform.teamservice.dto.formation.FormationResponse;
 import com.tournamentplatform.teamservice.dto.teamCreation.TeamCreationRequest;
 import com.tournamentplatform.teamservice.dto.teamGet.TeamResponse;
 import com.tournamentplatform.teamservice.dto.teamModify.TeamUpdateRequest;
@@ -112,5 +114,15 @@ public class TeamController {
     public ResponseEntity<Void> deleteTeam(@PathVariable String id) {
         teamService.deleteTeam(id);
         return ResponseEntity.noContent().build();
+    }
+
+
+    @PostMapping("/{id}/formation")
+    public ResponseEntity<FormationResponse> updateFormation(
+            @PathVariable String id,
+            @Valid @RequestBody FormationRequest request
+    ) {
+        FormationResponse response = teamService.updateTeamFormation(id, request);
+        return ResponseEntity.ok(response);
     }
 }

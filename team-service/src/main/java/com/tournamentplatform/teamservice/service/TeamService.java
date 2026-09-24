@@ -1,5 +1,7 @@
 package com.tournamentplatform.teamservice.service;
 
+import com.tournamentplatform.teamservice.dto.formation.FormationRequest;
+import com.tournamentplatform.teamservice.dto.formation.FormationResponse;
 import com.tournamentplatform.teamservice.dto.teamCreation.TeamCreationRequest;
 import com.tournamentplatform.teamservice.dto.teamGet.TeamResponse;
 import com.tournamentplatform.teamservice.dto.teamModify.TeamUpdateRequest;
@@ -42,6 +44,7 @@ public class TeamService {
         this.logoStorageService = logoStorageService;
         this.servicesHelper = servicesHelper;
         this.mapper = mapper;
+
     }
 
     @Transactional
@@ -215,5 +218,19 @@ public class TeamService {
                 .toList();
     }
 
+    @Transactional
+    public FormationResponse updateTeamFormation(String teamId, FormationRequest request) {
+
+        Team team = servicesHelper.getTeamEntityOrThrow(teamId);
+
+        teamAuthorizationHelper.checkTeamAdmin(team);
+
+        team.setFormation(mapper.toFormation(request));
+
+        teamsRepository.save(team);
+
+        return mapper.toFormationResponse(team.getFormation());
+
+    }
 
 }

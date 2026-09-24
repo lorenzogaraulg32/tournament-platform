@@ -12,14 +12,14 @@ type ModuleSelectorProps = {
 }
 
 
-export default function ModuleSelector({sport, value, onChange}: ModuleSelectorProps) {
+export default function FormationSelector({sport, value, onChange}: ModuleSelectorProps) {
 
     const formations = FORMATIONS_BY_SPORT[sport] ?? [];
 
     const [isSelectorOpen, setIsSelectorOpen] = useState(false);
 
     const selectedFormation = formations.find(
-        (option) => option.id === value
+        (option) => option.name === value
     );
 
     function selectFormation(id: string) {
@@ -49,12 +49,12 @@ export default function ModuleSelector({sport, value, onChange}: ModuleSelectorP
             {isSelectorOpen && (
                 <View style={styles.moduleOptions}>
                     {formations.map((option) => {
-                        const selected = selectedFormation?.id === option.id;
+                        const selected = selectedFormation?.name === option.name;
 
                         return (
                             <Pressable
-                                key={option.id}
-                                onPress={() => selectFormation(option.id)}
+                                key={option.name}
+                                onPress={() => selectFormation(option.name)}
                                 accessibilityRole="radio"
                                 accessibilityState={{checked: selected}}
                                 style={[
