@@ -118,6 +118,9 @@ export default function ModifyTeamScreen() {
 
             case 2:
                 return validateLogo();
+
+            case 3:
+                return true
         }
     }
 

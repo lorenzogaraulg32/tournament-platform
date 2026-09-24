@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
-import FormationSelector from "@/src/components/pagesComponents/teams/Fields/FormationSelector";
+import FormationSelector from "@/src/components/pagesComponents/teams/field/FormationSelector";
 import {Sport} from "@/src/services/users/userConstants";
-import {FORMATIONS_BY_SPORT} from "@/src/components/pagesComponents/teams/Fields/FieldConst";
-import FootballField from "@/src/components/pagesComponents/teams/Fields/FootballField";
+import {FORMATIONS_BY_SPORT} from "@/src/components/pagesComponents/teams/field/consts/FieldConst";
+import SportField from "@/src/components/pagesComponents/teams/field/SportField";
 import {Pressable, StyleSheet, Text, View} from "react-native";
 import {UserInfo} from "@/src/services/users/userService";
 import FullPageModal from "@/src/components/common/FullPageModal";
@@ -23,6 +23,7 @@ type FieldLineupProps = {
     disabled: boolean;
     onFormationSave: (formation: TeamFormation) => Promise<void>;
 };
+
 
 const BENCH_CARD_WIDTH = 72;
 const BENCH_GAP = 12;
@@ -180,7 +181,7 @@ export default function FieldLineup({
     return (
         <View style={styles.container} pointerEvents={isInteractionDisabled ? "none" : "auto"}>
             <FormationSelector sport={sport} onChange={onFormationChange} value={formationName}/>
-            <FootballField>
+            <SportField sport={sport}>
                 {selectedFormation?.slots.map((slot) => {
 
                         const assignedPlayerId = slotAssignment[slot.role]
@@ -219,7 +220,7 @@ export default function FieldLineup({
                         )
                     }
                 )}
-            </FootballField>
+            </SportField>
             <FullPageModal
                 visible={!isInteractionDisabled && selectedSlot !== undefined}
                 onClose={closePlayerSelection}

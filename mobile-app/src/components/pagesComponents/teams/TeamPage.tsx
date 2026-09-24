@@ -16,7 +16,7 @@ import {normalizeApiRequestError} from "@/src/services/errorService";
 import {removeTeamAdmin, removeTeamPlayer, updateTeamFormation} from "@/src/services/teams/teamService";
 import showAlert from "@/src/components/common/errors/Alert";
 import {useToast} from "@/src/components/common/Toast/ToastProvider";
-import FieldLineup from "@/src/components/pagesComponents/teams/Fields/FieldLineup";
+import FieldLineup from "@/src/components/pagesComponents/teams/field/FieldLineup";
 import FullPageModal from "@/src/components/common/FullPageModal";
 
 

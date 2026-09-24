@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.tournamentplatform.teamservice.dto.position.GeoLocationRequest;
 import com.tournamentplatform.teamservice.entity.utils.RecruitmentStatus;
+import com.tournamentplatform.teamservice.entity.utils.Sport;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 
 @Getter
 @NoArgsConstructor
@@ -55,4 +57,7 @@ public class TeamUpdateRequest {
         this.location = location;
         this.locationProvided = true;
     }
+
+    @Setter
+    private Sport sport;
 }

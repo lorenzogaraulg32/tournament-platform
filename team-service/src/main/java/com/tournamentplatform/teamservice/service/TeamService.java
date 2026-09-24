@@ -124,6 +124,11 @@ public class TeamService {
             team.setImageUrl(null);
         }
 
+        if (request.getSport() != null && request.getSport() != team.getSport()) {
+            servicesHelper.resetFormation(team);
+            team.setSport(request.getSport());
+        }
+
         Team savedTeam = teamsRepository.save(team);
         return mapper.toTeamResponse(savedTeam);
     }

@@ -11,14 +11,15 @@ import HeaderForm from "@/src/components/common/headers/HeaderForm";
 import FormProgressBar from "@/src/components/common/forms/components/FormProgressBar";
 import FormContent from "@/src/components/common/forms/ layout/FormContent";
 import {View} from "react-native";
+import SportStep from "@/src/components/pagesComponents/teams/steps/SportStep";
 
 
-export type TeamEditStep = 0 | 1 | 2;
+export type TeamEditStep = 0 | 1 | 2 | 3;
 
 export const FIRST_STEP: TeamEditStep = 0;
-export const LAST_STEP: TeamEditStep = 2;
+export const LAST_STEP: TeamEditStep = 3;
 
-export const STEPS: TeamEditStep[] = [0, 1, 2];
+export const STEPS: TeamEditStep[] = [0, 1, 2, 3];
 
 
 type ModifyTeamPageProps = {
@@ -109,6 +110,18 @@ export default function ModifyTeamPage({
                         disabled={isSubmitting}
                         errorMessage={fieldErrors.logo}
                         local={logo !== null}
+                    />
+                );
+            case 3:
+                return (
+                    <SportStep
+                        variant={"teams"}
+                        selectedSport={newTeam.sport ?? oldTeam.sport}
+                        onChange={(newSport) =>
+                            onChangeField("sport", newSport)
+                        }
+                        errorMessage={fieldErrors.logo}
+
                     />
                 );
         }

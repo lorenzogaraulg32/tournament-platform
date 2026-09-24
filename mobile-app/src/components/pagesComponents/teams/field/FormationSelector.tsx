@@ -3,7 +3,7 @@ import {Pressable, StyleSheet, Text, View} from "react-native";
 import {useState} from "react";
 import {colors} from "@/src/constants/theme";
 import {Sport} from "@/src/services/users/userConstants";
-import {FORMATIONS_BY_SPORT} from "@/src/components/pagesComponents/teams/Fields/FieldConst";
+import {FORMATIONS_BY_SPORT} from "@/src/components/pagesComponents/teams/field/consts/FieldConst";
 
 type ModuleSelectorProps = {
     sport: Sport
@@ -88,7 +88,6 @@ const styles = StyleSheet.create({
     },
 
     moduleSelector: {
-        width: 120,
         minHeight: 36,
         paddingHorizontal: 10,
         paddingVertical: 6,

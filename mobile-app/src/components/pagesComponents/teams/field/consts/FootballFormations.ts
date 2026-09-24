@@ -1,4 +1,4 @@
-import {Formation} from "@/src/components/pagesComponents/teams/Fields/FieldConst";
+import {Formation} from "@/src/components/pagesComponents/teams/field/consts/FieldConst";
 
 export const rombo: Formation = {
     name: "ROMBO",
