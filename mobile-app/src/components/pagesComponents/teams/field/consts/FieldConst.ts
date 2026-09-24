@@ -7,6 +7,7 @@ import {
     sideBySideTwo,
     twoOneThree
 } from "@/src/components/pagesComponents/teams/field/consts/BeachVolleyFormations";
+import {FieldRole} from "@/src/components/pagesComponents/teams/field/FieldPaletteManager";
 
 //  Formazioni disponibili per ogni sport
 export const FORMATIONS_BY_SPORT: Partial<Record<Sport, Formation[]>> = {
@@ -29,7 +30,7 @@ export const FORMATIONS_BY_SPORT: Partial<Record<Sport, Formation[]>> = {
 
 //  Componente della formazione
 export type FormationSlot = {
-    role: string;
+    role: FieldRole;
     label: string;
     position: {
         x: number;

@@ -1,23 +1,29 @@
-import {Pressable, StyleSheet, Text, View} from "react-native";
+import {StyleSheet, Text, View} from "react-native";
 import {UserInfo} from "@/src/services/users/userService";
 import {getRoleBySport, Sport} from "@/src/services/users/userConstants";
 import {FieldCardBackground, roleCardPalettes} from "@/src/constants/CardPalettesManager";
 import Picture from "@/src/components/common/images/Picture";
+import {FieldRole, fieldRoleCardPalettes} from "@/src/components/pagesComponents/teams/field/FieldPaletteManager";
 
 
 type FieldPlayerCardProps = {
     player: UserInfo
     sport: Sport
+    role?: FieldRole
+    roleLabel?: string
 }
 
 
 export default function FieldPlayerCard({
                                             player,
                                             sport,
-
+                                            role,
+                                            roleLabel
                                         }: FieldPlayerCardProps) {
     const playerRole = getRoleBySport(player, sport);
     const palette = roleCardPalettes[playerRole];
+    const roleBadgePalette = role && fieldRoleCardPalettes[role] || null;
+
 
     return (
         <View
@@ -56,6 +62,21 @@ export default function FieldPlayerCard({
                 >
                     {player.username}
                 </Text>
+                {role && <Text
+                    style={[
+                        styles.roleLabel,
+                        {
+                            color: palette.title,
+                            backgroundColor: roleBadgePalette?.background,
+                            borderColor: roleBadgePalette?.badgeBorder
+                        },
+                    ]}
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                >
+                    {roleLabel}
+                </Text>
+                }
             </View>
         </View>
     );
@@ -147,5 +168,23 @@ const styles = StyleSheet.create({
         left: 0,
         width: 1,
         backgroundColor: "rgba(255, 255, 255, 0.15)",
+    },
+
+
+    roleLabel: {
+        position: "absolute",
+        bottom: -25,
+        width: "100%",
+        fontSize: 11,
+        fontWeight: "700",
+        textAlign: "center",
+
+        paddingVertical: 2,
+        paddingHorizontal: 4,
+
+        textShadowColor: "rgba(0, 0, 0, 0.40)",
+        textShadowOffset: {width: 0, height: 1},
+        textShadowRadius: 2,
+        borderRadius: 20,
     },
 });

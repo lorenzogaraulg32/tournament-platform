@@ -211,7 +211,9 @@ export default function FieldLineup({
                                     <FieldPlayerCard
                                         key={assignedPlayer.id}
                                         player={assignedPlayer}
-                                        sport={sport}/>
+                                        sport={sport}
+                                        role={slot.role}
+                                        roleLabel={slot.label}/>
                                 ) : (
                                     <Text style={styles.slotLabel}>{slot.label}</Text>
                                 )}
@@ -314,6 +316,7 @@ export default function FieldLineup({
                                     <FieldPlayerCard
                                         player={item}
                                         sport={sport}
+
                                     />
                                 </View>
                             )}
