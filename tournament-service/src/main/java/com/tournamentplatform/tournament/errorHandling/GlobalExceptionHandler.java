@@ -1,7 +1,7 @@
 package com.tournamentplatform.tournament.errorHandling;
 
 
-import com.tournamentplatform.tournament.dto.ApiErrorResponse;
+import com.tournamentplatform.tournament.dto.error.ApiErrorResponse;
 import com.tournamentplatform.tournament.errorHandling.imageExceptions.InvalidProfilePictureException;
 import com.tournamentplatform.tournament.errorHandling.imageExceptions.ProfilePictureNotFoundException;
 import com.tournamentplatform.tournament.errorHandling.imageExceptions.ProfilePictureStorageException;

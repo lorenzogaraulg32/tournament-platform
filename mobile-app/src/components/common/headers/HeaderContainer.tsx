@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
     container: {
         minHeight: 180,
         paddingHorizontal: 28,
-        paddingTop: 50,
-        paddingBottom: 42,
+        paddingTop: 55,
+        paddingBottom: 28,
         justifyContent: "center",
     },
 

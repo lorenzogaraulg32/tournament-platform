@@ -1,11 +1,12 @@
 package com.tournamentplatform.tournament.entity;
 
+import com.tournamentplatform.tournament.entity.misc.GeoLocation;
+import com.tournamentplatform.tournament.entity.misc.Sport;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -45,6 +46,8 @@ public class Tournament {
     @Column(name = "user_id")
     private List<String> adminsById = new ArrayList<>();
 
+    @Column(name = "sport")
+    private Sport sport;
 
 
 
@@ -111,23 +114,22 @@ public class Tournament {
 
 
     /* POSIZIONE */
-    @Column(name = "location_label", length = 120)
-    private String locationLabel;
-
-    @Column(
-            name = "latitude",
-            precision = 9,
-            scale = 6
-    )
-    private BigDecimal latitude;
-
-    @Column(
-            name = "longitude",
-            precision = 9,
-            scale = 6
-    )
-    private BigDecimal longitude;
-
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(
+                    name = "label",
+                    column = @Column(name = "location_label")
+            ),
+            @AttributeOverride(
+                    name = "latitude",
+                    column = @Column(name = "location_latitude")
+            ),
+            @AttributeOverride(
+                    name = "longitude",
+                    column = @Column(name = "location_longitude")
+            )
+    })
+    private GeoLocation location;
 
     public Tournament(String name,
                       String description,
@@ -141,9 +143,7 @@ public class Tournament {
                       String invitationCode,
                       Set<Long> registeredTeamIds,
                       List<TournamentMatch> matches,
-                      String locationLabel,
-                      BigDecimal latitude,
-                      BigDecimal longitude
+                      GeoLocation location
 
     ) {
         this.name = name;
@@ -158,9 +158,7 @@ public class Tournament {
         this.invitationCode = invitationCode;
         this.registeredTeamIds = registeredTeamIds;
         this.matches = matches;
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.locationLabel = locationLabel;
+        this.location = location;
     }
 
     @PrePersist

@@ -5,18 +5,20 @@ import com.tournamentplatform.tournament.dto.tournaments.*;
 import com.tournamentplatform.tournament.entity.Tournament;
 import com.tournamentplatform.tournament.entity.TournamentStatus;
 import com.tournamentplatform.tournament.errorHandling.tournamentExceptions.TournamentInProgressException;
+import com.tournamentplatform.tournament.mapper.TournamentMapper;
 import com.tournamentplatform.tournament.repository.TournamentRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @Service
 public class TournamentService {
 
@@ -24,18 +26,7 @@ public class TournamentService {
     private final TournamentHelper tournamentHelper;
     private final TournamentAuthorizationHelper tournamentAuthorizationHelper;
     private final LogoStorageService logoStorageService;
-
-    public TournamentService(
-            TournamentRepository tournamentRepository,
-            TournamentHelper tournamentHelper,
-            TournamentAuthorizationHelper tournamentAuthorizationHelper,
-            LogoStorageService logoStorageService
-    ) {
-        this.tournamentRepository = tournamentRepository;
-        this.tournamentHelper = tournamentHelper;
-        this.tournamentAuthorizationHelper = tournamentAuthorizationHelper;
-        this.logoStorageService = logoStorageService;
-    }
+    private final TournamentMapper mapper;
 
 
     //creazione del torneo
@@ -47,17 +38,6 @@ public class TournamentService {
         ArrayList<String> admins = new ArrayList<>();
         admins.add(userId);
 
-        TournamentLocationRequest location = request.getLocation();
-
-        String locationLabel = null;
-        BigDecimal latitude = null;
-        BigDecimal longitude = null;
-
-        if (location != null) {
-            locationLabel = location.getLabel();
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
-        }
 
         Tournament tournament = new Tournament(
                 request.getName(),
@@ -72,9 +52,7 @@ public class TournamentService {
                 tournamentHelper.generateUniqueInvitationCode(),
                 new HashSet<>(),
                 new ArrayList<>(),
-                locationLabel,
-                latitude,
-                longitude
+                mapper.toGeoLocation(request.getLocation())
         );
 
         tournamentHelper.validateTournament(tournament);
@@ -96,14 +74,14 @@ public class TournamentService {
 
     public TournamentGetResponse getTournament(String id) {
         Tournament tournament = tournamentHelper.findOrThrow(id);
-        return tournamentHelper.toTournamentGetResponse(tournament);
+        return mapper.toTournamentGetResponse(tournament);
     }
 
     public List<TournamentGetResponse> getAllTournaments() {
         List<Tournament> tournaments = tournamentRepository.findAll();
         List<TournamentGetResponse> tournamentsResponse = new ArrayList<>();
         for (Tournament tournament : tournaments) {
-            tournamentsResponse.add(tournamentHelper.toTournamentGetResponse(tournament));
+            tournamentsResponse.add(mapper.toTournamentGetResponse(tournament));
         }
         return tournamentsResponse;
     }
@@ -131,12 +109,12 @@ public class TournamentService {
 
         List<TournamentGetResponse> managedResponses =
                 managedTournaments.stream()
-                        .map(tournamentHelper::toTournamentGetResponse)
+                        .map(mapper::toTournamentGetResponse)
                         .toList();
 
         List<TournamentGetResponse> participatingResponses =
                 participatingTournaments.stream()
-                        .map(tournamentHelper::toTournamentGetResponse)
+                        .map(mapper::toTournamentGetResponse)
                         .toList();
 
         return new UserTournamentsResponse(
@@ -157,7 +135,7 @@ public class TournamentService {
 
         Tournament savedTournament = tournamentHelper.saveTournament(tournament);
 
-        return tournamentHelper.toTournamentGetResponse(savedTournament);
+        return mapper.toTournamentGetResponse(savedTournament);
     }
 
 
@@ -184,7 +162,7 @@ public class TournamentService {
 
         Tournament savedTeam = tournamentRepository.save(team);
 
-        return tournamentHelper.toTournamentGetResponse(savedTeam);
+        return mapper.toTournamentGetResponse(savedTeam);
     }
 
     public List<String> canDeleteTeam(String teamId) {
@@ -207,7 +185,7 @@ public class TournamentService {
 
     }
 
-    public String leaveTournament(String teamId, String tournamentId) {
+    public void leaveTournament(String teamId, String tournamentId) {
 
         Tournament tournament = tournamentHelper.findOrThrow(tournamentId);
 
@@ -217,9 +195,6 @@ public class TournamentService {
 
 
         tournament.getRegisteredTeamIds().remove(Long.valueOf(teamId));
-
-        return "Eliminato";
-
 
     }
 }

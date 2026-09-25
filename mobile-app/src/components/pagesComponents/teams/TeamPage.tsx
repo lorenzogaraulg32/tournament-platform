@@ -23,7 +23,7 @@ import FullPageModal from "@/src/components/common/FullPageModal";
 type TeamPageProps = {
     team: TeamDetails;
     setTeam: Dispatch<SetStateAction<TeamDetails | null>>;
-    onRefreshCode: () => Promise<string>;
+    onRefreshCode: () => Promise<string | undefined>;
     isTeamAdmin: boolean;
     isTeamOwner: boolean;
     currentUserId: string;

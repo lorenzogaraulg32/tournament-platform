@@ -7,7 +7,7 @@ import {TournamentDetails} from "@/src/services/tournaments/tournamentsDTO";
 import {getCurrentUserTournaments} from "@/src/services/tournaments/tournamentsService";
 import LoadingSection from "@/src/components/common/loading/LoadingSection";
 import ErrorSection from "@/src/components/common/errors/ErrorSection";
-import {TournamentSection} from "@/src/components/pagesComponents/tournaments/TournamentSection";
+import {MyTournamentsSection} from "@/src/components/pagesComponents/tournaments/MyTournamentsSection";
 
 
 /**
@@ -88,7 +88,7 @@ export default function MyTournaments() {
 
         return (
             <View>
-                <TournamentSection
+                <MyTournamentsSection
                     title="Tornei che gestisci"
                     subtitle="I tornei di cui sei organizzatore o admin."
                     icon="crown"
@@ -96,7 +96,7 @@ export default function MyTournaments() {
                     emptyMessage="Crea un nuovo torneo..."
                 />
 
-                <TournamentSection
+                <MyTournamentsSection
                     title="Tornei a cui partecipi"
                     subtitle="I tornei a cui ti sei iscritto."
                     icon="users"
@@ -119,7 +119,7 @@ export default function MyTournaments() {
             </ScrollView>
             <ButtonBackground
                 text="Crea nuovo torneo"
-                onPress={() => router.push("/teams/create")}
+                onPress={() => router.push("/tournaments/create")}
                 variant="purple"
             />
 

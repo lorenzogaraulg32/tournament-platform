@@ -8,13 +8,15 @@ type OptionsMenuProps = {
     onDelete?: () => void;
     onLeave?: () => void;
     onManagePlayers?: () => void;
+    onManageTeams?: () => void;
 };
 
 export default function OptionsMenu({
                                         onEdit,
                                         onDelete,
                                         onLeave,
-                                        onManagePlayers
+                                        onManagePlayers,
+                                        onManageTeams
                                     }: OptionsMenuProps) {
     const [isVisible, setIsVisible] = useState(false);
 
@@ -51,6 +53,32 @@ export default function OptionsMenu({
                             </View>
                         )}
 
+                    {/*todo: forse da spostare in una collapsable section all'interno del torneo*/}
+                    {onManageTeams && (
+                        <View>
+                            <View style={styles.divider}/>
+
+                            <Pressable
+                                onPress={() => selectOption(onManageTeams)}
+                                accessibilityRole="button"
+                                style={({pressed}) => [
+                                    styles.item,
+                                    pressed && styles.itemPressed,
+                                ]}
+                            >
+                                <Ionicons
+                                    name="people-outline"
+                                    size={20}
+                                    color="#FFFFFF"
+                                />
+
+                                <Text style={styles.label}>
+                                    Gestisci squadre
+                                </Text>
+                            </Pressable>
+                        </View>
+                    )}
+
                     {onManagePlayers && (
                         <View>
                             <View style={styles.divider}/>
@@ -75,6 +103,7 @@ export default function OptionsMenu({
                             </Pressable>
                         </View>
                     )}
+
 
                     {onDelete && (
                         <View>

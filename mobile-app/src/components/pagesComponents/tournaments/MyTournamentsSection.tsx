@@ -13,7 +13,7 @@ type TournamentSectionProps = {
     emptyMessage: string;
 };
 
-export function TournamentSection({
+export function MyTournamentsSection({
                                       title,
                                       subtitle,
                                       icon,

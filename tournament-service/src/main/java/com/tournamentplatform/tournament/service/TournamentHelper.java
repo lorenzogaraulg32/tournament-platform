@@ -1,6 +1,5 @@
 package com.tournamentplatform.tournament.service;
 
-import com.tournamentplatform.tournament.dto.tournaments.TournamentGetResponse;
 import com.tournamentplatform.tournament.dto.tournaments.TournamentPatchRequest;
 import com.tournamentplatform.tournament.entity.Tournament;
 import com.tournamentplatform.tournament.entity.TournamentStatus;
@@ -26,32 +25,6 @@ public class TournamentHelper {
 
     public Tournament saveTournament(Tournament tournament) {
         return tournamentRepository.save(tournament);
-    }
-
-    public TournamentGetResponse toTournamentGetResponse(Tournament tournament) {
-        return new TournamentGetResponse(
-                tournament.getId(),
-                tournament.getName(),
-                tournament.getDescription(),
-                tournament.getStartDate(),
-                tournament.getEndDate(),
-                tournament.getCreatedAt(),
-                tournament.getUpdatedAt(),
-                tournament.getMinTeams(),
-                tournament.getMaxTeams(),
-                tournament.getFormat().name(),
-                tournament.getStatus().name(),
-                tournament.getRulesUrl(),
-                tournament.getCreatedByUserId(),
-                tournament.getAdminsById(),
-                tournament.getRegisteredTeamIds(),
-                tournament.getMatches(),
-                tournament.getLogoUrl(),
-                tournament.getLocationLabel(),
-                tournament.getLatitude(),
-                tournament.getLongitude(),
-                tournament.getInvitationCode()
-        );
     }
 
 

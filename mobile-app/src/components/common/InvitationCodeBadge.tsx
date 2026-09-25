@@ -8,7 +8,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 type InvitationCodeBadgeProps = {
     code?: string | null;
     canRefresh: boolean;
-    onRefresh?: () => Promise<string>;
+    onRefresh?: () => Promise<string | undefined>;
 };
 
 

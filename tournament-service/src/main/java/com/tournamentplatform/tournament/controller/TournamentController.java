@@ -34,7 +34,7 @@ public class TournamentController {
             )
             MultipartFile logo
     ) {
-        TournamentCreationResponse response = tournamentService.createTournament(request,logo);
+        TournamentCreationResponse response = tournamentService.createTournament(request, logo);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
@@ -66,15 +66,14 @@ public class TournamentController {
 
 
     @DeleteMapping("/leave/{tournamentId}/{teamId}")
-    public ResponseEntity<String> leaveTournament(
+    public ResponseEntity<Void> leaveTournament(
             @PathVariable String tournamentId,
-             @PathVariable String teamId
+            @PathVariable String teamId
     ) {
-       String response = tournamentService.leaveTournament(teamId, tournamentId);
-        return ResponseEntity.ok(response);
+        tournamentService.leaveTournament(teamId, tournamentId);
+        return ResponseEntity.noContent().build();
 
     }
-
 
 
     @GetMapping("/can_delete_team/{teamId}")

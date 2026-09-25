@@ -9,7 +9,8 @@ type TeamCardSmallProps = {
     id: string
     name: string;
     playersCount: number;
-    imageUrl?: string;
+    imageUrl?: string | null;
+    modify?: () => void
 }
 
 const teamRoutes = {
@@ -28,6 +29,7 @@ export default function TeamCardHorizontal({
                                                name,
                                                imageUrl,
                                                playersCount,
+                                               modify
                                            }: TeamCardSmallProps) {
 
 
@@ -35,6 +37,12 @@ export default function TeamCardHorizontal({
 
 
     function handlePress() {
+
+        if (modify) {
+            modify();
+            return;
+        }
+
         const appIndex = segments.indexOf("(app)");
         const tab = segments[appIndex + 1];
 
@@ -55,7 +63,8 @@ export default function TeamCardHorizontal({
         <HorizontalCardContainer
             variant={"team"}
             onPress={handlePress}
-            showArrow={true}
+            modify={modify ? modify : undefined}
+            showArrow
         >
 
             <View style={styles.logoContainer}>

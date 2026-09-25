@@ -1,3 +1,5 @@
+import {GeoLocation} from "@/src/services/common";
+
 enum TournamentFormat {
     GROUPS = "GROUPS",
     KNOWCKOUT = "KNOWCKOUT",
@@ -49,9 +51,7 @@ export type TournamentDetails = {
     createdById: string,
     adminsId: string[]
     registeredTeamIds: string[],
-    locationLabel: string;
-    latitude: number;
-    longitude: number;
+    location: GeoLocation
     logoUrl?: string | null;
     invitationCode: string;
 }

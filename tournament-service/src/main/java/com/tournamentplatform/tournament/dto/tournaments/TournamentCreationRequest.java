@@ -1,5 +1,6 @@
 package com.tournamentplatform.tournament.dto.tournaments;
 
+import com.tournamentplatform.tournament.dto.position.GeoLocationRequest;
 import com.tournamentplatform.tournament.entity.TournamentFormat;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -41,7 +42,7 @@ public class TournamentCreationRequest {
     private TournamentFormat format;
 
     @Valid
-    private TournamentLocationRequest location;
+    private GeoLocationRequest location;
 
     //codice di invito autogenerato dal server
 

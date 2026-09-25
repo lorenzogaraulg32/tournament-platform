@@ -13,7 +13,7 @@ type HeaderEntityProps = {
     position?: string | null
     email?: string
     invitationCode?: string,
-    onRefreshCode?: () => Promise<string>;
+    onRefreshCode?: () => Promise<string | undefined>;
     style?: StyleProp<ViewStyle>;
 };
 

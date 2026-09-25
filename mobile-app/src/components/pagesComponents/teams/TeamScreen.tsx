@@ -29,6 +29,7 @@ export default function TeamScreen() {
 
     const [team, setTeam] = useState<TeamDetails | null>(null);
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+
     const fetchTeamDetails = useCallback(async () => {
         const requestId = ++requestIdRef.current;
 
@@ -170,29 +171,49 @@ export default function TeamScreen() {
         });
     }
 
-    async function onRefreshCode(): Promise<string> {
+    async function onRefreshCode() {
 
         if (!team) {
             throw new Error("La squadra non è disponibile.");
         }
 
-        const updatedTeam = await refreshInvitationCode(team.id);
+        try{
+            const updatedTeam = await refreshInvitationCode(team.id);
 
-        const newCode = updatedTeam.invitationCode;
+            const newCode = updatedTeam.invitationCode;
 
-        if (!newCode) {
-            throw new Error("Il server non ha restituito un codice di invito valido.");
+            if (!newCode) {
+                throw new Error("Il server non ha restituito un codice di invito valido.");
+            }
+
+            setTeam((previous) => {
+                if (!previous) return previous;
+
+                return {
+                    ...previous,
+                    invitationCode: newCode,
+                };
+            });
+
+            return newCode;
+
+        }catch (error){
+            const apiError =
+                normalizeApiRequestError(error);
+
+            // Redirect già gestito centralmente
+            if (apiError.status === 401) {
+                return;
+            }
+
+            Alert.alert(
+                "Impossibile aggiornare il codice",
+                apiError.message,
+            );
         }
 
-        setTeam((previous) => {
-            if (!previous) return previous;
 
-            return {
-                ...previous,
-                invitationCode: newCode,
-            };
-        });
-        return newCode;
+
     }
 
 
