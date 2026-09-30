@@ -1,5 +1,5 @@
 import {View} from "react-native";
-import type {SelectedImage} from "@/src/services/imagesService";
+import type {SelectedImage} from "@/src/services/fileService";
 import type {Sport, SportRole,} from "@/src/services/users/userConstants";
 
 import type {ProfileFieldErrors, ProfileFormData,} from "./ModifyProfileScreen";

@@ -2,6 +2,7 @@ import {Pressable, StyleSheet, Text, View} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import FormLabel from "@/src/components/common/labels/FormLabel";
 import {paletteVariants, type Variant} from "@/src/constants/PaletteManager";
+import {colors} from "@/src/constants/theme";
 
 type SwitchProps<T extends string> = {
     variant: Variant;
@@ -17,20 +18,22 @@ type SwitchProps<T extends string> = {
     infoTitle?: string;
     infoMessage?: string;
     labelIconName?: keyof typeof Ionicons.glyphMap;
+    errorMsg?: string;
 };
 
 export default function FormSwitch<T extends string>({
-                                                     variant,
-                                                     label,
-                                                     value,
-                                                     options,
-                                                     onChange,
-                                                     optional = false,
-                                                     disabled = false,
-                                                     infoTitle,
-                                                     infoMessage,
-                                                     labelIconName,
-                                                 }: SwitchProps<T>) {
+                                                         variant,
+                                                         label,
+                                                         value,
+                                                         options,
+                                                         onChange,
+                                                         optional = false,
+                                                         disabled = false,
+                                                         infoTitle,
+                                                         infoMessage,
+                                                         labelIconName,
+                                                         errorMsg
+                                                     }: SwitchProps<T>) {
     const {palette} = paletteVariants[variant];
 
     return (
@@ -96,6 +99,9 @@ export default function FormSwitch<T extends string>({
                     );
                 })}
             </View>
+            <Text style={styles.error}>
+                {errorMsg ?? ""}
+            </Text>
         </View>
     );
 }
@@ -138,5 +144,12 @@ const styles = StyleSheet.create({
 
     disabled: {
         opacity: 0.6,
+    },
+
+    error: {
+        flex: 1,
+        color: colors.error,
+        fontSize: 13,
+        fontWeight: "500",
     },
 });

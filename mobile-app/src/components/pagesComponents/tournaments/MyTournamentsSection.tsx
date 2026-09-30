@@ -1,7 +1,7 @@
 import ErrorSection from "@/src/components/common/errors/ErrorSection";
 import {StyleSheet, Text, View} from "react-native";
 import {FontAwesome6} from "@expo/vector-icons";
-import {TournamentDetails} from "@/src/services/tournaments/tournamentsDTO";
+import {TournamentDetails} from "@/src/services/tournaments/tournamentsConst";
 import {colors, corners} from "@/src/constants/theme";
 import TournamentCardHorizontal from "@/src/components/common/carousel&cards/TournamentCardHorizontal";
 

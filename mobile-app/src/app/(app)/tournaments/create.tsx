@@ -1,1 +1,1 @@
-export {default} from "@/src/components/pagesComponents/teams/createTeam/CreateTeamScreen";
+export {default} from "@/src/components/pagesComponents/tournaments/createTournament/CreateTournamentScreen";

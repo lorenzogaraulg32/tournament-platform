@@ -1,9 +1,47 @@
-import {TournamentDetails, UserTournamentsResponse} from "@/src/services/tournaments/tournamentsDTO";
+import {
+    TournamentCreationRequest,
+    TournamentDetails,
+    TournamentFormat,
+    TournamentStatus,
+    UserTournamentsResponse
+} from "@/src/services/tournaments/tournamentsConst";
 import {authenticatedFetch} from "@/src/services/fetchService";
 import {fetchUserTeams} from "@/src/services/teams/teamService";
 import {loadCurrentUserId} from "@/src/services/users/authService";
+import {SelectedDocument, SelectedImage} from "@/src/services/fileService";
+import {RecruitmentStatus} from "@/src/services/common";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
+
+
+export async function createTournament(
+    request: TournamentCreationRequest,
+    logo?: SelectedImage | null,
+    rules?: SelectedDocument | null
+) : Promise<TournamentDetails> {
+    //todo: Implementare il fetch creazione torneo
+    return {
+        adminsId: [],
+        createdAt: "",
+        createdById: "",
+        description: "",
+        endDate: "",
+        format: TournamentFormat.GROUPS,
+        id: "",
+        invitationCode: "",
+        location: undefined,
+        logoUrl: undefined,
+        maxTeams: 0,
+        minTeams: 0,
+        name: "",
+        registeredTeamIds: [],
+        rulesUrl: "",
+        startDate: "",
+        status: TournamentStatus.CREATED,
+        updatedAt: "",
+        recruitmentStatus: "CLOSED"
+    }
+}
 
 
 export async function refreshCodeTournament(
@@ -63,4 +101,18 @@ export async function loadTournamentDetails(id: string): Promise<TournamentDetai
     );
 
     return (await response.json()) as TournamentDetails;
+}
+
+
+export async function checkTournamentNameAlreadyExists(trimmedName: string) {
+    const response = await authenticatedFetch(
+        `${API_URL}/tournaments/nameCheck/${trimmedName}`,
+        {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+            },
+        }
+    );
+
 }

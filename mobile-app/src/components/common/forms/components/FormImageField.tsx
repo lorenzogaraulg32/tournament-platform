@@ -3,7 +3,7 @@ import {Pressable, StyleSheet, Text, View,} from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import FormLabel from "@/src/components/common/labels/FormLabel";
-import {SelectedImage} from "@/src/services/imagesService";
+import {SelectedImage} from "@/src/services/fileService";
 import Picture from "@/src/components/common/images/Picture";
 import {paletteVariants, Variant} from "@/src/constants/PaletteManager";
 import {colors} from "@/src/constants/theme";

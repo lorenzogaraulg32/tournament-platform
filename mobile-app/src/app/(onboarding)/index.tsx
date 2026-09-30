@@ -12,7 +12,7 @@ import {
     validateUsername,
     validateUserSportsAndRoles,
 } from "@/src/constants/helpers/validationHelper";
-import {type SelectedImage, uploadProfilePicture,} from "@/src/services/imagesService";
+import {type SelectedImage, uploadProfilePicture,} from "@/src/services/fileService";
 import NameAndSurnameStep from "@/src/components/pagesComponents/onBoarding/steps/NameAndSurnameStep";
 import UsernameAndLogoStep from "@/src/components/pagesComponents/onBoarding/steps/UsernameAndLogoStep";
 import BirthDateAndGenderStep from "@/src/components/pagesComponents/onBoarding/steps/BirthDateAndGenderStep";

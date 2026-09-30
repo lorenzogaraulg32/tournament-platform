@@ -1,7 +1,10 @@
-import {GeoLocation} from "@/src/services/common";
+import {GeoLocation, RecruitmentStatus} from "@/src/services/common";
 import {Sport} from "@/src/services/users/userConstants";
 
-export type RecruitmentStatus = "OPEN" | "CLOSED";
+
+
+
+
 
 export type TeamDetails = {
     id: string;

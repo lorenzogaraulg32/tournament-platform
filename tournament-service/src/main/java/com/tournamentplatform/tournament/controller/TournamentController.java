@@ -86,6 +86,16 @@ public class TournamentController {
     }
 
 
+    @GetMapping("/nameCheck/{teamName}")
+    public ResponseEntity<List<String>> checkNameAlreadyExists(
+            @PathVariable String teamName
+    ) {
+        tournamentService.checkNameAlreadyExists(teamName);
+        return ResponseEntity.ok().build();
+
+    }
+
+
     //restituisce il torneo aggiornato come fosse una get
     @PatchMapping("/{id}")
     public ResponseEntity<TournamentGetResponse> patchTournament(@PathVariable String id, @RequestBody @Valid TournamentPatchRequest patchRequest) {

@@ -1,15 +1,15 @@
-import { View } from "react-native";
+import {View} from "react-native";
 import FormInputField from "@/src/components/common/forms/components/FormInputField";
 import FormSwitch from "@/src/components/common/forms/components/FormSwitch";
-import type { RecruitmentStatus } from "@/src/services/teams/teamsConst";
-import type { Variant } from "@/src/constants/PaletteManager";
+import type {Variant} from "@/src/constants/PaletteManager";
+import {RecruitmentStatus} from "@/src/services/common";
 
 const RECRUITMENT_OPTIONS: {
     value: RecruitmentStatus;
     label: string;
 }[] = [
-    { value: "OPEN", label: "Aperte" },
-    { value: "CLOSED", label: "Chiuse" },
+    {value: "OPEN", label: "Aperte"},
+    {value: "CLOSED", label: "Chiuse"},
 ];
 
 type NameAndDescStepProps = {
@@ -22,21 +22,23 @@ type NameAndDescStepProps = {
     onChangeSwitch: (status: RecruitmentStatus) => void;
     errorMsgName?: string;
     errorMsgDesc?: string;
+    errorMsgRecruitment?: string;
     editable: boolean;
 };
 
-export default function NameAndDescStep({
-                                            variant,
-                                            nameValue,
-                                            descValue,
-                                            switchValue,
-                                            onChangeName,
-                                            onChangeDesc,
-                                            onChangeSwitch,
-                                            errorMsgName,
-                                            errorMsgDesc,
-                                            editable,
-                                        }: NameAndDescStepProps) {
+export default function NameDescRecruitmentStep({
+                                                    variant,
+                                                    nameValue,
+                                                    descValue,
+                                                    switchValue,
+                                                    onChangeName,
+                                                    onChangeDesc,
+                                                    onChangeSwitch,
+                                                    errorMsgName,
+                                                    errorMsgDesc,
+                                                    errorMsgRecruitment,
+                                                    editable,
+                                                }: NameAndDescStepProps) {
     return (
         <View>
             <FormInputField
@@ -65,7 +67,7 @@ export default function NameAndDescStep({
                 maxLength={160}
                 textAlignVertical="top"
                 editable={editable}
-                inputStyle={{ minHeight: 120 }}
+                inputStyle={{minHeight: 120}}
             />
 
             <FormSwitch
@@ -76,6 +78,7 @@ export default function NameAndDescStep({
                 value={switchValue}
                 onChange={onChangeSwitch}
                 disabled={!editable}
+                errorMsg={errorMsgRecruitment}
             />
         </View>
     );

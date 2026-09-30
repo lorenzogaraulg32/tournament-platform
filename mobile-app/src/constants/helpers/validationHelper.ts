@@ -1,6 +1,6 @@
 import {SPORT_ROLES} from "@/src/services/users/userConstants";
 import {UserModInfo, UserOnBoardingInfo} from "@/src/services/users/userService";
-import {SelectedImage} from "@/src/services/imagesService";
+import {SelectedImage} from "@/src/services/fileService";
 
 // Location opzionale, ma se presente deve essere valida
 export function validateUserLocation(

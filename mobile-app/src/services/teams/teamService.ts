@@ -1,7 +1,7 @@
 import {authenticatedFetch} from "@/src/services/fetchService";
 import {leaveTournament} from "@/src/services/tournaments/tournamentParticipationService";
 import {TeamCreationRequest, TeamDetails, TeamFormation, TeamUpdateRequest} from "@/src/services/teams/teamsConst";
-import {SelectedImage} from "@/src/services/imagesService";
+import {SelectedImage} from "@/src/services/fileService";
 import {File, Paths} from "expo-file-system";
 import {API_URL} from "@/src/services/common";
 import {throwApiRequestError} from "@/src/services/errorService";

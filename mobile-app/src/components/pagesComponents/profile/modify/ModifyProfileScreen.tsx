@@ -3,7 +3,7 @@ import {router} from "expo-router";
 
 import {loadCurrentUserId} from "@/src/services/users/authService";
 import {loadUserInfo, modUser, type UserModInfo,} from "@/src/services/users/userService";
-import type {SelectedImage} from "@/src/services/imagesService";
+import type {SelectedImage} from "@/src/services/fileService";
 import {Sport, SPORT_ROLES, type SportRole,} from "@/src/services/users/userConstants";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 

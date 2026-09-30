@@ -1,8 +1,8 @@
 import {View} from "react-native";
 import type {TeamCreationRequest, TeamErrorFields,} from "@/src/services/teams/teamsConst";
-import type {SelectedImage} from "@/src/services/imagesService";
+import type {SelectedImage} from "@/src/services/fileService";
 
-import NameAndDescStep from "@/src/components/pagesComponents/teams/steps/NameAndDescStep";
+import NameDescRecruitmentStep from "@/src/components/common/forms/commonSteps/NameDescRecruitmentStep";
 import PositionStep from "@/src/components/pagesComponents/teams/steps/PositionStep";
 import LogoStep from "@/src/components/pagesComponents/teams/steps/LogoStep";
 import SportStep from "@/src/components/pagesComponents/teams/steps/SportStep";
@@ -53,7 +53,7 @@ export default function CreateTeamPage({
         switch (currentStep) {
             case 0:
                 return (
-                    <NameAndDescStep
+                    <NameDescRecruitmentStep
                         variant={"teams"}
                         nameValue={team.name}
                         descValue={team.description ?? ""}

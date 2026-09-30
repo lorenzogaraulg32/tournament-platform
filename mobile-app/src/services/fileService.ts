@@ -28,6 +28,18 @@ export async function uploadProfilePicture(
 
 }
 
+export type SelectedDocument = {
+    uri: string;
+    fileName: string;
+    mimeType: string;
+    fileSize?: number;
+};
+
+function isPdf(file: SelectedDocument): boolean {
+    return file.mimeType === "application/pdf"
+        || file.fileName.toLowerCase().endsWith(".pdf");
+}
+
 
 
 

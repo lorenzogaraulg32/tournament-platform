@@ -2,8 +2,8 @@
 // si mostrano gli step per la modifica
 // ci sono le funzioni di validazione
 import {TeamDetails, TeamErrorFields, TeamUpdateRequest} from "@/src/services/teams/teamsConst";
-import {SelectedImage} from "@/src/services/imagesService";
-import NameAndDescStep from "@/src/components/pagesComponents/teams/steps/NameAndDescStep";
+import {SelectedImage} from "@/src/services/fileService";
+import NameDescRecruitmentStep from "@/src/components/common/forms/commonSteps/NameDescRecruitmentStep";
 import PositionStep from "@/src/components/pagesComponents/teams/steps/PositionStep";
 import LogoStep from "@/src/components/pagesComponents/teams/steps/LogoStep";
 import FormLayout from "@/src/components/common/forms/ layout/FormLayout";
@@ -65,7 +65,7 @@ export default function ModifyTeamPage({
         switch (currentStep) {
             case 0:
                 return (
-                    <NameAndDescStep
+                    <NameDescRecruitmentStep
                         variant={"teams"}
                         nameValue={newTeam.name ?? oldTeam.name}
                         descValue={newTeam.description ?? ""}

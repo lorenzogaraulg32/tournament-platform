@@ -1,6 +1,6 @@
 import {View} from "react-native";
 import type {Variant} from "@/src/constants/PaletteManager";
-import type {SelectedImage} from "@/src/services/imagesService";
+import type {SelectedImage} from "@/src/services/fileService";
 import FormInputField from "@/src/components/common/forms/components/FormInputField";
 import FormImageField from "@/src/components/common/forms/components/FormImageField";
 

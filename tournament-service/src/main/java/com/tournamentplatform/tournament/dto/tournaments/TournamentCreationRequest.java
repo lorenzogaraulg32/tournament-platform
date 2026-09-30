@@ -2,6 +2,8 @@ package com.tournamentplatform.tournament.dto.tournaments;
 
 import com.tournamentplatform.tournament.dto.position.GeoLocationRequest;
 import com.tournamentplatform.tournament.entity.TournamentFormat;
+import com.tournamentplatform.tournament.entity.misc.RecruitmentStatus;
+import com.tournamentplatform.tournament.entity.misc.Sport;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -18,11 +20,21 @@ public class TournamentCreationRequest {
 
 
     @NotBlank(message = "Nome obbligatorio")
+    @Size(max = 20, min = 5, message = "La descrizione deve avere minimo 5 caratteri e al massimo 20 caratteri")
     private String name;
 
     @NotBlank(message = "Descrizione obbligatoria")
-    @Size(max = 500, message = "La descrizione può avere al massimo 500 caratteri")
+    @Size(max = 160, message = "La descrizione può avere al massimo 160 caratteri")
     private String description;
+
+    @Valid
+    private GeoLocationRequest location;
+
+    @NotNull(message = "Il torneo deve essere associato ad uno sport")
+    private Sport sport;
+
+    @NotNull(message = "Il torneo deve avere un formato")
+    private TournamentFormat format;
 
     @NotNull(message = "Il torneo deve avere una data di inizio")
     private LocalDate startDate;
@@ -35,16 +47,10 @@ public class TournamentCreationRequest {
     private Integer minTeams;
 
     @NotNull(message = "Il torneo deve avere una numero massimo di squadre")
-    @Min(value = 2, message = "Il numero minimo di squadre deve essere almeno 2")
+    @Min(value = 2, message = "Il numero massimo di squadre deve essere almeno 2")
     private Integer maxTeams;
 
-    @NotNull(message = "Il torneo deve avere un formato")
-    private TournamentFormat format;
-
-    @Valid
-    private GeoLocationRequest location;
-
-    //codice di invito autogenerato dal server
-
+    @NotNull(message = "Recruitment status non presente")
+    private RecruitmentStatus recruitmentStatus;
 
 }

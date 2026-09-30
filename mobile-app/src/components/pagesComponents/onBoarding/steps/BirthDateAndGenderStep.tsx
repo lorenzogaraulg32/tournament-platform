@@ -1,12 +1,10 @@
-import {useState} from "react";
 import {Pressable, Text, View} from "react-native";
-import DateTimePicker, {type DateTimePickerEvent,} from "@react-native-community/datetimepicker";
 import AuthContent from "@/src/components/pagesComponents/auth/AuthContent";
 import OnBoardingContainer from "@/src/components/pagesComponents/auth/onboarding/OnBoardingContainer";
 import {Gender} from "@/src/services/users/userConstants";
-import {formatDateForBackend, parseBirthDate,} from "@/src/constants/helpers/parsingHelper";
 import OnBoardingNavigationButtons from "@/src/components/pagesComponents/onBoarding/OnBoardingNavigationButtons";
 import {onboardingStepStyles as styles} from "@/src/components/pagesComponents/onBoarding/onboardingStepStyles"
+import FormDateField from "@/src/components/common/forms/components/FormDateField";
 
 type BirthDateAndGenderStepProps = {
     birthDate: string | null;
@@ -29,19 +27,7 @@ export default function BirthDateAndGenderStep({
                                                    onBack,
                                                    onNext,
                                                }: BirthDateAndGenderStepProps) {
-    const [showBirthDatePicker, setShowBirthDatePicker] =
-        useState(false);
 
-    const handleBirthDateChange = (
-        event: DateTimePickerEvent,
-        selectedDate?: Date
-    ) => {
-        setShowBirthDatePicker(false);
-
-        if (event.type === "set" && selectedDate) {
-            onBirthDateChange(formatDateForBackend(selectedDate));
-        }
-    };
 
     return (
         <OnBoardingContainer
@@ -50,46 +36,15 @@ export default function BirthDateAndGenderStep({
             content={
                 <AuthContent style={styles.inputFieldsContainer}>
                     <View>
-                        <Text style={styles.sectionLabel}>
-                            Data di nascita
-                        </Text>
-
-                        <Pressable
-                            style={[
-                                styles.dateField,
-                                Boolean(birthDateError) &&
-                                styles.dateFieldError,
-                            ]}
-                            onPress={() =>
-                                setShowBirthDatePicker(true)
-                            }
-                        >
-                            <Text
-                                style={[
-                                    styles.dateText,
-                                    !birthDate &&
-                                    styles.datePlaceholder,
-                                ]}
-                            >
-                                {birthDate ??
-                                    "Seleziona la data di nascita"}
-                            </Text>
-                        </Pressable>
-
-                        {birthDateError && (
-                            <Text style={styles.fieldError}>
-                                {birthDateError}
-                            </Text>
-                        )}
-
-                        {showBirthDatePicker && (
-                            <DateTimePicker
-                                value={parseBirthDate(birthDate)}
-                                mode="date"
-                                maximumDate={new Date()}
-                                onChange={handleBirthDateChange}
-                            />
-                        )}
+                        <FormDateField
+                            variant="onBoarding"
+                            label="Data di nascita"
+                            value={birthDate}
+                            onChange={onBirthDateChange}
+                            placeholder="Seleziona la data di nascita"
+                            maximumDate={new Date()}
+                            errorMessage={birthDateError}
+                        />
 
                         <Text style={styles.sectionLabel}>
                             Genere

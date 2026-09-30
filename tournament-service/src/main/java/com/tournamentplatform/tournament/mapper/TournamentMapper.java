@@ -31,7 +31,8 @@ public class TournamentMapper {
                 tournament.getMatches(),
                 tournament.getLogoUrl(),
                 toGeoLocationResponse(tournament.getLocation()),
-                tournament.getInvitationCode()
+                tournament.getInvitationCode(),
+                tournament.getRecruitmentStatus()
         );
     }
 

@@ -9,6 +9,11 @@ public enum TournamentErrorCode implements ErrorCode {
             "Torneo non trovato"
     ),
 
+    TOURNAMENT_NAME_ALREADY(
+            "TOURNAMENT_NAME_ALREADY",
+            "Esiste già un torneo con questo nome"
+    ),
+
     USER_ALREADY_ADMIN(
             "TOURNAMENT_USER_IS_ALREADY_ADMIN",
             "L'utente è già un'amministratore del torneo"

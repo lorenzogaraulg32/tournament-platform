@@ -1,5 +1,5 @@
 import {Dispatch, SetStateAction, useCallback, useEffect, useRef, useState} from "react";
-import {TournamentDetails} from "@/src/services/tournaments/tournamentsDTO";
+import {TournamentDetails} from "@/src/services/tournaments/tournamentsConst";
 import {useToast} from "@/src/components/common/Toast/ToastProvider";
 import {loadUserInfo, UserInfo} from "@/src/services/users/userService";
 import {TeamDetails} from "@/src/services/teams/teamsConst";
@@ -88,9 +88,20 @@ export default function TournamentPage({
                 return;
             }
 
-            const teamResults = await Promise.allSettled(
-                tournament.registeredTeamIds.map((id) => fetchTeam(id))
-            );
+            if (tournament.registeredTeamIds) {
+                const teamResults = await Promise.allSettled(
+                    tournament.registeredTeamIds.map((id) => fetchTeam(id))
+                );
+                
+                const loadedTeams = teamResults
+                    .filter(
+                        (result): result is PromiseFulfilledResult<TeamDetails> =>
+                            result.status === "fulfilled"
+                    )
+                    .map((result) => result.value);
+
+                setTeams(loadedTeams);
+            }
 
             const adminResults = await Promise.allSettled(
                 tournament.adminsId.map((id) => loadUserInfo(id))
@@ -100,12 +111,6 @@ export default function TournamentPage({
                 return;
             }
 
-            const loadedTeams = teamResults
-                .filter(
-                    (result): result is PromiseFulfilledResult<TeamDetails> =>
-                        result.status === "fulfilled"
-                )
-                .map((result) => result.value);
 
             const loadedAdmins = adminResults
                 .filter(
@@ -114,7 +119,7 @@ export default function TournamentPage({
                 )
                 .map((result) => result.value);
 
-            setTeams(loadedTeams);
+
             setTournamentAdmins(loadedAdmins);
         } catch (error) {
             if (requestId !== compsRequestIdRef.current) {

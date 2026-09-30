@@ -3,7 +3,7 @@ import {useCallback, useRef, useState} from "react";
 import {router, useFocusEffect} from "expo-router";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import ButtonBackground from "@/src/components/common/buttons/ButtonBackground";
-import {TournamentDetails} from "@/src/services/tournaments/tournamentsDTO";
+import {TournamentDetails} from "@/src/services/tournaments/tournamentsConst";
 import {getCurrentUserTournaments} from "@/src/services/tournaments/tournamentsService";
 import LoadingSection from "@/src/components/common/loading/LoadingSection";
 import ErrorSection from "@/src/components/common/errors/ErrorSection";

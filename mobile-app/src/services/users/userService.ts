@@ -1,7 +1,7 @@
 import {DeletingStatus, Gender, Sport, UserSportRole} from "@/src/services/users/userConstants";
 import {authenticatedFetch} from "@/src/services/fetchService";
 import {GeoLocation} from "@/src/services/common";
-import {SelectedImage} from "@/src/services/imagesService";
+import {SelectedImage} from "@/src/services/fileService";
 import {File, Paths} from "expo-file-system";
 
 //Usato solo per la creazione utente non contiene logoUrl

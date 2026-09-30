@@ -5,7 +5,7 @@ import FormImageField from "@/src/components/common/forms/components/FormImageFi
 import OnBoardingContainer from "@/src/components/pagesComponents/auth/onboarding/OnBoardingContainer";
 import OnBoardingNavigationButtons from "@/src/components/pagesComponents/onBoarding/OnBoardingNavigationButtons";
 import {onboardingStepStyles as styles} from "@/src/components/pagesComponents/onBoarding/onboardingStepStyles"
-import type {SelectedImage} from "@/src/services/imagesService";
+import type {SelectedImage} from "@/src/services/fileService";
 
 type UsernameAndLogoStepProps = {
     username: string;

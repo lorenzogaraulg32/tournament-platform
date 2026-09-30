@@ -4,7 +4,7 @@ import {router} from "expo-router";
 import {normalizeApiRequestError, printApiRequestError,} from "@/src/services/errorService";
 import type {TeamCreationRequest, TeamErrorFields,} from "@/src/services/teams/teamsConst";
 import {checkTeamNameAlreadyExists, createTeam,} from "@/src/services/teams/teamService";
-import type {SelectedImage} from "@/src/services/imagesService";
+import type {SelectedImage} from "@/src/services/fileService";
 
 import CreateTeamPage, {
     FIRST_STEP,
@@ -132,7 +132,6 @@ export default function CreateTeamScreen() {
                     name: apiError.message,
                 }));
             } else {
-                printApiRequestError(apiError);
                 setApiError(apiError.message);
             }
 

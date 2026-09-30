@@ -5,6 +5,7 @@ import com.tournamentplatform.tournament.dto.tournaments.*;
 import com.tournamentplatform.tournament.entity.Tournament;
 import com.tournamentplatform.tournament.entity.TournamentStatus;
 import com.tournamentplatform.tournament.errorHandling.tournamentExceptions.TournamentInProgressException;
+import com.tournamentplatform.tournament.errorHandling.tournamentExceptions.TournamentNameAlreadyExistsException;
 import com.tournamentplatform.tournament.mapper.TournamentMapper;
 import com.tournamentplatform.tournament.repository.TournamentRepository;
 import lombok.AllArgsConstructor;
@@ -52,7 +53,8 @@ public class TournamentService {
                 tournamentHelper.generateUniqueInvitationCode(),
                 new HashSet<>(),
                 new ArrayList<>(),
-                mapper.toGeoLocation(request.getLocation())
+                mapper.toGeoLocation(request.getLocation()),
+                request.getRecruitmentStatus()
         );
 
         tournamentHelper.validateTournament(tournament);
@@ -196,5 +198,11 @@ public class TournamentService {
 
         tournament.getRegisteredTeamIds().remove(Long.valueOf(teamId));
 
+    }
+
+    public void checkNameAlreadyExists(String teamName) {
+        if (tournamentRepository.existsByName(teamName)) {
+            throw new TournamentNameAlreadyExistsException();
+        }
     }
 }

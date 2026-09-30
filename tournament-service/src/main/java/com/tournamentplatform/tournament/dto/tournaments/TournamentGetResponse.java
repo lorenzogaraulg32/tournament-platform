@@ -2,6 +2,7 @@ package com.tournamentplatform.tournament.dto.tournaments;
 
 import com.tournamentplatform.tournament.dto.position.GeoLocationResponse;
 import com.tournamentplatform.tournament.entity.TournamentMatch;
+import com.tournamentplatform.tournament.entity.misc.RecruitmentStatus;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,8 +28,9 @@ public record TournamentGetResponse(
         List<TournamentMatch> matches,
         String logoUrl,
         GeoLocationResponse location,
-        String invitationCode
-) {
+        String invitationCode,
+        RecruitmentStatus recruitmentStatus
+        ) {
 }
 
 

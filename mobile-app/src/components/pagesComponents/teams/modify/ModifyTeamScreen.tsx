@@ -3,7 +3,7 @@ import {router, useLocalSearchParams} from "expo-router";
 import {normalizeApiRequestError, printApiRequestError} from "@/src/services/errorService";
 import {TeamDetails, TeamErrorFields, TeamUpdateRequest} from "@/src/services/teams/teamsConst";
 import {checkTeamNameAlreadyExists, editTeam} from "@/src/services/teams/teamService";
-import {SelectedImage} from "@/src/services/imagesService";
+import {SelectedImage} from "@/src/services/fileService";
 import ModifyTeamPage, {
     FIRST_STEP,
     LAST_STEP,

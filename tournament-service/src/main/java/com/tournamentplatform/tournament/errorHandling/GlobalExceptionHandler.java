@@ -159,6 +159,18 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(TournamentNameAlreadyExistsException.class)
+    public ResponseEntity<ApiErrorResponse> handleTeamNameAlreadyExists(
+            TournamentNameAlreadyExistsException exception,
+            HttpServletRequest request
+    ) {
+        return buildResponse(
+                HttpStatus.CONFLICT,
+                exception,
+                request
+        );
+    }
+
 
 
     @ExceptionHandler(TournamentInProgressException.class)

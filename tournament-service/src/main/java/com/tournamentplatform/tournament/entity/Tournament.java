@@ -1,6 +1,7 @@
 package com.tournamentplatform.tournament.entity;
 
 import com.tournamentplatform.tournament.entity.misc.GeoLocation;
+import com.tournamentplatform.tournament.entity.misc.RecruitmentStatus;
 import com.tournamentplatform.tournament.entity.misc.Sport;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -29,7 +30,7 @@ public class Tournament {
 
     /* INFORMAZIONI GENERALI */
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @Column(name = "description", length = 500)
@@ -43,11 +44,19 @@ public class Tournament {
             name = "tournament_admins",
             joinColumns = @JoinColumn(name = "tournament_id")
     )
-    @Column(name = "user_id")
+    @Column(name = "admins_id")
     private List<String> adminsById = new ArrayList<>();
 
     @Column(name = "sport")
     private Sport sport;
+
+    @Enumerated(EnumType.STRING)
+    @Column(
+            name = "recruitment_status",
+            nullable = false,
+            length = 10
+    )
+    private RecruitmentStatus recruitmentStatus;
 
 
 
@@ -143,7 +152,8 @@ public class Tournament {
                       String invitationCode,
                       Set<Long> registeredTeamIds,
                       List<TournamentMatch> matches,
-                      GeoLocation location
+                      GeoLocation location,
+                      RecruitmentStatus recruitmentStatus
 
     ) {
         this.name = name;
@@ -159,6 +169,7 @@ public class Tournament {
         this.registeredTeamIds = registeredTeamIds;
         this.matches = matches;
         this.location = location;
+        this.recruitmentStatus = recruitmentStatus;
     }
 
     @PrePersist

@@ -2,6 +2,7 @@ package com.tournamentplatform.tournament.dto.tournaments;
 
 import com.tournamentplatform.tournament.entity.TournamentFormat;
 import com.tournamentplatform.tournament.entity.TournamentStatus;
+import com.tournamentplatform.tournament.entity.misc.RecruitmentStatus;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,8 +30,7 @@ public class TournamentPatchRequest {
 
     private TournamentStatus status;
 
-
-
+    private RecruitmentStatus recruitmentStatus;
 
 
 }

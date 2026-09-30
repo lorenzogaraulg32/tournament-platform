@@ -2,7 +2,7 @@ import {StyleSheet, Text, View} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Picture from "@/src/components/common/images/Picture";
 import HorizontalCardContainer from "@/src/components/common/carousel&cards/HorizontalCardContainer";
-import {TournamentStatus} from "@/src/services/tournaments/tournamentsDTO";
+import {TournamentStatus} from "@/src/services/tournaments/tournamentsConst";
 import {router, useSegments} from "expo-router";
 import {tournamentCardColors} from "@/src/constants/CardPalettesManager";
 
