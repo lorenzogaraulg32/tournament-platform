@@ -4,17 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Adapted Team-service to the new media storage service">
-      <change afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/errorHandling/teamsExceptions/TeamLogoException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/client/mediaService/MediaServiceClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/client/mediaService/RestClientConfig.java" afterDir="false" />
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Migration for new storage service completed also for user service, todo: fix frontend">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/errorHandling/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/errorHandling/GlobalExceptionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/errorHandling/TeamErrorCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/errorHandling/TeamErrorCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/errorHandling/imageExceptions/InvalidProfilePictureException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/errorHandling/imageExceptions/ProfilePictureNotFoundException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/errorHandling/imageExceptions/ProfilePictureStorageException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/errorHandling/imageExceptions/ProfilePictureTooLargeException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/dto/PatchUserRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/dto/PatchUserRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/dto/UserResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/dto/UserResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/mapper/UserMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/service/UserService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -152,11 +147,11 @@
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\pagesComponents\teams\field\fieldTypes" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.tournamentplatform.userservice.exceptions.userExceptions" />
       <recent name="com.tournamentplatform.userservice.client.mediaService" />
       <recent name="com.tournamentplatform.mediaservice.controller" />
       <recent name="com.tournamentplatform.mediaservice.exceptions" />
       <recent name="com.tournamentplatform.tournament.entity.misc" />
-      <recent name="com.tournamentplatform.tournament.errorHandling.tournamentExceptions" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -380,23 +375,7 @@
       <workItem from="1790338696573" duration="10735000" />
       <workItem from="1790688123170" duration="7255000" />
       <workItem from="1790769619154" duration="4395000" />
-      <workItem from="1790844505748" duration="16799000" />
-    </task>
-    <task id="LOCAL-00042" summary="Created a new microservice for managing users outside of auth context">
-      <option name="closed" value="true" />
-      <created>1786527632082</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1786527632082</updated>
-    </task>
-    <task id="LOCAL-00043" summary="created the onboarding section for user creation&#10;todo: connect the onboarding with backend">
-      <option name="closed" value="true" />
-      <created>1786621877057</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1786621877057</updated>
+      <workItem from="1790844505748" duration="18098000" />
     </task>
     <task id="LOCAL-00044" summary="Onboarding section complete, profile picture is managed correctly">
       <option name="closed" value="true" />
@@ -774,7 +753,23 @@
       <option name="project" value="LOCAL" />
       <updated>1790870702407</updated>
     </task>
-    <option name="localTasksCounter" value="91" />
+    <task id="LOCAL-00091" summary="Adjusted Exception Handling for teamService">
+      <option name="closed" value="true" />
+      <created>1790871855808</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1790871855808</updated>
+    </task>
+    <task id="LOCAL-00092" summary="Migration for new storage service completed also for user service, todo: fix frontend">
+      <option name="closed" value="true" />
+      <created>1790872828767</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1790872828767</updated>
+    </task>
+    <option name="localTasksCounter" value="93" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -792,8 +787,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Now tabs change colors accordingly to the active tab&#10;Created and tested TournamentCardHorizontal.tsx&#10;Finished myTournaments.tsx Section" />
-    <MESSAGE value="Added location, logo and invitation code to tournament, and adapted front-end" />
     <MESSAGE value="Now PlayerCard redirect to profile on click" />
     <MESSAGE value="Adjusted main layout&#10;Fixed navigation between scenes&#10;Now its possible to navigate between tabs with swipe motion" />
     <MESSAGE value="Now every section  in every page is collapsable" />
@@ -817,7 +810,9 @@
     <MESSAGE value="Standardized dates format" />
     <MESSAGE value="Implemented a new service whos responsible of managing media and files, todo: adapt old services" />
     <MESSAGE value="Adapted Team-service to the new media storage service" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adapted Team-service to the new media storage service" />
+    <MESSAGE value="Adjusted Exception Handling for teamService" />
+    <MESSAGE value="Migration for new storage service completed also for user service, todo: fix frontend" />
+    <option name="LAST_COMMIT_MESSAGE" value="Migration for new storage service completed also for user service, todo: fix frontend" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -1,5 +1,6 @@
 package com.tournamentplatform.userservice.service;
 
+import com.tournamentplatform.userservice.client.mediaService.MediaServiceClient;
 import com.tournamentplatform.userservice.dto.CreateUserRequest;
 import com.tournamentplatform.userservice.dto.PatchUserRequest;
 import com.tournamentplatform.userservice.dto.UserResponse;
@@ -14,6 +15,7 @@ import com.tournamentplatform.userservice.mapper.UserMapper;
 import com.tournamentplatform.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final ProfilePictureStorageService profilePictureStorageService;
+    private final MediaServiceClient mediaServiceClient;
     private final UserDeletionService userDeletionService;
     private final UserDeletionSagaService userDeletionSagaService;
 
@@ -61,11 +63,28 @@ public class UserService {
         return UserMapper.toResponse(user);
     }
 
+    public ResponseEntity<Resource> getUserAvatar(String userId) {
+
+        getUserEntity(userId);
+
+        MediaServiceClient.MediaResource media =
+                mediaServiceClient.getUserAvatar(userId);
+
+        if (media == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity
+                .ok()
+                .contentType(media.contentType())
+                .body(media.resource());
+    }
+
     @Transactional
     public UserResponse patchUser(
             String userId,
             PatchUserRequest request,
-            MultipartFile logo
+            MultipartFile avatar
     ) {
         User user = getUserEntity(userId);
 
@@ -96,17 +115,10 @@ public class UserService {
 
         validateSportConfiguration(user);
 
-        if (logo != null && !logo.isEmpty()) {
-            String profilePicUrl =
-                    profilePictureStorageService.storeProfilePicture(
-                            userId,
-                            logo
-                    );
-
-            user.setProfilePicUrl(profilePicUrl);
-        } else if ("REMOVE".equals(request.newPicUrl())) {
-            profilePictureStorageService.deleteProfilePicture(userId);
-            user.setProfilePicUrl(null);
+        if (avatar != null && !avatar.isEmpty()) {
+            mediaServiceClient.putUserAvatar(userId, avatar);
+        } else if (request.newPic()) {
+            mediaServiceClient.deleteUserAvatar(userId);
         }
 
         User updatedUser = userRepository.save(user);
@@ -140,15 +152,7 @@ public class UserService {
 
     @Transactional
     public void uploadProfilePicture(String userId, MultipartFile file) {
-        User user = getUserEntity(userId);
-
-        String profilePicUrl =
-                profilePictureStorageService
-                        .storeProfilePicture(userId, file);
-
-        user.setProfilePicUrl(profilePicUrl);
-
-        userRepository.save(user);
+        mediaServiceClient.putUserAvatar(userId,file);
     }
 
     private User getUserEntity(String userId) {
@@ -182,10 +186,6 @@ public class UserService {
         }
     }
 
-    public Resource getProfilePictureByFilename(String filename) {
-        return profilePictureStorageService
-                .loadProfilePicture(filename);
-    }
 
 
 }

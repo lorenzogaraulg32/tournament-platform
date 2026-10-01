@@ -1,6 +1,7 @@
 package com.tournamentplatform.userservice.service;
 
 import com.tournamentplatform.userservice.client.authService.AuthServiceClient;
+import com.tournamentplatform.userservice.client.mediaService.MediaServiceClient;
 import com.tournamentplatform.userservice.client.teamService.TeamServiceClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ public class UserDeletionSagaService {
 
     private final AuthServiceClient authServiceClient;
     private final UserDeletionService userDeletionService;
-    private final ProfilePictureStorageService profilePictureStorageService;
+    private final MediaServiceClient mediaServiceClient;
     private final TeamServiceClient teamServiceClient;
 
     public void completeDeletion(String userId) {
@@ -22,7 +23,7 @@ public class UserDeletionSagaService {
 
         authServiceClient.deleteUser(userId);
 
-        profilePictureStorageService.deleteProfilePicture(userId);
+        mediaServiceClient.deleteUserAvatar(userId);
 
         userDeletionService.deletePermanently(userId);
     }

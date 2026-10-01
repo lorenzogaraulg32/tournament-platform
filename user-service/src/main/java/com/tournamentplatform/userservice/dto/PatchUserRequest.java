@@ -35,7 +35,7 @@ public record PatchUserRequest(
         @Valid
         GeoLocationRequest location,
 
-        String newPicUrl
+        boolean newPic
 
 ) {
 }

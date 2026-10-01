@@ -77,8 +77,6 @@ public class User {
     })
     private GeoLocation location;
 
-    @Column(name = "profile_pic_url")
-    private String profilePicUrl;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)

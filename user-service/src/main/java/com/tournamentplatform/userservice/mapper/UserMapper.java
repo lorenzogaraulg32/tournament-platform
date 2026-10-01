@@ -68,7 +68,6 @@ public final class UserMapper {
                 user.getSports(),
                 roles,
                 toGeoLocationResponse(user.getLocation()),
-                user.getProfilePicUrl(),
                 user.getDeletingStatus()
         );
     }

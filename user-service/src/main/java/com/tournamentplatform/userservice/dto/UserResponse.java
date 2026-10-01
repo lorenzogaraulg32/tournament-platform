@@ -29,7 +29,6 @@ public record UserResponse(
 
         GeoLocationResponse location,
 
-        String profilePicUrl,
 
         DeletingStatus deletingStatus
 
