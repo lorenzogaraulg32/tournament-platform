@@ -4,22 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Implemented a new service whos responsible of managing media and files, todo: adapt old services">
-      <change afterPath="$PROJECT_DIR$/media-service/src/main/java/com/tournamentplatform/mediaservice/config/InternalServiceAuthenticationFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/client/MediaServiceClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/config/RestClientConfig.java" afterDir="false" />
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Adapted Team-service to the new media storage service">
+      <change afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/errorHandling/teamsExceptions/TeamLogoException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/client/mediaService/MediaServiceClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/tournamentplatform/userservice/client/mediaService/RestClientConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/media-service/src/main/java/com/tournamentplatform/mediaservice/service/MediaServiceHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/media-service/src/main/java/com/tournamentplatform/mediaservice/service/MediaServiceHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/config/InternalServiceAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/config/InternalServiceAuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/config/WebConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/controller/TeamController.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/controller/TeamController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/dto/teamCreation/TeamCreationResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/dto/teamGet/TeamResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/dto/teamGet/TeamResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/dto/teamModify/TeamUpdateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/dto/teamModify/TeamUpdateRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/entity/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/entity/Team.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/mapper/TeamMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/mapper/TeamMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/LogoStorageService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamService.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/service/TeamService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/errorHandling/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/errorHandling/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/errorHandling/TeamErrorCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/errorHandling/TeamErrorCode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/errorHandling/imageExceptions/InvalidProfilePictureException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/errorHandling/imageExceptions/ProfilePictureNotFoundException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/errorHandling/imageExceptions/ProfilePictureStorageException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/errorHandling/imageExceptions/ProfilePictureTooLargeException.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,11 +152,11 @@
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\pagesComponents\teams\field\fieldTypes" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.tournamentplatform.userservice.client.mediaService" />
       <recent name="com.tournamentplatform.mediaservice.controller" />
       <recent name="com.tournamentplatform.mediaservice.exceptions" />
       <recent name="com.tournamentplatform.tournament.entity.misc" />
       <recent name="com.tournamentplatform.tournament.errorHandling.tournamentExceptions" />
-      <recent name="com.tournamentplatform.userservice.exceptions.teamService" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -385,15 +380,7 @@
       <workItem from="1790338696573" duration="10735000" />
       <workItem from="1790688123170" duration="7255000" />
       <workItem from="1790769619154" duration="4395000" />
-      <workItem from="1790844505748" duration="15799000" />
-    </task>
-    <task id="LOCAL-00041" summary="Worked on team details page">
-      <option name="closed" value="true" />
-      <created>1786463631157</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1786463631157</updated>
+      <workItem from="1790844505748" duration="16799000" />
     </task>
     <task id="LOCAL-00042" summary="Created a new microservice for managing users outside of auth context">
       <option name="closed" value="true" />
@@ -779,7 +766,15 @@
       <option name="project" value="LOCAL" />
       <updated>1790867778435</updated>
     </task>
-    <option name="localTasksCounter" value="90" />
+    <task id="LOCAL-00090" summary="Adapted Team-service to the new media storage service">
+      <option name="closed" value="true" />
+      <created>1790870702406</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1790870702407</updated>
+    </task>
+    <option name="localTasksCounter" value="91" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -797,7 +792,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Tournament Section and refractoring" />
     <MESSAGE value="Now tabs change colors accordingly to the active tab&#10;Created and tested TournamentCardHorizontal.tsx&#10;Finished myTournaments.tsx Section" />
     <MESSAGE value="Added location, logo and invitation code to tournament, and adapted front-end" />
     <MESSAGE value="Now PlayerCard redirect to profile on click" />
@@ -822,7 +816,8 @@
     <MESSAGE value="Completed tournament creation section, need to test" />
     <MESSAGE value="Standardized dates format" />
     <MESSAGE value="Implemented a new service whos responsible of managing media and files, todo: adapt old services" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implemented a new service whos responsible of managing media and files, todo: adapt old services" />
+    <MESSAGE value="Adapted Team-service to the new media storage service" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adapted Team-service to the new media storage service" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

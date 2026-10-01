@@ -39,24 +39,9 @@ public enum TeamErrorCode implements ErrorCode {
             "Impossibile rimuovere il proprietario della squadra"
     ),
 
-    TEAM_INVALID_PIC(
-            "TOURNAMENT_INVALID_PIC",
+    TEAM_LOGO_ERROR(
+            "TEAM_LOGO_ERROR",
             "La foto profilo selezionata non è valida"
-    ),
-
-    TEAM_TOO_LARGE_PIC(
-            "TOURNAMENT_TOO_LARGE_PIC",
-            "La foto profilo selezionata è troppo grande"
-    ),
-
-    TEAM_PIC_NOT_FOUND(
-            "TOURNAMENT_PIC_NOT_FOUND",
-            "La foto profilo non è stata trovata"
-    ),
-
-    TEAM_PIC_IO_ERROR(
-            "TOURNAMENT_PIC_IO_ERROR",
-            "Errore nello storage della foto profilo"
     );
 
 

@@ -1,10 +1,6 @@
 package com.tournamentplatform.teamservice.errorHandling;
 
 import com.tournamentplatform.teamservice.dto.error.ApiErrorResponse;
-import com.tournamentplatform.teamservice.errorHandling.imageExceptions.InvalidProfilePictureException;
-import com.tournamentplatform.teamservice.errorHandling.imageExceptions.ProfilePictureNotFoundException;
-import com.tournamentplatform.teamservice.errorHandling.imageExceptions.ProfilePictureStorageException;
-import com.tournamentplatform.teamservice.errorHandling.imageExceptions.ProfilePictureTooLargeException;
 import com.tournamentplatform.teamservice.errorHandling.teamsExceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -189,7 +185,7 @@ public class GlobalExceptionHandler {
             HttpServletRequest request
     ) {
         return buildResponse(
-                HttpStatus.FORBIDDEN ,
+                HttpStatus.FORBIDDEN,
                 exception,
                 request
         );
@@ -201,7 +197,7 @@ public class GlobalExceptionHandler {
             HttpServletRequest request
     ) {
         return buildResponse(
-                HttpStatus.FORBIDDEN ,
+                HttpStatus.FORBIDDEN,
                 exception,
                 request
         );
@@ -213,7 +209,7 @@ public class GlobalExceptionHandler {
             HttpServletRequest request
     ) {
         return buildResponse(
-                HttpStatus.FORBIDDEN ,
+                HttpStatus.FORBIDDEN,
                 exception,
                 request
         );
@@ -226,65 +222,29 @@ public class GlobalExceptionHandler {
             HttpServletRequest request
     ) {
         return buildResponse(
-                HttpStatus.FORBIDDEN ,
+                HttpStatus.FORBIDDEN,
                 exception,
                 request
         );
     }
-
 
 
     //eccezioni foto
 
-    @ExceptionHandler(InvalidProfilePictureException.class)
-    public ResponseEntity<ApiErrorResponse> handleInvalidProfilePicture(
-            InvalidProfilePictureException exception,
+    @ExceptionHandler(TeamLogoException.class)
+    public ResponseEntity<ApiErrorResponse> handleLogoException(
+            TeamLogoException exception,
             HttpServletRequest request
     ) {
-        return buildResponse(
-                HttpStatus.BAD_REQUEST,
-                exception,
-                request
-        );
-    }
 
-    @ExceptionHandler(ProfilePictureNotFoundException.class)
-    public ResponseEntity<ApiErrorResponse> handleProfilePictureNotFound(
-            ProfilePictureNotFoundException exception,
-            HttpServletRequest request
-    ) {
         return buildResponse(
-                HttpStatus.NOT_FOUND,
+                exception.getStatus(),
                 exception,
                 request
         );
     }
 
 
-    @ExceptionHandler(ProfilePictureTooLargeException.class)
-    public ResponseEntity<ApiErrorResponse> handleProfilePictureTooLarge(
-            ProfilePictureTooLargeException exception,
-            HttpServletRequest request
-    ) {
-        return buildResponse(
-                HttpStatus.CONTENT_TOO_LARGE,
-                exception,
-                request
-        );
-    }
-
-
-    @ExceptionHandler(ProfilePictureStorageException.class)
-    public ResponseEntity<ApiErrorResponse> handleProfilePictureStorageError(
-            ProfilePictureStorageException exception,
-            HttpServletRequest request
-    ) {
-        return buildResponse(
-                HttpStatus.INTERNAL_SERVER_ERROR,
-                exception,
-                request
-        );
-    }
 
 
     /*----------------- Gestione eccezioni Spring e infrastrutturali  -------------------*/
