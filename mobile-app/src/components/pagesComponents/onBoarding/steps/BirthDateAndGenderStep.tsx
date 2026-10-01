@@ -5,13 +5,14 @@ import {Gender} from "@/src/services/users/userConstants";
 import OnBoardingNavigationButtons from "@/src/components/pagesComponents/onBoarding/OnBoardingNavigationButtons";
 import {onboardingStepStyles as styles} from "@/src/components/pagesComponents/onBoarding/onboardingStepStyles"
 import FormDateField from "@/src/components/common/forms/components/FormDateField";
+import {LocalDateString} from "@/src/services/common";
 
 type BirthDateAndGenderStepProps = {
-    birthDate: string | null;
+    birthDate: LocalDateString | null;
     gender: Gender | null;
     birthDateError?: string;
     genderError?: string;
-    onBirthDateChange: (value: string) => void;
+    onBirthDateChange: (value: LocalDateString) => void;
     onGenderChange: (value: Gender) => void;
     onBack: () => void;
     onNext: () => void;
