@@ -43,11 +43,7 @@ public class TeamUpdateRequest {
     private GeoLocationRequest location;
 
     @Setter
-    @Pattern(
-            regexp = "^REMOVE$",
-            message = "Operazione sul logo non valida"
-    )
-    private String newImageUrl;
+    private boolean imageRemoval;
 
     @JsonIgnore
     private boolean locationProvided;

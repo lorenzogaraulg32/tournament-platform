@@ -31,9 +31,6 @@ public class Team {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "image_url", length = 500)
-    private String imageUrl = null;
-
     @Enumerated(EnumType.STRING)
     @Column(
             name = "recruitment_status",

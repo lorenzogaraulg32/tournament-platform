@@ -23,7 +23,6 @@ public class TeamMapper {
                 team.getDescription(),
                 team.getStatus(),
                 toGeoLocationResponse(team.getLocation()),
-                buildPublicImageUrl(team),
                 team.getCreatorId(),
                 team.getPlayerIds(),
                 team.getAdminIds(),
@@ -63,18 +62,6 @@ public class TeamMapper {
                 location.getLatitude(),
                 location.getLongitude()
         );
-    }
-
-
-    private String buildPublicImageUrl(Team team) {
-        if (
-                team.getImageUrl() == null ||
-                        team.getImageUrl().isBlank()
-        ) {
-            return null;
-        }
-
-        return "/teams/" + team.getId() + "/logo";
     }
 
     public Formation toFormation(FormationRequest request) {

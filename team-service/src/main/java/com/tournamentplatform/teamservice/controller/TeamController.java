@@ -91,15 +91,6 @@ public class TeamController {
                 .body(response);
     }
 
-    @PatchMapping(
-            value = "/logo/{id}",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
-    )
-    public ResponseEntity<TeamResponse> patchTeamLogo(@PathVariable String id, @RequestParam("file") MultipartFile file) {
-        TeamResponse response = teamService.patchTeamLogo(id, file);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
-
 
     @PostMapping("/{id}/change_code")
     public ResponseEntity<TeamResponse> changeInvitationCode(

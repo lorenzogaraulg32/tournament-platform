@@ -1,5 +1,6 @@
 package com.tournamentplatform.teamservice.service;
 
+import com.tournamentplatform.teamservice.client.MediaServiceClient;
 import com.tournamentplatform.teamservice.dto.formation.FormationRequest;
 import com.tournamentplatform.teamservice.dto.formation.FormationResponse;
 import com.tournamentplatform.teamservice.dto.teamCreation.TeamCreationRequest;
@@ -11,8 +12,6 @@ import com.tournamentplatform.teamservice.mapper.TeamMapper;
 import com.tournamentplatform.teamservice.repository.TeamsRepository;
 import org.springframework.core.io.Resource;
 import org.springframework.http.CacheControl;
-import org.springframework.http.MediaType;
-import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,29 +21,26 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
-
 @Service
 public class TeamService {
 
     private final TeamsRepository teamsRepository;
     private final TeamAuthorizationHelper teamAuthorizationHelper;
-    private final LogoStorageService logoStorageService;
     private final ServicesHelper servicesHelper;
     private final TeamMapper mapper;
+    private final MediaServiceClient mediaClient;
 
     public TeamService(
             TeamsRepository teamsRepository,
             TeamAuthorizationHelper teamAuthorizationHelper,
-            LogoStorageService logoStorageService,
             ServicesHelper servicesHelper,
-            TeamMapper mapper) {
+            TeamMapper mapper, MediaServiceClient mediaClient
+    ) {
         this.teamsRepository = teamsRepository;
         this.teamAuthorizationHelper = teamAuthorizationHelper;
-        this.logoStorageService = logoStorageService;
         this.servicesHelper = servicesHelper;
         this.mapper = mapper;
-
+        this.mediaClient = mediaClient;
     }
 
     @Transactional
@@ -74,12 +70,10 @@ public class TeamService {
         Team savedTeam = teamsRepository.save(team);
 
         if (logo != null && !logo.isEmpty()) {
-            String logoUrl = logoStorageService.storeTeamLogo(
-                    team.getId(),
+            mediaClient.putTeamLogo(
+                    String.valueOf(savedTeam.getId()),
                     logo
             );
-
-            savedTeam.setImageUrl(logoUrl);
         }
 
         return mapper.toTeamResponse(savedTeam);
@@ -113,15 +107,9 @@ public class TeamService {
         }
 
         if (logo != null && !logo.isEmpty()) {
-            String logoUrl = logoStorageService.storeTeamLogo(
-                    team.getId(),
-                    logo
-            );
-
-            team.setImageUrl(logoUrl);
-        } else if ("REMOVE".equals(request.getNewImageUrl())) {
-            logoStorageService.deleteTeamLogo(team.getId());
-            team.setImageUrl(null);
+            mediaClient.putTeamLogo(String.valueOf(team.getId()), logo);
+        } else if (request.isImageRemoval()) {
+            mediaClient.deleteTeamLogo(String.valueOf(team.getId()));
         }
 
         if (request.getSport() != null && request.getSport() != team.getSport()) {
@@ -154,20 +142,17 @@ public class TeamService {
 
         teamAuthorizationHelper.checkTeamPlayer(team);
 
-        Resource logo =
-                logoStorageService.loadTeamLogo(
-                        team.getImageUrl()
+        MediaServiceClient.MediaResource media =
+                mediaClient.getTeamLogo(
+                        String.valueOf(team.getId())
                 );
 
-        MediaType contentType = MediaTypeFactory
-                .getMediaType(logo)
-                .orElse(APPLICATION_OCTET_STREAM);
 
         return ResponseEntity
                 .ok()
-                .contentType(contentType)
+                .contentType(media.contentType())
                 .cacheControl(CacheControl.noStore())
-                .body(logo);
+                .body(media.resource());
     }
 
     public TeamResponse patchTeamCode(String id) {
@@ -177,21 +162,6 @@ public class TeamService {
         teamAuthorizationHelper.checkTeamAdmin(team);
 
         team.setInvitationCode(servicesHelper.generateUniqueInvitationCode());
-
-        Team savedTeam = teamsRepository.save(team);
-
-        return mapper.toTeamResponse(savedTeam);
-    }
-
-    public TeamResponse patchTeamLogo(String id, MultipartFile file) {
-
-        Team team = servicesHelper.getTeamEntityOrThrow(id);
-
-        teamAuthorizationHelper.checkTeamAdmin(team);
-
-        String logoUrl = logoStorageService.storeTeamLogo(team.getId(), file);
-
-        team.setImageUrl(logoUrl);
 
         Team savedTeam = teamsRepository.save(team);
 
@@ -211,7 +181,7 @@ public class TeamService {
 
         teamsRepository.flush();
 
-        logoStorageService.deleteTeamLogo(teamId);
+        mediaClient.deleteTeamLogo(String.valueOf(team.getId()));
     }
 
     public List<TeamResponse> getUserTeams(String playerId) {

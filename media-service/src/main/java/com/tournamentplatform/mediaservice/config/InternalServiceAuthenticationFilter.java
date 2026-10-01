@@ -1,10 +1,9 @@
-package com.tournamentplatform.teamservice.config;
+package com.tournamentplatform.mediaservice.config;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -23,7 +22,8 @@ public class InternalServiceAuthenticationFilter
     private final String expectedToken;
 
     public InternalServiceAuthenticationFilter(
-            @Value("${internal.team-service.token}") String expectedToken
+            @Value("${internal.media-service.token}")
+            String expectedToken
     ) {
         this.expectedToken = expectedToken;
     }
@@ -33,7 +33,7 @@ public class InternalServiceAuthenticationFilter
             HttpServletRequest request
     ) {
         return !request.getRequestURI()
-                .startsWith("/teams/internal/");
+                .startsWith("/internal/media/");
     }
 
     @Override
@@ -46,22 +46,7 @@ public class InternalServiceAuthenticationFilter
         String receivedToken =
                 request.getHeader(INTERNAL_TOKEN_HEADER);
 
-        System.out.println(
-                "Internal request URI: " + request.getRequestURI()
-        );
-
-        System.out.println(
-                "Internal token present: "
-                        + (receivedToken != null && !receivedToken.isBlank())
-        );
-
-        boolean valid = isValidToken(receivedToken);
-
-        System.out.println(
-                "Internal token valid: " + valid
-        );
-
-        if (!valid) {
+        if (!isValidToken(receivedToken)) {
             response.sendError(
                     HttpServletResponse.SC_UNAUTHORIZED,
                     "Unauthorized internal request"

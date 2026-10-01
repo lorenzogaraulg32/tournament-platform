@@ -66,6 +66,10 @@ public class MediaServiceHelper {
             MediaCategory category
     ) {
 
+        if (!Files.exists(destination)) {
+            return;
+        }
+
         String mediaName = buildMediaName(category);
 
         try (
@@ -76,17 +80,8 @@ public class MediaServiceHelper {
                         )
         ) {
 
-            boolean deleted = false;
-
             for (Path file : files) {
                 Files.deleteIfExists(file);
-                deleted = true;
-            }
-
-            if (!deleted) {
-                throw new InvalidMediaFileException(
-                        "File non trovato"
-                );
             }
 
         } catch (IOException exception) {
@@ -102,6 +97,10 @@ public class MediaServiceHelper {
             MediaCategory category
     ) {
 
+        if (!Files.exists(destination)) {
+            return null;
+        }
+
         String mediaName = buildMediaName(category);
 
         try (
@@ -116,9 +115,7 @@ public class MediaServiceHelper {
                 return file;
             }
 
-            throw new InvalidMediaFileException(
-                    "File non trovato"
-            );
+            return null;
 
         } catch (IOException exception) {
             throw new MediaStorageException(

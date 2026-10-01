@@ -26,8 +26,6 @@ public class TeamResponse {
 
     GeoLocationResponse location;
 
-    private String imageUrl;
-
     private String creatorId;
 
     private Set<String> playerIds = new HashSet<>();
