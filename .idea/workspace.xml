@@ -4,10 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Completed tournament creation section, need to test">
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Implemented a new service whos responsible of managing media and files, todo: adapt old services">
+      <change afterPath="$PROJECT_DIR$/media-service/src/main/java/com/tournamentplatform/mediaservice/controller/TeamMediaController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media-service/src/main/java/com/tournamentplatform/mediaservice/controller/TournamentMediaController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media-service/src/main/java/com/tournamentplatform/mediaservice/controller/UserMediaController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media-service/src/main/java/com/tournamentplatform/mediaservice/entity/MediaCategory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media-service/src/main/java/com/tournamentplatform/mediaservice/exceptions/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media-service/src/main/java/com/tournamentplatform/mediaservice/exceptions/InvalidMediaFileException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media-service/src/main/java/com/tournamentplatform/mediaservice/exceptions/MediaStorageException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media-service/src/main/java/com/tournamentplatform/mediaservice/service/MediaService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media-service/src/main/java/com/tournamentplatform/mediaservice/service/MediaServiceHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/onBoarding/steps/BirthDateAndGenderStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/onBoarding/steps/BirthDateAndGenderStep.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/users/userService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/users/userService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/service/LogoStorageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/service/LogoStorageService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/service/TournamentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/service/TournamentService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,6 +27,9 @@
   </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$/api-gateway">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/media-service">
       <ProjectState />
     </projectState>
   </component>
@@ -66,52 +80,56 @@
     <option name="sortByType" value="true" />
     <option name="sortKey" value="BY_TYPE" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;HTTP Request.TournamentApplication | #1.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.AuthControllerTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.AuthIntegrationTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.AuthServiceTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.JwtAuthenticationFilterTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.JwtSeriveTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.JwtServiceTest.executor&quot;: &quot;Run&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Spring Boot.ApiGatewayApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.AuthServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.ServiceRegistryApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.TeamServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.TournamentApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.UserServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;21&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Lombax/Desktop/Progetto Gestione Tornei Calcetto/mobile-app/src/components/pagesComponents/tournaments/steps&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.35632184&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
-    &quot;service.view.auto.scroll.to.source&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Lombax\\Desktop\\Progetto Gestione Tornei Calcetto\\mobile-app\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Downloaded.Files.Path.Enabled": "false",
+    "HTTP Request.TournamentApplication | #1.executor": "Run",
+    "JUnit.AuthControllerTest.executor": "Run",
+    "JUnit.AuthIntegrationTest.executor": "Run",
+    "JUnit.AuthServiceTest.executor": "Run",
+    "JUnit.JwtAuthenticationFilterTest.executor": "Run",
+    "JUnit.JwtSeriveTest.executor": "Run",
+    "JUnit.JwtServiceTest.executor": "Run",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.ApiGatewayApplication.executor": "Run",
+    "Spring Boot.AuthServiceApplication.executor": "Run",
+    "Spring Boot.ServiceRegistryApplication.executor": "Run",
+    "Spring Boot.TeamServiceApplication.executor": "Run",
+    "Spring Boot.TournamentApplication.executor": "Run",
+    "Spring Boot.UserServiceApplication.executor": "Run",
+    "jdk.selected.JAVA_MODULE": "21",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Lombax/Desktop/Progetto Gestione Tornei Calcetto/media-service/src/main/resources",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.35632184",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "run.configurations.included.in.services": "true",
+    "service.view.auto.scroll.to.source": "true",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "C:\\Users\\Lombax\\Desktop\\Progetto Gestione Tornei Calcetto\\mobile-app\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ]
   }
-}</component>
+}]]></component>
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
   </component>
@@ -123,11 +141,11 @@
       <recent name="com.tournamentplatform.tournament.DTO" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\media-service\src\main\resources" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\pagesComponents\tournaments\steps" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\tournament-service\src\main\java\com\tournamentplatform\tournament\dto" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\tournament-service\src\main\java\com\tournamentplatform\tournament\entity\misc" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\pagesComponents\teams\field" />
-      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\app\(app)\profile" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\common\forms\commonSteps" />
@@ -137,11 +155,11 @@
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\pagesComponents\teams\field\fieldTypes" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.tournamentplatform.mediaservice.controller" />
+      <recent name="com.tournamentplatform.mediaservice.exceptions" />
       <recent name="com.tournamentplatform.tournament.entity.misc" />
       <recent name="com.tournamentplatform.tournament.errorHandling.tournamentExceptions" />
       <recent name="com.tournamentplatform.userservice.exceptions.teamService" />
-      <recent name="com.tournamentplatform.teamservice.config" />
-      <recent name="com.tournamentplatform.userservice.client" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -190,6 +208,14 @@
     <configuration name="AuthServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="auth-service" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.tournamentplatform.authservice.AuthServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MediaServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="media-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.qrmanager.mediaservice.MediaServiceApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -264,6 +290,7 @@
     </configuration>
     <list>
       <item itemvalue="HTTP Request.TournamentApplication | #1" />
+      <item itemvalue="Spring Boot.MediaServiceApplication" />
       <item itemvalue="Spring Boot.UserServiceApplication" />
       <item itemvalue="Spring Boot.TournamentApplication" />
       <item itemvalue="Spring Boot.TeamServiceApplication" />
@@ -356,15 +383,7 @@
       <workItem from="1790338696573" duration="10735000" />
       <workItem from="1790688123170" duration="7255000" />
       <workItem from="1790769619154" duration="4395000" />
-      <workItem from="1790844505748" duration="1257000" />
-    </task>
-    <task id="LOCAL-00039" summary="Rearranged [teamId] header &#10;Added options button to the main Header">
-      <option name="closed" value="true" />
-      <created>1786123579642</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1786123579642</updated>
+      <workItem from="1790844505748" duration="12948000" />
     </task>
     <task id="LOCAL-00040" summary="Rearranged [teamId] header &#10;Added options button to the main Header">
       <option name="closed" value="true" />
@@ -750,7 +769,15 @@
       <option name="project" value="LOCAL" />
       <updated>1790774404178</updated>
     </task>
-    <option name="localTasksCounter" value="88" />
+    <task id="LOCAL-00088" summary="Standardized dates format">
+      <option name="closed" value="true" />
+      <created>1790847345033</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1790847345033</updated>
+    </task>
+    <option name="localTasksCounter" value="89" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -768,8 +795,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Removed HorizontalCarousel.tsx&#10;Added CarouselContainer.tsx for graphical coerence. Now the fetch responsibility if of the external component, not on the carousel itself" />
-    <MESSAGE value="Init Tournaments Section" />
     <MESSAGE value="Tournament Section and refractoring" />
     <MESSAGE value="Now tabs change colors accordingly to the active tab&#10;Created and tested TournamentCardHorizontal.tsx&#10;Finished myTournaments.tsx Section" />
     <MESSAGE value="Added location, logo and invitation code to tournament, and adapted front-end" />
@@ -793,7 +818,9 @@
     <MESSAGE value="implemented role visual for field players" />
     <MESSAGE value="Fixed tournament section, now it's structured like the other entities. Same thing for frontend representing tournament entity" />
     <MESSAGE value="Completed tournament creation section, need to test" />
-    <option name="LAST_COMMIT_MESSAGE" value="Completed tournament creation section, need to test" />
+    <MESSAGE value="Standardized dates format" />
+    <MESSAGE value="Implemented a new service whos responsible of managing media and files, todo: adapt old services" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented a new service whos responsible of managing media and files, todo: adapt old services" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

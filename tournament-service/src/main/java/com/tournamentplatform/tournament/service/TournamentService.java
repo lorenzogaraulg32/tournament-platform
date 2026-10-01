@@ -62,7 +62,7 @@ public class TournamentService {
         Tournament savedTournament = tournamentHelper.saveTournament(tournament);
 
         if (logo != null && !logo.isEmpty()) {
-            String logoUrl = logoStorageService.storeTeamLogo(
+            String logoUrl = logoStorageService.storeLogo(
                     tournament.getId(),
                     logo
             );

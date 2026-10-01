@@ -3,6 +3,7 @@
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/api-gateway" />
+    <file type="web" url="file://$PROJECT_DIR$/media-service" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
@@ -14,6 +15,7 @@
         <option value="$PROJECT_DIR$/team-service/pom.xml" />
         <option value="$PROJECT_DIR$/tournament-service/pom.xml" />
         <option value="$PROJECT_DIR$/user-service/pom.xml" />
+        <option value="$PROJECT_DIR$/media-service/pom.xml" />
       </list>
     </option>
   </component>

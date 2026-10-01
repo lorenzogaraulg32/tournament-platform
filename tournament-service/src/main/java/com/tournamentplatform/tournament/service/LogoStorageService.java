@@ -45,7 +45,7 @@ public class LogoStorageService {
         }
     }
 
-    public String storeTeamLogo(Long teamId, MultipartFile file) {
+    public String storeLogo(Long teamId, MultipartFile file) {
         validateFile(file);
 
         ImageFormat imageFormat = detectImageFormat(file);
@@ -77,7 +77,7 @@ public class LogoStorageService {
                     StandardCopyOption.REPLACE_EXISTING
             );
 
-            deleteOtherTeamLogoFiles(
+            deleteOldLogo(
                     teamId,
                     filename
             );
@@ -89,55 +89,6 @@ public class LogoStorageService {
         }
     }
 
-    public Resource loadTeamLogo(String filename) {
-        if (filename == null || filename.isBlank()) {
-            throw new InvalidProfilePictureException();
-        }
-
-        String safeFilename = Path
-                .of(filename)
-                .getFileName()
-                .toString();
-
-        Path filePath = uploadDir
-                .resolve(safeFilename)
-                .normalize();
-
-        if (!filePath.startsWith(uploadDir)) {
-            throw new InvalidProfilePictureException();
-        }
-
-        if (!Files.exists(filePath) || !Files.isRegularFile(filePath)
-        ) {
-            throw new ProfilePictureNotFoundException();
-        }
-
-        return new FileSystemResource(filePath);
-    }
-
-    public void deleteTeamLogo(Long teamId) {
-        if (teamId == null) {
-            return;
-        }
-
-        String pattern =
-                "tournament-" + teamId + "-logo.*";
-
-        try (
-                DirectoryStream<Path> files =
-                        Files.newDirectoryStream(
-                                uploadDir,
-                                pattern
-                        )
-        ) {
-            for (Path file : files) {
-                Files.deleteIfExists(file);
-            }
-
-        } catch (IOException exception) {
-            throw new ProfilePictureStorageException();
-        }
-    }
 
 
     private void validateFile(MultipartFile file) {
@@ -211,7 +162,7 @@ public class LogoStorageService {
         }
     }
 
-    private void deleteOtherTeamLogoFiles(
+    private void deleteOldLogo(
             Long teamId,
             String currentFilename
     ) throws IOException {
