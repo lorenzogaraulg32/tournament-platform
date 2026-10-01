@@ -24,31 +24,11 @@ public enum UserErrorCode implements ErrorCode {
             "Utente non trovato"
     ),
 
-    USER_INVALID_PIC(
-            "USER_INVALID_PIC",
-            "La foto profilo selezionata non è valida"
-    ),
-
-    USER_TOO_LARGE_PIC(
-            "USER_TOO_LARGE_PIC",
-            "La foto profilo selezionata è troppo grande"
-    ),
-
-    USER_PIC_NOT_FOUND(
-            "USER_PIC_NOT_FOUND",
-            "La foto profilo non è stata trovata"
-    ),
-
-    USER_PIC_IO_ERROR(
-            "USER_PIC_IO_ERROR",
-            "Errore nello storage della foto profilo"
-    ),
-
-
-    OWNER_REMOVAL(
-            "TEAM_OWNER_REMOVAL",
-            "Impossibile rimuovere il proprietario della squadra"
+    USER_AVATAR_ERROR(
+            "USER_AVATAR_ERROR",
+            "Errore avatar utente"
     );
+
 
 
     private final String code;

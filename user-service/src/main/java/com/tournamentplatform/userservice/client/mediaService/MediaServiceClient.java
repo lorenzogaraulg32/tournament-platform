@@ -1,13 +1,19 @@
 package com.tournamentplatform.userservice.client.mediaService;
 
+
+import com.tournamentplatform.userservice.exceptions.userExceptions.UserAvatarException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -75,10 +81,24 @@ public class MediaServiceClient {
                     .retrieve()
                     .toBodilessEntity();
 
+        } catch (HttpClientErrorException | HttpServerErrorException exception) {
+
+            throw new UserAvatarException(
+                    HttpStatus.valueOf(
+                            exception.getStatusCode().value()
+                    )
+            );
+
+        } catch (ResourceAccessException exception) {
+
+            throw new UserAvatarException(
+                    HttpStatus.SERVICE_UNAVAILABLE
+            );
+
         } catch (IOException exception) {
-            throw new RuntimeException(
-                    "Errore durante la lettura del logo",
-                    exception
+
+            throw new UserAvatarException(
+                    HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
@@ -86,44 +106,78 @@ public class MediaServiceClient {
 
     public MediaResource getUserAvatar(String userId) {
 
-        ResponseEntity<byte[]> response = restClient
-                .get()
-                .uri(
-                        "/internal/media/user/{id}/avatar",
-                        userId
-                )
-                .header(
-                        "X-Internal-Service-Token",
-                        mediaServiceToken
-                )
-                .retrieve()
-                .toEntity(byte[].class);
+        try {
 
-        byte[] bytes = response.getBody();
+            ResponseEntity<byte[]> response = restClient
+                    .get()
+                    .uri(
+                            "/internal/media/user/{id}/avatar",
+                            userId
+                    )
+                    .header(
+                            "X-Internal-Service-Token",
+                            mediaServiceToken
+                    )
+                    .retrieve()
+                    .toEntity(byte[].class);
 
-        MediaType contentType =
-                response.getHeaders().getContentType();
+            byte[] bytes = response.getBody();
 
-        return new MediaResource(
-                new ByteArrayResource(bytes),
-                contentType
-        );
+            MediaType contentType =
+                    response.getHeaders().getContentType();
+
+            return new MediaResource(
+                    new ByteArrayResource(bytes),
+                    contentType
+            );
+
+        } catch (HttpClientErrorException | HttpServerErrorException exception) {
+
+            throw new UserAvatarException(
+                    HttpStatus.valueOf(
+                            exception.getStatusCode().value()
+                    )
+            );
+
+        } catch (ResourceAccessException exception) {
+
+            throw new UserAvatarException(
+                    HttpStatus.SERVICE_UNAVAILABLE
+            );
+        }
     }
+
 
     public void deleteUserAvatar(String userId) {
 
+        try {
 
-        restClient
-                .delete()
-                .uri(
-                        "/internal/media/user/{id}/avatar",
-                        userId
-                )
-                .header(
-                        "X-Internal-Service-Token",
-                        mediaServiceToken
-                )
-                .retrieve()
-                .toBodilessEntity();
+            restClient
+                    .delete()
+                    .uri(
+                            "/internal/media/user/{id}/avatar",
+                            userId
+                    )
+                    .header(
+                            "X-Internal-Service-Token",
+                            mediaServiceToken
+                    )
+                    .retrieve()
+                    .toBodilessEntity();
+
+        } catch (HttpClientErrorException | HttpServerErrorException exception) {
+
+            throw new UserAvatarException(
+                    HttpStatus.valueOf(
+                            exception.getStatusCode().value()
+                    )
+            );
+
+        } catch (ResourceAccessException exception) {
+
+            throw new UserAvatarException(
+                    HttpStatus.SERVICE_UNAVAILABLE
+            );
+        }
     }
 }

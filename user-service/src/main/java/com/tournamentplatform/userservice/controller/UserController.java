@@ -55,15 +55,13 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/profile_pictures/{filename:.+}")
-    public ResponseEntity<Resource> getUserProfilePicture(
-            @PathVariable String filename
+    @GetMapping("/{userId}/avatar")
+    public ResponseEntity<Resource> getUserAvatar(
+            @PathVariable String userId
     ) {
-        Resource resource =
-                userService.getProfilePictureByFilename(filename);
-
-        return ResponseEntity.ok(resource);
+        return userService.getUserAvatar(userId);
     }
+
 
 
     @GetMapping("/{userId}")
@@ -85,12 +83,12 @@ public class UserController {
     public ResponseEntity<UserResponse> patchUser(
             @AuthenticationPrincipal Jwt jwt,
             @Valid @RequestPart("user") PatchUserRequest request,
-            @RequestPart(value = "logo", required = false) MultipartFile logo
+            @RequestPart(value = "avatar", required = false) MultipartFile avatar
     ) {
         String userId = jwt.getSubject();
 
         UserResponse response =
-                userService.patchUser(userId, request, logo);
+                userService.patchUser(userId, request, avatar);
 
         return ResponseEntity.ok(response);
     }
