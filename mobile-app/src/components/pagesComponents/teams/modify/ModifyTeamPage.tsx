@@ -141,7 +141,10 @@ export default function ModifyTeamPage({
                 handleNext={onNext}
                 isSubmitting={isSubmitting}
                 step={formStep}
-                apiError={apiError}>
+                apiError={apiError}
+                btnVariant={"buttonRegister"}
+            >
+
                 <View pointerEvents={isSubmitting ? "none" : "auto"}>
                     {renderStep()}
                 </View>

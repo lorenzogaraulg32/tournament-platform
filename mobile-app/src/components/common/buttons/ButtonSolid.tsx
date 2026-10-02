@@ -1,14 +1,14 @@
 import {Pressable, PressableProps, StyleProp, StyleSheet, Text, ViewStyle} from "react-native";
 import {colors} from "@/src/constants/theme"
 
-type Variant = "base" | "buttonRegister" | "buttonLogin"
+export type BtnVariant = "base" | "buttonRegister" | "buttonLogin" | "profile" | "tournament"
 
 type TextVariant = "textBase" | "textRegister" | "textLogin"
 
 
 type ButtonSolidProps = Omit<PressableProps, "style"> & {
     text: string;
-    variant?: Variant;
+    variant?: BtnVariant;
     textVariant?: TextVariant;
     style?: StyleProp<ViewStyle>;
 };
@@ -91,4 +91,12 @@ const styles = StyleSheet.create({
         transform: [{scale: 0.98}],
         opacity: 0.9,
     },
+
+    profile: {
+        backgroundColor: colors.redDefault,
+    },
+
+    tournament: {
+        backgroundColor: colors.purpleDefault
+    }
 });

@@ -150,6 +150,7 @@ export default function ModifyProfilePage({
                 isSubmitting={isSubmitting}
                 step={formStep}
                 apiError={apiError}
+                btnVariant={"profile"}
             >
                 <View pointerEvents={isSubmitting ? "none" : "auto"}>
                     {renderStep()}

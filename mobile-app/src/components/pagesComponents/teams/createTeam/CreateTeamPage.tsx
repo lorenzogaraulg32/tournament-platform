@@ -135,6 +135,7 @@ export default function CreateTeamPage({
                 isSubmitting={isSubmitting}
                 step={formStep}
                 apiError={apiError}
+                btnVariant={"buttonRegister"}
             >
                 <View pointerEvents={isSubmitting ? "none" : "auto"}>
                     {renderStep()}

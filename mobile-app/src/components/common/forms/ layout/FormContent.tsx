@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View} from "react-native";
-import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
+import ButtonSolid, {BtnVariant} from "@/src/components/common/buttons/ButtonSolid";
 import {ReactNode} from "react";
 
 
@@ -10,10 +10,11 @@ type FormContentProps = {
     handleBack: () => void,
     handleNext: () => void,
     apiError? : string,
+    btnVariant : BtnVariant,
 }
 
 
-export default function FormContent({step, children, isSubmitting, handleBack, handleNext, apiError}: FormContentProps) {
+export default function FormContent({step, children, isSubmitting, handleBack, handleNext, apiError, btnVariant}: FormContentProps) {
     return (
         <View style={styles.formContainer}>
         {children}
@@ -38,7 +39,7 @@ export default function FormContent({step, children, isSubmitting, handleBack, h
 
             <ButtonSolid
                 style={styles.btn}
-                variant="buttonRegister"
+                variant={btnVariant}
                 textVariant="textRegister"
                 onPress={handleNext}
                 disabled={isSubmitting}
