@@ -64,7 +64,7 @@ export default function ToastProvider({
                         pointerEvents="none"
                         style={[
                             styles.overlay,
-                            {bottom: insets.bottom + 70 + 24},
+                            {bottom: insets.bottom + 70 + 50},
                         ]}
                     >
                         <Toast

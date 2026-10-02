@@ -34,7 +34,7 @@ export default function HeaderForm({
                     ]}
                 >
                     <Picture
-                        logoUrl=""
+                        image={null}
                         variant={variant}
                         style={styles.logo}
                     />

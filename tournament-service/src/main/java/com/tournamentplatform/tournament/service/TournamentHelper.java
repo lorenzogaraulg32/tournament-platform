@@ -1,23 +1,25 @@
 package com.tournamentplatform.tournament.service;
 
+import com.tournamentplatform.tournament.client.MediaServiceClient;
 import com.tournamentplatform.tournament.dto.tournaments.TournamentPatchRequest;
 import com.tournamentplatform.tournament.entity.Tournament;
 import com.tournamentplatform.tournament.entity.TournamentStatus;
 import com.tournamentplatform.tournament.errorHandling.tournamentExceptions.InvalidTournamentException;
 import com.tournamentplatform.tournament.errorHandling.tournamentExceptions.TournamentNotFoundException;
 import com.tournamentplatform.tournament.repository.TournamentRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
 @Component
+@AllArgsConstructor
 public class TournamentHelper {
 
     private final TournamentRepository tournamentRepository;
+    private final MediaServiceClient mediaServiceClient;
 
-    public TournamentHelper(TournamentRepository tournamentRepository) {
-        this.tournamentRepository = tournamentRepository;
-    }
 
     public Tournament findOrThrow(String id) {
         return tournamentRepository.findById(Long.valueOf(id)).orElseThrow(TournamentNotFoundException::new);
@@ -52,7 +54,7 @@ public class TournamentHelper {
         }
     }
 
-    public void applyTournamentPatch(Tournament tournament, TournamentPatchRequest request) {
+    public void applyTournamentPatch(Tournament tournament, TournamentPatchRequest request, MultipartFile logo, MultipartFile rules) {
 
         if (request.getName() != null) {
             tournament.setName(request.getName());
@@ -85,6 +87,16 @@ public class TournamentHelper {
         if (request.getStatus() != null) {
             tournament.setStatus(request.getStatus());
         }
+
+        if (logo != null && !logo.isEmpty()) {
+
+            mediaServiceClient.putTournamentFile(String.valueOf(tournament.getId()), logo, "/internal/media/tournament/{id}/logo");
+
+        } else if (Boolean.TRUE.equals(request.isRemoveLogo())) {
+
+            mediaServiceClient.putTournamentFile(String.valueOf(tournament.getId()), rules, "/internal/media/tournament/{id}/rules");
+        }
+
     }
 
     public boolean canBeDeleted(Tournament tournament) {

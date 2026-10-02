@@ -1,7 +1,11 @@
 package com.tournamentplatform.tournament.service;
 
 
-import com.tournamentplatform.tournament.dto.tournaments.*;
+import com.tournamentplatform.tournament.client.MediaServiceClient;
+import com.tournamentplatform.tournament.dto.tournaments.TournamentCreationRequest;
+import com.tournamentplatform.tournament.dto.tournaments.TournamentGetResponse;
+import com.tournamentplatform.tournament.dto.tournaments.TournamentPatchRequest;
+import com.tournamentplatform.tournament.dto.tournaments.UserTournamentsResponse;
 import com.tournamentplatform.tournament.entity.Tournament;
 import com.tournamentplatform.tournament.entity.TournamentStatus;
 import com.tournamentplatform.tournament.errorHandling.tournamentExceptions.TournamentInProgressException;
@@ -9,6 +13,9 @@ import com.tournamentplatform.tournament.errorHandling.tournamentExceptions.Tour
 import com.tournamentplatform.tournament.mapper.TournamentMapper;
 import com.tournamentplatform.tournament.repository.TournamentRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.http.CacheControl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,13 +33,13 @@ public class TournamentService {
     private final TournamentRepository tournamentRepository;
     private final TournamentHelper tournamentHelper;
     private final TournamentAuthorizationHelper tournamentAuthorizationHelper;
-    private final LogoStorageService logoStorageService;
+    private final MediaServiceClient mediaClient;
     private final TournamentMapper mapper;
 
 
     //creazione del torneo
     @Transactional
-    public TournamentCreationResponse createTournament(TournamentCreationRequest request, MultipartFile logo) {
+    public TournamentGetResponse createTournament(TournamentCreationRequest request, MultipartFile logo, MultipartFile rules) {
 
         String userId = tournamentAuthorizationHelper.getCurrentUserId();
 
@@ -62,15 +69,23 @@ public class TournamentService {
         Tournament savedTournament = tournamentHelper.saveTournament(tournament);
 
         if (logo != null && !logo.isEmpty()) {
-            String logoUrl = logoStorageService.storeLogo(
-                    tournament.getId(),
-                    logo
+            mediaClient.putTournamentFile(
+                    String.valueOf(savedTournament.getId()),
+                    logo,
+                    "/internal/media/tournament/{id}/logo"
             );
-
-            savedTournament.setLogoUrl(logoUrl);
         }
 
-        return new TournamentCreationResponse(String.valueOf(savedTournament.getId()));
+
+        if (rules != null && !rules.isEmpty()) {
+            mediaClient.putTournamentFile(
+                    String.valueOf(savedTournament.getId()),
+                    rules,
+                    "/internal/media/tournament/{id}/rules"
+            );
+        }
+
+        return mapper.toTournamentGetResponse(savedTournament);
     }
 
 
@@ -126,12 +141,12 @@ public class TournamentService {
     }
 
 
-    public TournamentGetResponse patchTournament(String id, TournamentPatchRequest patchRequest) {
+    public TournamentGetResponse patchTournament(String id, TournamentPatchRequest patchRequest, MultipartFile logo, MultipartFile rules) {
 
         Tournament tournament = tournamentHelper.findOrThrow(id);
         tournamentAuthorizationHelper.checkTournamentAdmin(tournament);
 
-        tournamentHelper.applyTournamentPatch(tournament, patchRequest);
+        tournamentHelper.applyTournamentPatch(tournament, patchRequest, logo, rules);
 
         tournamentHelper.validateTournament(tournament);
 
@@ -205,4 +220,27 @@ public class TournamentService {
             throw new TournamentNameAlreadyExistsException();
         }
     }
+
+    public ResponseEntity<Resource> getTournamentMedia(String tournamentId, String mediaType) {
+        MediaServiceClient.MediaResource media = null;
+
+        if (mediaType.equals("logo")) {
+            media = mediaClient.getTournamentFile(String.valueOf(tournamentId), "/internal/media/tournament/{id}/logo");
+        } else if (mediaType.equals("rules")) {
+            media = mediaClient.getTournamentFile(String.valueOf(tournamentId), "/internal/media/tournament/{id}/rules");
+        } else {
+            return ResponseEntity.status(404).build();
+        }
+
+
+        return ResponseEntity
+                .ok()
+                .contentType(media.contentType())
+                .cacheControl(CacheControl.noStore())
+                .body(media.resource());
+
+
+    }
+
+
 }

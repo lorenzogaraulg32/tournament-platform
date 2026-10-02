@@ -2,6 +2,7 @@ package com.tournamentplatform.teamservice.client;
 
 import com.tournamentplatform.teamservice.errorHandling.teamsExceptions.TeamLogoException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class MediaServiceClient {
     private final String mediaServiceToken;
 
     public MediaServiceClient(
-            RestClient.Builder builder,
+            @LoadBalanced RestClient.Builder builder,
             @Value("${internal.media-service.token}")
             String mediaServiceToken
     ) {

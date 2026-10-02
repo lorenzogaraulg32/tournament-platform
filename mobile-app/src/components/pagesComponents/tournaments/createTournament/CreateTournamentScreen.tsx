@@ -1,5 +1,5 @@
 import {useRef, useState} from "react";
-import {TournamentCreationRequest, TournamentErrorFields} from "@/src/services/tournaments/tournamentsConst";
+import {TournamentCreationRequest, TournamentErrorFields} from "@/src/services/tournaments/tournamentDTO";
 import CreateTournamentPage, {
     FIRST_STEP,
     LAST_STEP,
@@ -7,10 +7,10 @@ import CreateTournamentPage, {
     TournamentCreationStep,
 } from "@/src/components/pagesComponents/tournaments/createTournament/CreateTournamentPage";
 import {normalizeApiRequestError, printApiRequestError} from "@/src/services/errorService";
-import {checkTournamentNameAlreadyExists, createTournament} from "@/src/services/tournaments/tournamentsService";
+import {checkTournamentNameAlreadyExists, createTournament} from "@/src/services/tournaments/tournamentService";
 import {router} from "expo-router";
 import {isAfter, isTodayOrFuture} from "@/src/services/common";
-import {isPdf, Media} from "@/src/services/mediaService";
+import {isPdf} from "@/src/services/mediaService";
 
 
 export default function CreateTournamentScreen() {
@@ -37,10 +37,9 @@ export default function CreateTournamentScreen() {
         minTeams: 2,
         maxTeams: 2,
         recruitmentStatus: "CLOSED",
+        logo: null,
+        rules: null,
     })
-
-    const [logo, setLogo] = useState<Media | null>(null);
-    const [rules, setRules] = useState<Media | null>(null);
 
     function updateTournamentData<K extends keyof TournamentCreationRequest>(
         field: K,
@@ -54,28 +53,6 @@ export default function CreateTournamentScreen() {
         setFieldErrors(previous => ({
             ...previous,
             [field]: undefined,
-        }));
-
-        setApiError("");
-    }
-
-    function updateLogo(newLogo: Media | null) {
-        setLogo(newLogo);
-
-        setFieldErrors(previous => ({
-            ...previous,
-            logo: undefined,
-        }));
-
-        setApiError("");
-    }
-
-    function updateRules(newRules: Media | null) {
-        setRules(newRules);
-
-        setFieldErrors(previous => ({
-            ...previous,
-            rules: undefined,
         }));
 
         setApiError("");
@@ -199,19 +176,19 @@ export default function CreateTournamentScreen() {
     function validateLogoAndRules() {
 
         const logoError =
-            logo?.fileSize !== undefined &&
-            logo.fileSize > 2 * 1024 * 1024
-                ? "Il logo non può superare i 2 MB"
+            tournamentData.logo?.fileSize !== undefined &&
+            tournamentData.logo.fileSize > 5 * 1024 * 1024
+                ? "Il logo non può superare i 5 MB"
                 : undefined;
 
         let rulesError: string | undefined
 
-        if (rules) {
-            if (!isPdf(rules)) {
+        if (tournamentData.rules) {
+            if (!isPdf(tournamentData.rules)) {
                 rulesError = "Sono supportati solo file di tipo .pdf";
             } else if (
-                rules.fileSize !== undefined &&
-                rules.fileSize > 5 * 1024 * 1024
+                tournamentData.rules.fileSize !== undefined &&
+                tournamentData.rules.fileSize > 5 * 1024 * 1024
             ) {
                 rulesError = "Il file regole non può superare i 5 MB";
             }
@@ -344,7 +321,7 @@ export default function CreateTournamentScreen() {
                 description: tournamentData.description?.trim() || undefined,
             };
 
-            const response = await createTournament(request, logo, rules);
+            const response = await createTournament(request);
 
             router.replace(`/tournaments/${response.id}`);
         } catch (error) {
@@ -364,15 +341,11 @@ export default function CreateTournamentScreen() {
     return (
         <CreateTournamentPage
             tournament={tournamentData}
-            logo={logo}
-            rules={rules}
             currentStep={currentStep}
             fieldErrors={fieldErrors}
             apiError={apiError}
             isSubmitting={isSubmitting}
             onChangeField={updateTournamentData}
-            onChangeLogo={updateLogo}
-            onChangeRules={updateRules}
             onBack={handleBack}
             onNext={handleNext}
         />

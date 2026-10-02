@@ -24,12 +24,10 @@ public class TournamentMapper {
                 tournament.getMaxTeams(),
                 tournament.getFormat().name(),
                 tournament.getStatus().name(),
-                tournament.getRulesUrl(),
                 tournament.getCreatedByUserId(),
                 tournament.getAdminsById(),
                 tournament.getRegisteredTeamIds(),
                 tournament.getMatches(),
-                tournament.getLogoUrl(),
                 toGeoLocationResponse(tournament.getLocation()),
                 tournament.getInvitationCode(),
                 tournament.getRecruitmentStatus()

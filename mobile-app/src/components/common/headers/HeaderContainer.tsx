@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         minHeight: 180,
         paddingHorizontal: 28,
         paddingTop: 55,
-        paddingBottom: 28,
+        paddingBottom: 40,
         justifyContent: "center",
     },
 

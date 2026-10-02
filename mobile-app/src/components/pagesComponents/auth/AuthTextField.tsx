@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
 
     fieldInput: {
         width: "100%",
-        height: 58,
+        height: 48,
         borderRadius: 18,
         paddingHorizontal: 18,
         backgroundColor: "rgba(255,255,255,0.30)",

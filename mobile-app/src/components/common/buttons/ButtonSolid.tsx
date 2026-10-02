@@ -1,5 +1,5 @@
 import {Pressable, PressableProps, StyleProp, StyleSheet, Text, ViewStyle} from "react-native";
-import {colors} from "../../../constants/theme"
+import {colors} from "@/src/constants/theme"
 
 type Variant = "base" | "buttonRegister" | "buttonLogin"
 
@@ -53,7 +53,7 @@ export default function ButtonSolid({
 const styles = StyleSheet.create({
     base: {
         width: "100%",
-        height: 58,
+        height: 48,
         borderRadius: 18,
         alignItems: "center",
         justifyContent: "center",

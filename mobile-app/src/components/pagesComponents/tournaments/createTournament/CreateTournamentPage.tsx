@@ -1,4 +1,4 @@
-import {TournamentCreationRequest, TournamentErrorFields} from "@/src/services/tournaments/tournamentsConst";
+import {TournamentCreationRequest, TournamentErrorFields} from "@/src/services/tournaments/tournamentDTO";
 import FormLayout from "@/src/components/common/forms/ layout/FormLayout";
 import HeaderForm from "@/src/components/common/headers/HeaderForm";
 import FormProgressBar from "@/src/components/common/forms/components/FormProgressBar";
@@ -10,7 +10,6 @@ import LogoAndRulesStep from "@/src/components/pagesComponents/tournaments/steps
 import SportAndFormatStep from "@/src/components/pagesComponents/tournaments/steps/SportAndFormatStep";
 import DateStep from "@/src/components/pagesComponents/tournaments/steps/DateStep";
 import NumberOfTeamsStep from "@/src/components/pagesComponents/tournaments/steps/NumberOfTeamsStep";
-import {Media} from "@/src/services/mediaService";
 
 
 export type TournamentCreationStep = 0 | 1 | 2 | 3 | 4 | 5;
@@ -22,9 +21,6 @@ export const STEPS: TournamentCreationStep[] = [0, 1, 2, 3, 4, 5];
 
 type CreateTournamentPageProps = {
     tournament: TournamentCreationRequest;
-    logo: Media | null;
-    rules: Media | null
-
     currentStep: TournamentCreationStep;
     fieldErrors: TournamentErrorFields;
     apiError: string;
@@ -35,9 +31,6 @@ type CreateTournamentPageProps = {
         value: TournamentCreationRequest[K],
     ) => void;
 
-    onChangeLogo: (logo: Media | null) => void;
-    onChangeRules: (rules: Media | null) => void;
-
     onBack: () => void;
     onNext: () => Promise<void>;
 }
@@ -45,15 +38,11 @@ type CreateTournamentPageProps = {
 
 export default function CreateTournamentPage({
                                                  tournament,
-                                                 logo,
-                                                 rules,
                                                  currentStep,
                                                  fieldErrors,
                                                  apiError,
                                                  isSubmitting,
                                                  onChangeField,
-                                                 onChangeLogo,
-                                                 onChangeRules,
                                                  onBack,
                                                  onNext
                                              }: CreateTournamentPageProps) {
@@ -97,16 +86,13 @@ export default function CreateTournamentPage({
             case 2 :
                 return (
                     <LogoAndRulesStep variant={"tournaments"}
-                                      image={logo}
-                                      file={rules}
-                                      onChangeImage={onChangeLogo}
-                                      onChangeFile={onChangeRules}
-                                      onRemoveFile={() => onChangeRules(null)}
+                                      image={tournament.logo}
+                                      file={tournament.logo}
+                                      onChangeImage={logo => onChangeField("logo", logo)}
+                                      onChangeFile={rules => onChangeField("rules", rules)}
                                       disabled={isSubmitting}
                                       errorMessageImage={fieldErrors.logo}
                                       errorMessageFile={fieldErrors.rules}
-                                      localFile={rules !== null}
-
                     />
                 )
 

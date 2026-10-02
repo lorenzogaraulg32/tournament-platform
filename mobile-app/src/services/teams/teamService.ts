@@ -20,12 +20,7 @@ export async function fetchTeam(teamId: string): Promise<TeamDetails> {
 
     const team: TeamDetails = await response.json() as TeamDetails;
 
-    return {
-        ...team,
-        logo: {
-            uri: `${API_URL}/teams/${encodeURIComponent(team.id)}/logo`,
-        },
-    };
+    return enrichTeamMedia(team);
 
 }
 
@@ -165,7 +160,9 @@ export async function fetchUserTeams(
         }
     );
 
-    return await response.json() as TeamDetails[];
+    const teams = await response.json() as TeamDetails[];
+
+    return teams.map(enrichTeamMedia);
 }
 
 
@@ -296,3 +293,13 @@ export async function checkTeamNameAlreadyExists(teamName: string): Promise<stri
 }
 
 
+function enrichTeamMedia(team: TeamDetails): TeamDetails {
+    const teamId = encodeURIComponent(String(team.id));
+
+    return {
+        ...team,
+        logo: {
+            uri: `${API_URL}/teams/${teamId}/logo`,
+        },
+    };
+}

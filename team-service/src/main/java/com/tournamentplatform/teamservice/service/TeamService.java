@@ -145,14 +145,10 @@ public class TeamService {
     }
 
     public ResponseEntity<Resource> getTeamLogo(String teamId) {
-
-        Team team = servicesHelper.getTeamEntityOrThrow(teamId);
-
-        teamAuthorizationHelper.checkTeamPlayer(team);
-
+        
         MediaServiceClient.MediaResource media =
                 mediaClient.getTeamLogo(
-                        String.valueOf(team.getId())
+                        String.valueOf(teamId)
                 );
 
 

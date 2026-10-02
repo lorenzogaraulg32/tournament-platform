@@ -34,7 +34,7 @@ export default function FormLabel({
                 >
                     <Ionicons
                         name={labelIconName}
-                        size={22}
+                        size={18}
                         color={palette.defaultColor}
                     />
                 </View>
@@ -96,8 +96,8 @@ const styles = StyleSheet.create({
     },
 
     iconContainer: {
-        width: 40,
-        height: 40,
+        width: 35,
+        height: 35,
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 20,

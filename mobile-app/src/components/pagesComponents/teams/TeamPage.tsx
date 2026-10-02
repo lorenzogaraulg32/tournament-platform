@@ -8,7 +8,7 @@ import PlayerCard from "@/src/components/common/carousel&cards/userCards/PlayerC
 import AdminCard from "@/src/components/common/carousel&cards/userCards/AdminCard";
 import {colors} from "@/src/constants/theme";
 import {TeamDetails, TeamFormation} from "@/src/services/teams/teamDTO";
-import {fetchUser, UserInfo} from "@/src/services/users/userService";
+import {fetchUser} from "@/src/services/users/userService";
 import {Dispatch, SetStateAction, useCallback, useEffect, useRef, useState} from "react";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {removeTeamAdmin, removeTeamPlayer, updateTeamFormation} from "@/src/services/teams/teamService";
@@ -16,6 +16,7 @@ import showAlert from "@/src/components/common/errors/Alert";
 import {useToast} from "@/src/components/common/Toast/ToastProvider";
 import FieldLineup from "@/src/components/pagesComponents/teams/field/FieldLineup";
 import FullPageModal from "@/src/components/common/FullPageModal";
+import { UserInfo } from "@/src/services/users/userDTO";
 
 
 type TeamPageProps = {

@@ -2,15 +2,16 @@ import {StyleSheet, Text, View} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Picture from "@/src/components/common/images/Picture";
 import HorizontalCardContainer from "@/src/components/common/carousel&cards/HorizontalCardContainer";
-import {TournamentStatus} from "@/src/services/tournaments/tournamentsConst";
+import {TournamentStatus} from "@/src/services/tournaments/tournamentDTO";
 import {router, useSegments} from "expo-router";
 import {tournamentCardColors} from "@/src/constants/CardPalettesManager";
+import {Media} from "@/src/services/mediaService";
 
 type TournamentCardHorizontalProps = {
     id: number
     name: string;
     teamsCount: number;
-    logoUrl?: string;
+    logo: Media | null;
     status: TournamentStatus;
 }
 
@@ -29,8 +30,8 @@ function isTabName(
 
 export default function TournamentCardHorizontal({
                                                      id,
+                                                     logo,
                                                      name,
-                                                     logoUrl,
                                                      teamsCount,
                                                      status
                                                  }: TournamentCardHorizontalProps) {
@@ -67,7 +68,7 @@ export default function TournamentCardHorizontal({
         >
 
             <View style={styles.logoContainer}>
-                <Picture variant={"tournaments"} style={styles.logo} logoUrl={logoUrl}/>
+                <Picture variant={"tournaments"} style={styles.logo} image={logo}/>
             </View>
 
             <View style={styles.tournamentInfo}>

@@ -29,7 +29,7 @@ public class UserController {
     )
     public ResponseEntity<UserResponse> createUser(
             @AuthenticationPrincipal Jwt jwt,
-            @RequestPart("team")
+            @RequestPart("user")
             @Valid
             CreateUserRequest request,
 

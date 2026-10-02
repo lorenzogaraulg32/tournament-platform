@@ -1,7 +1,6 @@
-package com.tournamentplatform.userservice.client.mediaService;
+package com.tournamentplatform.tournament.client;
 
-
-import com.tournamentplatform.userservice.exceptions.userExceptions.UserAvatarException;
+import com.tournamentplatform.tournament.errorHandling.tournamentExceptions.TournamentLogoException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.core.io.ByteArrayResource;
@@ -29,6 +28,7 @@ public class MediaServiceClient {
     ) {
     }
 
+
     private final RestClient restClient;
     private final String mediaServiceToken;
 
@@ -46,9 +46,10 @@ public class MediaServiceClient {
     }
 
 
-    public void putUserAvatar(
-            String userId,
-            MultipartFile file
+    public void putTournamentFile(
+            String teamId,
+            MultipartFile file,
+            String uri
     ) {
 
         try {
@@ -67,11 +68,12 @@ public class MediaServiceClient {
 
             body.add("file", resource);
 
+
             restClient
                     .put()
                     .uri(
-                            "/internal/media/user/{id}/avatar",
-                            userId
+                            uri,
+                            teamId
                     )
                     .header(
                             "X-Internal-Service-Token",
@@ -84,7 +86,7 @@ public class MediaServiceClient {
 
         } catch (HttpClientErrorException | HttpServerErrorException exception) {
 
-            throw new UserAvatarException(
+            throw new TournamentLogoException(
                     HttpStatus.valueOf(
                             exception.getStatusCode().value()
                     )
@@ -92,28 +94,28 @@ public class MediaServiceClient {
 
         } catch (ResourceAccessException exception) {
 
-            throw new UserAvatarException(
+            throw new TournamentLogoException(
                     HttpStatus.SERVICE_UNAVAILABLE
             );
 
         } catch (IOException exception) {
 
-            throw new UserAvatarException(
+            throw new TournamentLogoException(
                     HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
 
 
-    public MediaResource getUserAvatar(String userId) {
+    public MediaResource getTournamentFile(String teamId, String uri) {
 
         try {
 
             ResponseEntity<byte[]> response = restClient
                     .get()
                     .uri(
-                            "/internal/media/user/{id}/avatar",
-                            userId
+                            uri,
+                            teamId
                     )
                     .header(
                             "X-Internal-Service-Token",
@@ -134,7 +136,7 @@ public class MediaServiceClient {
 
         } catch (HttpClientErrorException | HttpServerErrorException exception) {
 
-            throw new UserAvatarException(
+            throw new TournamentLogoException(
                     HttpStatus.valueOf(
                             exception.getStatusCode().value()
                     )
@@ -142,22 +144,22 @@ public class MediaServiceClient {
 
         } catch (ResourceAccessException exception) {
 
-            throw new UserAvatarException(
+            throw new TournamentLogoException(
                     HttpStatus.SERVICE_UNAVAILABLE
             );
         }
     }
 
 
-    public void deleteUserAvatar(String userId) {
+    public void deleteTournamentFile(String teamId, String uri) {
 
         try {
 
             restClient
                     .delete()
                     .uri(
-                            "/internal/media/user/{id}/avatar",
-                            userId
+                            uri,
+                            teamId
                     )
                     .header(
                             "X-Internal-Service-Token",
@@ -168,7 +170,7 @@ public class MediaServiceClient {
 
         } catch (HttpClientErrorException | HttpServerErrorException exception) {
 
-            throw new UserAvatarException(
+            throw new TournamentLogoException(
                     HttpStatus.valueOf(
                             exception.getStatusCode().value()
                     )
@@ -176,7 +178,7 @@ public class MediaServiceClient {
 
         } catch (ResourceAccessException exception) {
 
-            throw new UserAvatarException(
+            throw new TournamentLogoException(
                     HttpStatus.SERVICE_UNAVAILABLE
             );
         }

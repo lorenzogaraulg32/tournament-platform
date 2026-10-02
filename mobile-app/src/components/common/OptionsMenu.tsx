@@ -181,9 +181,9 @@ const styles = StyleSheet.create({
         width: 170,
         paddingVertical: 6,
         borderRadius: 14,
-        backgroundColor: "#16352A",
+        backgroundColor: "rgba(0,35,21,0.95)",
         borderWidth: 1,
-        borderColor: "rgba(255,255,255,0.15)",
+        borderColor: "#008F4E",
         elevation: 8,
         shadowColor: "#000",
         shadowOffset: {width: 0, height: 4},
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
     divider: {
         height: 1,
         marginHorizontal: 12,
-        backgroundColor: "rgba(255,255,255,0.10)",
+        backgroundColor: "#008F4E",
     },
 
     itemPressed: {

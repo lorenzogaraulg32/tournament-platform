@@ -195,10 +195,10 @@ export default function FormImageField({
                                     ? "images-outline"
                                     : "cloud-upload-outline"}
                                 size={17}
-                                color="#FFFFFF"
+                                color={variant === "onBoarding" ? colors.greenDefault : "#FFFFFF"}
                             />
 
-                            <Text style={styles.selectButtonText}>
+                            <Text style={ variant === "onBoarding" ? styles.selectButtonTextOnboarding : styles.selectButtonText}>
                                 {value ? "Cambia" : "Scegli immagine"}
                             </Text>
                         </Pressable>
@@ -330,4 +330,11 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontWeight: "500",
     },
+
+    selectButtonTextOnboarding: {
+        color: colors.greenDefault,
+        fontSize: 13,
+        fontWeight: "800",
+    },
+
 });

@@ -104,15 +104,9 @@ public class Tournament {
 
 
     /* MISC */
-
-    @Column(name = "rules_url")
-    private String rulesUrl;
-
     @Column(name = "invitation_code", nullable = false, unique = true)
     private String invitationCode;
 
-    @Column(name = "logo_url", length = 500)
-    private String logoUrl = null;
 
     @OneToMany(
             mappedBy = "tournament",

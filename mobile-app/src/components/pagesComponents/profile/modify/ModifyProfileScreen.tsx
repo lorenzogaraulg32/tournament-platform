@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useRef, useState} from "react";
+ import {useCallback, useEffect, useRef, useState} from "react";
 import {router} from "expo-router";
 
 import {loadCurrentUserId} from "@/src/services/users/authService";

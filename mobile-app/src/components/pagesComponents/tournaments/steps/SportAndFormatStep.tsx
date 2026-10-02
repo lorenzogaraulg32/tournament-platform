@@ -4,7 +4,7 @@ import {colors} from "@/src/constants/theme";
 import type {Variant} from "@/src/constants/PaletteManager";
 import FormLabel from "@/src/components/common/labels/FormLabel";
 import FormSelectionButton from "@/src/components/common/forms/components/FormSelectionButton";
-import {TournamentFormat, TournamentFormatLabels} from "@/src/services/tournaments/tournamentsConst";
+import {TournamentFormat, TournamentFormatLabels} from "@/src/services/tournaments/tournamentDTO";
 
 type SportStepProps = {
     variant: Variant;

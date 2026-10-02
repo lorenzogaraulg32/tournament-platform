@@ -9,19 +9,10 @@ import {colors} from "@/src/constants/theme";
 import {Media} from "@/src/services/mediaService";
 
 
-export type SelectedFile = {
-    uri: string;
-    fileName: string;
-    mimeType: string;
-    fileSize?: number;
-};
-
-
 type FormFileFieldProps = {
     variant: Variant;
     value: Media | null;
     onChange: (file: Media | null) => void;
-    onRemove?: () => void;
     label?: string;
     optional?: boolean;
     disabled?: boolean;
@@ -31,7 +22,6 @@ type FormFileFieldProps = {
     maxFileSize?: number;
     acceptedFormatsLabel?: string;
     existingFileSource?: string;
-    local?: boolean;
 };
 
 
@@ -39,7 +29,6 @@ export default function FormFileField({
                                           variant,
                                           value,
                                           onChange,
-                                          onRemove,
                                           label = "File",
                                           optional = true,
                                           disabled = false,
@@ -163,12 +152,8 @@ export default function FormFileField({
 
     function removeFile() {
         setPickerError(null);
+        onChange(null);
 
-        if (onRemove) {
-            onRemove();
-        } else {
-            onChange(null);
-        }
     }
 
 

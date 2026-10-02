@@ -122,7 +122,7 @@ public class UserService {
 
         if (avatar != null && !avatar.isEmpty()) {
             mediaServiceClient.putUserAvatar(userId, avatar);
-        } else if (request.newPic()) {
+        } else if (request.removeAvatar()) {
             mediaServiceClient.deleteUserAvatar(userId);
         }
 

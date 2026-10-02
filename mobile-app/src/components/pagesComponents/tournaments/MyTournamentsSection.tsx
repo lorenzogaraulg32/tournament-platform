@@ -1,7 +1,7 @@
 import ErrorSection from "@/src/components/common/errors/ErrorSection";
 import {StyleSheet, Text, View} from "react-native";
 import {FontAwesome6} from "@expo/vector-icons";
-import {TournamentDetails} from "@/src/services/tournaments/tournamentsConst";
+import {TournamentDetails} from "@/src/services/tournaments/tournamentDTO";
 import {colors, corners} from "@/src/constants/theme";
 import TournamentCardHorizontal from "@/src/components/common/carousel&cards/TournamentCardHorizontal";
 
@@ -14,12 +14,12 @@ type TournamentSectionProps = {
 };
 
 export function MyTournamentsSection({
-                                      title,
-                                      subtitle,
-                                      icon,
-                                      tournaments,
-                                      emptyMessage,
-                                  }: TournamentSectionProps) {
+                                         title,
+                                         subtitle,
+                                         icon,
+                                         tournaments,
+                                         emptyMessage,
+                                     }: TournamentSectionProps) {
     return (
         <View>
             <View style={styles.sectionHeader}>
@@ -55,6 +55,7 @@ export function MyTournamentsSection({
                         name={tournament.name}
                         teamsCount={tournament.registeredTeamIds ? tournament.registeredTeamIds.length : 0}
                         status={tournament.status}
+                        logo={tournament.logo}
                     />
                 ))
             )}

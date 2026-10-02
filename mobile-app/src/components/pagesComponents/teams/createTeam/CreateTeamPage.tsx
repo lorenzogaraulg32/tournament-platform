@@ -19,8 +19,6 @@ export const STEPS: TeamCreationStep[] = [0, 1, 2, 3];
 
 type CreateTeamPageProps = {
     team: TeamCreationRequest;
-
-
     currentStep: TeamCreationStep;
     fieldErrors: TeamFormErrors;
     apiError: string;
@@ -35,7 +33,6 @@ type CreateTeamPageProps = {
 
 export default function CreateTeamPage({
                                            team,
-
                                            currentStep,
                                            fieldErrors,
                                            apiError,

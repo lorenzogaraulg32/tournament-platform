@@ -1,7 +1,7 @@
 import {Redirect, router, useFocusEffect, useLocalSearchParams} from "expo-router";
 import {useCallback, useRef, useState} from "react";
-import {TournamentDetails} from "@/src/services/tournaments/tournamentsConst";
-import {loadTournamentDetails, refreshCodeTournament} from "@/src/services/tournaments/tournamentsService";
+import {TournamentDetails} from "@/src/services/tournaments/tournamentDTO";
+import {loadTournamentDetails, refreshCodeTournament} from "@/src/services/tournaments/tournamentService";
 import {loadCurrentUserId} from "@/src/services/users/authService";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {Alert} from "react-native";

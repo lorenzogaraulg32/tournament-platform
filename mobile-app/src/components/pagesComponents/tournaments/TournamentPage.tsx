@@ -1,7 +1,7 @@
 import {Dispatch, SetStateAction, useCallback, useEffect, useRef, useState} from "react";
-import {TournamentDetails} from "@/src/services/tournaments/tournamentsConst";
+import {TournamentDetails} from "@/src/services/tournaments/tournamentDTO";
 import {useToast} from "@/src/components/common/Toast/ToastProvider";
-import {fetchUser, UserInfo} from "@/src/services/users/userService";
+import {fetchUser} from "@/src/services/users/userService";
 import {TeamDetails} from "@/src/services/teams/teamDTO";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {fetchTeam} from "@/src/services/teams/teamService";
@@ -15,6 +15,7 @@ import CollapsableSection from "@/src/components/common/CollapsableSection";
 import AdminCard from "@/src/components/common/carousel&cards/userCards/AdminCard";
 import {colors} from "@/src/constants/theme";
 import TeamCardHorizontal from "@/src/components/common/carousel&cards/teamCards/TeamCardHorizontal";
+import { UserInfo } from "@/src/services/users/userDTO";
 
 type TournamentPageProps = {
     tournament: TournamentDetails;

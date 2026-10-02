@@ -1,5 +1,6 @@
 import {GeoLocation, LocalDateString, RecruitmentStatus} from "@/src/services/common";
 import {Sport} from "@/src/services/users/userDTO";
+import {Media} from "@/src/services/mediaService";
 
 
 export enum TournamentFormat {
@@ -13,11 +14,11 @@ export const TournamentFormatLabels = {
         label: "Gironi",
         desc: "Il torneo srà organizzato unicamente in gironi"
     },
-    KNOWCKOUT:{
+    KNOWCKOUT: {
         label: "Eliminazione diretta",
         desc: "Il torneo srà organizzato unicamente in scontri ad eliminazione diretta"
     },
-    GROUPS_AND_KNOCKOUT:{
+    GROUPS_AND_KNOCKOUT: {
         label: "Gironi e eliminazione diretta",
         desc: "Il torneo srà organizzato con una fase a gironi ed una fase ad eliminazione diretta"
     }
@@ -53,6 +54,8 @@ export type TournamentCreationRequest = {
     endingDate: LocalDateString | null
     maxTeams: number
     minTeams: number
+    logo: Media | null,
+    rules: Media | null,
 }
 
 
@@ -68,14 +71,14 @@ export type TournamentDetails = {
     maxTeams: number,
     format: TournamentFormat,
     status: TournamentStatus,
-    rulesUrl?: string,
     createdById: string,
     adminsId: string[]
     registeredTeamIds?: string[],
     recruitmentStatus: RecruitmentStatus;
     location?: GeoLocation
-    logoUrl?: string | null;
     invitationCode: string;
+    logo: Media | null,
+    rules: Media | null,
 }
 
 export type TournamentErrorFields = {

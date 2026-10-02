@@ -48,25 +48,11 @@ public enum TournamentErrorCode implements ErrorCode {
 
 
 
-    TOURNAMENT_INVALID_PIC(
-            "TOURNAMENT_INVALID_PIC",
-            "La foto profilo selezionata non è valida"
-    ),
-
-    TOURNAMENT_TOO_LARGE_PIC(
-            "TOURNAMENT_TOO_LARGE_PIC",
-            "La foto profilo selezionata è troppo grande"
-    ),
-
-    TOURNAMENT_PIC_NOT_FOUND(
-            "TOURNAMENT_PIC_NOT_FOUND",
-            "La foto profilo non è stata trovata"
-    ),
-
-    TOURNAMENT_PIC_IO_ERROR(
-            "TOURNAMENT_PIC_IO_ERROR",
-            "Errore nello storage della foto profilo"
+    TOURAMENT_LOGO_ERROR(
+            "TOURAMENT_LOGO_ERROR",
+            "Errore logo torneo"
     );
+
 
 
     private final String code;

@@ -4,7 +4,7 @@ import {Sport} from "@/src/services/users/userDTO";
 import {FORMATIONS_BY_SPORT} from "@/src/components/pagesComponents/teams/field/consts/FieldConst";
 import SportField from "@/src/components/pagesComponents/teams/field/SportField";
 import {Pressable, StyleSheet, Text, View} from "react-native";
-import {UserInfo} from "@/src/services/users/userService";
+import {UserInfo} from "@/src/services/users/userDTO";
 import FullPageModal from "@/src/components/common/FullPageModal";
 import PlayerCard from "@/src/components/common/carousel&cards/userCards/PlayerCard";
 import FieldPlayerCard from "@/src/components/common/carousel&cards/userCards/FieldPlayerCard";

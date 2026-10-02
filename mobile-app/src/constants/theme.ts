@@ -47,7 +47,7 @@ export const colors = {
 
 
 export const fonts = {
-    label: 17,
+    label: 16,
     labelWeight: "800",
 } as const;
 

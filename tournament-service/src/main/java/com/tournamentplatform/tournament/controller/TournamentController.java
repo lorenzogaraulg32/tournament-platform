@@ -2,8 +2,9 @@ package com.tournamentplatform.tournament.controller;
 
 import com.tournamentplatform.tournament.dto.tournaments.*;
 import com.tournamentplatform.tournament.service.TournamentService;
-import jakarta.validation.Valid;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,20 +22,16 @@ public class TournamentController {
         this.tournamentService = tournamentService;
     }
 
-    @PostMapping()
-    public ResponseEntity<TournamentCreationResponse> createTournament(
-
-            @RequestPart("tournament")
-            @Valid
-            TournamentCreationRequest request,
-
-            @RequestPart(
-                    value = "logo",
-                    required = false
-            )
-            MultipartFile logo
+    @PostMapping(
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
+    public ResponseEntity<TournamentGetResponse> createTournament(
+            @RequestPart("tournament") TournamentCreationRequest request,
+            @RequestPart(value = "logo", required = false) MultipartFile logo,
+            @RequestPart(value = "rules", required = false) MultipartFile rules
     ) {
-        TournamentCreationResponse response = tournamentService.createTournament(request, logo);
+
+        TournamentGetResponse response = tournamentService.createTournament(request, logo, rules);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
@@ -44,6 +41,22 @@ public class TournamentController {
     public ResponseEntity<TournamentGetResponse> getTournament(@PathVariable String id) {
         TournamentGetResponse response = tournamentService.getTournament(id);
         return ResponseEntity.ok(response);
+    }
+
+
+    @GetMapping("/{id}/logo")
+    public ResponseEntity<Resource> getTournamentLogo(
+            @PathVariable String id
+    ) {
+        return tournamentService.getTournamentMedia(id, "logo");
+    }
+
+
+    @GetMapping("/{id}/rules")
+    public ResponseEntity<Resource> getTournamentRules(
+            @PathVariable String id
+    ) {
+        return tournamentService.getTournamentMedia(id, "rules");
     }
 
     @GetMapping()
@@ -97,9 +110,14 @@ public class TournamentController {
 
 
     //restituisce il torneo aggiornato come fosse una get
-    @PatchMapping("/{id}")
-    public ResponseEntity<TournamentGetResponse> patchTournament(@PathVariable String id, @RequestBody @Valid TournamentPatchRequest patchRequest) {
-        TournamentGetResponse response = tournamentService.patchTournament(id, patchRequest);
+    @PatchMapping("/{tournamentId}")
+    public ResponseEntity<TournamentGetResponse> patchTournament(
+            @PathVariable String tournamentId,
+            @RequestPart("tournament") TournamentPatchRequest request,
+            @RequestPart(value = "logo", required = false) MultipartFile logo,
+            @RequestPart(value = "rules", required = false) MultipartFile rules
+    ) {
+        TournamentGetResponse response = tournamentService.patchTournament(tournamentId, request, logo, rules);
         return ResponseEntity.ok(response);
 
     }

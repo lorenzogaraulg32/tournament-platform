@@ -21,12 +21,10 @@ public record TournamentGetResponse(
         Integer maxTeams,
         String format,
         String status,
-        String rulesUrl,
         String createdById,
         List<String> adminsId,
         Set<Long> registeredTeamIds,
         List<TournamentMatch> matches,
-        String logoUrl,
         GeoLocationResponse location,
         String invitationCode,
         RecruitmentStatus recruitmentStatus

@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
 
     option: {
         flex: 1,
-        minHeight: 38,
+        height: 33,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",

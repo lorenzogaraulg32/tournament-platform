@@ -13,7 +13,10 @@ export default function Toast({message, success} : ToastProps) {
             styles.toast,
             {
                 backgroundColor: success
-                    ? "#166534"
+                    ? "rgba(0,35,21,0.95)"
+                    : "#B42318",
+                borderColor: success
+                    ? "#008F4E"
                     : "#B42318",
             },
         ]}
@@ -28,7 +31,6 @@ const styles = StyleSheet.create({
 
     toast: {
         position: "absolute",
-        bottom: 40,
         left: 24,
         right: 24,
         paddingHorizontal: 18,
@@ -40,6 +42,7 @@ const styles = StyleSheet.create({
         shadowOffset: {width: 0, height: 3},
         shadowOpacity: 0.18,
         shadowRadius: 6,
+        borderWidth: 1,
     },
 
     toastText: {

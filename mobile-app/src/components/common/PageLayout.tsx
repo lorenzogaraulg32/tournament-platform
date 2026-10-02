@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
 
         backgroundColor: "#F8FAF9",
 
-        paddingTop: 22,
+        paddingTop: 10,
         paddingHorizontal: 18,
 
         overflow: "hidden",

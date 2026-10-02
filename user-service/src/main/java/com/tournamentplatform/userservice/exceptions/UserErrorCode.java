@@ -27,6 +27,11 @@ public enum UserErrorCode implements ErrorCode {
     USER_AVATAR_ERROR(
             "USER_AVATAR_ERROR",
             "Errore avatar utente"
+    ),
+
+    OWNER_REMOVAL(
+            "OWNER_REMOVAL",
+            "L'utente possiede una squadra, impossibile eliminare"
     );
 
 

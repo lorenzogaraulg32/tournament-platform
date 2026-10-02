@@ -32,5 +32,10 @@ public class TournamentPatchRequest {
 
     private RecruitmentStatus recruitmentStatus;
 
+    private boolean removeLogo;
+
+    @Setter
+    private boolean removeRules;
+
 
 }
