@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View} from "react-native";
-import {UserInfo} from "@/src/services/users/userService";
-import {getRoleBySport, Sport} from "@/src/services/users/userConstants";
+import {UserInfo} from "@/src/services/users/userDTO";
+import {getRoleBySport, Sport} from "@/src/services/users/userDTO";
 import {FieldCardBackground, roleCardPalettes} from "@/src/constants/CardPalettesManager";
 import Picture from "@/src/components/common/images/Picture";
 import {FieldRole, fieldRoleCardPalettes} from "@/src/components/pagesComponents/teams/field/FieldPaletteManager";
@@ -48,7 +48,7 @@ export default function FieldPlayerCard({
                 >
                     <Picture
                         variant="profile"
-                        logoUrl={player.profilePicUrl}
+                        image={player.avatar}
                         style={styles.logo}
                     />
                 </View>

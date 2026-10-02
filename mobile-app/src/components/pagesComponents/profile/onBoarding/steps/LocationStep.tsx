@@ -2,8 +2,8 @@ import {ActivityIndicator, Text, View} from "react-native";
 import AuthContent from "@/src/components/pagesComponents/auth/AuthContent";
 import PositionField from "@/src/components/common/forms/components/FormPositionField";
 import OnBoardingContainer from "@/src/components/pagesComponents/auth/onboarding/OnBoardingContainer";
-import OnBoardingNavigationButtons from "@/src/components/pagesComponents/onBoarding/OnBoardingNavigationButtons";
-import {onboardingStepStyles as styles} from "@/src/components/pagesComponents/onBoarding/onboardingStepStyles"
+import OnBoardingNavigationButtons from "@/src/components/pagesComponents/profile/onBoarding/misc/OnBoardingNavigationButtons";
+import {onboardingStepStyles as styles} from "@/src/components/pagesComponents/profile/onBoarding/misc/onboardingStepStyles"
 import {GeoLocation} from "@/src/services/common";
 
 type LocationStepProps = {

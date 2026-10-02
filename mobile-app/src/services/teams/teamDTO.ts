@@ -1,9 +1,6 @@
 import {GeoLocation, RecruitmentStatus} from "@/src/services/common";
-import {Sport} from "@/src/services/users/userConstants";
-
-
-
-
+import {Sport} from "@/src/services/users/userDTO";
+import {Media} from "@/src/services/mediaService";
 
 
 export type TeamDetails = {
@@ -12,13 +9,13 @@ export type TeamDetails = {
     description: string;
     status: RecruitmentStatus;
     location: GeoLocation | null;
-    imageUrl?: string | null;
     creatorId: string;
     playerIds: string[];
     adminIds: string[];
     invitationCode: string;
     sport: Sport;
     formation: TeamFormation
+    logo: Media | null
 };
 
 
@@ -28,6 +25,7 @@ export type TeamCreationRequest = {
     status: RecruitmentStatus;
     location: GeoLocation | null;
     sport?: Sport
+    logo: Media | null
 };
 
 
@@ -37,10 +35,11 @@ export type TeamUpdateRequest = {
     status?: RecruitmentStatus;
     location: GeoLocation | null;
     sport: Sport,
-    imageUrl?: string;
+    logo?: Media | null
+    removeLogo?: boolean;
 };
 
-export type TeamErrorFields = {
+export type TeamFormErrors = {
     name?: string;
     description?: string;
     status?: string;
@@ -48,7 +47,6 @@ export type TeamErrorFields = {
     logo?: string;
     sport?: string;
 }
-
 
 export type TeamFormation = {
     name: string | null,

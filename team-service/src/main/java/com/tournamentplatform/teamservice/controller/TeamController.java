@@ -7,6 +7,7 @@ import com.tournamentplatform.teamservice.dto.teamGet.TeamResponse;
 import com.tournamentplatform.teamservice.dto.teamModify.TeamUpdateRequest;
 import com.tournamentplatform.teamservice.service.TeamService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,14 +19,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/teams")
+@AllArgsConstructor
 public class TeamController {
 
     private final TeamService teamService;
-
-    public TeamController(TeamService teamService) {
-        this.teamService = teamService;
-    }
-
 
     @PostMapping(
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE
@@ -50,8 +47,8 @@ public class TeamController {
 
 
     @PostMapping("/name/{team_name}")
-    public ResponseEntity<String> checkTeamName(@PathVariable String team_name) {
-        String response = teamService.checkTeamName(team_name);
+    public ResponseEntity<String> checkTeamNameAlreadyExists(@PathVariable String team_name) {
+        String response = teamService.checkTeamNameAlreadyExists(team_name);
 
         return ResponseEntity.status(200).body(response);
     }

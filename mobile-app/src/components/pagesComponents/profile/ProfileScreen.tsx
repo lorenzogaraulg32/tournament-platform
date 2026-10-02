@@ -2,9 +2,9 @@ import {useCallback, useRef, useState} from "react";
 import {router, useFocusEffect, useLocalSearchParams,} from "expo-router";
 
 import {handleLogout, loadCurrentUserId,} from "@/src/services/users/authService";
-import {loadUserInfo, type UserInfo,} from "@/src/services/users/userService";
+import {fetchUser} from "@/src/services/users/userService";
 import {fetchUserTeams} from "@/src/services/teams/teamService";
-import type {TeamDetails} from "@/src/services/teams/teamsConst";
+import type {TeamDetails} from "@/src/services/teams/teamDTO";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 
 import LoadingScreen from "@/src/components/common/loading/LoadingScreen";
@@ -12,6 +12,7 @@ import ErrorScreen from "@/src/components/common/errors/ErrorScreen";
 import BackButton from "@/src/components/common/buttons/BackButton";
 import OptionsMenu from "@/src/components/common/OptionsMenu";
 import ProfilePage from "@/src/components/pagesComponents/profile/ProfilePage";
+import { UserInfo } from "@/src/services/users/userDTO";
 
 type ProfileData = {
     user: UserInfo;
@@ -53,7 +54,7 @@ export default function ProfileScreen() {
             const isOwnProfile = userId === String(currentUserId);
 
             const [user, teams] = await Promise.all([
-                loadUserInfo(userId),
+                fetchUser(userId),
                 isOwnProfile
                     ? Promise.resolve<TeamDetails[]>([])
                     : fetchUserTeams(userId),

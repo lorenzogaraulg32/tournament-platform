@@ -6,11 +6,11 @@ import CreateTournamentPage, {
     STEPS,
     TournamentCreationStep,
 } from "@/src/components/pagesComponents/tournaments/createTournament/CreateTournamentPage";
-import type {SelectedDocument, SelectedImage} from "@/src/services/fileService";
 import {normalizeApiRequestError, printApiRequestError} from "@/src/services/errorService";
 import {checkTournamentNameAlreadyExists, createTournament} from "@/src/services/tournaments/tournamentsService";
 import {router} from "expo-router";
 import {isAfter, isTodayOrFuture} from "@/src/services/common";
+import {isPdf, Media} from "@/src/services/mediaService";
 
 
 export default function CreateTournamentScreen() {
@@ -39,8 +39,8 @@ export default function CreateTournamentScreen() {
         recruitmentStatus: "CLOSED",
     })
 
-    const [logo, setLogo] = useState<SelectedImage | null>(null);
-    const [rules, setRules] = useState<SelectedDocument | null>(null);
+    const [logo, setLogo] = useState<Media | null>(null);
+    const [rules, setRules] = useState<Media | null>(null);
 
     function updateTournamentData<K extends keyof TournamentCreationRequest>(
         field: K,
@@ -59,7 +59,7 @@ export default function CreateTournamentScreen() {
         setApiError("");
     }
 
-    function updateLogo(newLogo: SelectedImage | null) {
+    function updateLogo(newLogo: Media | null) {
         setLogo(newLogo);
 
         setFieldErrors(previous => ({
@@ -70,7 +70,7 @@ export default function CreateTournamentScreen() {
         setApiError("");
     }
 
-    function updateRules(newRules: SelectedDocument | null) {
+    function updateRules(newRules: Media | null) {
         setRules(newRules);
 
         setFieldErrors(previous => ({
@@ -207,11 +207,7 @@ export default function CreateTournamentScreen() {
         let rulesError: string | undefined
 
         if (rules) {
-            const isPdf =
-                rules.mimeType === "application/pdf" &&
-                rules.fileName.toLowerCase().endsWith(".pdf");
-
-            if (!isPdf) {
+            if (!isPdf(rules)) {
                 rulesError = "Sono supportati solo file di tipo .pdf";
             } else if (
                 rules.fileSize !== undefined &&
@@ -220,7 +216,6 @@ export default function CreateTournamentScreen() {
                 rulesError = "Il file regole non può superare i 5 MB";
             }
         }
-
 
         setFieldErrors(previous => ({
             ...previous,

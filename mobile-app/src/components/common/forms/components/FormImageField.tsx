@@ -1,12 +1,12 @@
-import {ComponentProps, useState} from "react";
+import {useState} from "react";
 import {Pressable, StyleSheet, Text, View,} from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import FormLabel from "@/src/components/common/labels/FormLabel";
-import {SelectedImage} from "@/src/services/fileService";
 import Picture from "@/src/components/common/images/Picture";
 import {paletteVariants, Variant} from "@/src/constants/PaletteManager";
 import {colors} from "@/src/constants/theme";
+import {Media} from "@/src/services/mediaService";
 
 const MAX_LOGO_SIZE = 2 * 1024 * 1024;
 
@@ -20,45 +20,31 @@ const ALLOWED_MIME_TYPES = new Set([
 
 type LogoFieldProps = {
     variant: Variant
-    value: SelectedImage | null;
-    onRemove?: () => void
-    onChange: (logo: SelectedImage | null) => void;
-    placeholderIcon?: ComponentProps<typeof Ionicons>["name"];
-    existingLogoSource?: string;
+    value: Media | null;
+    onChange: (logo: Media | null) => void;
     label?: string;
     optional?: boolean;
     disabled?: boolean;
     errorMessage?: string;
-    local?: boolean
 };
 
 export default function FormImageField({
-                                       variant,
-                                       value,
-                                       onRemove,
-                                       onChange,
-                                       label = "Picture",
-                                       optional = true,
-                                       placeholderIcon = "image-outline",
-                                       existingLogoSource,
-                                       disabled = false,
-                                       errorMessage,
-                                       local
-                                   }: LogoFieldProps) {
-    const [pickerError, setPickerError] =
-        useState<string | null>(null);
+                                           variant,
+                                           value,
+                                           onChange,
+                                           label = "Picture",
+                                           optional = true,
+                                           disabled = false,
+                                           errorMessage,
+                                       }: LogoFieldProps) {
+
+    const [pickerError, setPickerError] = useState<string | null>(null);
 
     const {palette} = paletteVariants[variant];
 
     const visibleError = errorMessage || pickerError;
-    const previewSource = value?.uri ?? existingLogoSource;
-    const hasPreview = Boolean(previewSource);
 
-    const title = value
-        ? "Immagine selezionata"
-        : hasPreview
-            ? "Immagine attuale"
-            : "Aggiungi un’immagine";
+    const title = value ? "Immagine selezionata" : "Aggiungi un’immagine";
 
     async function selectLogo() {
         try {
@@ -128,12 +114,7 @@ export default function FormImageField({
 
     function removeLogo() {
         setPickerError(null);
-
-        if (onRemove) {
-            onRemove()
-        } else {
-            onChange(null);
-        }
+        onChange(null);
     }
 
     return (
@@ -166,16 +147,15 @@ export default function FormImageField({
                         },
                     ]}
                 >
-                    {hasPreview ? (
+                    {value ? (
                         <Picture
                             variant={variant}
-                            logoUrl={previewSource}
+                            image={value}
                             style={styles.previewImage}
-                            local={value !== null || local === true}
                         />
                     ) : (
                         <Ionicons
-                            name={placeholderIcon}
+                            name={"image-outline"}
                             size={34}
                             color={palette.defaultColor}
                         />
@@ -195,10 +175,8 @@ export default function FormImageField({
                         numberOfLines={1}
                     >
                         {value
-                            ? value.fileName
-                            : hasPreview
-                                ? "Scegli un’immagine per sostituirla"
-                                : "PNG, JPG o WebP · massimo 2 MB"}
+                            ? value.fileName ?? "Immagine corrente"
+                            : "PNG, JPG o WebP · massimo 2 MB"}
                     </Text>
 
                     <View style={styles.actions}>
@@ -213,7 +191,7 @@ export default function FormImageField({
                             ]}
                         >
                             <Ionicons
-                                name={hasPreview
+                                name={value
                                     ? "images-outline"
                                     : "cloud-upload-outline"}
                                 size={17}
@@ -221,11 +199,11 @@ export default function FormImageField({
                             />
 
                             <Text style={styles.selectButtonText}>
-                                {hasPreview ? "Cambia" : "Scegli immagine"}
+                                {value ? "Cambia" : "Scegli immagine"}
                             </Text>
                         </Pressable>
 
-                        {hasPreview && (
+                        {value && (
                             <Pressable
                                 onPress={removeLogo}
                                 disabled={disabled}

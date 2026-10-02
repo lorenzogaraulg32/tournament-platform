@@ -2,9 +2,8 @@ import {useRef, useState} from "react";
 import {router} from "expo-router";
 
 import {normalizeApiRequestError, printApiRequestError,} from "@/src/services/errorService";
-import type {TeamCreationRequest, TeamErrorFields,} from "@/src/services/teams/teamsConst";
+import type {TeamCreationRequest, TeamFormErrors,} from "@/src/services/teams/teamDTO";
 import {checkTeamNameAlreadyExists, createTeam,} from "@/src/services/teams/teamService";
-import type {SelectedImage} from "@/src/services/fileService";
 
 import CreateTeamPage, {
     FIRST_STEP,
@@ -18,10 +17,9 @@ export default function CreateTeamScreen() {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [apiError, setApiError] = useState("");
-    const [fieldErrors, setFieldErrors] = useState<TeamErrorFields>({});
+    const [fieldErrors, setFieldErrors] = useState<TeamFormErrors>({});
 
-    const [currentStep, setCurrentStep] =
-        useState<TeamCreationStep>(FIRST_STEP);
+    const [currentStep, setCurrentStep] = useState<TeamCreationStep>(FIRST_STEP);
 
     const [teamData, setTeamData] = useState<TeamCreationRequest>({
         name: "",
@@ -29,9 +27,8 @@ export default function CreateTeamScreen() {
         status: "CLOSED",
         location: null,
         sport: undefined,
+        logo: null
     });
-
-    const [logo, setLogo] = useState<SelectedImage | null>(null);
 
     // Aggiornamento campi
 
@@ -52,19 +49,8 @@ export default function CreateTeamScreen() {
         setApiError("");
     }
 
-    function updateLogo(newLogo: SelectedImage | null) {
-        setLogo(newLogo);
-
-        setFieldErrors(previous => ({
-            ...previous,
-            logo: undefined,
-        }));
-
-        setApiError("");
-    }
 
     // Validazione
-
     async function validateForm(): Promise<boolean> {
         for (const step of STEPS) {
             if (!(await validateStep(step))) {
@@ -90,6 +76,8 @@ export default function CreateTeamScreen() {
                 return validateSport();
         }
     }
+
+
 
     async function validateNameAndDescription(): Promise<boolean> {
         const trimmedName = teamData.name.trim();
@@ -166,8 +154,8 @@ export default function CreateTeamScreen() {
 
     function validateLogo(): boolean {
         const logoError =
-            logo?.fileSize !== undefined &&
-            logo.fileSize > 2 * 1024 * 1024
+            teamData.logo?.fileSize !== undefined &&
+            teamData.logo.fileSize > 2 * 1024 * 1024
                 ? "Il logo non può superare i 2 MB"
                 : undefined;
 
@@ -240,7 +228,7 @@ export default function CreateTeamScreen() {
                 description: teamData.description?.trim() || undefined,
             };
 
-            const response = await createTeam(request, logo);
+            const response = await createTeam(request);
 
             router.replace(`/teams/${response.id}`);
         } catch (error) {
@@ -259,13 +247,11 @@ export default function CreateTeamScreen() {
     return (
         <CreateTeamPage
             team={teamData}
-            logo={logo}
             currentStep={currentStep}
             fieldErrors={fieldErrors}
             apiError={apiError}
             isSubmitting={isSubmitting}
             onChangeField={updateTeamData}
-            onChangeLogo={updateLogo}
             onBack={handleBack}
             onNext={handleNext}
         />

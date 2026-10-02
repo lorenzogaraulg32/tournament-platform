@@ -1,12 +1,12 @@
-import { Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import {
     paletteVariants,
     type Variant,
 } from "@/src/constants/PaletteManager";
-import type { UserInfo } from "@/src/services/users/userService";
-import type { TeamDetails } from "@/src/services/teams/teamsConst";
+import type { UserInfo } from "@/src/services/users/userDTO";
+import type { TeamDetails } from "@/src/services/teams/teamDTO";
 
 import PageLayout from "@/src/components/common/PageLayout";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
@@ -39,7 +39,7 @@ export default function ProfilePage({
                     <HeaderEntity
                         variant={variant}
                         name={`${user.firstName} ${user.lastName}`}
-                        imageUrl={user.profilePicUrl}
+                        image={user.avatar}
                         position={user.location?.label}
                         style={{ paddingTop: 45 }}
                     />

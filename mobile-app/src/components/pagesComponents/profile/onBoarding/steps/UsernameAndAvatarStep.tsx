@@ -3,28 +3,28 @@ import AuthTextField from "@/src/components/pagesComponents/auth/AuthTextField";
 import AuthContent from "@/src/components/pagesComponents/auth/AuthContent";
 import FormImageField from "@/src/components/common/forms/components/FormImageField";
 import OnBoardingContainer from "@/src/components/pagesComponents/auth/onboarding/OnBoardingContainer";
-import OnBoardingNavigationButtons from "@/src/components/pagesComponents/onBoarding/OnBoardingNavigationButtons";
-import {onboardingStepStyles as styles} from "@/src/components/pagesComponents/onBoarding/onboardingStepStyles"
-import type {SelectedImage} from "@/src/services/fileService";
+import OnBoardingNavigationButtons from "@/src/components/pagesComponents/profile/onBoarding/misc/OnBoardingNavigationButtons";
+import {onboardingStepStyles as styles} from "@/src/components/pagesComponents/profile/onBoarding/misc/onboardingStepStyles"
+import {Media} from "@/src/services/mediaService";
 
 type UsernameAndLogoStepProps = {
     username: string;
-    profileLogo: SelectedImage | null;
+    avatar: Media | null;
     usernameError?: string;
     profileLogoError?: string;
-    onUsernameChange: (value: string) => void;
-    onProfileLogoChange: (value: SelectedImage | null) => void;
+    onUsernameChange: (username: string) => void;
+    onAvatarChange: (avatar: Media | null) => void;
     onBack: () => void;
     onNext: () => void;
 };
 
-export default function UsernameAndLogoStep({
+export default function UsernameAndAvatarStep({
                                                 username,
-                                                profileLogo,
+                                                avatar,
                                                 usernameError,
                                                 profileLogoError,
                                                 onUsernameChange,
-                                                onProfileLogoChange,
+                                                onAvatarChange,
                                                 onBack,
                                                 onNext,
                                             }: UsernameAndLogoStepProps) {
@@ -48,12 +48,10 @@ export default function UsernameAndLogoStep({
                         <FormImageField
                             variant="onBoarding"
                             label="Foto profilo"
-                            placeholderIcon="person-outline"
                             optional
-                            value={profileLogo}
-                            onChange={onProfileLogoChange}
+                            value={avatar}
+                            onChange={onAvatarChange}
                             errorMessage={profileLogoError}
-                            local
                         />
                     </View>
 

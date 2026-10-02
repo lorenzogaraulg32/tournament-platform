@@ -8,17 +8,16 @@ import {
 import {authenticatedFetch} from "@/src/services/fetchService";
 import {fetchUserTeams} from "@/src/services/teams/teamService";
 import {loadCurrentUserId} from "@/src/services/users/authService";
-import {SelectedDocument, SelectedImage} from "@/src/services/fileService";
-import {RecruitmentStatus} from "@/src/services/common";
+import {Media} from "@/src/services/mediaService";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 
 export async function createTournament(
     request: TournamentCreationRequest,
-    logo?: SelectedImage | null,
-    rules?: SelectedDocument | null
-) : Promise<TournamentDetails> {
+    logo?: Media | null,
+    rules?: Media | null
+): Promise<TournamentDetails> {
     //todo: Implementare il fetch creazione torneo
     return {
         adminsId: [],

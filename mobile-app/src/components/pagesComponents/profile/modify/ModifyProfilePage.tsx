@@ -1,8 +1,6 @@
 import {View} from "react-native";
-import type {SelectedImage} from "@/src/services/fileService";
-import type {Sport, SportRole,} from "@/src/services/users/userConstants";
+import {ProfileFormErrors, Sport, SportRole, UserInfo, UserModRequest,} from "@/src/services/users/userDTO";
 
-import type {ProfileFieldErrors, ProfileFormData,} from "./ModifyProfileScreen";
 
 import NameAndSurnameStep from "@/src/components/pagesComponents/profile/modify/steps/NameAndSurnameStep";
 import UsernameAndLogoStep from "@/src/components/pagesComponents/profile/modify/steps/UsernameAndLogoStep";
@@ -14,6 +12,7 @@ import FormContent from "@/src/components/common/forms/ layout/FormContent";
 import HeaderForm from "@/src/components/common/headers/HeaderForm";
 import FormProgressBar from "@/src/components/common/forms/components/FormProgressBar";
 
+
 export type ProfileEditStep = 0 | 1 | 2 | 3;
 
 export const FIRST_STEP: ProfileEditStep = 0;
@@ -21,22 +20,16 @@ export const LAST_STEP: ProfileEditStep = 3;
 export const STEPS: ProfileEditStep[] = [0, 1, 2, 3];
 
 type ModifyProfilePageProps = {
-    profile: ProfileFormData;
-    logo: SelectedImage | null;
-    existingLogoSource?: string;
-
+    oldProfile: UserInfo;
+    profile: UserModRequest;
     currentStep: ProfileEditStep;
-    fieldErrors: ProfileFieldErrors;
+    fieldErrors: ProfileFormErrors;
     apiError: string;
     isSubmitting: boolean;
-
-    onChangeField: <K extends keyof ProfileFormData>(
+    onChangeField: <K extends keyof UserModRequest>(
         field: K,
-        value: ProfileFormData[K],
+        value: UserModRequest[K],
     ) => void;
-
-    onChangeLogo: (logo: SelectedImage | null) => void;
-    onRemoveLogo: () => void;
     onToggleSport: (sport: Sport) => void;
     onToggleRole: (sport: Sport, role: SportRole) => void;
     onBack: () => void;
@@ -45,15 +38,12 @@ type ModifyProfilePageProps = {
 
 export default function ModifyProfilePage({
                                               profile,
-                                              logo,
-                                              existingLogoSource,
+                                              oldProfile,
                                               currentStep,
                                               fieldErrors,
                                               apiError,
                                               isSubmitting,
                                               onChangeField,
-                                              onChangeLogo,
-                                              onRemoveLogo,
                                               onToggleSport,
                                               onToggleRole,
                                               onBack,
@@ -84,15 +74,19 @@ export default function ModifyProfilePage({
                     <UsernameAndLogoStep
                         variant="profile"
                         username={profile.username}
-                        logo={logo}
-                        existingLogoSource={existingLogoSource}
+                        logo={
+                            profile.avatar === undefined
+                                ? oldProfile.avatar
+                                : profile.avatar
+                        }
                         onChangeUsername={value =>
                             onChangeField("username", value)
                         }
-                        onChangeLogo={onChangeLogo}
-                        onRemoveLogo={onRemoveLogo}
+                        onChangeLogo={value =>
+                            onChangeField("avatar", value)
+                        }
                         usernameError={fieldErrors.username}
-                        logoError={fieldErrors.logo}
+                        logoError={fieldErrors.avatar}
                         disabled={isSubmitting}
                     />
                 );

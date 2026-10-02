@@ -1,7 +1,11 @@
 export const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
+
+/*------------- Reclutamento -------------*/
 export type RecruitmentStatus = "OPEN" | "CLOSED";
 
+
+/*------------- Posizione -------------*/
 export type GeoLocation = {
     label: string;
     latitude: number;
@@ -18,6 +22,7 @@ export function formatLocationLabel(location: string): string {
 }
 
 
+/*------------- Date -------------*/
 export type LocalDateString = `${number}-${number}-${number}`;
 
 export function isTodayOrFuture(date: LocalDateString): boolean {

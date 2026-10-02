@@ -6,7 +6,7 @@ import {normalizeApiRequestError} from "@/src/services/errorService";
 import ButtonBackground from "@/src/components/common/buttons/ButtonBackground";
 import LoadingSection from "@/src/components/common/loading/LoadingSection";
 import ErrorSection from "@/src/components/common/errors/ErrorSection";
-import {TeamDetails} from "@/src/services/teams/teamsConst";
+import {TeamDetails} from "@/src/services/teams/teamDTO";
 import {fetchUserTeams} from "@/src/services/teams/teamService";
 import {loadCurrentUserId} from "@/src/services/users/authService";
 
@@ -93,7 +93,7 @@ export default function MyTeams() {
                 key={team.id}
                 id={team.id}
                 name={team.name}
-                imageUrl={team.imageUrl ?? undefined}
+                image={team.logo}
                 playersCount={team.playerIds.length}
             />
         ));

@@ -1,8 +1,7 @@
 // In questa pagina
 // si mostrano gli step per la modifica
 // ci sono le funzioni di validazione
-import {TeamDetails, TeamErrorFields, TeamUpdateRequest} from "@/src/services/teams/teamsConst";
-import {SelectedImage} from "@/src/services/fileService";
+import {TeamDetails, TeamFormErrors, TeamUpdateRequest} from "@/src/services/teams/teamDTO";
 import NameDescRecruitmentStep from "@/src/components/common/forms/commonSteps/NameDescRecruitmentStep";
 import PositionStep from "@/src/components/pagesComponents/teams/steps/PositionStep";
 import LogoStep from "@/src/components/pagesComponents/teams/steps/LogoStep";
@@ -25,21 +24,14 @@ export const STEPS: TeamEditStep[] = [0, 1, 2, 3];
 type ModifyTeamPageProps = {
     oldTeam: TeamDetails;
     newTeam: TeamUpdateRequest;
-    logo: SelectedImage | null;
-    logoRemoved: boolean;
-
     currentStep: TeamEditStep;
-    fieldErrors: TeamErrorFields;
+    fieldErrors: TeamFormErrors;
     apiError: string;
     isSubmitting: boolean;
-
     onChangeField: <K extends keyof TeamUpdateRequest>(
         field: K,
         value: TeamUpdateRequest[K],
     ) => void;
-
-    onChangeLogo: (logo: SelectedImage | null) => void;
-    onRemoveLogo: () => void;
     onBack: () => void;
     onNext: () => Promise<void>;
 };
@@ -48,15 +40,11 @@ type ModifyTeamPageProps = {
 export default function ModifyTeamPage({
                                            oldTeam,
                                            newTeam,
-                                           logo,
-                                           logoRemoved,
                                            currentStep,
                                            fieldErrors,
                                            apiError,
                                            isSubmitting,
                                            onChangeField,
-                                           onChangeLogo,
-                                           onRemoveLogo,
                                            onBack,
                                            onNext
                                        }: ModifyTeamPageProps) {
@@ -101,15 +89,16 @@ export default function ModifyTeamPage({
                 return (
                     <LogoStep
                         variant={"teams"}
-                        value={logo}
-                        existingLogoSource={
-                            logoRemoved ? undefined : (oldTeam.imageUrl || undefined)
+                        value={
+                            newTeam.logo === undefined
+                                ? oldTeam.logo
+                                : newTeam.logo
                         }
-                        onRemove={onRemoveLogo}
-                        onChange={onChangeLogo}
+                        onChange={(newLogo) =>
+                            onChangeField("logo", newLogo)
+                        }
                         disabled={isSubmitting}
                         errorMessage={fieldErrors.logo}
-                        local={logo !== null}
                     />
                 );
             case 3:

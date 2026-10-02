@@ -8,7 +8,7 @@ import {
     SPORT_ROLES,
     type SportRole,
     type UserSportRole,
-} from "@/src/services/users/userConstants";
+} from "@/src/services/users/userDTO";
 import FormLabel from "@/src/components/common/labels/FormLabel";
 import FormSelectionButton from "@/src/components/common/forms/components/FormSelectionButton";
 

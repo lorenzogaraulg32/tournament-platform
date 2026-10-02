@@ -34,7 +34,8 @@ public class UserService {
     @Transactional
     public UserResponse createUser(
             String userId,
-            CreateUserRequest request
+            CreateUserRequest request,
+            MultipartFile avatar
     ) {
 
         if (userRepository.existsById(userId)) {
@@ -50,6 +51,10 @@ public class UserService {
         validateSportConfiguration(user);
 
         User savedUser = userRepository.save(user);
+
+        if(avatar != null && !avatar.isEmpty()) {
+            mediaServiceClient.putUserAvatar(userId,avatar);
+        }
 
         return UserMapper.toResponse(savedUser);
     }
@@ -150,10 +155,6 @@ public class UserService {
         }
     }
 
-    @Transactional
-    public void uploadProfilePicture(String userId, MultipartFile file) {
-        mediaServiceClient.putUserAvatar(userId,file);
-    }
 
     private User getUserEntity(String userId) {
         return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);

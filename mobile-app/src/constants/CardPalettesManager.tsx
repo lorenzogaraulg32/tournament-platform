@@ -1,5 +1,5 @@
 import {StyleSheet, View} from "react-native";
-import {SportRole} from "@/src/services/users/userConstants";
+import {SportRole} from "@/src/services/users/userDTO";
 
 export function CardBackground({
                                    palette,

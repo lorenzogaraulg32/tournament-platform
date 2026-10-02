@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View} from "react-native";
-import {UserInfo} from "@/src/services/users/userService";
-import {getRoleBySport, ROLE_LABELS, Sport} from "@/src/services/users/userConstants";
+import {UserInfo} from "@/src/services/users/userDTO";
+import {getRoleBySport, ROLE_LABELS, Sport} from "@/src/services/users/userDTO";
 import {router, useSegments} from "expo-router";
 
 import HorizontalCardContainer from "@/src/components/common/carousel&cards/HorizontalCardContainer";

@@ -89,7 +89,7 @@ public class TeamService {
             String name = request.getName().trim();
 
             if (!name.equals(team.getName())) {
-                checkTeamName(name);
+                checkTeamNameAlreadyExists(name);
                 team.setName(name);
             }
         }
@@ -107,9 +107,17 @@ public class TeamService {
         }
 
         if (logo != null && !logo.isEmpty()) {
-            mediaClient.putTeamLogo(String.valueOf(team.getId()), logo);
-        } else if (request.isImageRemoval()) {
-            mediaClient.deleteTeamLogo(String.valueOf(team.getId()));
+
+            mediaClient.putTeamLogo(
+                    String.valueOf(team.getId()),
+                    logo
+            );
+
+        } else if (Boolean.TRUE.equals(request.isRemoveLogo())) {
+
+            mediaClient.deleteTeamLogo(
+                    String.valueOf(team.getId())
+            );
         }
 
         if (request.getSport() != null && request.getSport() != team.getSport()) {
@@ -121,7 +129,7 @@ public class TeamService {
         return mapper.toTeamResponse(savedTeam);
     }
 
-    public String checkTeamName(String teamName) {
+    public String checkTeamNameAlreadyExists(String teamName) {
         if (teamsRepository.existsByName(teamName)) {
             throw new TeamNameAlreadyExistsException();
         }
@@ -174,8 +182,6 @@ public class TeamService {
         Team team = servicesHelper.getTeamEntityOrThrow(id);
 
         teamAuthorizationHelper.checkTeamCreator(team);
-
-        Long teamId = team.getId();
 
         teamsRepository.delete(team);
 

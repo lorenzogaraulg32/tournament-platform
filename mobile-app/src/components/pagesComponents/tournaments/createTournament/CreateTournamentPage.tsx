@@ -1,4 +1,3 @@
-import type {SelectedDocument, SelectedImage} from "@/src/services/fileService";
 import {TournamentCreationRequest, TournamentErrorFields} from "@/src/services/tournaments/tournamentsConst";
 import FormLayout from "@/src/components/common/forms/ layout/FormLayout";
 import HeaderForm from "@/src/components/common/headers/HeaderForm";
@@ -11,6 +10,7 @@ import LogoAndRulesStep from "@/src/components/pagesComponents/tournaments/steps
 import SportAndFormatStep from "@/src/components/pagesComponents/tournaments/steps/SportAndFormatStep";
 import DateStep from "@/src/components/pagesComponents/tournaments/steps/DateStep";
 import NumberOfTeamsStep from "@/src/components/pagesComponents/tournaments/steps/NumberOfTeamsStep";
+import {Media} from "@/src/services/mediaService";
 
 
 export type TournamentCreationStep = 0 | 1 | 2 | 3 | 4 | 5;
@@ -22,8 +22,8 @@ export const STEPS: TournamentCreationStep[] = [0, 1, 2, 3, 4, 5];
 
 type CreateTournamentPageProps = {
     tournament: TournamentCreationRequest;
-    logo: SelectedImage | null;
-    rules: SelectedDocument | null
+    logo: Media | null;
+    rules: Media | null
 
     currentStep: TournamentCreationStep;
     fieldErrors: TournamentErrorFields;
@@ -35,8 +35,8 @@ type CreateTournamentPageProps = {
         value: TournamentCreationRequest[K],
     ) => void;
 
-    onChangeLogo: (logo: SelectedImage | null) => void;
-    onChangeRules: (rules: SelectedDocument | null) => void;
+    onChangeLogo: (logo: Media | null) => void;
+    onChangeRules: (rules: Media | null) => void;
 
     onBack: () => void;
     onNext: () => Promise<void>;
@@ -101,14 +101,11 @@ export default function CreateTournamentPage({
                                       file={rules}
                                       onChangeImage={onChangeLogo}
                                       onChangeFile={onChangeRules}
-                                      onRemoveImage={() => onChangeLogo(null)}
                                       onRemoveFile={() => onChangeRules(null)}
                                       disabled={isSubmitting}
                                       errorMessageImage={fieldErrors.logo}
                                       errorMessageFile={fieldErrors.rules}
                                       localFile={rules !== null}
-                                      localImage={logo !== null}
-
 
                     />
                 )

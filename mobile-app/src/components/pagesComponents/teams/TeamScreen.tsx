@@ -1,7 +1,7 @@
 import {Redirect, router, useFocusEffect, useLocalSearchParams} from "expo-router";
 import {useCallback, useRef, useState} from "react";
 import {normalizeApiRequestError} from "@/src/services/errorService";
-import {TeamDetails} from "@/src/services/teams/teamsConst";
+import {TeamDetails} from "@/src/services/teams/teamDTO";
 import {fetchTeam, leaveTeam, refreshInvitationCode,} from "@/src/services/teams/teamService";
 import LoadingScreen from "@/src/components/common/loading/LoadingScreen";
 import TeamPage from "@/src/components/pagesComponents/teams/TeamPage";

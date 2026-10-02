@@ -1,4 +1,4 @@
-import {ComponentProps, useState} from "react";
+import {useState} from "react";
 import {Linking, Pressable, StyleSheet, Text, View} from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -6,6 +6,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import FormLabel from "@/src/components/common/labels/FormLabel";
 import {paletteVariants, Variant} from "@/src/constants/PaletteManager";
 import {colors} from "@/src/constants/theme";
+import {Media} from "@/src/services/mediaService";
 
 
 export type SelectedFile = {
@@ -18,16 +19,13 @@ export type SelectedFile = {
 
 type FormFileFieldProps = {
     variant: Variant;
-
-    value: SelectedFile | null;
-
-    onChange: (file: SelectedFile | null) => void;
+    value: Media | null;
+    onChange: (file: Media | null) => void;
     onRemove?: () => void;
     label?: string;
     optional?: boolean;
     disabled?: boolean;
     errorMessage?: string;
-    placeholderIcon?: ComponentProps<typeof Ionicons>["name"];
     allowedMimeTypes?: string[];
     allowedExtensions?: string[];
     maxFileSize?: number;
@@ -46,13 +44,11 @@ export default function FormFileField({
                                           optional = true,
                                           disabled = false,
                                           errorMessage,
-                                          placeholderIcon = "document-outline",
                                           allowedMimeTypes,
                                           allowedExtensions,
                                           maxFileSize,
                                           acceptedFormatsLabel,
                                           existingFileSource,
-                                          local
                                       }: FormFileFieldProps) {
 
     const [pickerError, setPickerError] =
@@ -65,13 +61,10 @@ export default function FormFileField({
 
     const fileSource = value?.uri ?? existingFileSource;
 
-    const isLocalFile =
-        value !== null || local === true;
-    const hasFile = Boolean(fileSource);
 
     const title = value
         ? "File selezionato"
-        : hasFile
+        : value
             ? "File attuale"
             : "Aggiungi un file";
 
@@ -201,10 +194,10 @@ export default function FormFileField({
                 return `${value.fileName} · ${formatFileSize(value.fileSize)}`;
             }
 
-            return value.fileName;
+            return value.fileName || "";
         }
 
-        if (hasFile) {
+        if (value) {
             return "Scegli un file per sostituirlo";
         }
 
@@ -282,9 +275,9 @@ export default function FormFileField({
 
                     <Ionicons
                         name={
-                            hasFile
+                            value
                                 ? "document-text-outline"
-                                : placeholderIcon
+                                : "document-outline"
                         }
                         size={34}
                         color={palette.defaultColor}
@@ -343,7 +336,7 @@ export default function FormFileField({
 
                             <Ionicons
                                 name={
-                                    hasFile
+                                    value
                                         ? "documents-outline"
                                         : "cloud-upload-outline"
                                 }
@@ -357,7 +350,7 @@ export default function FormFileField({
                                 }
                             >
                                 {
-                                    hasFile
+                                    value
                                         ? "Cambia"
                                         : "Scegli file"
                                 }
@@ -366,7 +359,7 @@ export default function FormFileField({
                         </Pressable>
 
 
-                        {hasFile && (
+                        {value && (
 
                             <Pressable
                                 onPress={removeFile}
@@ -393,7 +386,7 @@ export default function FormFileField({
 
                         )}
 
-                        {hasFile && (
+                        {value && (
                             <Pressable
                                 onPress={() => void openFile()}
                                 disabled={disabled}

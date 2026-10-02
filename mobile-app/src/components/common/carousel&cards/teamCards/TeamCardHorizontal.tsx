@@ -4,12 +4,13 @@ import {router, useSegments} from "expo-router";
 import Picture from "@/src/components/common/images/Picture";
 import HorizontalCardContainer from "@/src/components/common/carousel&cards/HorizontalCardContainer";
 import {teamCardColors} from "@/src/constants/CardPalettesManager";
+import {Media} from "@/src/services/mediaService";
 
 type TeamCardSmallProps = {
     id: string
     name: string;
     playersCount: number;
-    imageUrl?: string | null;
+    image: Media | null;
     modify?: () => void
 }
 
@@ -27,7 +28,7 @@ function isTabName(value: string): value is keyof typeof teamRoutes {
 export default function TeamCardHorizontal({
                                                id,
                                                name,
-                                               imageUrl,
+                                               image,
                                                playersCount,
                                                modify
                                            }: TeamCardSmallProps) {
@@ -68,7 +69,7 @@ export default function TeamCardHorizontal({
         >
 
             <View style={styles.logoContainer}>
-                <Picture variant={"teams"} style={styles.logo} logoUrl={imageUrl}/>
+                <Picture variant={"teams"} style={styles.logo} image={image}/>
             </View>
 
             <View style={styles.teamInfo}>

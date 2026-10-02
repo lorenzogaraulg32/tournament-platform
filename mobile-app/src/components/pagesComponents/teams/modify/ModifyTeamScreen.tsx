@@ -1,9 +1,8 @@
 import {useRef, useState} from "react";
 import {router, useLocalSearchParams} from "expo-router";
 import {normalizeApiRequestError, printApiRequestError} from "@/src/services/errorService";
-import {TeamDetails, TeamErrorFields, TeamUpdateRequest} from "@/src/services/teams/teamsConst";
+import {TeamDetails, TeamFormErrors, TeamUpdateRequest} from "@/src/services/teams/teamDTO";
 import {checkTeamNameAlreadyExists, editTeam} from "@/src/services/teams/teamService";
-import {SelectedImage} from "@/src/services/fileService";
 import ModifyTeamPage, {
     FIRST_STEP,
     LAST_STEP,
@@ -22,7 +21,7 @@ export default function ModifyTeamScreen() {
     const submissionLock = useRef(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [apiError, setApiError] = useState<string>("");
-    const [fieldErrors, setFieldErrors] = useState<TeamErrorFields>({});
+    const [fieldErrors, setFieldErrors] = useState<TeamFormErrors>({});
 
     const params = useLocalSearchParams<{ team: string }>();
 
@@ -33,49 +32,12 @@ export default function ModifyTeamScreen() {
         description: oldTeam.description ?? "",
         status: oldTeam.status,
         location: oldTeam.location || null,
-        imageUrl: undefined,
         sport: oldTeam.sport,
+        logo: undefined
     });
 
-    const [logo, setLogo] = useState<SelectedImage | null>(null);
-    const [logoRemoved, setLogoRemoved] = useState(false);
 
     const [currentStep, setCurrentStep] = useState<TeamEditStep>(FIRST_STEP);
-
-    //gestione logo
-    function updateLogo(newLogo: SelectedImage | null) {
-        setLogo(newLogo);
-        setLogoRemoved(false);
-
-        setModTeamData(previous => ({
-            ...previous,
-            newImageUrl: undefined,
-        }));
-
-        setFieldErrors(previous => ({
-            ...previous,
-            logo: undefined,
-        }));
-
-        setApiError("");
-    }
-
-    function removeLogo() {
-        setLogo(null);
-        setLogoRemoved(true);
-
-        setModTeamData(previous => ({
-            ...previous,
-            newImageUrl: "REMOVE",
-        }));
-
-        setFieldErrors(previous => ({
-            ...previous,
-            logo: undefined,
-        }));
-
-        setApiError("");
-    }
 
     function updateModTeamData<K extends keyof TeamUpdateRequest>(
         field: K,
@@ -212,8 +174,8 @@ export default function ModifyTeamScreen() {
 
     function validateLogo(): boolean {
         if (
-            logo?.fileSize !== undefined &&
-            logo.fileSize > 2 * 1024 * 1024
+            modTeamData.logo?.fileSize !== undefined &&
+            modTeamData.logo.fileSize > 2 * 1024 * 1024
         ) {
             setFieldErrors((previousErrors) => ({
                 ...previousErrors,
@@ -269,7 +231,7 @@ export default function ModifyTeamScreen() {
                 description: modTeamData.description?.trim() ?? "",
             };
 
-            await editTeam(String(oldTeam.id), request, logo);
+            await editTeam(String(oldTeam.id), request);
             router.back();
         } catch (error) {
 
@@ -289,15 +251,11 @@ export default function ModifyTeamScreen() {
         <ModifyTeamPage
             oldTeam={oldTeam}
             newTeam={modTeamData}
-            logo={logo}
-            logoRemoved={logoRemoved}
             currentStep={currentStep}
             fieldErrors={fieldErrors}
             apiError={apiError}
             isSubmitting={isSubmitting}
             onChangeField={updateModTeamData}
-            onChangeLogo={updateLogo}
-            onRemoveLogo={removeLogo}
             onBack={handleBack}
             onNext={handleNext}
         />

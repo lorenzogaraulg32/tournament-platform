@@ -1,4 +1,4 @@
-import {Sport} from "@/src/services/users/userConstants";
+import {Sport} from "@/src/services/users/userDTO";
 import {quadrato, rombo} from "@/src/components/pagesComponents/teams/field/consts/FootballFormations";
 import {classicFive, doubleGuardThree, triangleThree, twoOneTwoFive} from "./BasketballFormations";
 import {

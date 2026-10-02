@@ -37,13 +37,14 @@ public class TeamUpdateRequest {
     private String description;
 
     @Setter
+    private boolean removeLogo;
+
+    @Setter
     private RecruitmentStatus status;
 
     @Valid
     private GeoLocationRequest location;
 
-    @Setter
-    private boolean imageRemoval;
 
     @JsonIgnore
     private boolean locationProvided;

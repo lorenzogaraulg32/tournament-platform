@@ -5,8 +5,8 @@ import HorizontalCardContainer, {
     authorityCardPalettes,
     TeamAuthority
 } from "@/src/components/common/carousel&cards/HorizontalCardContainer";
+import { UserInfo } from "@/src/services/users/userDTO";
 
-import {UserInfo} from "@/src/services/users/userService";
 
 
 type AdminsCardProps = {

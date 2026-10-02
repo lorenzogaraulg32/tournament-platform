@@ -1,9 +1,9 @@
 import {Pressable, Text, View} from "react-native";
 import AuthContent from "@/src/components/pagesComponents/auth/AuthContent";
 import OnBoardingContainer from "@/src/components/pagesComponents/auth/onboarding/OnBoardingContainer";
-import {Gender} from "@/src/services/users/userConstants";
-import OnBoardingNavigationButtons from "@/src/components/pagesComponents/onBoarding/OnBoardingNavigationButtons";
-import {onboardingStepStyles as styles} from "@/src/components/pagesComponents/onBoarding/onboardingStepStyles"
+import {Gender} from "@/src/services/users/userDTO";
+import OnBoardingNavigationButtons from "@/src/components/pagesComponents/profile/onBoarding/misc/OnBoardingNavigationButtons";
+import {onboardingStepStyles as styles} from "@/src/components/pagesComponents/profile/onBoarding/misc/onboardingStepStyles"
 import FormDateField from "@/src/components/common/forms/components/FormDateField";
 import {LocalDateString} from "@/src/services/common";
 

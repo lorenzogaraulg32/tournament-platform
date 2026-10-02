@@ -1,6 +1,5 @@
 import {View} from "react-native";
-import type {TeamCreationRequest, TeamErrorFields,} from "@/src/services/teams/teamsConst";
-import type {SelectedImage} from "@/src/services/fileService";
+import type {TeamCreationRequest, TeamFormErrors,} from "@/src/services/teams/teamDTO";
 
 import NameDescRecruitmentStep from "@/src/components/common/forms/commonSteps/NameDescRecruitmentStep";
 import PositionStep from "@/src/components/pagesComponents/teams/steps/PositionStep";
@@ -20,32 +19,28 @@ export const STEPS: TeamCreationStep[] = [0, 1, 2, 3];
 
 type CreateTeamPageProps = {
     team: TeamCreationRequest;
-    logo: SelectedImage | null;
+
 
     currentStep: TeamCreationStep;
-    fieldErrors: TeamErrorFields;
+    fieldErrors: TeamFormErrors;
     apiError: string;
     isSubmitting: boolean;
-
     onChangeField: <K extends keyof TeamCreationRequest>(
         field: K,
         value: TeamCreationRequest[K],
     ) => void;
-
-    onChangeLogo: (logo: SelectedImage | null) => void;
     onBack: () => void;
     onNext: () => Promise<void>;
 };
 
 export default function CreateTeamPage({
                                            team,
-                                           logo,
+
                                            currentStep,
                                            fieldErrors,
                                            apiError,
                                            isSubmitting,
                                            onChangeField,
-                                           onChangeLogo,
                                            onBack,
                                            onNext,
                                        }: CreateTeamPageProps) {
@@ -87,12 +82,12 @@ export default function CreateTeamPage({
                 return (
                     <LogoStep
                         variant={"teams"}
-                        value={logo}
-                        onChange={onChangeLogo}
-                        onRemove={() => onChangeLogo(null)}
+                        value={team.logo}
+                        onChange={logo =>
+                            onChangeField("logo", logo)
+                        }
                         disabled={isSubmitting}
                         errorMessage={fieldErrors.logo}
-                        local={logo !== null}
                     />
                 );
 

@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View} from "react-native";
-import {Sport, SPORT_LABELS} from "@/src/services/users/userConstants";
+import {Sport, SPORT_LABELS} from "@/src/services/users/userDTO";
 import {colors} from "@/src/constants/theme";
 import type {Variant} from "@/src/constants/PaletteManager";
 import FormLabel from "@/src/components/common/labels/FormLabel";

@@ -1,7 +1,6 @@
 import {authenticatedFetch} from "@/src/services/fetchService";
 import {leaveTournament} from "@/src/services/tournaments/tournamentParticipationService";
-import {TeamCreationRequest, TeamDetails, TeamFormation, TeamUpdateRequest} from "@/src/services/teams/teamsConst";
-import {SelectedImage} from "@/src/services/fileService";
+import {TeamCreationRequest, TeamDetails, TeamFormation, TeamUpdateRequest} from "@/src/services/teams/teamDTO";
 import {File, Paths} from "expo-file-system";
 import {API_URL} from "@/src/services/common";
 import {throwApiRequestError} from "@/src/services/errorService";
@@ -19,15 +18,23 @@ export async function fetchTeam(teamId: string): Promise<TeamDetails> {
         }
     );
 
-    return await response.json() as TeamDetails;
+    const team: TeamDetails = await response.json() as TeamDetails;
+
+    return {
+        ...team,
+        logo: {
+            uri: `${API_URL}/teams/${encodeURIComponent(team.id)}/logo`,
+        },
+    };
+
 }
 
 
 export async function createTeam(
     request: TeamCreationRequest,
-    logo?: SelectedImage | null
 ): Promise<TeamDetails> {
 
+    const {logo, ...teamRequest} = request;
 
     const teamFile = new File(
         Paths.cache,
@@ -35,22 +42,24 @@ export async function createTeam(
     );
 
     try {
-        teamFile.create({
-            overwrite: true,
-        });
+        teamFile.create({overwrite: true});
 
         teamFile.write(
-            JSON.stringify(request)
+            JSON.stringify(teamRequest)
         );
 
         const formData = new FormData();
 
         formData.append("team", teamFile, teamFile.name);
 
-        if (logo) {
+        if (logo !== undefined && logo !== null) {
             const logoFile = new File(logo.uri);
 
-            formData.append("logo", logoFile, logo.fileName);
+            formData.append(
+                "logo",
+                logoFile,
+                logo.fileName ?? logoFile.name
+            );
         }
 
         const response = await authenticatedFetch(
@@ -62,6 +71,7 @@ export async function createTeam(
         );
 
         return await response.json() as TeamDetails;
+
     } finally {
         if (teamFile.exists) {
             teamFile.delete();
@@ -73,8 +83,15 @@ export async function createTeam(
 export async function editTeam(
     teamId: string,
     request: TeamUpdateRequest,
-    logo?: SelectedImage | null
 ): Promise<TeamDetails> {
+
+    const {logo, ...teamRequest} = request;
+
+    const requestBody = {
+        ...teamRequest,
+        removeLogo: logo === null,
+    };
+
     const teamFile = new File(
         Paths.cache,
         `team-update-${Date.now()}.json`
@@ -82,7 +99,9 @@ export async function editTeam(
 
     try {
         teamFile.create({overwrite: true});
-        teamFile.write(JSON.stringify(request));
+        teamFile.write(
+            JSON.stringify(requestBody)
+        );
 
         const formData = new FormData();
 
@@ -113,6 +132,23 @@ export async function editTeam(
             teamFile.delete();
         }
     }
+}
+
+
+export async function deleteTeam(teamId: string) {
+    const tournamentIds = await canDeleteTeam(teamId);
+
+    if (tournamentIds.length > 0) {
+        for (const tournamentId of tournamentIds) {
+            await leaveTournament(teamId, tournamentId);
+        }
+    }
+    await authenticatedFetch(
+        `${API_URL}/teams/${encodeURIComponent(teamId)}`,
+        {
+            method: "DELETE",
+        }
+    );
 }
 
 
@@ -221,23 +257,6 @@ export async function removeTeamAdmin(
 export async function leaveTeam(teamId: string) {
     await authenticatedFetch(
         `${API_URL}/teams/leave/${encodeURIComponent(teamId)}`,
-        {
-            method: "DELETE",
-        }
-    );
-}
-
-
-export async function deleteTeam(teamId: string) {
-    const tournamentIds = await canDeleteTeam(teamId);
-
-    if (tournamentIds.length > 0) {
-        for (const tournamentId of tournamentIds) {
-            await leaveTournament(teamId, tournamentId);
-        }
-    }
-    await authenticatedFetch(
-        `${API_URL}/teams/${encodeURIComponent(teamId)}`,
         {
             method: "DELETE",
         }

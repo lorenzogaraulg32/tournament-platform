@@ -1,10 +1,9 @@
-import {SPORT_ROLES} from "@/src/services/users/userConstants";
-import {UserModInfo, UserOnBoardingInfo} from "@/src/services/users/userService";
-import {SelectedImage} from "@/src/services/fileService";
+import {SPORT_ROLES, UserCreationRequest, UserModRequest} from "@/src/services/users/userDTO";
+
 
 // Location opzionale, ma se presente deve essere valida
 export function validateUserLocation(
-    userData: UserModInfo| UserOnBoardingInfo
+    userData: UserModRequest | UserCreationRequest
 ): string {
     if (!userData.location) {
         return "";
@@ -30,7 +29,7 @@ export function validateUserLocation(
 
 // Sport
 // Ogni sport deve avere almeno un ruolo
-export function validateUserSportsAndRoles(userData: UserModInfo| UserOnBoardingInfo): string {
+export function validateUserSportsAndRoles(userData: UserModRequest | UserCreationRequest): string {
 
     if (userData.sports.length === 0) {
         return "Seleziona almeno uno sport";
@@ -66,7 +65,7 @@ export function validateUserSportsAndRoles(userData: UserModInfo| UserOnBoarding
 }
 
 
-export function validateBirthDate(userData: UserOnBoardingInfo): string {
+export function validateBirthDate(userData: UserCreationRequest): string {
     if (!userData.birthDate) {
         return "La data di nascita è obbligatoria";
     } else {
@@ -83,7 +82,7 @@ export function validateBirthDate(userData: UserOnBoardingInfo): string {
 }
 
 
-export function validateUsername(userData: UserModInfo | UserOnBoardingInfo): string {
+export function validateUsername(userData: UserModRequest | UserCreationRequest): string {
     const username = userData.username.trim()
     if (!username) {
         return "L'username è obbligatorio";
@@ -94,7 +93,7 @@ export function validateUsername(userData: UserModInfo | UserOnBoardingInfo): st
     return ""
 }
 
-export function validateFirstName(userData: UserModInfo | UserOnBoardingInfo): string {
+export function validateFirstName(userData: UserModRequest | UserCreationRequest): string {
 
     const firstName = userData.firstName.trim()
 
@@ -107,7 +106,7 @@ export function validateFirstName(userData: UserModInfo | UserOnBoardingInfo): s
     return ""
 }
 
-export function validateLastName(userData: UserModInfo| UserOnBoardingInfo): string {
+export function validateLastName(userData: UserModRequest | UserCreationRequest): string {
 
     const lastName = userData.lastName.trim()
 
@@ -120,13 +119,14 @@ export function validateLastName(userData: UserModInfo| UserOnBoardingInfo): str
     return ""
 }
 
-export function validateImage(logo?: SelectedImage | null): string {
-    if (logo) {
+export function validateImage(userData: UserModRequest | UserCreationRequest): string {
+    const avatar = userData.avatar
+    if (avatar) {
         if (
-            logo?.fileSize !== undefined &&
-            logo.fileSize > 2 * 1024 * 1024
+            avatar?.fileSize !== undefined &&
+            avatar.fileSize > 5 * 1024 * 1024
         ) {
-            return "L'immagine caricata non può superare i 2 MB"
+            return "L'immagine caricata non può superare i 5 MB"
         }
         return ""
     }

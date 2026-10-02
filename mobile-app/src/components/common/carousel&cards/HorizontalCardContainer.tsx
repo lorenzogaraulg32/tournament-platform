@@ -1,6 +1,6 @@
 import {ReactNode} from "react";
 import {Pressable, StyleProp, StyleSheet, View, ViewStyle} from "react-native";
-import {SportRole} from "@/src/services/users/userConstants";
+import {SportRole} from "@/src/services/users/userDTO";
 import {
     adminCardColors,
     CardBackground,

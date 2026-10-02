@@ -1,8 +1,8 @@
 import {Dispatch, SetStateAction, useCallback, useEffect, useRef, useState} from "react";
 import {TournamentDetails} from "@/src/services/tournaments/tournamentsConst";
 import {useToast} from "@/src/components/common/Toast/ToastProvider";
-import {loadUserInfo, UserInfo} from "@/src/services/users/userService";
-import {TeamDetails} from "@/src/services/teams/teamsConst";
+import {fetchUser, UserInfo} from "@/src/services/users/userService";
+import {TeamDetails} from "@/src/services/teams/teamDTO";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {fetchTeam} from "@/src/services/teams/teamService";
 import PageLayout from "@/src/components/common/PageLayout";
@@ -104,7 +104,7 @@ export default function TournamentPage({
             }
 
             const adminResults = await Promise.allSettled(
-                tournament.adminsId.map((id) => loadUserInfo(id))
+                tournament.adminsId.map((id) => fetchUser(id))
             );
 
             if (requestId !== compsRequestIdRef.current) {
@@ -157,10 +157,11 @@ export default function TournamentPage({
                     variant={"tournaments"}
 
                 >
+                    {/*todo: Inserire immagine torneo*/}
                     <HeaderEntity
                         variant={"tournaments"}
                         name={tournament.name}
-                        imageUrl={tournament.logoUrl}
+                        image={null}
                         position={tournament.location?.label}
                         invitationCode={tournament.invitationCode}
                         onRefreshCode={isTournamentAdmin || isTournamentOwner ? onRefreshCode : undefined}
@@ -202,7 +203,7 @@ export default function TournamentPage({
                                         key={team.id}
                                         id={team.id}
                                         name={team.name}
-                                        imageUrl={team.imageUrl}
+                                        image={team.logo}
                                         playersCount={team.playerIds.length}
                                         modify={() => {
                                             void removeTeam(

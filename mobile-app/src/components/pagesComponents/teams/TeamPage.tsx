@@ -1,5 +1,3 @@
-//questa sarà la view del team, che contiene header ecc.
-
 import {ScrollView, StyleSheet, Text, View} from "react-native";
 import PageLayout from "@/src/components/common/PageLayout";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
@@ -9,8 +7,8 @@ import CardListContainer from "@/src/components/common/carousel&cards/CardListCo
 import PlayerCard from "@/src/components/common/carousel&cards/userCards/PlayerCard";
 import AdminCard from "@/src/components/common/carousel&cards/userCards/AdminCard";
 import {colors} from "@/src/constants/theme";
-import {TeamDetails, TeamFormation} from "@/src/services/teams/teamsConst";
-import {loadUserInfo, UserInfo} from "@/src/services/users/userService";
+import {TeamDetails, TeamFormation} from "@/src/services/teams/teamDTO";
+import {fetchUser, UserInfo} from "@/src/services/users/userService";
 import {Dispatch, SetStateAction, useCallback, useEffect, useRef, useState} from "react";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {removeTeamAdmin, removeTeamPlayer, updateTeamFormation} from "@/src/services/teams/teamService";
@@ -69,8 +67,8 @@ export default function TeamPage({
             }
 
             const [loadedPlayers, loadedAdmins] = await Promise.all([
-                Promise.all(team.playerIds.map((id) => loadUserInfo(id))),
-                Promise.all(team.adminIds.map((id) => loadUserInfo(id))),
+                Promise.all(team.playerIds.map((id) => fetchUser(id))),
+                Promise.all(team.adminIds.map((id) => fetchUser(id))),
             ]);
 
             if (requestId !== componentsRequestIdRef.current) {
@@ -320,7 +318,7 @@ export default function TeamPage({
                     <HeaderEntity
                         variant={"teams"}
                         name={team.name}
-                        imageUrl={team.imageUrl}
+                        image={team.logo}
                         position={team.location?.label}
                         invitationCode={team.invitationCode}
                         onRefreshCode={isTeamAdmin || isTeamOwner ? onRefreshCode : undefined}

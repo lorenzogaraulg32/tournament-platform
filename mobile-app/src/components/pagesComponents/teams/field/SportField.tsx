@@ -1,5 +1,5 @@
 import {ComponentType, ReactNode} from "react";
-import {Sport} from "@/src/services/users/userConstants";
+import {Sport} from "@/src/services/users/userDTO";
 
 import FootballField from "./fieldTypes/FootballField";
 import BasketballField from "./fieldTypes/BasketballField";

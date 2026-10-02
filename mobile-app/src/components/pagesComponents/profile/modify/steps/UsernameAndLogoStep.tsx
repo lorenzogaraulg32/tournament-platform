@@ -1,17 +1,15 @@
 import {View} from "react-native";
 import type {Variant} from "@/src/constants/PaletteManager";
-import type {SelectedImage} from "@/src/services/fileService";
+import type {Media} from "@/src/services/mediaService";
 import FormInputField from "@/src/components/common/forms/components/FormInputField";
 import FormImageField from "@/src/components/common/forms/components/FormImageField";
 
 type UsernameAndLogoStepProps = {
     variant: Variant;
     username: string;
-    logo: SelectedImage | null;
-    existingLogoSource?: string;
+    logo: Media | null;
     onChangeUsername: (value: string) => void;
-    onChangeLogo: (value: SelectedImage | null) => void;
-    onRemoveLogo: () => void;
+    onChangeLogo: (value: Media | null) => void;
     usernameError?: string;
     logoError?: string;
     disabled?: boolean;
@@ -21,10 +19,8 @@ export default function UsernameAndLogoStep({
                                                 variant,
                                                 username,
                                                 logo,
-                                                existingLogoSource,
                                                 onChangeUsername,
                                                 onChangeLogo,
-                                                onRemoveLogo,
                                                 usernameError,
                                                 logoError,
                                                 disabled = false,
@@ -47,12 +43,9 @@ export default function UsernameAndLogoStep({
             <FormImageField
                 variant={variant}
                 value={logo}
-                existingLogoSource={existingLogoSource}
                 onChange={onChangeLogo}
-                onRemove={onRemoveLogo}
                 errorMessage={logoError}
                 disabled={disabled}
-                local={logo !== null}
             />
         </View>
     );

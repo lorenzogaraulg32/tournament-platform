@@ -1,70 +1,60 @@
-import {DeletingStatus, Gender, Sport, UserSportRole} from "@/src/services/users/userConstants";
+import {UserCreationRequest, UserInfo, UserModRequest} from "@/src/services/users/userDTO";
 import {authenticatedFetch} from "@/src/services/fetchService";
-import {GeoLocation, LocalDateString} from "@/src/services/common";
-import {SelectedImage} from "@/src/services/fileService";
 import {File, Paths} from "expo-file-system";
-
-//Usato solo per la creazione utente non contiene logoUrl
-export type UserOnBoardingInfo = {
-    username: string;
-    firstName: string;
-    lastName: string;
-    birthDate: LocalDateString | null
-    gender: Gender | null;
-    sports: Sport[];
-    roles: UserSportRole[];
-    location: GeoLocation | null;
-};
+import {API_URL} from "@/src/services/common";
 
 
-export type UserModInfo = {
-    username: string;
-    firstName: string;
-    lastName: string;
-    sports: Sport[];
-    roles: UserSportRole[];
-    location: GeoLocation | null;
-    newPicUrl: string | undefined;
-};
-
-//Rappresenta la info dell'utente senza i dettagli di autenticazione
-export type UserInfo = {
-    id: string
-    username: string;
-    firstName: string;
-    lastName: string;
-    birthDate: string | null;
-    gender: Gender | null;
-    sports: Sport[];
-    roles: UserSportRole[];
-    location: GeoLocation | null;
-    profilePicUrl?: string,
-    deletingStatus: DeletingStatus
-};
-
-
-const API_URL = process.env.EXPO_PUBLIC_API_URL;
-
-export async function completeOnBoarding(
-    userData: UserOnBoardingInfo
+export async function createUser(
+    request: UserCreationRequest
 ): Promise<UserInfo> {
 
-    const response = await authenticatedFetch(
-        `${API_URL}/users/me`,
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(userData),
-        }
+    const {avatar, ...userRequest} = request;
+
+    const userFile = new File(
+        Paths.cache,
+        `user-${Date.now()}.json`
     );
 
-    return await response.json() as UserInfo;
+    try {
+        userFile.create({overwrite: true});
+
+        userFile.write(
+            JSON.stringify(userRequest)
+        );
+
+        const formData = new FormData();
+
+        formData.append("user", userFile, userFile.name);
+
+        if (avatar !== undefined && avatar !== null) {
+            const avatarFile = new File(avatar.uri);
+
+            formData.append(
+                "avatar",
+                avatarFile,
+                avatar.fileName ?? avatarFile.name
+            );
+        }
+
+        const response = await authenticatedFetch(
+            `${API_URL}/users/me`,
+            {
+                method: "POST",
+                body: formData,
+            }
+        );
+
+        return await response.json() as UserInfo;
+
+    } finally {
+        if (userFile.exists) {
+            userFile.delete();
+        }
+    }
 }
 
 
-export async function loadUserInfo(
+export async function fetchUser(
     id: string
 ): Promise<UserInfo> {
 
@@ -78,32 +68,53 @@ export async function loadUserInfo(
         }
     );
 
+    const user: UserInfo = await response.json() as UserInfo;
 
-    return await response.json() as UserInfo;
+    return {
+        ...user,
+        avatar: {
+            uri: `${API_URL}/users/${encodeURIComponent(user.id)}/avatar`,
+        }
+    }
 }
 
 
-export async function modUser(userData: UserModInfo, logo: SelectedImage | null,): Promise<UserInfo> {
+export async function modUser(request: UserModRequest): Promise<UserInfo> {
+
+    const {avatar, ...userRequest} = request;
+
+
+    const requestBody = {
+        ...userRequest,
+        removeAvatar: avatar === null,
+    };
+
+
     const userFile = new File(
         Paths.cache,
-        `profile-update-${Date.now()}.json`
+        `user-update-${Date.now()}.json`
     );
+
 
     try {
         userFile.create({overwrite: true});
-        userFile.write(JSON.stringify(userData));
+
+        userFile.write(
+            JSON.stringify(requestBody)
+        );
 
         const formData = new FormData();
 
         formData.append("user", userFile, userFile.name);
 
-        if (logo) {
-            const logoFile = new File(logo.uri);
+
+        if (avatar) {
+            const avatarFile = new File(avatar.uri);
 
             formData.append(
-                "logo",
-                logoFile,
-                logo.fileName
+                "avatar",
+                avatarFile,
+                avatar.fileName
             );
         }
 
@@ -124,11 +135,6 @@ export async function modUser(userData: UserModInfo, logo: SelectedImage | null,
     }
 }
 
-//saga:
-//L'utente viene flaggato come deleting
-//viene mandata una richiesta dallo user service ad auth service
-//viene eliminato l'utente da AuthService
-//viene eliminato l'utente da UserService
 export async function deleteUser() {
 
     await authenticatedFetch(

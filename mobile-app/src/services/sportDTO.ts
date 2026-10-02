@@ -1,10 +1,4 @@
-import {UserInfo} from "./userService";
-
-export enum DeletingStatus {
-    ACTIVE = "ACTIVE",
-    DELETING = "DELETING"
-}
-
+import {UserInfo} from "@/src/services/users/userDTO";
 
 export enum Sport {
     FOOTBALL = "FOOTBALL",
@@ -31,19 +25,15 @@ export enum SportRole {
     FILL_BK = "FILL_BK",
 }
 
-
 export type UserSportRole = {
     sport: Sport;
     role: SportRole;
 };
-
-
 export const SPORT_LABELS: Record<Sport, string> = {
     [Sport.FOOTBALL]: "Calcio",
     [Sport.BEACH_VOLLEY]: "Beach Volley",
     [Sport.BASKETBALL]: "Basket",
 };
-
 export const SPORT_ROLES: Record<Sport, SportRole[]> = {
     [Sport.FOOTBALL]: [
         SportRole.GOALKEEPER,
@@ -68,7 +58,6 @@ export const SPORT_ROLES: Record<Sport, SportRole[]> = {
         SportRole.FILL_BK,
     ],
 };
-
 export const ROLE_LABELS: Record<SportRole, string> = {
     [SportRole.GOALKEEPER]: "Portiere",
     [SportRole.DEFENDER]: "Difensore",
@@ -99,17 +88,8 @@ export function getRoleBySport(
     );
 }
 
-const fallbackRoleBySport: Record<Sport, SportRole> = {
+export const fallbackRoleBySport: Record<Sport, SportRole> = {
     [Sport.FOOTBALL]: SportRole.FILL_FB,
     [Sport.BEACH_VOLLEY]: SportRole.FILL_BV,
     [Sport.BASKETBALL]: SportRole.FILL_BK,
 };
-
-export enum Gender {
-    MALE = "MALE",
-    FEMALE = "FEMALE",
-    OTHER = "OTHER",
-    NOT_SPECIFIED = "NOT_SPECIFIED"
-}
-
-

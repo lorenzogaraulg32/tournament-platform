@@ -4,12 +4,13 @@ import {formatLocationLabel} from "@/src/services/common";
 import {colors} from "@/src/constants/theme";
 import {InvitationCodeBadge} from "@/src/components/common/InvitationCodeBadge";
 import {Variant} from "@/src/constants/PaletteManager";
+import {Media} from "@/src/services/mediaService";
 
 
 type HeaderEntityProps = {
     variant: Variant;
     name: string,
-    imageUrl?: string | null
+    image: Media | null
     position?: string | null
     email?: string
     invitationCode?: string,
@@ -21,7 +22,7 @@ type HeaderEntityProps = {
 export default function HeaderEntity({
                                          variant,
                                          name,
-                                         imageUrl,
+                                         image,
                                          position,
                                          email,
                                          invitationCode,
@@ -36,7 +37,7 @@ export default function HeaderEntity({
             <View style={styles.imageContainer}>
                 <Picture
                     variant={variant}
-                    logoUrl={imageUrl}
+                    image={image}
                     style={styles.image}
                 />
             </View>

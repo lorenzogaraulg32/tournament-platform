@@ -2,8 +2,8 @@ import {View} from "react-native";
 import AuthTextField from "@/src/components/pagesComponents/auth/AuthTextField";
 import AuthContent from "@/src/components/pagesComponents/auth/AuthContent";
 import OnBoardingContainer from "@/src/components/pagesComponents/auth/onboarding/OnBoardingContainer";
-import OnBoardingNavigationButtons from "@/src/components/pagesComponents/onBoarding/OnBoardingNavigationButtons";
-import {onboardingStepStyles as styles} from "@/src/components/pagesComponents/onBoarding/onboardingStepStyles"
+import OnBoardingNavigationButtons from "@/src/components/pagesComponents/profile/onBoarding/misc/OnBoardingNavigationButtons";
+import {onboardingStepStyles as styles} from "@/src/components/pagesComponents/profile/onBoarding/misc/onboardingStepStyles"
 
 type NameAndSurnameStepProps = {
     firstName: string;

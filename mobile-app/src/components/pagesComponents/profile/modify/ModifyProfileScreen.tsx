@@ -2,9 +2,17 @@ import {useCallback, useEffect, useRef, useState} from "react";
 import {router} from "expo-router";
 
 import {loadCurrentUserId} from "@/src/services/users/authService";
-import {loadUserInfo, modUser, type UserModInfo,} from "@/src/services/users/userService";
-import type {SelectedImage} from "@/src/services/fileService";
-import {Sport, SPORT_ROLES, type SportRole,} from "@/src/services/users/userConstants";
+import {fetchUser, modUser} from "@/src/services/users/userService";
+
+import {
+    DeletingStatus,
+    ProfileFormErrors,
+    Sport,
+    SPORT_ROLES,
+    type SportRole,
+    UserInfo,
+    UserModRequest,
+} from "@/src/services/users/userDTO";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 
 import LoadingScreen from "@/src/components/common/loading/LoadingScreen";
@@ -12,29 +20,34 @@ import ErrorScreen from "@/src/components/common/errors/ErrorScreen";
 
 import ModifyProfilePage, {FIRST_STEP, LAST_STEP, type ProfileEditStep, STEPS,} from "./ModifyProfilePage";
 
-export type ProfileFormData = Omit<UserModInfo, "newPicUrl">;
-
-export type ProfileFieldErrors = Partial<
-    Record<keyof ProfileFormData | "logo", string>
->;
 
 export default function ModifyProfileScreen() {
     const requestIdRef = useRef(0);
     const submissionLock = useRef(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const [profile, setProfile] = useState<ProfileFormData | null>(null);
+
+    const [profile, setProfile] = useState<UserInfo>({
+        id: "",
+        firstName: "",
+        lastName: "",
+        username: "",
+        birthDate: null,
+        gender: null,
+        location: null,
+        sports: [],
+        roles: [],
+        avatar: null,
+        deletingStatus: DeletingStatus.ACTIVE
+    });
+    const [newProfile, setNewProfile] = useState<UserModRequest | null>(null);
 
     const [isLoading, setIsLoading] = useState(true);
     const [loadError, setLoadError] = useState("");
 
     const [currentStep, setCurrentStep] = useState<ProfileEditStep>(FIRST_STEP);
-    const [fieldErrors, setFieldErrors] = useState<ProfileFieldErrors>({});
+    const [fieldErrors, setFieldErrors] = useState<ProfileFormErrors>({});
     const [apiError, setApiError] = useState("");
-    const [isSubmitting, setIsSubmitting] = useState(false);
-
-    const [existingLogoSource, setExistingLogoSource] = useState<string | undefined>();
-    const [logo, setLogo] = useState<SelectedImage | null>(null);
-    const [logoRemoved, setLogoRemoved] = useState(false);
 
     const loadProfile = useCallback(async () => {
         const requestId = ++requestIdRef.current;
@@ -55,21 +68,35 @@ export default function ModifyProfileScreen() {
             }
 
             const id = String(currentUserId);
-            const user = await loadUserInfo(id);
+            const user = await fetchUser(id);
 
             if (requestId !== requestIdRef.current) {
                 return;
             }
 
-            setProfile({
+            setNewProfile({
                 firstName: user.firstName,
                 lastName: user.lastName,
                 username: user.username,
                 location: user.location ?? null,
                 sports: user.sports,
                 roles: user.roles,
+                avatar: undefined,
             });
-            setExistingLogoSource(user.profilePicUrl || undefined);
+
+            setProfile({
+                id: user.id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                username: user.username,
+                birthDate: user.birthDate,
+                gender: user.gender,
+                location: user.location ?? null,
+                sports: user.sports,
+                roles: user.roles,
+                avatar: user.avatar,
+                deletingStatus: user.deletingStatus
+            });
         } catch (error) {
             if (requestId !== requestIdRef.current) {
                 return;
@@ -97,13 +124,13 @@ export default function ModifyProfileScreen() {
 
     // Aggiornamento campi
 
-    function updateField<K extends keyof ProfileFormData>(
+    function updateField<K extends keyof UserModRequest>(
         field: K,
-        value: ProfileFormData[K],
+        value: UserModRequest[K],
     ) {
         if (submissionLock.current) return;
 
-        setProfile(previous =>
+        setNewProfile(previous =>
             previous ? {...previous, [field]: value} : previous
         );
 
@@ -115,28 +142,10 @@ export default function ModifyProfileScreen() {
         setApiError("");
     }
 
-    function updateLogo(newLogo: SelectedImage | null) {
-        if (submissionLock.current) return;
-
-        setLogo(newLogo);
-        setLogoRemoved(false);
-        setFieldErrors(previous => ({...previous, logo: undefined}));
-        setApiError("");
-    }
-
-    function removeLogo() {
-        if (submissionLock.current) return;
-
-        setLogo(null);
-        setLogoRemoved(true);
-        setFieldErrors(previous => ({...previous, logo: undefined}));
-        setApiError("");
-    }
-
     function toggleSport(sport: Sport) {
         if (submissionLock.current) return;
 
-        setProfile(previous => {
+        setNewProfile(previous => {
             if (!previous) return previous;
 
             const selected = previous.sports.includes(sport);
@@ -164,7 +173,7 @@ export default function ModifyProfileScreen() {
     function toggleRole(sport: Sport, role: SportRole) {
         if (submissionLock.current) return;
 
-        setProfile(previous => {
+        setNewProfile(previous => {
             if (!previous || !previous.sports.includes(sport)) {
                 return previous;
             }
@@ -194,35 +203,35 @@ export default function ModifyProfileScreen() {
     // Validazione
 
     function validateStep(step: ProfileEditStep): boolean {
-        if (!profile) return false;
+        if (!newProfile) return false;
 
-        const errors: ProfileFieldErrors = {};
+        const errors: ProfileFormErrors = {};
 
         switch (step) {
             case 0:
-                errors.firstName = profile.firstName.trim()
+                errors.firstName = newProfile.firstName.trim()
                     ? undefined
                     : "Inserisci il nome";
 
-                errors.lastName = profile.lastName.trim()
+                errors.lastName = newProfile.lastName.trim()
                     ? undefined
                     : "Inserisci il cognome";
                 break;
 
             case 1:
-                errors.username = profile.username.trim()
+                errors.username = newProfile.username.trim()
                     ? undefined
                     : "Inserisci lo username";
 
-                errors.logo =
-                    logo?.fileSize !== undefined &&
-                    logo.fileSize > 2 * 1024 * 1024
-                        ? "Il logo non può superare i 2 MB"
+                errors.avatar =
+                    newProfile.avatar?.fileSize !== undefined &&
+                    newProfile.avatar.fileSize > 5 * 1024 * 1024
+                        ? "Il logo non può superare i 5 MB"
                         : undefined;
                 break;
 
             case 2: {
-                const location = profile.location;
+                const location = newProfile.location;
 
                 const valid =
                     location === null ||
@@ -244,8 +253,8 @@ export default function ModifyProfileScreen() {
 
             case 3: {
                 const validSports =
-                    profile.sports.length > 0 &&
-                    profile.sports.every(sport =>
+                    newProfile.sports.length > 0 &&
+                    newProfile.sports.every(sport =>
                         Object.values(Sport).includes(sport)
                     );
 
@@ -255,8 +264,8 @@ export default function ModifyProfileScreen() {
 
                 const hasRolesForEverySport =
                     validSports &&
-                    profile.sports.every(sport =>
-                        profile.roles.some(
+                    newProfile.sports.every(sport =>
+                        newProfile.roles.some(
                             item =>
                                 item.sport === sport &&
                                 SPORT_ROLES[sport].some(
@@ -265,9 +274,9 @@ export default function ModifyProfileScreen() {
                         )
                     );
 
-                const allRolesValid = profile.roles.every(
+                const allRolesValid = newProfile.roles.every(
                     item =>
-                        profile.sports.includes(item.sport) &&
+                        newProfile.sports.includes(item.sport) &&
                         SPORT_ROLES[item.sport]?.some(
                             role => role === item.role
                         )
@@ -303,7 +312,7 @@ export default function ModifyProfileScreen() {
     // Navigazione e salvataggio
 
     async function handleNext(): Promise<void> {
-        if (submissionLock.current || !profile) return;
+        if (submissionLock.current || !newProfile) return;
 
         submissionLock.current = true;
         setIsSubmitting(true);
@@ -335,18 +344,17 @@ export default function ModifyProfileScreen() {
     }
 
     async function handleSave(): Promise<void> {
-        if (!profile) return;
+        if (!newProfile) return;
 
         try {
-            const request: UserModInfo = {
-                ...profile,
-                firstName: profile.firstName.trim(),
-                lastName: profile.lastName.trim(),
-                username: profile.username.trim(),
-                newPicUrl: logoRemoved ? "REMOVE" : undefined,
+            const request: UserModRequest = {
+                ...newProfile,
+                firstName: newProfile.firstName.trim(),
+                lastName: newProfile.lastName.trim(),
+                username: newProfile.username.trim(),
             };
 
-            await modUser(request, logo);
+            await modUser(request);
 
             router.back();
         } catch (error) {
@@ -373,24 +381,19 @@ export default function ModifyProfileScreen() {
         );
     }
 
-    if (!profile) {
+    if (!newProfile) {
         return null;
     }
 
     return (
         <ModifyProfilePage
-            profile={profile}
-            logo={logo}
-            existingLogoSource={
-                logoRemoved ? undefined : existingLogoSource
-            }
+            oldProfile={profile}
+            profile={newProfile}
             currentStep={currentStep}
             fieldErrors={fieldErrors}
             apiError={apiError}
             isSubmitting={isSubmitting}
             onChangeField={updateField}
-            onChangeLogo={updateLogo}
-            onRemoveLogo={removeLogo}
             onToggleSport={toggleSport}
             onToggleRole={toggleRole}
             onBack={handleBack}

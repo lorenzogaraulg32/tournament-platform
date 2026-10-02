@@ -1,38 +1,29 @@
 import FormImageField from "@/src/components/common/forms/components/FormImageField";
-import type { SelectedImage } from "@/src/services/fileService";
+import type {Media} from "@/src/services/mediaService";
 import type { Variant } from "@/src/constants/PaletteManager";
 
 type LogoStepProps = {
     variant: Variant;
-    value: SelectedImage | null;
-    existingLogoSource?: string;
-    onChange: (logo: SelectedImage | null) => void;
-    onRemove?: () => void;
+    value: Media | null;
+    onChange: (logo: Media | null) => void;
     disabled: boolean;
     errorMessage?: string;
-    local?: boolean;
 };
 
 export default function LogoStep({
                                      variant,
                                      value,
-                                     existingLogoSource,
                                      onChange,
-                                     onRemove,
                                      disabled,
                                      errorMessage,
-                                     local,
                                  }: LogoStepProps) {
     return (
         <FormImageField
             variant={variant}
             value={value}
-            existingLogoSource={existingLogoSource}
             onChange={onChange}
-            onRemove={onRemove}
             disabled={disabled}
             errorMessage={errorMessage}
-            local={local}
         />
     );
 }

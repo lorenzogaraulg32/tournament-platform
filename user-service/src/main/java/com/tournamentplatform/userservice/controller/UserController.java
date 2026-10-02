@@ -23,37 +23,33 @@ public class UserController {
     private final UserService userService;
 
 
-    @PostMapping("/me")
+    @PostMapping(
+            value = "/me",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
     public ResponseEntity<UserResponse> createUser(
             @AuthenticationPrincipal Jwt jwt,
-            @Valid @RequestBody CreateUserRequest request
+            @RequestPart("team")
+            @Valid
+            CreateUserRequest request,
+
+            @RequestPart(
+                    value = "avatar",
+                    required = false
+            )
+            MultipartFile avatar
     ) {
 
         String userId = jwt.getSubject();
 
         UserResponse response =
-                userService.createUser(userId, request);
+                userService.createUser(userId, request, avatar);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
     }
 
-    @PostMapping(
-            value = "/me/profile-picture",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
-    )
-    public ResponseEntity<Void> uploadUserProfilePic(
-            @AuthenticationPrincipal Jwt jwt,
-            @RequestParam("file") MultipartFile file
-    ) {
-
-        String userId = jwt.getSubject();
-
-        userService.uploadProfilePicture(userId, file);
-
-        return ResponseEntity.noContent().build();
-    }
 
     @GetMapping("/{userId}/avatar")
     public ResponseEntity<Resource> getUserAvatar(
@@ -63,14 +59,12 @@ public class UserController {
     }
 
 
-
     @GetMapping("/{userId}")
     public ResponseEntity<UserResponse> getUser(
             @PathVariable String userId
     ) {
 
-        UserResponse response =
-                userService.getUser(userId);
+        UserResponse response = userService.getUser(userId);
 
         return ResponseEntity.ok(response);
     }
@@ -87,8 +81,7 @@ public class UserController {
     ) {
         String userId = jwt.getSubject();
 
-        UserResponse response =
-                userService.patchUser(userId, request, avatar);
+        UserResponse response = userService.patchUser(userId, request, avatar);
 
         return ResponseEntity.ok(response);
     }

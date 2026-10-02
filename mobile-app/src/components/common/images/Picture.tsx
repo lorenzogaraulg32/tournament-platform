@@ -1,96 +1,39 @@
-import {useEffect, useMemo, useState} from "react";
 import {ImageStyle, StyleProp,} from "react-native";
 import {Image} from "expo-image";
-import {getAuthorizationHeader} from "@/src/services/users/sessionService";
 import {paletteVariants, Variant} from "@/src/constants/PaletteManager";
-import {API_URL} from "@/src/services/common";
+import {Media} from "@/src/services/mediaService";
+import {getAuthorizationHeader} from "@/src/services/users/sessionService";
+import {useEffect, useState} from "react";
 
 type PictureProps = {
-    logoUrl?: string | null;
+    image?: Media | null;
     style?: StyleProp<ImageStyle>;
     variant: Variant;
-    local?: boolean
 };
 
 export default function Picture({
-                                    logoUrl,
+                                    image,
                                     style,
                                     variant,
-                                    local
                                 }: PictureProps) {
-    const {palette, placeholder, background} = paletteVariants[variant];
 
-    const [authorization, setAuthorization] =
-        useState<string | null>(null);
+    const {placeholder} = paletteVariants[variant];
 
-    const [hasError, setHasError] =
-        useState(false);
+    const isRemote = image?.uri.startsWith("http");
+
+    const [authorization, setAuthorization] = useState<string | null>(null);
 
     useEffect(() => {
-        let isMounted = true;
-
-        setHasError(false);
-
-        if (!logoUrl || local) {
-            setAuthorization(null);
-
-            return () => {
-                isMounted = false;
-            };
+        if (!isRemote) {
+            return;
         }
 
         getAuthorizationHeader()
-            .then(header => {
-                if (isMounted) {
-                    setAuthorization(header);
-                }
-            })
-            .catch(error => {
-                console.error(
-                    "Errore recupero autorizzazione immagine:",
-                    error
-                );
+            .then(setAuthorization)
+            .catch(() => setAuthorization(null));
+    }, [isRemote]);
 
-                if (isMounted) {
-                    setHasError(true);
-                }
-            });
-
-        return () => {
-            isMounted = false;
-        };
-    }, [logoUrl, local]);
-
-    const completeLogoUrl = useMemo(() => {
-        if (!logoUrl) {
-            return null;
-        }
-
-        if (
-            local ||
-            logoUrl.startsWith("http://") ||
-            logoUrl.startsWith("https://")
-        ) {
-            return logoUrl;
-        }
-
-        if (!API_URL) {
-            return null;
-        }
-
-        const baseUrl = API_URL.replace(/\/+$/, "");
-        const relativeUrl = logoUrl.replace(/^\/+/, "");
-
-        return `${baseUrl}/${relativeUrl}`;
-    }, [logoUrl, local]);
-
-    const shouldShowPlaceholder =
-        !completeLogoUrl ||
-        hasError ||
-        (!local && !authorization);
-
-
-    if (shouldShowPlaceholder) {
+    if (!image) {
         return (
             <Image
                 source={placeholder}
@@ -100,23 +43,22 @@ export default function Picture({
         );
     }
 
+    if (isRemote && !authorization) {
+        return null;
+    }
+
     return (
         <Image
-            key={`${local ? "local" : "remote"}:${completeLogoUrl}`}
             source={{
-                uri: completeLogoUrl,
-                ...(!local && authorization
-                    ? {headers: {Authorization: authorization}}
-                    : {}),
+                uri: image.uri,
+                headers: isRemote && authorization
+                    ? {Authorization: authorization}
+                    : undefined,
             }}
             style={style}
             contentFit="cover"
             cachePolicy="none"
             transition={150}
-            onError={(event) => {
-                console.error("Errore caricamento immagine:", event.error);
-                setHasError(true);
-            }}
         />
     );
 }

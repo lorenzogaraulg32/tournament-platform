@@ -1,5 +1,5 @@
 import {GeoLocation, LocalDateString, RecruitmentStatus} from "@/src/services/common";
-import {Sport} from "@/src/services/users/userConstants";
+import {Sport} from "@/src/services/users/userDTO";
 
 
 export enum TournamentFormat {

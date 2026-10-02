@@ -16,7 +16,7 @@ import {Alert, ImageBackground, StyleSheet, View} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {useCallback, useEffect, useRef, useState} from "react";
 import {ApiRequestError} from "@/src/services/errorService";
-import {loadUserInfo} from "@/src/services/users/userService";
+import {fetchUser} from "@/src/services/users/userService";
 import {loadCurrentUserId} from "@/src/services/users/authService";
 import ErrorScreen from "@/src/components/common/errors/ErrorScreen";
 import LoadingScreen from "@/src/components/common/loading/LoadingScreen";
@@ -24,7 +24,7 @@ import LoadingScreen from "@/src/components/common/loading/LoadingScreen";
 import {paletteVariants, type Variant} from "@/src/constants/PaletteManager";
 import ToastProvider from "@/src/components/common/Toast/ToastProvider";
 import {SafeAreaProvider} from "react-native-safe-area-context";
-import {DeletingStatus} from "@/src/services/users/userConstants";
+import {DeletingStatus} from "@/src/services/users/userDTO";
 import {clearSession} from "@/src/services/users/sessionService";
 
 const TAB_ROOT_PATHS = new Set([
@@ -68,7 +68,7 @@ export default function RootLayout() {
         try {
             const id = await loadCurrentUserId();
 
-            const user = await loadUserInfo(id);
+            const user = await fetchUser(id);
 
             if (user.deletingStatus === DeletingStatus.DELETING) {
                 Alert.alert(

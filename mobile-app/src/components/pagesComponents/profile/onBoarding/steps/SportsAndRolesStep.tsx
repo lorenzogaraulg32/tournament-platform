@@ -1,8 +1,8 @@
 import {Text, View} from "react-native";
 import AuthContent from "@/src/components/pagesComponents/auth/AuthContent";
 import OnBoardingContainer from "@/src/components/pagesComponents/auth/onboarding/OnBoardingContainer";
-import OnBoardingNavigationButtons from "@/src/components/pagesComponents/onBoarding/OnBoardingNavigationButtons";
-import {onboardingStepStyles as styles} from "@/src/components/pagesComponents/onBoarding/onboardingStepStyles"
+import OnBoardingNavigationButtons from "@/src/components/pagesComponents/profile/onBoarding/misc/OnBoardingNavigationButtons";
+import {onboardingStepStyles as styles} from "@/src/components/pagesComponents/profile/onBoarding/misc/onboardingStepStyles"
 import {
     ROLE_LABELS,
     Sport,
@@ -10,7 +10,7 @@ import {
     SPORT_ROLES,
     type SportRole,
     type UserSportRole,
-} from "@/src/services/users/userConstants";
+} from "@/src/services/users/userDTO";
 import {Variant} from "@/src/constants/PaletteManager";
 import FormSelectionButton from "@/src/components/common/forms/components/FormSelectionButton";
 
