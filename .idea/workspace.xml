@@ -4,20 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Tournament creation finished and adapted to new architecture, &#10;Adjusted graphics, fixed residual bug and end-to-end testing for everything.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/_layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/_layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/buttons/ButtonBackground.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/buttons/ButtonBackground.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormFileField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormFileField.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormInputField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormInputField.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormProgressBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormProgressBar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormSpinnerField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormSpinnerField.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/tournaments/createTournament/CreateTournamentPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/tournaments/createTournament/CreateTournamentPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/tournaments/steps/NumberOfTeamsStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/tournaments/steps/NumberOfTeamsStep.tsx" afterDir="false" />
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Minor graphical improvements">
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/errorService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/errorService.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -396,15 +384,7 @@
       <workItem from="1790769619154" duration="4395000" />
       <workItem from="1790844505748" duration="18287000" />
       <workItem from="1790929617577" duration="26696000" />
-      <workItem from="1791019889720" duration="6374000" />
-    </task>
-    <task id="LOCAL-00047" summary="modified tests after changing entity structure">
-      <option name="closed" value="true" />
-      <created>1787231072124</created>
-      <option name="number" value="00047" />
-      <option name="presentableId" value="LOCAL-00047" />
-      <option name="project" value="LOCAL" />
-      <updated>1787231072124</updated>
+      <workItem from="1791019889720" duration="6542000" />
     </task>
     <task id="LOCAL-00048" summary="Restructured Profile page, added the possibility to visualize a generic user teams but blocking current user teams in profile, to limit redundancy">
       <option name="closed" value="true" />
@@ -790,7 +770,15 @@
       <option name="project" value="LOCAL" />
       <updated>1790959912972</updated>
     </task>
-    <option name="localTasksCounter" value="96" />
+    <task id="LOCAL-00096" summary="Minor graphical improvements">
+      <option name="closed" value="true" />
+      <created>1791026673170</created>
+      <option name="number" value="00096" />
+      <option name="presentableId" value="LOCAL-00096" />
+      <option name="project" value="LOCAL" />
+      <updated>1791026673172</updated>
+    </task>
+    <option name="localTasksCounter" value="97" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -808,7 +796,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Now every section  in every page is collapsable" />
     <MESSAGE value="Now the collapsable section has a pressable that can render the entire content of the scroll" />
     <MESSAGE value="fixed minor warning regarding layout" />
     <MESSAGE value="Implemented team modification and player list modification, next up is admin modification" />
@@ -833,7 +820,8 @@
     <MESSAGE value="Migration for new storage service completed also for user service, todo: fix frontend" />
     <MESSAGE value="Front end fixed, now images are managed correctly, todo: finish tournament section" />
     <MESSAGE value="Tournament creation finished and adapted to new architecture, &#10;Adjusted graphics, fixed residual bug and end-to-end testing for everything." />
-    <option name="LAST_COMMIT_MESSAGE" value="Tournament creation finished and adapted to new architecture, &#10;Adjusted graphics, fixed residual bug and end-to-end testing for everything." />
+    <MESSAGE value="Minor graphical improvements" />
+    <option name="LAST_COMMIT_MESSAGE" value="Minor graphical improvements" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -26,10 +26,12 @@ export class ApiRequestError extends Error {
 export function printApiRequestError(error : ApiRequestError){
     console.log("Status: " + error.status)
     console.log("Code: " + error.code)
-    console.log("Errors: " + error.errors)
+    console.log(
+        "Errors:",
+        JSON.stringify(error.errors, null, 2)
+    );
     console.log("Trace: " + error.traceId)
     console.log("Message: " + error.message)
-
 }
 
 
