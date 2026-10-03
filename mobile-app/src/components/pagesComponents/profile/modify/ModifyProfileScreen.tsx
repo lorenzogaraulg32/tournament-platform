@@ -359,10 +359,7 @@ export default function ModifyProfileScreen() {
             router.back();
         } catch (error) {
             const apiError = normalizeApiRequestError(error);
-
-            if (apiError.status !== 401) {
-                setApiError(apiError.message);
-            }
+            setApiError(apiError.message);
         }
     }
 

@@ -43,9 +43,6 @@ export default function MyTeams() {
             const apiError = normalizeApiRequestError(error);
 
             // Redirect già gestito da authenticatedFetch
-            if (apiError.status === 401) {
-                return;
-            }
 
             setError(apiError.message);
         } finally {

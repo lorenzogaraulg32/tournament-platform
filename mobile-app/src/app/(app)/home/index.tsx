@@ -22,10 +22,6 @@ export default function Homepage() {
             })
         } catch (error) {
             const apiError = normalizeApiRequestError(error)
-            // Redirect già gestito da authenticatedFetch
-            if (apiError.status === 401) {
-                return;
-            }
 
             Alert.alert(
                 "Accesso alla squadra non riuscito",

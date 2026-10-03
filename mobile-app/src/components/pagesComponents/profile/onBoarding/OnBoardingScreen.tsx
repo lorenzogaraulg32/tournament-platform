@@ -18,7 +18,7 @@ import OnBoardingPage, {
 } from "@/src/components/pagesComponents/profile/onBoarding/OnBoardingPage";
 import {createUser} from "@/src/services/users/userService";
 import {router} from "expo-router";
-import {normalizeApiRequestError, printApiRequestError} from "@/src/services/errorService";
+import {normalizeApiRequestError} from "@/src/services/errorService";
 
 
 export default function OnBoardingScreen() {
@@ -76,13 +76,6 @@ export default function OnBoardingScreen() {
             router.replace("/(app)/home");
         } catch (error) {
             const apiError = normalizeApiRequestError(error);
-
-            // Redirect già gestito da authenticatedFetch.
-            if (apiError.status === 401) {
-                return;
-            }
-
-            printApiRequestError(apiError);
             setApiError(apiError.message);
         }
     }
@@ -155,6 +148,7 @@ export default function OnBoardingScreen() {
                 return false;
         }
     }
+
     function validateNameAndSurname(): boolean {
         return applyFieldErrors({
             firstName: validateFirstName(userData),

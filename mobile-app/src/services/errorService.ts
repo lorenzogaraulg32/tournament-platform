@@ -23,7 +23,7 @@ export class ApiRequestError extends Error {
 }
 
 
-export function printApiRequestError(error : ApiRequestError){
+export function printApiRequestError(error: ApiRequestError) {
     console.log("Status: " + error.status)
     console.log("Code: " + error.code)
     console.log(
@@ -35,27 +35,30 @@ export function printApiRequestError(error : ApiRequestError){
 }
 
 
-//mapping delle response con errore, con fallback in caso di errore malformato/sconosciuto
-//prende il body della response in input per verificare se si tratta di un errore
 export function throwApiRequestError(
     status: number,
     body: unknown,
     fallbackMessage: string
 ): never {
     if (isApiErrorResponse(body)) {
-        throw new ApiRequestError(
+        const apiRequestError = new ApiRequestError(
             body.message,
             body.status,
             body.code,
             body.errors,
             body.traceId
-        );
+        )
+        printApiRequestError(apiRequestError);
+        throw apiRequestError
     }
 
-    throw new ApiRequestError(
+    const error = new ApiRequestError(
         fallbackMessage,
         status
-    );
+    )
+
+    printApiRequestError(error)
+    throw error;
 }
 
 //verifica se la response è un errore benformato

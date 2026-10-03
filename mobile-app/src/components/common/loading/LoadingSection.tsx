@@ -1,14 +1,15 @@
-import {ActivityIndicator, StyleSheet, Text, View} from "react-native";
+import {ActivityIndicator, StyleProp, StyleSheet, Text, View, ViewStyle} from "react-native";
 
 
 type LoadingSectionProps = {
     text: string
+    style?: StyleProp<ViewStyle>;
 }
 
 
-export default function LoadingSection({text}: LoadingSectionProps) {
+export default function LoadingSection({text, style}: LoadingSectionProps) {
     return (
-        <View style={styles.loadingContainer}>
+        <View style={[styles.loadingContainer, style]}>
             <ActivityIndicator size={"small"}/>
             <Text style={styles.loadingText}>
                 {text}

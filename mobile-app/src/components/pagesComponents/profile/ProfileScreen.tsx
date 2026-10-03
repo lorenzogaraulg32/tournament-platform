@@ -1,18 +1,16 @@
 import {useCallback, useRef, useState} from "react";
 import {router, useFocusEffect, useLocalSearchParams,} from "expo-router";
 
+
 import {handleLogout, loadCurrentUserId,} from "@/src/services/users/authService";
 import {fetchUser} from "@/src/services/users/userService";
 import {fetchUserTeams} from "@/src/services/teams/teamService";
 import type {TeamDetails} from "@/src/services/teams/teamDTO";
 import {normalizeApiRequestError} from "@/src/services/errorService";
-
-import LoadingScreen from "@/src/components/common/loading/LoadingScreen";
-import ErrorScreen from "@/src/components/common/errors/ErrorScreen";
 import BackButton from "@/src/components/common/buttons/BackButton";
 import OptionsMenu from "@/src/components/common/OptionsMenu";
 import ProfilePage from "@/src/components/pagesComponents/profile/ProfilePage";
-import { UserInfo } from "@/src/services/users/userDTO";
+import {UserInfo} from "@/src/services/users/userDTO";
 
 type ProfileData = {
     user: UserInfo;
@@ -75,10 +73,8 @@ export default function ProfileScreen() {
             }
 
             const apiError = normalizeApiRequestError(error);
+            setError(apiError.message)
 
-            if (apiError.status !== 401) {
-                setError(apiError.message);
-            }
         } finally {
             if (requestId === requestIdRef.current) {
                 setIsLoading(false);
@@ -125,32 +121,13 @@ export default function ProfileScreen() {
     }
 
 
-    if (isLoading) {
-        return <LoadingScreen message="Caricamento profilo..."/>;
-    }
-
-    if (error) {
-        return (
-            <ErrorScreen
-                title="Impossibile caricare il profilo"
-                message={error}
-                onRetry={loadProfile}
-                isRetrying={isLoading}
-            />
-        );
-    }
-
-    if (!profile) {
-        return null;
-    }
-
     return (
         <>
             {profileId !== undefined && (
                 <BackButton onPress={onBack}/>
             )}
 
-            {profile.isOwnProfile && (
+            {profile?.isOwnProfile && (
                 <OptionsMenu
                     onEdit={onMod}
                     onDelete={onDelete}/>
@@ -158,11 +135,16 @@ export default function ProfileScreen() {
 
             <ProfilePage
                 variant="profile"
-                user={profile.user}
-                userTeams={profile.teams}
-                isOwnProfile={profile.isOwnProfile}
+                user={profile?.user}
+                userTeams={profile?.teams}
+                isOwnProfile={profile?.isOwnProfile}
                 onLogout={handleLogout}
+                error={error}
+                loading={isLoading}
+                onErrorRetry={loadProfile}
             />
         </>
     );
 }
+
+

@@ -1,4 +1,4 @@
-import {Pressable, StyleSheet, Text, View} from "react-native";
+import {Pressable, StyleProp, StyleSheet, Text, View, ViewStyle} from "react-native";
 import {corners} from "@/src/constants/theme";
 
 
@@ -6,12 +6,13 @@ type ErrorSectionProps = {
     text: string
     onRetry?: () => void
     variant: "error" | "warning"
+    style?: StyleProp<ViewStyle>;
 }
 
 
-export default function ErrorSection({text, onRetry, variant}: ErrorSectionProps) {
+export default function ErrorSection({text, onRetry, variant, style}: ErrorSectionProps) {
     return (
-        <View style={styles.errorContainer}>
+        <View style={[styles.errorContainer, style]}>
             <Text style={[
                 variant == "error" && styles.errorText,
                 variant == "warning" && styles.warningText]
