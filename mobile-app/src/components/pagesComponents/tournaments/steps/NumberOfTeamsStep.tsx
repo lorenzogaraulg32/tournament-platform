@@ -31,7 +31,6 @@ export default function NumberOfTeamsStep({
                 value={minTeams}
                 onChange={onMinTeamsChange}
                 min={2}
-                max={maxTeams}
                 errorMessage={minTeamsError}
                 disabled={disabled}
                 labelIconName="people-outline"
@@ -42,7 +41,7 @@ export default function NumberOfTeamsStep({
                 label="Numero massimo di squadre"
                 value={maxTeams}
                 onChange={onMaxTeamsChange}
-                min={minTeams}
+                min={2}
                 errorMessage={maxTeamsError}
                 disabled={disabled}
                 labelIconName="people-outline"

@@ -47,6 +47,22 @@ export default function CreateTournamentPage({
                                                  onNext
                                              }: CreateTournamentPageProps) {
 
+    function handleMinTeamsChange(value: number) {
+        onChangeField("minTeams", value);
+
+        if (tournament.maxTeams < value) {
+            onChangeField("maxTeams", value);
+        }
+    }
+
+    function handleMaxTeamsChange(value: number) {
+        onChangeField("maxTeams", value);
+
+        if (tournament.minTeams > value) {
+            onChangeField("minTeams", value);
+        }
+    }
+
 
     function renderStep() {
         switch (currentStep) {
@@ -87,7 +103,7 @@ export default function CreateTournamentPage({
                 return (
                     <LogoAndRulesStep variant={"tournaments"}
                                       image={tournament.logo}
-                                      file={tournament.logo}
+                                      file={tournament.rules}
                                       onChangeImage={logo => onChangeField("logo", logo)}
                                       onChangeFile={rules => onChangeField("rules", rules)}
                                       disabled={isSubmitting}
@@ -127,10 +143,10 @@ export default function CreateTournamentPage({
                         minTeams={tournament.minTeams}
                         maxTeams={tournament.maxTeams}
                         onMinTeamsChange={minTeams =>
-                            onChangeField("minTeams", minTeams)
+                            handleMinTeamsChange(minTeams)
                         }
                         onMaxTeamsChange={maxTeams =>
-                            onChangeField("maxTeams", maxTeams)
+                            handleMaxTeamsChange(maxTeams)
                         }
                         minTeamsError={fieldErrors.minTeams}
                         maxTeamsError={fieldErrors.maxTeams}

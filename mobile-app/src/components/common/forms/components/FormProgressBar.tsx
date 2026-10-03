@@ -1,6 +1,6 @@
-import { Fragment } from "react";
-import { StyleSheet, View } from "react-native";
-import { paletteVariants, type Variant } from "@/src/constants/PaletteManager";
+import {Fragment} from "react";
+import {StyleSheet, View} from "react-native";
+import {paletteVariants, type Variant} from "@/src/constants/PaletteManager";
 
 type FormProgressBarProps = {
     step: number;
@@ -13,7 +13,7 @@ export default function FormProgressBar({
                                             totalSteps,
                                             variant,
                                         }: FormProgressBarProps) {
-    const { palette } = paletteVariants[variant];
+    const {palette} = paletteVariants[variant];
 
     return (
         <View
@@ -28,7 +28,7 @@ export default function FormProgressBar({
             }}
         >
             <View style={styles.container}>
-                {Array.from({ length: totalSteps }, (_, index) => {
+                {Array.from({length: totalSteps}, (_, index) => {
                     const isCompleted = index < step;
                     const isCurrent = index === step;
 
@@ -84,24 +84,26 @@ const styles = StyleSheet.create({
     },
 
     dot: {
-        width: 10,
-        height: 10,
-        borderRadius: 5,
+        width: 15,
+        height: 15,
+        borderRadius: 10,
         borderWidth: 1,
+        zIndex: 1
     },
 
     dotCurrent: {
-        width: 14,
-        height: 14,
-        borderRadius: 7,
+        width: 20,
+        height: 20,
+        borderRadius: 10,
         borderWidth: 3,
+        zIndex: 1
     },
 
     bar: {
         flex: 1,
         height: 5,
-        marginHorizontal: 6,
-        borderRadius: 2,
-        borderWidth: 1,
+        marginHorizontal: -1,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
     },
 });

@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
 
 
     btnPressed: {
-        opacity: 0.75,
         transform: [
             {
                 scale: 0.99,

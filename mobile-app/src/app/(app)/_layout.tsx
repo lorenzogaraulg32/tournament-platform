@@ -66,6 +66,7 @@ export default function RootLayout() {
         setIsRetrying(true);
 
         try {
+
             const id = await loadCurrentUserId();
 
             const user = await fetchUser(id);
@@ -151,7 +152,7 @@ export default function RootLayout() {
 
 
     return (
-        <SafeAreaProvider>
+
             <ToastProvider>
                 <SwipeTabs
                     backBehavior="none"
@@ -179,16 +180,18 @@ export default function RootLayout() {
                     screenOptions={{
                         swipeEnabled: isTabRoot,
                         lazy: true,
+
+
                         tabBarShowIcon: true,
-                        tabBarShowLabel: true,
+                        tabBarShowLabel: false,
+
                         tabBarActiveTintColor: "#ffffff",
                         tabBarInactiveTintColor: "#ffffff",
-                        tabBarLabelStyle: styles.barLabel,
-                        tabBarStyle: {
-                            backgroundColor: "transparent",
-                            elevation: 0,
-                            shadowOpacity: 0,
-                        },
+
+                        tabBarStyle: styles.tabBarStyle,
+
+                        tabBarItemStyle: styles.tabBarItemStyle,
+
                         tabBarIndicatorStyle: {
                             height: 0,
                         },
@@ -203,7 +206,8 @@ export default function RootLayout() {
                                 source={config.background}
                                 resizeMode="cover"
                                 style={{
-                                    paddingBottom: 15,
+                                    paddingTop: 6,
+                                    paddingBottom: 6,
                                     borderTopWidth: 1,
                                     borderTopColor: "rgba(255, 255, 255, 0.35)",
                                 }}
@@ -225,7 +229,7 @@ export default function RootLayout() {
                             tabBarIcon: ({color, focused}) => (
                                 <Ionicons
                                     name={focused ? "home" : "home-outline"}
-                                    size={24}
+                                    size={28}
                                     color={color}
                                 />
                             ),
@@ -239,7 +243,7 @@ export default function RootLayout() {
                             tabBarIcon: ({color, focused}) => (
                                 <Ionicons
                                     name={focused ? "people" : "people-outline"}
-                                    size={24}
+                                    size={28}
                                     color={color}
                                 />
                             ),
@@ -253,7 +257,7 @@ export default function RootLayout() {
                             tabBarIcon: ({color, focused}) => (
                                 <Ionicons
                                     name={focused ? "trophy" : "trophy-outline"}
-                                    size={24}
+                                    size={28}
                                     color={color}
                                 />
                             ),
@@ -263,11 +267,11 @@ export default function RootLayout() {
                     <SwipeTabs.Screen
                         name="profile"
                         options={{
-                            title: "Profilo",
+                            title: "Profile",
                             tabBarIcon: ({color, focused}) => (
                                 <Ionicons
                                     name={focused ? "person" : "person-outline"}
-                                    size={24}
+                                    size={28}
                                     color={color}
                                 />
                             ),
@@ -275,31 +279,21 @@ export default function RootLayout() {
                     />
                 </SwipeTabs>
             </ToastProvider>
-        </SafeAreaProvider>
     );
 }
 
 const styles = StyleSheet.create({
 
-    tabsBar: {
-        height: 70,
-        paddingTop: 8,
-        paddingBottom: 8,
-
+    tabBarStyle: {
         backgroundColor: "transparent",
+        elevation: 0,
+        shadowOpacity: 0,
+        height: 48,
+    },
 
-        borderTopWidth: 1,
-        borderTopColor: "rgba(255, 255, 255, 0.35)",
-
-        shadowColor: "#000000",
-        shadowOffset: {
-            width: 0,
-            height: -4,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 6,
-
-        elevation: 10,
+    tabBarItemStyle: {
+        height: 48,
+        paddingVertical: 0,
     },
 
     backgroundOverlay: {

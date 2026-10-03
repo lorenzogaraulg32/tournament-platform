@@ -111,12 +111,12 @@ const styles = StyleSheet.create({
 
     input: {
         width: "100%",
-        height: 40,
         paddingHorizontal: 18,
         borderRadius: 18,
         borderWidth: 1.5,
-        fontSize: 14,
+        fontSize: 15,
         fontWeight: "500",
+        
     },
 
     footer: {

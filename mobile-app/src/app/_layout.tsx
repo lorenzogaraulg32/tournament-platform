@@ -6,23 +6,21 @@ export default function RootLayout() {
     return (
         <GestureHandlerRootView style={{flex: 1}}>
             <Stack
-
-
-                screenOptions={{headerShown: false}}>
+                screenOptions={{
+                    navigationBarHidden: true,
+                    statusBarHidden: false,
+                    autoHideHomeIndicator: true,
+                    headerShown: false,
+                    statusBarStyle: "auto",
+            }}>
                 <Stack.Screen name="(auth)"/>
 
                 <Stack.Screen
                     name="(onboarding)"
-                    options={{
-                        headerShown: false,
-                    }}
                 />
 
                 <Stack.Screen
                     name="(app)"
-                    options={{
-                        headerShown: false,
-                    }}
                 />
             </Stack>
         </GestureHandlerRootView>

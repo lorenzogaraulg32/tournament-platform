@@ -1,9 +1,10 @@
-import {Pressable, StyleSheet, Text, View} from "react-native";
+import {Pressable, StyleSheet, Text, TextInput, View} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import FormLabel from "@/src/components/common/labels/FormLabel";
 import {colors} from "@/src/constants/theme";
 import {paletteVariants, Variant} from "@/src/constants/PaletteManager";
+import {useEffect, useState} from "react";
 
 type FormSpinnerFieldProps = {
     variant: Variant;
@@ -37,6 +38,13 @@ export default function FormSpinnerField({
                                              labelIconName = "options-outline",
                                          }: FormSpinnerFieldProps) {
 
+    const [inputValue, setInputValue] = useState(String(value));
+
+    useEffect(() => {
+        setInputValue(String(value));
+    }, [value]);
+
+
     const {palette} = paletteVariants[variant];
 
     const canDecrease =
@@ -61,6 +69,30 @@ export default function FormSpinnerField({
         }
 
         onChange(value + step);
+    }
+
+    function handleTextChange(text: string) {
+        if (!/^\d*$/.test(text)) {
+            return;
+        }
+
+        setInputValue(text);
+    }
+
+    function handleInput() {
+        const parsedValue = Number(inputValue);
+
+        if (
+            inputValue === "" ||
+            Number.isNaN(parsedValue) ||
+            (min !== undefined && parsedValue < min) ||
+            (max !== undefined && parsedValue > max)
+        ) {
+            setInputValue(String(value));
+            return;
+        }
+
+        onChange(parsedValue);
     }
 
     return (
@@ -100,7 +132,7 @@ export default function FormSpinnerField({
                 >
                     <Ionicons
                         name="remove-outline"
-                        size={24}
+                        size={18}
                         color={
                             canDecrease
                                 ? palette.defaultColor
@@ -110,16 +142,22 @@ export default function FormSpinnerField({
                 </Pressable>
 
                 <View style={styles.valueContainer}>
-                    <Text
+                    <TextInput
+                        value={inputValue}
+                        onChangeText={handleTextChange}
+                        onBlur={handleInput}
+                        onSubmitEditing={handleInput}
+                        keyboardType="number-pad"
+                        inputMode="numeric"
+                        editable={!disabled}
+                        selectTextOnFocus
                         style={[
                             styles.value,
                             {
                                 color: palette.labelColor,
                             },
                         ]}
-                    >
-                        {value}
-                    </Text>
+                    />
                 </View>
 
                 <Pressable
@@ -135,7 +173,7 @@ export default function FormSpinnerField({
                 >
                     <Ionicons
                         name="add-outline"
-                        size={24}
+                        size={18}
                         color={
                             canIncrease
                                 ? palette.defaultColor
@@ -157,13 +195,13 @@ export default function FormSpinnerField({
 
 const styles = StyleSheet.create({
     container: {
-        width: "100%",
         gap: 5,
+        marginBottom: 30,
     },
 
     spinnerContainer: {
-        minHeight: 54,
-
+        height: 40,
+        width: "30%",
         flexDirection: "row",
         alignItems: "center",
 
@@ -174,24 +212,23 @@ const styles = StyleSheet.create({
     },
 
     button: {
-        width: 54,
-        minHeight: 54,
-
+        paddingHorizontal : 8,
         alignItems: "center",
         justifyContent: "center",
     },
 
     valueContainer: {
         flex: 1,
-        minHeight: 54,
-
         alignItems: "center",
         justifyContent: "center",
     },
 
     value: {
+        width: "100%",
         fontSize: 18,
         fontWeight: "700",
+        textAlign: "center",
+        paddingVertical: 0,
     },
 
     pressed: {

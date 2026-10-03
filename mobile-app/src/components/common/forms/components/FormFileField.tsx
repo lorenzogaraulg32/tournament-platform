@@ -1,12 +1,12 @@
 import {useState} from "react";
-import {Linking, Pressable, StyleSheet, Text, View} from "react-native";
-import * as DocumentPicker from "expo-document-picker";
-import Ionicons from "@expo/vector-icons/Ionicons";
-
+import {Linking, Platform, Pressable, StyleSheet, Text, View} from "react-native";
+import {File} from "expo-file-system";
+import * as IntentLauncher from "expo-intent-launcher";
 import FormLabel from "@/src/components/common/labels/FormLabel";
 import {paletteVariants, Variant} from "@/src/constants/PaletteManager";
 import {colors} from "@/src/constants/theme";
 import {Media} from "@/src/services/mediaService";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 
 type FormFileFieldProps = {
@@ -53,7 +53,7 @@ export default function FormFileField({
 
     const title = value
         ? "File selezionato"
-        : value
+        : existingFileSource
             ? "File attuale"
             : "Aggiungi un file";
 
@@ -61,88 +61,141 @@ export default function FormFileField({
         try {
             setPickerError(null);
 
-            const result =
-                await DocumentPicker.getDocumentAsync({
-                    type:
-                        allowedMimeTypes &&
-                        allowedMimeTypes.length > 0
-                            ? allowedMimeTypes
-                            : "*/*",
+            const result = await File.pickFileAsync({
+                multipleFiles: false,
+                mimeTypes:
+                    allowedMimeTypes && allowedMimeTypes.length > 0
+                        ? allowedMimeTypes
+                        : "*/*",
+            });
 
-                    multiple: false,
-
-                    copyToCacheDirectory: true,
-                });
-
-            if (result.canceled) {
+            if (result.canceled || !result.result) {
                 return;
             }
 
-            const asset = result.assets[0];
+            const file = result.result;
 
+            const fileName =
+                file.name ||
+                file.uri.split("/").pop() ||
+                "file";
+
+            const mimeType =
+                file.type?.toLowerCase() ?? "";
+
+            /*
+             * Alcuni provider Android restituiscono un MIME generico.
+             * In quel caso non possiamo usarlo per validare realmente
+             * il formato e facciamo fallback sull'estensione.
+             */
+            const hasReliableMimeType =
+                mimeType !== "" &&
+                mimeType !== "application/octet-stream";
+
+            /*
+             * VALIDAZIONE MIME TYPE
+             */
             if (
-                maxFileSize !== undefined &&
-                asset.size !== undefined &&
-                asset.size > maxFileSize
-            ) {
-                setPickerError(
-                    `Il file non può superare i ${formatFileSize(maxFileSize)}`
-                );
-
-                return;
-            }
-
-            if (
+                hasReliableMimeType &&
                 allowedMimeTypes &&
-                allowedMimeTypes.length > 0 &&
-                asset.mimeType &&
-                !allowedMimeTypes.includes(asset.mimeType)
+                allowedMimeTypes.length > 0
             ) {
-                setPickerError(
-                    "Il formato del file non è supportato"
-                );
+                const validMimeType =
+                    allowedMimeTypes.some(allowedType => {
+                        const normalizedAllowedType =
+                            allowedType.toLowerCase();
 
-                return;
+                        if (normalizedAllowedType === "*/*") {
+                            return true;
+                        }
+
+                        /*
+                         * Supporta anche valori tipo image/*
+                         */
+                        if (normalizedAllowedType.endsWith("/*")) {
+                            const category =
+                                normalizedAllowedType.split("/")[0];
+
+                            return mimeType.startsWith(
+                                `${category}/`
+                            );
+                        }
+
+                        return mimeType === normalizedAllowedType;
+                    });
+
+                if (!validMimeType) {
+                    setPickerError(
+                        "Il formato del file non è supportato"
+                    );
+                    return;
+                }
             }
 
-
+            /*
+             * VALIDAZIONE ESTENSIONE
+             *
+             * La usiamo come fallback quando il MIME type
+             * non è disponibile o è application/octet-stream.
+             */
             if (
+                !hasReliableMimeType &&
                 allowedExtensions &&
                 allowedExtensions.length > 0
             ) {
                 const lowerCaseName =
-                    asset.name.toLowerCase();
+                    fileName.toLowerCase();
 
                 const validExtension =
-                    allowedExtensions.some(extension =>
-                        lowerCaseName.endsWith(
-                            extension.toLowerCase()
-                        )
-                    );
+                    allowedExtensions.some(extension => {
+                        const normalizedExtension =
+                            extension.startsWith(".")
+                                ? extension.toLowerCase()
+                                : `.${extension.toLowerCase()}`;
+
+                        return lowerCaseName.endsWith(
+                            normalizedExtension
+                        );
+                    });
 
                 if (!validExtension) {
                     setPickerError(
                         `Sono supportati solo file ${allowedExtensions.join(", ")}`
                     );
-
                     return;
                 }
             }
 
+            /*
+             * VALIDAZIONE DIMENSIONE
+             */
+            if (
+                maxFileSize !== undefined &&
+                file.size !== undefined &&
+                file.size > maxFileSize
+            ) {
+                setPickerError(
+                    `Il file non può superare i ${formatFileSize(maxFileSize)}`
+                );
+                return;
+            }
 
+            /*
+             * FILE VALIDO
+             */
             onChange({
-                uri: asset.uri,
-
-                fileName: asset.name,
-
+                uri: file.uri,
+                fileName,
                 mimeType:
-                    asset.mimeType ??
-                    "application/octet-stream",
-
-                fileSize: asset.size,
+                    hasReliableMimeType
+                        ? mimeType
+                        : "application/octet-stream",
+                fileSize: file.size,
             });
 
-        } catch {
+        } catch (error) {
+            console.log("Errore selezione file:", error);
+
             setPickerError(
                 "Non è stato possibile selezionare il file"
             );
@@ -182,7 +235,7 @@ export default function FormFileField({
             return value.fileName || "";
         }
 
-        if (value) {
+        if (existingFileSource) {
             return "Scegli un file per sostituirlo";
         }
 
@@ -199,23 +252,45 @@ export default function FormFileField({
         }
 
         try {
-            const supported = await Linking.canOpenURL(fileSource);
+            if (
+                fileSource.startsWith("http://") ||
+                fileSource.startsWith("https://")
+            ) {
+                await Linking.openURL(fileSource);
+                return;
+            }
 
-            if (!supported) {
-                setPickerError(
-                    "Non è possibile aprire questo file"
+            if (Platform.OS === "android") {
+                const file = new File(fileSource);
+
+                console.log("FILE SOURCE:", fileSource);
+                console.log("FILE URI:", file.uri);
+                console.log("FILE EXISTS:", file.exists);
+                console.log("CONTENT URI:", file.contentUri);
+
+                await IntentLauncher.startActivityAsync(
+                    "android.intent.action.VIEW",
+                    {
+                        data: file.contentUri,
+                        flags: 1, // FLAG_GRANT_READ_URI_PERMISSION
+                        type: value?.mimeType ?? "application/pdf",
+                    }
                 );
+
                 return;
             }
 
             await Linking.openURL(fileSource);
 
-        } catch {
+        } catch (error) {
+            console.log("Errore apertura file:", error);
+
             setPickerError(
                 "Non è stato possibile aprire il file"
             );
         }
     }
+
 
     return (
         <View style={styles.container}>
@@ -344,7 +419,7 @@ export default function FormFileField({
                         </Pressable>
 
 
-                        {value && (
+                        {fileSource && (
 
                             <Pressable
                                 onPress={removeFile}
