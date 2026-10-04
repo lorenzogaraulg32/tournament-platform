@@ -11,7 +11,7 @@
     <groupId>com.tournamentplatform</groupId>
     <artifactId>tournament-service</artifactId>
     <version>1.0</version>
-    <name>tournament</name>
+    <name>tournament-service</name>
     <description>tournament</description>
     <url/>
     <licenses>

@@ -1,6 +1,7 @@
 package com.tournamentplatform.mediaservice.service;
 
 import com.tournamentplatform.mediaservice.entity.MediaCategory;
+import com.tournamentplatform.mediaservice.exceptions.MediaNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -38,7 +39,7 @@ public class MediaService {
     }
 
 
-    public void put(String id, MultipartFile file, MediaCategory category, String pathPrefix){
+    public void put(String id, MultipartFile file, MediaCategory category, String pathPrefix) {
 
         Path destination = uploadDir
                 .resolve(pathPrefix)
@@ -46,12 +47,12 @@ public class MediaService {
                 .normalize();
 
 
-        mediaServiceHelper.saveFile(destination, file,category);
+        mediaServiceHelper.saveFile(destination, file, category);
 
 
     }
 
-    public Resource get(String id, MediaCategory category, String pathPrefix){
+    public Resource get(String id, MediaCategory category, String pathPrefix) {
 
         Path source = uploadDir
                 .resolve(pathPrefix)
@@ -59,12 +60,19 @@ public class MediaService {
                 .normalize();
 
 
-        Path  filePath = mediaServiceHelper.getFile(source, category);
+        Path filePath = mediaServiceHelper.getFile(source, category)
+                .orElseThrow(() ->
+                        new MediaNotFoundException(
+                                "File non trovato"
+                        )
+                );
+        
+
         return new FileSystemResource(filePath);
 
     }
 
-    public void delete(String id, MediaCategory category, String pathPrefix){
+    public void delete(String id, MediaCategory category, String pathPrefix) {
 
         Path destination = uploadDir
                 .resolve(pathPrefix)
@@ -72,11 +80,10 @@ public class MediaService {
                 .normalize();
 
 
-        mediaServiceHelper.deleteFile(destination,category);
+        mediaServiceHelper.deleteFile(destination, category);
 
 
     }
-
 
 
 }

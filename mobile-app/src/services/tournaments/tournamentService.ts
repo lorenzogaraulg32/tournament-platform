@@ -17,6 +17,10 @@ export async function createTournament(
 
     const {logo, rules, ...tournamentRequest} = request
 
+    console.log(tournamentRequest.endDate)
+    console.log(tournamentRequest.startDate)
+    console.log(request.endDate)
+    console.log(request.startDate)
 
     const tournamentFile = new File(
         Paths.cache,
@@ -32,7 +36,7 @@ export async function createTournament(
 
         const formData = new FormData();
 
-        formData.append("team", tournamentFile, tournamentFile.name);
+        formData.append("tournament", tournamentFile, tournamentFile.name);
 
         if (logo !== undefined && logo !== null) {
             const logoFile = new File(logo.uri);
@@ -54,7 +58,7 @@ export async function createTournament(
             );
         }
         const response = await authenticatedFetch(
-            `${API_URL}/teams`,
+            `${API_URL}/tournaments`,
             {
                 method: "POST",
                 body: formData,
@@ -166,7 +170,6 @@ export async function checkTournamentNameAlreadyExists(trimmedName: string) {
     );
 
 }
-
 
 
 function enrichTournamentMedia(

@@ -12,6 +12,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleInvalidMediaFile(
             InvalidMediaFileException exception
     ) {
+        printException(exception);
+
         return ResponseEntity
                 .badRequest()
                 .body(exception.getMessage());
@@ -21,6 +23,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleMediaStorage(
             MediaStorageException exception
     ) {
+        printException(exception);
+
         return ResponseEntity
                 .internalServerError()
                 .body(exception.getMessage());
@@ -30,17 +34,53 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleMaxUploadSize(
             MaxUploadSizeExceededException exception
     ) {
+        printException(exception);
+
         return ResponseEntity
                 .badRequest()
                 .body(exception.getMessage());
     }
 
+
+    @ExceptionHandler(MediaNotFoundException.class)
+    public ResponseEntity<String> handleMediaNotFound(
+            MediaNotFoundException exception
+    ) {
+
+        System.out.println("File not found");
+
+        return ResponseEntity
+                .notFound().build();
+    }
+
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGenericException(
             Exception exception
     ) {
+        printException(exception);
+
         return ResponseEntity
                 .internalServerError()
                 .body(exception.getMessage());
     }
+
+
+    private void printException(Exception e) {
+        System.err.println("=== EXCEPTION ===");
+        System.err.println("Type: " + e.getClass().getName());
+        System.err.println("Message: " + e.getMessage());
+
+        if (e.getCause() != null) {
+            System.err.println("Cause: " + e.getCause().getClass().getName());
+            System.err.println("Cause message: " + e.getCause().getMessage());
+        }
+
+        System.err.println("Stack trace:");
+        e.printStackTrace(System.err);
+
+        System.err.println("=================");
+    }
+
+
 }

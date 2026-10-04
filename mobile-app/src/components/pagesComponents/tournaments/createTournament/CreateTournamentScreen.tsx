@@ -32,8 +32,8 @@ export default function CreateTournamentScreen() {
         location: null,
         sport: null,
         format: null,
-        startingDate: null,
-        endingDate: null,
+        startDate: null,
+        endDate: null,
         minTeams: 2,
         maxTeams: 2,
         recruitmentStatus: "CLOSED",
@@ -223,14 +223,14 @@ export default function CreateTournamentScreen() {
 
     function validateDates() {
 
-        const startingDate = tournamentData.startingDate
+        const startingDate = tournamentData.startDate
         const startingDateError =
             !startingDate ? "Data inizio non selezionata"
                 : !isTodayOrFuture(startingDate) ? "La data di inizio non può essere nel passato"
                     : undefined
 
 
-        const endingDate = tournamentData.endingDate
+        const endingDate = tournamentData.endDate
         const endingDateError =
             !endingDate ? "Data fine non selezionata"
                 : !isTodayOrFuture(endingDate) ? "La data di fine non può essere nel passato"

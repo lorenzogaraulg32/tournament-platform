@@ -36,6 +36,9 @@ public class TournamentCreationRequest {
     @NotNull(message = "Il torneo deve avere un formato")
     private TournamentFormat format;
 
+    @NotNull(message = "Recruitment status non presente")
+    private RecruitmentStatus recruitmentStatus;
+
     @NotNull(message = "Il torneo deve avere una data di inizio")
     private LocalDate startDate;
 
@@ -50,7 +53,5 @@ public class TournamentCreationRequest {
     @Min(value = 2, message = "Il numero massimo di squadre deve essere almeno 2")
     private Integer maxTeams;
 
-    @NotNull(message = "Recruitment status non presente")
-    private RecruitmentStatus recruitmentStatus;
 
 }

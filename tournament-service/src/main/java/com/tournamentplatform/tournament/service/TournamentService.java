@@ -14,16 +14,12 @@ import com.tournamentplatform.tournament.mapper.TournamentMapper;
 import com.tournamentplatform.tournament.repository.TournamentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.Resource;
-import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -45,7 +41,6 @@ public class TournamentService {
 
         ArrayList<String> admins = new ArrayList<>();
         admins.add(userId);
-
 
         Tournament tournament = new Tournament(
                 request.getName(),
@@ -222,23 +217,24 @@ public class TournamentService {
     }
 
     public ResponseEntity<Resource> getTournamentMedia(String tournamentId, String mediaType) {
-        MediaServiceClient.MediaResource media = null;
+        Optional<MediaServiceClient.MediaResource> media;
 
         if (mediaType.equals("logo")) {
             media = mediaClient.getTournamentFile(String.valueOf(tournamentId), "/internal/media/tournament/{id}/logo");
         } else if (mediaType.equals("rules")) {
             media = mediaClient.getTournamentFile(String.valueOf(tournamentId), "/internal/media/tournament/{id}/rules");
         } else {
-            return ResponseEntity.status(404).build();
+            return ResponseEntity.noContent().build();
         }
 
 
-        return ResponseEntity
+        return media.map(file -> ResponseEntity
                 .ok()
-                .contentType(media.contentType())
-                .cacheControl(CacheControl.noStore())
-                .body(media.resource());
-
+                .contentType(file.contentType())
+                .body(file.resource())
+        ).orElse(
+                ResponseEntity.noContent().build()
+        );
 
     }
 

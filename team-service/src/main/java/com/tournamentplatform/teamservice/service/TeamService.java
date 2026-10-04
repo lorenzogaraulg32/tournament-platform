@@ -11,7 +11,6 @@ import com.tournamentplatform.teamservice.errorHandling.teamsExceptions.TeamName
 import com.tournamentplatform.teamservice.mapper.TeamMapper;
 import com.tournamentplatform.teamservice.repository.TeamsRepository;
 import org.springframework.core.io.Resource;
-import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -145,18 +145,20 @@ public class TeamService {
     }
 
     public ResponseEntity<Resource> getTeamLogo(String teamId) {
-        
-        MediaServiceClient.MediaResource media =
+
+        Optional<MediaServiceClient.MediaResource> media =
                 mediaClient.getTeamLogo(
                         String.valueOf(teamId)
                 );
 
 
-        return ResponseEntity
+        return media.map(file -> ResponseEntity
                 .ok()
-                .contentType(media.contentType())
-                .cacheControl(CacheControl.noStore())
-                .body(media.resource());
+                .contentType(file.contentType())
+                .body(file.resource())
+        ).orElse(
+                ResponseEntity.noContent().build()
+        );
     }
 
     public TeamResponse patchTeamCode(String id) {

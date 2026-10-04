@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.Set;
 
 @Component
@@ -92,13 +93,13 @@ public class MediaServiceHelper {
         }
     }
 
-    public Path getFile(
+    public Optional<Path> getFile(
             Path destination,
             MediaCategory category
     ) {
 
         if (!Files.exists(destination)) {
-            return null;
+            return Optional.empty();
         }
 
         String mediaName = buildMediaName(category);
@@ -112,10 +113,10 @@ public class MediaServiceHelper {
         ) {
 
             for (Path file : files) {
-                return file;
+                return Optional.of(file);
             }
 
-            return null;
+            return Optional.empty();
 
         } catch (IOException exception) {
             throw new MediaStorageException(

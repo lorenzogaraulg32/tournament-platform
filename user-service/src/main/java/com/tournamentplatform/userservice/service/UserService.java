@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -72,17 +74,16 @@ public class UserService {
 
         getUserEntity(userId);
 
-        MediaServiceClient.MediaResource media =
-                mediaServiceClient.getUserAvatar(userId);
+        Optional<MediaServiceClient.MediaResource> media =
+                mediaServiceClient.getUserAvatar  (userId);
 
-        if (media == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity
+        return media.map(file -> ResponseEntity
                 .ok()
-                .contentType(media.contentType())
-                .body(media.resource());
+                .contentType(file.contentType())
+                .body(file.resource())
+        ).orElse(
+                ResponseEntity.noContent().build()
+        );
     }
 
     @Transactional

@@ -50,8 +50,8 @@ export type TournamentCreationRequest = {
     sport: Sport | null;
     format: TournamentFormat | null,
     recruitmentStatus: RecruitmentStatus;
-    startingDate: LocalDateString | null
-    endingDate: LocalDateString | null
+    startDate: LocalDateString | null
+    endDate: LocalDateString | null
     maxTeams: number
     minTeams: number
     logo: Media | null,

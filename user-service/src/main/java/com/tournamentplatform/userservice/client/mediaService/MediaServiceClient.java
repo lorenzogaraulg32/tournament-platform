@@ -8,7 +8,6 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -19,6 +18,7 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Component
 public class MediaServiceClient {
@@ -105,11 +105,10 @@ public class MediaServiceClient {
     }
 
 
-    public MediaResource getUserAvatar(String userId) {
-
+    public Optional<MediaResource> getUserAvatar(String userId) {
         try {
 
-            ResponseEntity<byte[]> response = restClient
+            return restClient
                     .get()
                     .uri(
                             "/internal/media/user/{id}/avatar",
@@ -119,29 +118,37 @@ public class MediaServiceClient {
                             "X-Internal-Service-Token",
                             mediaServiceToken
                     )
-                    .retrieve()
-                    .toEntity(byte[].class);
+                    .exchange((request, response) -> {
+                        int status = response.getStatusCode().value();
 
-            byte[] bytes = response.getBody();
+                        if (status == 404) {
+                            return Optional.empty();
+                        }
 
-            MediaType contentType =
-                    response.getHeaders().getContentType();
+                        if (response.getStatusCode().is4xxClientError()
+                                || response.getStatusCode().is5xxServerError()) {
 
-            return new MediaResource(
-                    new ByteArrayResource(bytes),
-                    contentType
-            );
+                            throw new UserAvatarException(
+                                    HttpStatus.valueOf(
+                                            response.getStatusCode().value()
+                                    )
+                            );
+                        }
 
-        } catch (HttpClientErrorException | HttpServerErrorException exception) {
+                        byte[] bytes = response.getBody().readAllBytes();
 
-            throw new UserAvatarException(
-                    HttpStatus.valueOf(
-                            exception.getStatusCode().value()
-                    )
-            );
+                        MediaType contentType =
+                                response.getHeaders().getContentType();
+
+                        return Optional.of(
+                                new MediaResource(
+                                        new ByteArrayResource(bytes),
+                                        contentType
+                                )
+                        );
+                    });
 
         } catch (ResourceAccessException exception) {
-
             throw new UserAvatarException(
                     HttpStatus.SERVICE_UNAVAILABLE
             );

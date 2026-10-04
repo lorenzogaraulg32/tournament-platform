@@ -1,8 +1,6 @@
 import {useState} from "react";
 import {Pressable, StyleSheet, Text, View} from "react-native";
-import DateTimePicker, {
-    type DateTimePickerEvent,
-} from "@react-native-community/datetimepicker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import FormLabel from "@/src/components/common/labels/FormLabel";
@@ -43,14 +41,10 @@ export default function FormDateField({
     const {palette} = paletteVariants[variant];
 
     function handleDateChange(
-        event: DateTimePickerEvent,
-        selectedDate?: Date
+        value: Date
     ) {
         setShowPicker(false);
-
-        if (event.type === "set" && selectedDate) {
-            onChange(formatDateForBackend(selectedDate));
-        }
+        onChange(formatDateForBackend(value));
     }
 
     return (
@@ -123,7 +117,7 @@ export default function FormDateField({
                     mode="date"
                     minimumDate={minimumDate}
                     maximumDate={maximumDate}
-                    onChange={handleDateChange}
+                    onValueChange={(_, value) => handleDateChange(value)}
                 />
             )}
 
@@ -135,6 +129,7 @@ const styles = StyleSheet.create({
     container: {
         width: "100%",
         gap: 5,
+        marginBottom: 30,
     },
 
     dateField: {

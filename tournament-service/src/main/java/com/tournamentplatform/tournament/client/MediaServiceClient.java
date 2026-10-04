@@ -7,7 +7,6 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -18,6 +17,7 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Component
 public class MediaServiceClient {
@@ -47,7 +47,7 @@ public class MediaServiceClient {
 
 
     public void putTournamentFile(
-            String teamId,
+            String tournamentId,
             MultipartFile file,
             String uri
     ) {
@@ -73,7 +73,7 @@ public class MediaServiceClient {
                     .put()
                     .uri(
                             uri,
-                            teamId
+                            tournamentId
                     )
                     .header(
                             "X-Internal-Service-Token",
@@ -106,52 +106,60 @@ public class MediaServiceClient {
         }
     }
 
-
-    public MediaResource getTournamentFile(String teamId, String uri) {
+    public Optional<MediaResource> getTournamentFile(
+            String tournamentId,
+            String uri
+    ) {
 
         try {
 
-            ResponseEntity<byte[]> response = restClient
+            return restClient
                     .get()
-                    .uri(
-                            uri,
-                            teamId
-                    )
+                    .uri(uri, tournamentId)
                     .header(
                             "X-Internal-Service-Token",
                             mediaServiceToken
                     )
-                    .retrieve()
-                    .toEntity(byte[].class);
+                    .exchange((request, response) -> {
 
-            byte[] bytes = response.getBody();
+                        int status = response.getStatusCode().value();
 
-            MediaType contentType =
-                    response.getHeaders().getContentType();
+                        // Media assente: caso normale
+                        if (status == 404) {
+                            return Optional.empty();
+                        }
 
-            return new MediaResource(
-                    new ByteArrayResource(bytes),
-                    contentType
-            );
+                        if (response.getStatusCode().is4xxClientError()
+                                || response.getStatusCode().is5xxServerError()) {
 
-        } catch (HttpClientErrorException | HttpServerErrorException exception) {
+                            throw new TournamentLogoException(
+                                    HttpStatus.valueOf(
+                                            response.getStatusCode().value()
+                                    )
+                            );
+                        }
 
-            throw new TournamentLogoException(
-                    HttpStatus.valueOf(
-                            exception.getStatusCode().value()
-                    )
-            );
+                        byte[] bytes = response.getBody().readAllBytes();
+
+                        MediaType contentType =
+                                response.getHeaders().getContentType();
+
+                        return Optional.of(
+                                new MediaResource(
+                                        new ByteArrayResource(bytes),
+                                        contentType
+                                )
+                        );
+                    });
 
         } catch (ResourceAccessException exception) {
-
             throw new TournamentLogoException(
                     HttpStatus.SERVICE_UNAVAILABLE
             );
         }
     }
 
-
-    public void deleteTournamentFile(String teamId, String uri) {
+    public void deleteTournamentFile(String tournamentId, String uri) {
 
         try {
 
@@ -159,7 +167,7 @@ public class MediaServiceClient {
                     .delete()
                     .uri(
                             uri,
-                            teamId
+                            tournamentId
                     )
                     .header(
                             "X-Internal-Service-Token",

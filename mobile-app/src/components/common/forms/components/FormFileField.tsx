@@ -263,11 +263,6 @@ export default function FormFileField({
             if (Platform.OS === "android") {
                 const file = new File(fileSource);
 
-                console.log("FILE SOURCE:", fileSource);
-                console.log("FILE URI:", file.uri);
-                console.log("FILE EXISTS:", file.exists);
-                console.log("CONTENT URI:", file.contentUri);
-
                 await IntentLauncher.startActivityAsync(
                     "android.intent.action.VIEW",
                     {

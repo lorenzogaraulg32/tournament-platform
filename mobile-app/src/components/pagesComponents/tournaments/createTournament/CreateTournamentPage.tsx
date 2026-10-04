@@ -128,10 +128,10 @@ export default function CreateTournamentPage({
             case 4 :
                 return (
                     <DateStep
-                        startDate={tournament.startingDate}
-                        endDate={tournament.endingDate}
-                        onStartDateChange={startingDate => onChangeField("startingDate", startingDate)}
-                        onEndDateChange={endingDate => onChangeField("endingDate", endingDate)}
+                        startDate={tournament.startDate}
+                        endDate={tournament.endDate}
+                        onStartDateChange={startingDate => onChangeField("startDate", startingDate)}
+                        onEndDateChange={endingDate => onChangeField("endDate", endingDate)}
                         startDateError={fieldErrors.startingDate}
                         endDateError={fieldErrors.endingDate}
                         disabled={isSubmitting}

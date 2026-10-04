@@ -12,7 +12,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -377,76 +376,6 @@ public class GlobalExceptionHandler {
                 request,
                 exception
         );
-    }
-
-
-
-
-    /*----------------- Gestione eccezioni fallback -------------------*/
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiErrorResponse> handleGenericError(
-            Exception exception,
-            HttpServletRequest request
-    ) {
-        /*
-         * Le eccezioni MVC standard di Spring espongono gia lo status HTTP
-         * corretto tramite ErrorResponse. Questa diramazione conserva quindi
-         * status come 404, 405 e 415, uniformando solamente il body.
-         */
-        if (exception instanceof ErrorResponse springError) {
-            HttpStatus status = HttpStatus.resolve(
-                    springError.getStatusCode().value()
-            );
-
-            if (status != null) {
-                return buildResponse(
-                        status,
-                        getSpringErrorCode(status),
-                        getSpringErrorMessage(status),
-                        Map.of(),
-                        request,
-                        exception
-                );
-            }
-        }
-
-        return buildResponse(
-                HttpStatus.INTERNAL_SERVER_ERROR,
-                "INTERNAL_SERVER_ERROR",
-                "Si e verificato un errore interno",
-                Map.of(),
-                request,
-                exception
-        );
-    }
-
-
-    private String getSpringErrorCode(HttpStatus status) {
-        return switch (status) {
-            case NOT_FOUND -> "ENDPOINT_NOT_FOUND";
-            case METHOD_NOT_ALLOWED -> "METHOD_NOT_ALLOWED";
-            case NOT_ACCEPTABLE -> "NOT_ACCEPTABLE";
-            case UNSUPPORTED_MEDIA_TYPE -> "UNSUPPORTED_MEDIA_TYPE";
-            case BAD_REQUEST -> "BAD_REQUEST";
-            default -> status.is4xxClientError()
-                    ? "HTTP_REQUEST_ERROR"
-                    : "INTERNAL_SERVER_ERROR";
-        };
-    }
-
-
-    private String getSpringErrorMessage(HttpStatus status) {
-        return switch (status) {
-            case NOT_FOUND -> "Endpoint non trovato";
-            case METHOD_NOT_ALLOWED -> "Metodo HTTP non supportato";
-            case NOT_ACCEPTABLE -> "Formato di risposta non supportato";
-            case UNSUPPORTED_MEDIA_TYPE -> "Formato della richiesta non supportato";
-            case BAD_REQUEST -> "La richiesta non puo essere elaborata";
-            default -> status.is4xxClientError()
-                    ? "La richiesta non puo essere elaborata"
-                    : "Si e verificato un errore interno";
-        };
     }
 
 
