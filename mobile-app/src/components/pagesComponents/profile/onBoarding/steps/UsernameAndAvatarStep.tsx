@@ -2,7 +2,7 @@ import {View} from "react-native";
 import AuthTextField from "@/src/components/pagesComponents/auth/AuthTextField";
 import AuthContent from "@/src/components/pagesComponents/auth/AuthContent";
 import FormImageField from "@/src/components/common/forms/components/FormImageField";
-import OnBoardingContainer from "@/src/components/pagesComponents/auth/onboarding/OnBoardingContainer";
+import OnBoardingContainer from "@/src/components/pagesComponents/profile/onBoarding/OnBoardingContainer";
 import OnBoardingNavigationButtons from "@/src/components/pagesComponents/profile/onBoarding/misc/OnBoardingNavigationButtons";
 import {onboardingStepStyles as styles} from "@/src/components/pagesComponents/profile/onBoarding/misc/onboardingStepStyles"
 import {Media} from "@/src/services/mediaService";

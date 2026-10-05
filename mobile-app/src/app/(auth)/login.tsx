@@ -162,8 +162,7 @@ export default function LoginPage() {
                     ) : null}
 
                     <ButtonSolid
-                        variant="buttonRegister"
-                        textVariant={"textRegister"}
+                        variant="onBoarding"
                         style={styles.loginBtn}
                         disabled={isLoading}
                         onPress={handleLogin}

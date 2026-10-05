@@ -171,8 +171,7 @@ export default function RegisterPage() {
                     ) : null}
 
                     <ButtonSolid
-                        variant="buttonRegister"
-                        textVariant={"textRegister"}
+                        variant="onBoarding"
                         style={styles.registerBtn}
                         disabled={isLoading}
                         onPress={handleRegister}

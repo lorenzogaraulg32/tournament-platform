@@ -1,39 +1,31 @@
 import {Pressable, PressableProps, StyleProp, StyleSheet, Text, ViewStyle} from "react-native";
-import {colors} from "@/src/constants/theme"
-
-export type BtnVariant = "base" | "buttonRegister" | "buttonLogin" | "profile" | "tournament"
-
-type TextVariant = "textBase" | "textRegister" | "textLogin"
+import {paletteVariants, Variant} from "@/src/constants/PaletteManager";
 
 
 type ButtonSolidProps = Omit<PressableProps, "style"> & {
     text: string;
-    variant?: BtnVariant;
-    textVariant?: TextVariant;
+    variant: Variant;
     style?: StyleProp<ViewStyle>;
 };
 
-/**
- * Bottone a sfondo solido, selezionare le varianti
- * @param text Testo del pressable
- * @param variant variante
- * @param textVariant variante del testo
- * @param style stile aggiuntivo
- * @param props props aggiuntive
- */
 
 export default function ButtonSolid({
                                         text,
-                                        variant = "base",
-                                        textVariant = "textBase",
+                                        variant = "standard",
                                         style,
                                         ...props
                                     }: ButtonSolidProps) {
+
+
+    const palette = paletteVariants[variant].palette
+
     return (
         <Pressable
             style={({pressed}) => [
                 styles.base,
-                styles[variant],
+                {
+                    backgroundColor: palette.btnBK
+                },
                 pressed && styles.pressed,
                 style,
             ]}
@@ -41,7 +33,9 @@ export default function ButtonSolid({
         >
             <Text style={[
                 styles.textBase,
-                styles[textVariant]
+                {
+                    color: palette.btnText
+                }
             ]}>
                 {text}
             </Text>
@@ -70,33 +64,8 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
 
-    buttonRegister: {
-        backgroundColor: colors.orangeDefault,
-    },
-
-    textRegister: {
-        color: "#ffffff",
-    },
-
-    buttonLogin: {
-        backgroundColor: "#ffffff",
-    },
-
-    textLogin: {
-        color: "#007B43",
-    },
-
-
     pressed: {
         transform: [{scale: 0.98}],
         opacity: 0.9,
     },
-
-    profile: {
-        backgroundColor: colors.redDefault,
-    },
-
-    tournament: {
-        backgroundColor: colors.purpleDefault
-    }
 });

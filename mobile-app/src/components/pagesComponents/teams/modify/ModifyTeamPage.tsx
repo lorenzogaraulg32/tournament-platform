@@ -142,7 +142,7 @@ export default function ModifyTeamPage({
                 isSubmitting={isSubmitting}
                 step={formStep}
                 apiError={apiError}
-                btnVariant={"buttonRegister"}
+                variant={"teams"}
             >
 
                 <View pointerEvents={isSubmitting ? "none" : "auto"}>

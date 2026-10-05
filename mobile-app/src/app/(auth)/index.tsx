@@ -25,8 +25,7 @@ export default function WelcomeScreen() {
             content={
                 <AuthContent style={[styles.btnContainer, {paddingBottom: Math.max(insets.bottom, 24)}]}>
                     <ButtonSolid
-                        variant="buttonRegister"
-                        textVariant="textRegister"
+                        variant="onBoarding"
                         onPress={() => {
                         router.push("/(auth)/register")
                     }}
@@ -34,8 +33,7 @@ export default function WelcomeScreen() {
                     </ButtonSolid>
 
                     <ButtonSolid
-                        variant="buttonLogin"
-                        textVariant="textLogin"
+                        variant="standard"
                         onPress={() => {
                         router.push("/(auth)/login")
                     }}

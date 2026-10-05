@@ -1,6 +1,6 @@
 import {Pressable, Text, View} from "react-native";
 import AuthContent from "@/src/components/pagesComponents/auth/AuthContent";
-import OnBoardingContainer from "@/src/components/pagesComponents/auth/onboarding/OnBoardingContainer";
+import OnBoardingContainer from "@/src/components/pagesComponents/profile/onBoarding/OnBoardingContainer";
 import {Gender} from "@/src/services/users/userDTO";
 import OnBoardingNavigationButtons from "@/src/components/pagesComponents/profile/onBoarding/misc/OnBoardingNavigationButtons";
 import {onboardingStepStyles as styles} from "@/src/components/pagesComponents/profile/onBoarding/misc/onboardingStepStyles"

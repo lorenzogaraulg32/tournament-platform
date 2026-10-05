@@ -21,7 +21,7 @@ type TeamLocationSectionProps = {
 
 const GOOGLE_API_KEY = process.env.EXPO_PUBLIC_GOOGLE_PLACES_API_KEY;
 
-export default function TeamLocationSection({
+export default function PositionField({
                                                 variant,
                                                 value,
                                                 onChange,
@@ -42,10 +42,6 @@ export default function TeamLocationSection({
     const {palette} = paletteVariants[variant];
     const visibleError = errorMessage || searchError;
 
-    const surfaceStyle = {
-        backgroundColor: palette.defaultColorBK,
-        borderColor: palette.borderColor,
-    };
 
     useEffect(() => {
         const trimmedQuery = query.trim();
@@ -278,7 +274,7 @@ export default function TeamLocationSection({
                 <Ionicons
                     name="search-outline"
                     size={21}
-                    color={palette.defaultColor}
+                    color={isFocused ? colors.labelSecondary : palette.defaultColor }
                 />
 
                 <TextInput
@@ -295,7 +291,11 @@ export default function TeamLocationSection({
                     placeholder="Cerca città o zona..."
                     placeholderTextColor={palette.labelSecondaryColor}
                     selectionColor={palette.defaultColor}
-                    style={[styles.input, {color: palette.labelColor}]}
+                    style={[
+                        styles.input,
+                        variant === "onBoarding" ? isFocused  ? {color: "#000"} : {color: "#fff"} : ""
+
+                    ]}
                 />
 
                 {isLoading && (
@@ -310,7 +310,10 @@ export default function TeamLocationSection({
                 <View
                     style={[
                         styles.suggestionsContainer,
-                        {borderColor: palette.borderColor},
+                        {
+                            borderColor: palette.borderColor,
+                        },
+                        variant === "onBoarding" && {backgroundColor: colors.labelSecondary}
                     ]}
                 >
                     {suggestions.map(suggestion => (
@@ -322,7 +325,7 @@ export default function TeamLocationSection({
                                 styles.suggestion,
                                 {borderBottomColor: palette.borderColor},
                                 pressed && {
-                                    backgroundColor: palette.defaultColorBK,
+                                    opacity: 0.30,
                                 },
                             ]}
                         >
@@ -351,7 +354,10 @@ export default function TeamLocationSection({
                 accessibilityRole="button"
                 style={({pressed}) => [
                     styles.currentLocationButton,
-                    surfaceStyle,
+                    {
+                        backgroundColor: palette.btnBK,
+                        borderColor: palette.borderColor
+                    },
                     pressed && styles.pressed,
                     isLocating && styles.disabled,
                 ]}
@@ -372,14 +378,18 @@ export default function TeamLocationSection({
                 <Text
                     style={[
                         styles.currentLocationText,
-                        {color: palette.defaultColor},
+                        {color: palette.btnText
+                        },
                     ]}
                 >
                     Usa la mia posizione
                 </Text>
             </Pressable>
 
-            <View style={[styles.selectedLocation, surfaceStyle]}>
+            <View style={[styles.selectedLocation, {
+                backgroundColor: palette.defaultColorBK,
+                borderColor: palette.borderColor
+            }]}>
                 <Ionicons
                     name={value ? "location-sharp" : "location-outline"}
                     size={24}
@@ -458,7 +468,6 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         borderRadius: 14,
         borderWidth: 1,
-        backgroundColor: "#FFFFFF",
     },
 
     suggestion: {

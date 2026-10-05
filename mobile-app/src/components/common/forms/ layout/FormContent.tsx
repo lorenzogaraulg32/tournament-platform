@@ -1,6 +1,7 @@
 import {StyleSheet, Text, View} from "react-native";
-import ButtonSolid, {BtnVariant} from "@/src/components/common/buttons/ButtonSolid";
+import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
 import {ReactNode} from "react";
+import {Variant} from "@/src/constants/PaletteManager";
 
 
 type FormContentProps = {
@@ -9,48 +10,57 @@ type FormContentProps = {
     isSubmitting: boolean,
     handleBack: () => void,
     handleNext: () => void,
-    apiError? : string,
-    btnVariant : BtnVariant,
+    apiError?: string,
+    variant: Variant,
 }
 
 
-export default function FormContent({step, children, isSubmitting, handleBack, handleNext, apiError, btnVariant}: FormContentProps) {
+export default function FormContent({
+                                        step,
+                                        children,
+                                        isSubmitting,
+                                        handleBack,
+                                        handleNext,
+                                        apiError,
+                                        variant
+                                    }: FormContentProps) {
+
+
     return (
         <View style={styles.formContainer}>
-        {children}
+            {children}
 
-        {step === "last" && apiError && (
-            <Text style={styles.submitError}>
-                {apiError}
-            </Text>
-        )}
-
-        <View style={styles.btnContainer}>
-            {step !== "first" && (
-                <ButtonSolid
-                    style={styles.btn}
-                    onPress={handleBack}
-                    disabled={isSubmitting}
-                    variant="buttonLogin"
-                    textVariant="textLogin"
-                    text="Indietro"
-                />
+            {step === "last" && apiError && (
+                <Text style={styles.submitError}>
+                    {apiError}
+                </Text>
             )}
 
-            <ButtonSolid
-                style={styles.btn}
-                variant={btnVariant}
-                textVariant="textRegister"
-                onPress={handleNext}
-                disabled={isSubmitting}
-                text={
-                    step === "last"
-                        ? "Termina"
-                        : "Avanti"
-                }
-            />
-        </View>
-    </View>)
+            <View style={styles.btnContainer}>
+                {step !== "first" && (
+                    <ButtonSolid
+                        style={styles.btn}
+                        onPress={handleBack}
+                        disabled={isSubmitting}
+                        variant="standard"
+
+                        text="Indietro"
+                    />
+                )}
+
+                <ButtonSolid
+                    style={styles.btn}
+                    variant={variant}
+                    onPress={handleNext}
+                    disabled={isSubmitting}
+                    text={
+                        step === "last"
+                            ? "Termina"
+                            : "Avanti"
+                    }
+                />
+            </View>
+        </View>)
 }
 
 

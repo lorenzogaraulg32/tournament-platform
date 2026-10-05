@@ -1,19 +1,21 @@
 import type {ImageSourcePropType, TextStyle} from "react-native";
 import {colors, fonts} from "./theme";
 
-export type Variant = "home" | "teams" | "tournaments" | "profile" | "onBoarding";
+export type Variant = "standard" | "home" | "teams" | "tournaments" | "profile" | "onBoarding";
 
 export type StandardPalette = {
     labelFontSize: number;
     labelFontWeight: TextStyle["fontWeight"];
     labelColor: string;
     labelSecondaryColor: string;
+    btnText: string,
 };
 
 export type VariantPalette = StandardPalette & {
     borderColor: string;
     defaultColor: string;
     defaultColorBK: string;
+    btnBK: string,
 };
 
 export type VariantConfig = {
@@ -23,47 +25,66 @@ export type VariantConfig = {
 };
 
 // Stili condivisi da tutte le varianti.
-export const standardPalette: StandardPalette = {
+export const basicPalette: StandardPalette = {
     labelFontSize: fonts.label,
     labelFontWeight: fonts.labelWeight,
     labelColor: colors.label,
     labelSecondaryColor: colors.labelSecondary,
+    btnText: "#ffffff"
 };
 
-export const HomePalette: VariantPalette = {
-    ...standardPalette,
+export const standardPalette: VariantPalette = {
+    ...basicPalette,
     borderColor: colors.greenBorder,
     defaultColor: colors.greenDefault,
     defaultColorBK: colors.greenBK,
+    btnBK: "#ffffff",
+    btnText: colors.greenDefault
+};
+
+export const HomePalette: VariantPalette = {
+    ...basicPalette,
+    borderColor: colors.greenBorder,
+    defaultColor: colors.greenDefault,
+    defaultColorBK: colors.greenBK,
+    btnBK: colors.greenDefault,
+
 };
 
 export const TeamsPalette: VariantPalette = {
-    ...standardPalette,
+    ...basicPalette,
     borderColor: colors.orangeBorder,
     defaultColor: colors.orangeDefault,
     defaultColorBK: colors.orangeDefaultBK,
+    btnBK: colors.orangeDefault,
+
 };
 
 export const TournamentsPalette: VariantPalette = {
-    ...standardPalette,
+    ...basicPalette,
     borderColor: colors.purpleBorder,
     defaultColor: colors.purpleDefault,
     defaultColorBK: colors.purpleBK,
+    btnBK: colors.purpleDefault,
+
 };
 
 export const ProfilePalette: VariantPalette = {
-    ...standardPalette,
+    ...basicPalette,
     borderColor: colors.redBorder,
     defaultColor: colors.redDefault,
     defaultColorBK: colors.redDefaultBK,
+    btnBK: colors.redDefault,
+
 };
 
 export const OnBoardingPalette: VariantPalette = {
-    ...standardPalette,
+    ...basicPalette,
     labelColor: colors.onBoardingDefault,
     borderColor: colors.onBoardingBorder,
     defaultColor: colors.onBoardingDefault,
     defaultColorBK: colors.onBoardingBK,
+    btnBK: colors.orangeDefault,
 };
 
 export const paletteVariants: Record<Variant, VariantConfig> = {
@@ -96,4 +117,10 @@ export const paletteVariants: Record<Variant, VariantConfig> = {
         placeholder: require("../../assets/images/placeholders/profilePlaceholder.png"),
         palette: ProfilePalette,
     },
+
+    standard:{
+        background: require("../../assets/images/backgrounds/greenBackground.png"),
+        placeholder: require("../../assets/images/placeholders/logoPlaceholder.png"),
+        palette: standardPalette,
+    }
 };

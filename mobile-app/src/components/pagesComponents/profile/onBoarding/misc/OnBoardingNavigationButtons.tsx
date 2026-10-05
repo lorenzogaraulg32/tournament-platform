@@ -25,8 +25,7 @@ export default function OnBoardingNavigationButtons({
                     style={styles.button}
                     onPress={onBack}
                     disabled={disabled}
-                    variant="buttonLogin"
-                    textVariant="textLogin"
+                    variant="standard"
                     text="Indietro"
                 />
             )}
@@ -35,8 +34,7 @@ export default function OnBoardingNavigationButtons({
                 style={buttonStyle}
                 onPress={onNext}
                 disabled={disabled}
-                variant="buttonRegister"
-                textVariant="textRegister"
+                variant="onBoarding"
                 text={isLastStep ? "Completa" : "Continua"}
             />
         </View>

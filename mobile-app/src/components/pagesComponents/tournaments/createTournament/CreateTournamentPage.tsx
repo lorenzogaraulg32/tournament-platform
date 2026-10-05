@@ -189,7 +189,7 @@ export default function CreateTournamentPage({
                 isSubmitting={isSubmitting}
                 step={formStep}
                 apiError={apiError}
-                btnVariant={"tournament"}
+                variant={"tournaments"}
             >
                 <View pointerEvents={isSubmitting ? "none" : "auto"}>
                     {renderStep()}
