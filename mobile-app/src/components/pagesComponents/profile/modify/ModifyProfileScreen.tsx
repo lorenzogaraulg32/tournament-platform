@@ -1,126 +1,42 @@
- import {useCallback, useEffect, useRef, useState} from "react";
-import {router} from "expo-router";
+import {useRef, useState} from "react";
+import {router, useLocalSearchParams} from "expo-router";
+import {checkUsernameAlreadyExists, modUser} from "@/src/services/users/userService";
 
-import {loadCurrentUserId} from "@/src/services/users/authService";
-import {fetchUser, modUser} from "@/src/services/users/userService";
-
-import {
-    DeletingStatus,
-    ProfileFormErrors,
-    Sport,
-    SPORT_ROLES,
-    type SportRole,
-    UserInfo,
-    UserModRequest,
-} from "@/src/services/users/userDTO";
+import {ProfileFormErrors, Sport, type SportRole, UserInfo, UserModRequest,} from "@/src/services/users/userDTO";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 
-import LoadingScreen from "@/src/components/common/loading/LoadingScreen";
-import ErrorScreen from "@/src/components/common/errors/ErrorScreen";
-
 import ModifyProfilePage, {FIRST_STEP, LAST_STEP, type ProfileEditStep, STEPS,} from "./ModifyProfilePage";
+import {
+    validateLocation,
+    validateMedia,
+    validateStandardName,
+    validateUniqueName,
+    validateUserSportsAndRoles
+} from "@/src/components/common/forms/validator/validator";
 
 
 export default function ModifyProfileScreen() {
-    const requestIdRef = useRef(0);
+
+    const params = useLocalSearchParams<{ profile: string }>()
+    const oldProfile = JSON.parse(params.profile) as UserInfo
+
     const submissionLock = useRef(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-
-    const [profile, setProfile] = useState<UserInfo>({
-        id: "",
-        firstName: "",
-        lastName: "",
-        username: "",
-        birthDate: null,
-        gender: null,
-        location: null,
-        sports: [],
-        roles: [],
-        avatar: null,
-        deletingStatus: DeletingStatus.ACTIVE
+    const [newProfile, setNewProfile] = useState<UserModRequest>({
+        username: oldProfile.username,
+        firstName: oldProfile.firstName,
+        lastName: oldProfile.lastName,
+        sports: oldProfile.sports,
+        roles: oldProfile.roles,
+        location: oldProfile.location,
+        avatar: oldProfile.avatar
     });
-    const [newProfile, setNewProfile] = useState<UserModRequest | null>(null);
-
-    const [isLoading, setIsLoading] = useState(true);
-    const [loadError, setLoadError] = useState("");
 
     const [currentStep, setCurrentStep] = useState<ProfileEditStep>(FIRST_STEP);
     const [fieldErrors, setFieldErrors] = useState<ProfileFormErrors>({});
     const [apiError, setApiError] = useState("");
 
-    const loadProfile = useCallback(async () => {
-        const requestId = ++requestIdRef.current;
-
-        setIsLoading(true);
-        setLoadError("");
-
-        try {
-            const currentUserId = await loadCurrentUserId();
-
-            if (requestId !== requestIdRef.current) {
-                return;
-            }
-
-            if (currentUserId === null || currentUserId === undefined) {
-                router.replace("/(auth)");
-                return;
-            }
-
-            const id = String(currentUserId);
-            const user = await fetchUser(id);
-
-            if (requestId !== requestIdRef.current) {
-                return;
-            }
-
-            setNewProfile({
-                firstName: user.firstName,
-                lastName: user.lastName,
-                username: user.username,
-                location: user.location ?? null,
-                sports: user.sports,
-                roles: user.roles,
-                avatar: undefined,
-            });
-
-            setProfile({
-                id: user.id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                username: user.username,
-                birthDate: user.birthDate,
-                gender: user.gender,
-                location: user.location ?? null,
-                sports: user.sports,
-                roles: user.roles,
-                avatar: user.avatar,
-                deletingStatus: user.deletingStatus
-            });
-        } catch (error) {
-            if (requestId !== requestIdRef.current) {
-                return;
-            }
-
-            const apiError = normalizeApiRequestError(error);
-
-            if (apiError.status !== 401) {
-                setLoadError(apiError.message);
-            }
-        } finally {
-            if (requestId === requestIdRef.current) {
-                setIsLoading(false);
-            }
-        }
-    }, []);
-
-    useEffect(() => {
-        void loadProfile();
-
-        return () => {
-            requestIdRef.current++;
-        };
-    }, [loadProfile]);
 
     // Aggiornamento campi
 
@@ -202,105 +118,109 @@ export default function ModifyProfileScreen() {
 
     // Validazione
 
-    function validateStep(step: ProfileEditStep): boolean {
+    async function validateStep(step: ProfileEditStep): Promise<boolean> {
         if (!newProfile) return false;
-
-        const errors: ProfileFormErrors = {};
-
         switch (step) {
             case 0:
-                errors.firstName = newProfile.firstName.trim()
-                    ? undefined
-                    : "Inserisci il nome";
-
-                errors.lastName = newProfile.lastName.trim()
-                    ? undefined
-                    : "Inserisci il cognome";
-                break;
-
+                return validateNameAndSurname()
             case 1:
-                errors.username = newProfile.username.trim()
-                    ? undefined
-                    : "Inserisci lo username";
-
-                errors.avatar =
-                    newProfile.avatar?.fileSize !== undefined &&
-                    newProfile.avatar.fileSize > 5 * 1024 * 1024
-                        ? "Il logo non può superare i 5 MB"
-                        : undefined;
-                break;
-
-            case 2: {
-                const location = newProfile.location;
-
-                const valid =
-                    location === null ||
-                    (
-                        !!location.label?.trim() &&
-                        Number.isFinite(location.latitude) &&
-                        location.latitude >= -90 &&
-                        location.latitude <= 90 &&
-                        Number.isFinite(location.longitude) &&
-                        location.longitude >= -180 &&
-                        location.longitude <= 180
-                    );
-
-                errors.location = valid
-                    ? undefined
-                    : "La posizione selezionata non è valida";
-                break;
-            }
-
-            case 3: {
-                const validSports =
-                    newProfile.sports.length > 0 &&
-                    newProfile.sports.every(sport =>
-                        Object.values(Sport).includes(sport)
-                    );
-
-                errors.sports = validSports
-                    ? undefined
-                    : "Seleziona almeno uno sport valido";
-
-                const hasRolesForEverySport =
-                    validSports &&
-                    newProfile.sports.every(sport =>
-                        newProfile.roles.some(
-                            item =>
-                                item.sport === sport &&
-                                SPORT_ROLES[sport].some(
-                                    role => role === item.role
-                                )
-                        )
-                    );
-
-                const allRolesValid = newProfile.roles.every(
-                    item =>
-                        newProfile.sports.includes(item.sport) &&
-                        SPORT_ROLES[item.sport]?.some(
-                            role => role === item.role
-                        )
-                );
-
-                errors.roles = !validSports
-                    ? undefined
-                    : !hasRolesForEverySport
-                        ? "Seleziona almeno un ruolo per ogni sport"
-                        : !allRolesValid
-                            ? "La selezione dei ruoli non è valida"
-                            : undefined;
-                break;
-            }
+                return await validateUsernameAndAvatar()
+            case 2:
+                return validateLocationLocal()
+            case 3:
+                return validateUserSportsAndRolesLocal()
         }
 
-        setFieldErrors(previous => ({...previous, ...errors}));
-
-        return !Object.values(errors).some(Boolean);
     }
 
-    function validateForm(): boolean {
+    function validateNameAndSurname(): boolean {
+        const trimmedName = newProfile.firstName.trim()
+        const trimmedLastName = newProfile.lastName.trim()
+        const nameError = validateStandardName(trimmedName);
+        const lastNameError = validateStandardName(trimmedLastName);
+
+        if (nameError || lastNameError) {
+            setFieldErrors(previous => ({
+                ...previous,
+                firstName: nameError,
+                lastName: lastNameError,
+            }));
+            return false;
+        }
+
+        return true;
+    }
+
+    async function validateUsernameAndAvatar() {
+
+        const trimmedUsername = newProfile.username.trim()
+        let usernameError = undefined;
+
+
+        try {
+            if (trimmedUsername !== oldProfile.username.trim()) {
+                usernameError = await validateUniqueName(trimmedUsername, checkUsernameAlreadyExists)
+            }
+        } catch (error) {
+            const apiError = normalizeApiRequestError(error)
+            setApiError(apiError.message);
+            return false;
+
+        }
+
+        let avatarError = undefined;
+
+        if (newProfile.avatar) {
+            avatarError = validateMedia(newProfile.avatar, 5)
+        }
+
+        if (usernameError || avatarError) {
+            setFieldErrors(previous => ({
+                ...previous,
+                username: usernameError,
+                avatar: avatarError
+            }));
+            return false;
+        }
+
+        return true;
+
+
+    }
+
+    function validateLocationLocal(): boolean {
+        if (!newProfile.location) return true;
+
+        const positionError = validateLocation(newProfile.location)
+
+        if (positionError) {
+            setFieldErrors(previous => ({
+                ...previous,
+                location: positionError
+            }));
+            return false;
+        }
+
+        return true;
+    }
+
+    function validateUserSportsAndRolesLocal() {
+        const userSportAndRolesError = validateUserSportsAndRoles(newProfile)
+        if (userSportAndRolesError) {
+            setFieldErrors(
+                previous => ({
+                    ...previous,
+                    roles: userSportAndRolesError
+                })
+            )
+            return false;
+        }
+        return true;
+    }
+
+    async function validateForm(): Promise<boolean> {
         for (const step of STEPS) {
-            if (!validateStep(step)) {
+            if (!await validateStep(step)) {
                 setCurrentStep(step);
                 return false;
             }
@@ -320,10 +240,10 @@ export default function ModifyProfileScreen() {
 
         try {
             if (currentStep === LAST_STEP) {
-                if (validateForm()) {
+                if (await validateForm()) {
                     await handleSave();
                 }
-            } else if (validateStep(currentStep)) {
+            } else if (await validateStep(currentStep)) {
                 setCurrentStep(
                     previous => (previous + 1) as ProfileEditStep
                 );
@@ -363,28 +283,10 @@ export default function ModifyProfileScreen() {
         }
     }
 
-    if (isLoading) {
-        return <LoadingScreen message="Caricamento profilo..."/>;
-    }
-
-    if (loadError) {
-        return (
-            <ErrorScreen
-                title="Impossibile caricare il profilo"
-                message={loadError}
-                onRetry={loadProfile}
-                isRetrying={isLoading}
-            />
-        );
-    }
-
-    if (!newProfile) {
-        return null;
-    }
 
     return (
         <ModifyProfilePage
-            oldProfile={profile}
+            oldProfile={oldProfile}
             profile={newProfile}
             currentStep={currentStep}
             fieldErrors={fieldErrors}

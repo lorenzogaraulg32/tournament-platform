@@ -49,13 +49,12 @@ export type UserModRequest = {
 
 export type ProfileFormErrors = {
     username?: string;
-    profileLogo?: string;
     firstName?: string;
     lastName?: string;
     birthDate?: string;
     gender?: string;
     sports?: string;
-    roles?:string
+    roles?: string
     location?: string;
     avatar?: string;
 };

@@ -278,7 +278,7 @@ export async function canDeleteTeam(teamId: string): Promise<string[]> {
 }
 
 
-export async function checkTeamNameAlreadyExists(teamName: string): Promise<string> {
+export async function checkTeamNameAlreadyExists(teamName: string) {
 
     const response = await authenticatedFetch(
         `${API_URL}/teams/name/${encodeURIComponent(teamName)}`,
@@ -289,7 +289,6 @@ export async function checkTeamNameAlreadyExists(teamName: string): Promise<stri
             },
         }
     );
-    return await response.text();
 }
 
 

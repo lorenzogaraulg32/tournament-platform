@@ -54,6 +54,19 @@ export async function createUser(
 }
 
 
+export async function checkUsernameAlreadyExists(trimmedName: string) {
+    const response = await authenticatedFetch(
+        `${API_URL}/tournaments/nameCheck/${trimmedName}`,
+        {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+            },
+        }
+    );
+
+}
+
 export async function fetchUser(
     id: string
 ): Promise<UserInfo> {

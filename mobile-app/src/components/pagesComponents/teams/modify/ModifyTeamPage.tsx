@@ -1,8 +1,4 @@
-// In questa pagina
-// si mostrano gli step per la modifica
-// ci sono le funzioni di validazione
 import {TeamDetails, TeamFormErrors, TeamUpdateRequest} from "@/src/services/teams/teamDTO";
-import NameDescRecruitmentStep from "@/src/components/common/forms/commonSteps/NameDescRecruitmentStep";
 import PositionStep from "@/src/components/pagesComponents/teams/steps/PositionStep";
 import LogoStep from "@/src/components/pagesComponents/teams/steps/LogoStep";
 import FormLayout from "@/src/components/common/forms/ layout/FormLayout";
@@ -11,6 +7,7 @@ import FormProgressBar from "@/src/components/common/forms/components/FormProgre
 import FormContent from "@/src/components/common/forms/ layout/FormContent";
 import {View} from "react-native";
 import SportStep from "@/src/components/pagesComponents/teams/steps/SportStep";
+import NameDescStep from "@/src/components/pagesComponents/teams/steps/NameDescStep";
 
 
 export type TeamEditStep = 0 | 1 | 2 | 3;
@@ -53,7 +50,7 @@ export default function ModifyTeamPage({
         switch (currentStep) {
             case 0:
                 return (
-                    <NameDescRecruitmentStep
+                    <NameDescStep
                         variant={"teams"}
                         nameValue={newTeam.name ?? oldTeam.name}
                         descValue={newTeam.description ?? ""}
@@ -109,8 +106,7 @@ export default function ModifyTeamPage({
                         onChange={(newSport) =>
                             onChangeField("sport", newSport)
                         }
-                        errorMessage={fieldErrors.logo}
-
+                        errorMessage={fieldErrors.sport}
                     />
                 );
         }

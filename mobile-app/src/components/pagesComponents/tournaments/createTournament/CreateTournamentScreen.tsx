@@ -6,11 +6,16 @@ import CreateTournamentPage, {
     STEPS,
     TournamentCreationStep,
 } from "@/src/components/pagesComponents/tournaments/createTournament/CreateTournamentPage";
-import {normalizeApiRequestError, printApiRequestError} from "@/src/services/errorService";
+import {normalizeApiRequestError} from "@/src/services/errorService";
 import {checkTournamentNameAlreadyExists, createTournament} from "@/src/services/tournaments/tournamentService";
 import {router} from "expo-router";
 import {isAfter, isTodayOrFuture} from "@/src/services/common";
-import {isPdf} from "@/src/services/mediaService";
+import {
+    validateDescription,
+    validateLocation,
+    validateMedia,
+    validateUniqueName
+} from "@/src/components/common/forms/validator/validator";
 
 
 export default function CreateTournamentScreen() {
@@ -22,9 +27,7 @@ export default function CreateTournamentScreen() {
     const [apiError, setApiError] = useState("");
     const [fieldErrors, setFieldErrors] = useState<TournamentErrorFields>({});
 
-
     const [currentStep, setCurrentStep] = useState<TournamentCreationStep>(FIRST_STEP);
-
 
     const [tournamentData, setTournamentData] = useState<TournamentCreationRequest>({
         name: "",
@@ -80,7 +83,7 @@ export default function CreateTournamentScreen() {
             case 0:
                 return validateNameAndDescription();
             case 1:
-                return validateLocation();
+                return validateLocationLocal();
             case 2:
                 return validateLogoAndRules();
             case 3:
@@ -96,129 +99,89 @@ export default function CreateTournamentScreen() {
         const trimmedName = tournamentData.name.trim();
         const trimmedDescription = tournamentData.description?.trim() ?? "";
 
-        const nameError =
-            trimmedName.length < 5 || trimmedName.length > 20
-                ? "Il nome deve avere tra 5 e 20 caratteri"
-                : undefined;
+        let nameError = undefined;
 
-        const descriptionError =
-            trimmedDescription.length > 160
-                ? "La descrizione non può superare i 160 caratteri"
-                : undefined;
-
-
-        const recruitmentStatusError = tournamentData.recruitmentStatus ? undefined : "Stato di reclutamento non selezionato"
-
-        setFieldErrors(previous => ({
-            ...previous,
-            name: nameError,
-            description: descriptionError,
-            recruitmentStatus: recruitmentStatusError,
-        }));
-
-        if (
-            nameError ||
-            descriptionError ||
-            recruitmentStatusError
-        ) {
-            return false;
-        }
         try {
-            await checkTournamentNameAlreadyExists(trimmedName);
-            return true;
+            nameError = await validateUniqueName(trimmedName, checkTournamentNameAlreadyExists)
         } catch (error) {
-            const apiError = normalizeApiRequestError(error);
-
-
-            if (apiError.status === 401) {
-                return false;
-            }
-
-            if (apiError.status === 409 && apiError.message === "Esiste già un torneo con questo nome") {
-                setFieldErrors(previous => ({
-                    ...previous,
-                    name: apiError.message,
-                }));
-            } else {
-                setApiError(apiError.message);
-            }
-
+            const apiError = normalizeApiRequestError(error)
+            setApiError(apiError.message);
             return false;
         }
+
+        const descriptionError = validateDescription(trimmedDescription)
+
+
+        if (nameError || descriptionError) {
+            setFieldErrors(previous => ({
+                ...previous,
+                name: nameError,
+                description: descriptionError,
+            }));
+            return false;
+        }
+
+        return true
     }
 
 
-    function validateLocation(): boolean {
-        const location = tournamentData.location;
+    function validateLocationLocal(): boolean {
+        if (!tournamentData.location) return true;
 
-        const isValid =
-            location === null ||
-            (
-                !!location.label?.trim() &&
-                Number.isFinite(location.latitude) &&
-                location.latitude >= -90 &&
-                location.latitude <= 90 &&
-                Number.isFinite(location.longitude) &&
-                location.longitude >= -180 &&
-                location.longitude <= 180
-            );
+        const positionError = validateLocation(tournamentData.location)
 
-        setFieldErrors(previous => ({
-            ...previous,
-            location: isValid
-                ? undefined
-                : "La posizione selezionata non è valida",
-        }));
+        if (positionError) {
+            setFieldErrors(previous => ({
+                ...previous,
+                location: positionError
+            }));
+            return false;
+        }
 
-        return isValid;
+        return true;
     }
 
     function validateLogoAndRules() {
 
-        const logoError =
-            tournamentData.logo?.fileSize !== undefined &&
-            tournamentData.logo.fileSize > 5 * 1024 * 1024
-                ? "Il logo non può superare i 5 MB"
-                : undefined;
+        let logoError: string | undefined;
+        let rulesError: string | undefined;
 
-        let rulesError: string | undefined
-
-        if (tournamentData.rules) {
-            if (!isPdf(tournamentData.rules)) {
-                rulesError = "Sono supportati solo file di tipo .pdf";
-            } else if (
-                tournamentData.rules.fileSize !== undefined &&
-                tournamentData.rules.fileSize > 5 * 1024 * 1024
-            ) {
-                rulesError = "Il file regole non può superare i 5 MB";
-            }
+        if (tournamentData.logo) {
+            logoError = validateMedia(tournamentData.logo, 5)
         }
 
-        setFieldErrors(previous => ({
-            ...previous,
-            logo: logoError,
-            rules: rulesError,
-        }));
+        if (tournamentData.rules) {
+            rulesError = validateMedia(tournamentData.rules, 5)
+        }
 
-        return !logoError && !rulesError;
+        if (logoError || rulesError) {
+            setFieldErrors(previous => ({
+                ...previous,
+                logo: logoError,
+                rules: rulesError
+            }));
+            return false;
+        }
+        return true;
     }
 
     function validateSportAndFormat() {
-        const sportError = !tournamentData.sport
-            ? "Seleziona uno sport"
-            : undefined;
+        if (!tournamentData.sport) {
+            setFieldErrors(previous => ({
+                ...previous,
+                sport: "Campo obbligatorio",
+            }));
+            return false
+        }
+        if (!tournamentData.format) {
+            setFieldErrors(previous => ({
+                ...previous,
+                format: "Campo obbligatorio",
+            }));
+            return false
+        }
 
-        const formatError = !tournamentData.format
-            ? "Seleziona un formato"
-            : undefined;
-
-        setFieldErrors(previous => ({
-            ...previous,
-            sport: sportError,
-            format: formatError,
-        }));
-
-        return !sportError && !formatError;
+        return true;
     }
 
     function validateDates() {
@@ -326,13 +289,6 @@ export default function CreateTournamentScreen() {
             router.replace(`/tournaments/${response.id}`);
         } catch (error) {
             const apiError = normalizeApiRequestError(error);
-
-            // Redirect già gestito da authenticatedFetch.
-            if (apiError.status === 401) {
-                return;
-            }
-
-            printApiRequestError(apiError);
             setApiError(apiError.message);
         }
     }

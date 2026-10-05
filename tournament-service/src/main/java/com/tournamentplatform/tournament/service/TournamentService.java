@@ -210,8 +210,8 @@ public class TournamentService {
 
     }
 
-    public void checkNameAlreadyExists(String teamName) {
-        if (tournamentRepository.existsByName(teamName)) {
+    public void checkNameAlreadyExists(String tournamentName) {
+        if (tournamentRepository.existsByName(tournamentName)) {
             throw new TournamentNameAlreadyExistsException();
         }
     }

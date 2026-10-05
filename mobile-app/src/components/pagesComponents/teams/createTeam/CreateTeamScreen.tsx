@@ -1,7 +1,7 @@
 import {useRef, useState} from "react";
 import {router} from "expo-router";
 
-import {normalizeApiRequestError, printApiRequestError,} from "@/src/services/errorService";
+import {normalizeApiRequestError,} from "@/src/services/errorService";
 import type {TeamCreationRequest, TeamFormErrors,} from "@/src/services/teams/teamDTO";
 import {checkTeamNameAlreadyExists, createTeam,} from "@/src/services/teams/teamService";
 
@@ -11,6 +11,12 @@ import CreateTeamPage, {
     STEPS,
     type TeamCreationStep,
 } from "@/src/components/pagesComponents/teams/createTeam/CreateTeamPage";
+import {
+    validateDescription,
+    validateLocation,
+    validateMedia,
+    validateUniqueName
+} from "@/src/components/common/forms/validator/validator";
 
 export default function CreateTeamScreen() {
     const submissionLock = useRef(false);
@@ -69,7 +75,7 @@ export default function CreateTeamScreen() {
             case 0:
                 return validateNameAndDescription();
             case 1:
-                return validateLocation();
+                return validateLocationLocal();
             case 2:
                 return validateLogo();
             case 3:
@@ -78,110 +84,84 @@ export default function CreateTeamScreen() {
     }
 
 
-
     async function validateNameAndDescription(): Promise<boolean> {
+
         const trimmedName = teamData.name.trim();
         const trimmedDescription = teamData.description?.trim() ?? "";
 
-        const nameError =
-            trimmedName.length < 5 || trimmedName.length > 20
-                ? "Il nome deve avere tra 5 e 20 caratteri"
-                : undefined;
+        let nameError = undefined;
 
-        const descriptionError =
-            trimmedDescription.length > 160
-                ? "La descrizione non può superare i 160 caratteri"
-                : undefined;
-
-        setFieldErrors(previous => ({
-            ...previous,
-            name: nameError,
-            description: descriptionError,
-        }));
-
-        if (nameError || descriptionError) {
-            return false;
-        }
 
         try {
-            await checkTeamNameAlreadyExists(trimmedName);
-            return true;
+            nameError = await validateUniqueName(trimmedName, checkTeamNameAlreadyExists)
         } catch (error) {
-            const apiError = normalizeApiRequestError(error);
-
-            // Redirect già gestito da authenticatedFetch.
-            if (apiError.status === 401) {
-                return false;
-            }
-
-            if (apiError.status === 409) {
-                setFieldErrors(previous => ({
-                    ...previous,
-                    name: apiError.message,
-                }));
-            } else {
-                setApiError(apiError.message);
-            }
-
+            const apiError = normalizeApiRequestError(error)
+            setApiError(apiError.message);
             return false;
         }
+
+        const descriptionError = validateDescription(trimmedDescription)
+
+
+        if (nameError || descriptionError) {
+            setFieldErrors(previous => ({
+                ...previous,
+                name: nameError,
+                description: descriptionError,
+            }));
+            return false;
+        }
+
+        return true
     }
 
-    function validateLocation(): boolean {
-        const location = teamData.location;
+    function validateLocationLocal(): boolean {
+        if (!teamData.location) return true;
 
-        const isValid =
-            location === null ||
-            (
-                !!location.label?.trim() &&
-                Number.isFinite(location.latitude) &&
-                location.latitude >= -90 &&
-                location.latitude <= 90 &&
-                Number.isFinite(location.longitude) &&
-                location.longitude >= -180 &&
-                location.longitude <= 180
-            );
+        const positionError = validateLocation(teamData.location)
 
-        setFieldErrors(previous => ({
-            ...previous,
-            location: isValid
-                ? undefined
-                : "La posizione selezionata non è valida",
-        }));
+        if (positionError) {
+            setFieldErrors(previous => ({
+                ...previous,
+                location: positionError
+            }));
+            return false;
+        }
 
-        return isValid;
+        return true;
     }
 
     function validateLogo(): boolean {
-        const logoError =
-            teamData.logo?.fileSize !== undefined &&
-            teamData.logo.fileSize > 2 * 1024 * 1024
-                ? "Il logo non può superare i 2 MB"
-                : undefined;
 
-        setFieldErrors(previous => ({
-            ...previous,
-            logo: logoError,
-        }));
+        if (!teamData.logo) {
+            return true
+        }
 
-        return !logoError;
+        const logoError = validateMedia(teamData.logo, 5)
+
+        if (logoError) {
+            setFieldErrors(previous => ({
+                ...previous,
+                logo: logoError,
+            }));
+            return false;
+        }
+
+        return true;
     }
 
     function validateSport(): boolean {
-        const sportError = !teamData.sport
-            ? "Seleziona uno sport"
-            : undefined;
-
-        setFieldErrors(previous => ({
-            ...previous,
-            sport: sportError,
-        }));
-
-        return !sportError;
+        if (!teamData.sport) {
+            setFieldErrors(previous => ({
+                ...previous,
+                sport: "Campo obbligatorio",
+            }));
+            return false
+        }
+        return true;
     }
 
     // Navigazione tra step
-
     async function handleNext(): Promise<void> {
         if (submissionLock.current) {
             return;
@@ -219,7 +199,6 @@ export default function CreateTeamScreen() {
     }
 
     // Creazione
-
     async function handleCreateTeam(): Promise<void> {
         try {
             const request: TeamCreationRequest = {
@@ -233,13 +212,6 @@ export default function CreateTeamScreen() {
             router.replace(`/teams/${response.id}`);
         } catch (error) {
             const apiError = normalizeApiRequestError(error);
-
-            // Redirect già gestito da authenticatedFetch.
-            if (apiError.status === 401) {
-                return;
-            }
-
-            printApiRequestError(apiError);
             setApiError(apiError.message);
         }
     }

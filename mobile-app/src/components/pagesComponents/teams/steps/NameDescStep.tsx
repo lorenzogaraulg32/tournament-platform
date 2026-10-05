@@ -26,7 +26,7 @@ type NameAndDescStepProps = {
     editable: boolean;
 };
 
-export default function NameDescRecruitmentStep({
+export default function NameDescStep({
                                                     variant,
                                                     nameValue,
                                                     descValue,
@@ -43,9 +43,9 @@ export default function NameDescRecruitmentStep({
         <View>
             <FormInputField
                 variant={variant}
-                label="Nome squadra"
+                label="Nome Torneo"
                 labelIconName="shield-outline"
-                placeholder="Es. FC Bar Ci Siamo"
+                placeholder="Es. Torneo della Piazzetta"
                 value={nameValue}
                 onChangeText={onChangeName}
                 errorMessage={errorMsgName}
@@ -59,7 +59,7 @@ export default function NameDescRecruitmentStep({
                 label="Descrizione"
                 optional
                 labelIconName="chatbubble-ellipses-outline"
-                placeholder="Racconta qualcosa della tua squadra..."
+                placeholder="Racconta qualcosa sul tuo torneo..."
                 value={descValue}
                 onChangeText={onChangeDesc}
                 errorMessage={errorMsgDesc}

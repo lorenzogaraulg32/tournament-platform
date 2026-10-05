@@ -15,6 +15,8 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -69,6 +71,14 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/nameCheck/{username}")
+    public ResponseEntity<List<String>> checkNameAlreadyExists(
+            @PathVariable String username
+    ) {
+        userService.checkUsernameAlreadyExists(username);
+        return ResponseEntity.ok().build();
+
+    }
 
     @PatchMapping(
             value = "/me",

@@ -1,6 +1,6 @@
 import {useRef, useState} from "react";
 import {router, useLocalSearchParams} from "expo-router";
-import {normalizeApiRequestError, printApiRequestError} from "@/src/services/errorService";
+import {normalizeApiRequestError} from "@/src/services/errorService";
 import {TeamDetails, TeamFormErrors, TeamUpdateRequest} from "@/src/services/teams/teamDTO";
 import {checkTeamNameAlreadyExists, editTeam} from "@/src/services/teams/teamService";
 import ModifyTeamPage, {
@@ -9,6 +9,12 @@ import ModifyTeamPage, {
     STEPS,
     TeamEditStep
 } from "@/src/components/pagesComponents/teams/modify/ModifyTeamPage";
+import {
+    validateDescription,
+    validateLocation,
+    validateMedia,
+    validateUniqueName
+} from "@/src/components/common/forms/validator/validator";
 
 // In questo componente
 // si recuperano i valori della squadra v
@@ -74,98 +80,57 @@ export default function ModifyTeamScreen() {
         switch (step) {
             case 0:
                 return await validateNameAndDescription();
-
             case 1:
-                return validateLocation();
-
+                return validateLocationLocal();
             case 2:
                 return validateLogo();
-
             case 3:
-                return true
+                return validateSport();
         }
     }
 
     async function validateNameAndDescription(): Promise<boolean> {
 
-        const trimmedName = (modTeamData.name ?? "").trim();
+        const trimmedName = modTeamData.name.trim();
         const trimmedDescription = modTeamData.description?.trim() ?? "";
 
-        const nameError =
-            trimmedName.length < 5 || trimmedName.length > 20
-                ? "Il nome deve avere tra 5 e 20 caratteri"
-                : undefined;
+        let nameError = undefined;
 
-        const descriptionError =
-            trimmedDescription.length > 160
-                ? "La descrizione non può superare i 160 caratteri"
-                : undefined;
-
-        setFieldErrors((previousErrors) => ({
-            ...previousErrors,
-            name: nameError,
-            description: descriptionError,
-        }));
-
-        if (nameError || descriptionError) {
-            return false;
-        }
-
-        if (trimmedName === oldTeam.name.trim()) {
-            return true;
-        }
 
         try {
-            await checkTeamNameAlreadyExists(trimmedName);
-
-            return true;
+            if(trimmedName !== oldTeam.name.trim())
+            nameError = await validateUniqueName(trimmedName, checkTeamNameAlreadyExists)
         } catch (error) {
-            const apiError = normalizeApiRequestError(error);
-
-            // Redirect già gestito da authenticatedFetch
-            if (apiError.status === 401) {
-                return false;
-            }
-
-            if (apiError.status === 409 && apiError.code === "TEAM_NAME_ALREADY") {
-                setFieldErrors((previousErrors) => ({
-                    ...previousErrors,
-                    name: apiError.message,
-                }));
-
-                return false;
-            } else {
-                setFieldErrors((previousErrors) => ({
-                    ...previousErrors,
-                    name: "Errore nel check nome",
-                }))
-            }
-
-            printApiRequestError(apiError)
+            const apiError = normalizeApiRequestError(error)
+            setApiError(apiError.message);
             return false;
         }
-    }
 
-    function validateLocation(): boolean {
-        const location = modTeamData.location;
+        const descriptionError = validateDescription(trimmedDescription)
 
-        // Nessuna posizione: consentito
-        if (!location) {
-            return true;
+
+        if (nameError || descriptionError) {
+            setFieldErrors(previous => ({
+                ...previous,
+                name: nameError,
+                description: descriptionError,
+            }));
+            return false;
         }
 
-        // Posizione presente ma non valida
-        if (
-            !location.label?.trim() ||
-            !Number.isFinite(location.latitude) ||
-            !Number.isFinite(location.longitude)
-        ) {
-            setFieldErrors((previousErrors) => ({
-                ...previousErrors,
-                location: "La posizione selezionata non è valida",
+        return true
+    }
 
+    function validateLocationLocal(): boolean {
+        if (!modTeamData.location) return true;
+
+        const positionError = validateLocation(modTeamData.location)
+
+        if (positionError) {
+            setFieldErrors(previous => ({
+                ...previous,
+                location: positionError
             }));
-
             return false;
         }
 
@@ -173,18 +138,32 @@ export default function ModifyTeamScreen() {
     }
 
     function validateLogo(): boolean {
-        if (
-            modTeamData.logo?.fileSize !== undefined &&
-            modTeamData.logo.fileSize > 2 * 1024 * 1024
-        ) {
-            setFieldErrors((previousErrors) => ({
-                ...previousErrors,
-                logo: "Il logo non può superare i 2 MB",
 
+        if (!modTeamData.logo) {
+            return true
+        }
+
+        const logoError = validateMedia(modTeamData.logo, 5)
+
+        if (logoError) {
+            setFieldErrors(previous => ({
+                ...previous,
+                logo: logoError,
             }));
             return false;
         }
 
+        return true;
+    }
+
+    function validateSport(): boolean {
+        if (!modTeamData.sport) {
+            setFieldErrors(previous => ({
+                ...previous,
+                sport: "Campo obbligatorio",
+            }));
+            return false
+        }
         return true;
     }
 
@@ -234,14 +213,7 @@ export default function ModifyTeamScreen() {
             await editTeam(String(oldTeam.id), request);
             router.back();
         } catch (error) {
-
             const apiError = normalizeApiRequestError(error);
-
-            // Redirect già gestito da authenticatedFetch
-            if (apiError.status === 401) {
-                return;
-            }
-
             setApiError(apiError.message);
         }
     }

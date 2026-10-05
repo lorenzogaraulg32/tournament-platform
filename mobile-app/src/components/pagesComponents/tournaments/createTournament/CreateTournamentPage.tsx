@@ -4,12 +4,12 @@ import HeaderForm from "@/src/components/common/headers/HeaderForm";
 import FormProgressBar from "@/src/components/common/forms/components/FormProgressBar";
 import FormContent from "@/src/components/common/forms/ layout/FormContent";
 import {View} from "react-native";
-import NameDescRecruitmentStep from "@/src/components/common/forms/commonSteps/NameDescRecruitmentStep";
 import PositionStep from "@/src/components/pagesComponents/teams/steps/PositionStep";
 import LogoAndRulesStep from "@/src/components/pagesComponents/tournaments/steps/LogoAndRulesStep";
 import SportAndFormatStep from "@/src/components/pagesComponents/tournaments/steps/SportAndFormatStep";
 import DateStep from "@/src/components/pagesComponents/tournaments/steps/DateStep";
 import NumberOfTeamsStep from "@/src/components/pagesComponents/tournaments/steps/NumberOfTeamsStep";
+import NameDescStep from "@/src/components/pagesComponents/tournaments/steps/NameDescStep";
 
 
 export type TournamentCreationStep = 0 | 1 | 2 | 3 | 4 | 5;
@@ -68,7 +68,7 @@ export default function CreateTournamentPage({
         switch (currentStep) {
             case 0:
                 return (
-                    <NameDescRecruitmentStep
+                    <NameDescStep
                         variant={"tournaments"}
                         nameValue={tournament.name}
                         descValue={tournament.description ?? ""}

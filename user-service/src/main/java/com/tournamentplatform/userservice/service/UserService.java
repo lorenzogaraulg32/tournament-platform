@@ -105,20 +105,6 @@ public class UserService {
 
         UserMapper.updateEntity(user, request);
 
-
-        System.out.println("Sport ricevuti: " + request.sports());
-        System.out.println("Ruoli ricevuti: " + request.roles());
-
-        System.out.println("Sport dopo mapping: " + user.getSports());
-
-        user.getRoles().forEach(role ->
-                System.out.println(
-                        "Ruolo dopo mapping: sport=" + role.getSport()
-                                + ", ruolo=" + role.getRole()
-                                + ", sport associato al ruolo=" + role.getRole().getSport()
-                )
-        );
-
         validateSportConfiguration(user);
 
         if (avatar != null && !avatar.isEmpty()) {
@@ -156,6 +142,12 @@ public class UserService {
         }
     }
 
+    public void checkUsernameAlreadyExists(String username){
+        if (userRepository.existsByUsername(username)) {
+            throw new UsernameAlreadyRegisteredException();
+        }
+    }
+
 
     private User getUserEntity(String userId) {
         return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
@@ -187,6 +179,7 @@ public class UserService {
             throw new InvalidSportRoleConfigurationException();
         }
     }
+
 
 
 

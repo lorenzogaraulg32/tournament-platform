@@ -2,21 +2,19 @@ import {useRef, useState} from "react";
 import {ProfileFormErrors, UserCreationRequest} from "@/src/services/users/userDTO";
 
 import {
-    validateBirthDate,
-    validateFirstName,
-    validateImage,
-    validateLastName,
-    validateUserLocation,
-    validateUsername,
+    validateLocation,
+    validateMedia,
+    validateStandardName,
+    validateUniqueName,
     validateUserSportsAndRoles
-} from "@/src/constants/helpers/validationHelper";
+} from "@/src/components/common/forms/validator/validator";
 import OnBoardingPage, {
     FIRST_STEP,
     LAST_STEP,
     ProfileCreationStep,
     STEPS
 } from "@/src/components/pagesComponents/profile/onBoarding/OnBoardingPage";
-import {createUser} from "@/src/services/users/userService";
+import {checkUsernameAlreadyExists, createUser} from "@/src/services/users/userService";
 import {router} from "expo-router";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 
@@ -52,15 +50,13 @@ export default function OnBoardingScreen() {
             ...prev,
             [field]: value,
         }));
+        setFieldErrors(prev => ({
+            ...prev,
+            [field]: undefined,
+        }));
+
+        setApiError("");
     };
-
-    function applyFieldErrors(
-        errors: ProfileFormErrors
-    ): boolean {
-        setFieldErrors(errors);
-        return !Object.values(errors).some(Boolean);
-    }
-
 
     async function handleOnboarding() {
         try {
@@ -71,7 +67,7 @@ export default function OnBoardingScreen() {
                 username: userData.username.trim()
             }
 
-            const response = await createUser(request)
+            await createUser(request)
 
             router.replace("/(app)/home");
         } catch (error) {
@@ -94,7 +90,7 @@ export default function OnBoardingScreen() {
                 if (await validateForm()) {
                     await handleOnboarding();
                 }
-            } else if (validateStep(currentStep)) {
+            } else if (await validateStep(currentStep)) {
                 setCurrentStep(
                     previous => (previous + 1) as ProfileCreationStep
                 );
@@ -118,7 +114,7 @@ export default function OnBoardingScreen() {
 
     async function validateForm(): Promise<boolean> {
         for (const step of STEPS) {
-            if (!validateStep(step)) {
+            if (!await validateStep(step)) {
                 setCurrentStep(step);
                 return false;
             }
@@ -127,62 +123,141 @@ export default function OnBoardingScreen() {
         return true;
     }
 
-    function validateStep(step: ProfileCreationStep): boolean {
+    async function validateStep(step: ProfileCreationStep): Promise<boolean> {
         switch (step) {
             case 0:
                 return validateNameAndSurname();
 
             case 1:
-                return validateUsernameAndLogo();
+                return await validateUsernameAndAvatar();
 
             case 2:
                 return validateBirthDateAndGender();
 
             case 3:
-                return validateSportsAndRoles();
+                return validateUserSportsAndRolesLocal();
 
             case 4:
-                return validateLocation();
-
-            default:
-                return false;
+                return validateLocationLocal();
         }
     }
 
     function validateNameAndSurname(): boolean {
-        return applyFieldErrors({
-            firstName: validateFirstName(userData),
-            lastName: validateLastName(userData),
-        });
+        const trimmedName = userData.firstName.trim()
+        const trimmedLastName = userData.lastName.trim()
+        const nameError = validateStandardName(trimmedName);
+        const lastNameError = validateStandardName(trimmedLastName);
+
+        if (nameError || lastNameError) {
+            setFieldErrors(previous => ({
+                ...previous,
+                firstName: nameError,
+                lastName: lastNameError,
+            }));
+            return false;
+        }
+
+        return true;
     }
 
-    function validateUsernameAndLogo(): boolean {
-        return applyFieldErrors({
-            username: validateUsername(userData),
-            avatar: validateImage(userData),
-        });
+
+    async function validateUsernameAndAvatar() {
+
+        const trimmedUsername = userData.username.trim()
+        let usernameError = undefined;
+
+        try {
+            usernameError = await validateUniqueName(trimmedUsername, checkUsernameAlreadyExists)
+        } catch (error) {
+            const apiError = normalizeApiRequestError(error)
+            setApiError(apiError.message);
+            return false;
+        }
+
+        let avatarError = undefined;
+
+        if (userData.avatar) {
+            avatarError = validateMedia(userData.avatar, 5)
+        }
+
+        if (usernameError || avatarError) {
+            setFieldErrors(previous => ({
+                ...previous,
+                username: usernameError,
+                avatar: avatarError
+            }));
+            return false;
+        }
+
+        return true;
+
+
     }
 
     function validateBirthDateAndGender(): boolean {
-        return applyFieldErrors({
-            birthDate: validateBirthDate(userData),
-            gender:
-                userData.gender === null
-                    ? "Seleziona un genere"
-                    : "",
-        });
+        let genderError = undefined;
+
+        if (!userData.gender) {
+            genderError = "Seleziona un genere"
+        }
+
+        let birthDateError = undefined
+
+        if (!userData.birthDate) {
+            birthDateError = "La data di nascita è obbligatoria";
+        } else {
+            const birthDate = new Date(userData.birthDate);
+
+            if (
+                Number.isNaN(birthDate.getTime()) ||
+                birthDate >= new Date()
+            ) {
+                birthDateError = "La data di nascita non è valida";
+            }
+        }
+
+        if (genderError || birthDateError) {
+            setFieldErrors(previous => ({
+                ...previous,
+                gender: genderError,
+                birthDate: birthDateError
+            }));
+            return false;
+        }
+
+        return true
+
     }
 
-    function validateSportsAndRoles(): boolean {
-        return applyFieldErrors({
-            sports: validateUserSportsAndRoles(userData),
-        });
+    function validateUserSportsAndRolesLocal() {
+
+        const userSportAndRolesError = validateUserSportsAndRoles(userData)
+        if (userSportAndRolesError) {
+            setFieldErrors(
+                previous => ({
+                    ...previous,
+                    roles: userSportAndRolesError
+                })
+            )
+            return false;
+        }
+        return true;
     }
 
-    function validateLocation(): boolean {
-        return applyFieldErrors({
-            location: validateUserLocation(userData),
-        });
+    function validateLocationLocal(): boolean {
+        if (!userData.location) return true;
+
+        const positionError = validateLocation(userData.location)
+
+        if (positionError) {
+            setFieldErrors(previous => ({
+                ...previous,
+                location: positionError
+            }));
+            return false;
+        }
+
+        return true;
     }
 
     return (

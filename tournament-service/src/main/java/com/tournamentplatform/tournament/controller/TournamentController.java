@@ -99,11 +99,11 @@ public class TournamentController {
     }
 
 
-    @GetMapping("/nameCheck/{teamName}")
+    @GetMapping("/nameCheck/{tournamentName}")
     public ResponseEntity<List<String>> checkNameAlreadyExists(
-            @PathVariable String teamName
+            @PathVariable String tournamentName
     ) {
-        tournamentService.checkNameAlreadyExists(teamName);
+        tournamentService.checkNameAlreadyExists(tournamentName);
         return ResponseEntity.ok().build();
 
     }
