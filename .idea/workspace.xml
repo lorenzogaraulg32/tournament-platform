@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Refractored validation in a dedicated file to reduce boilerplate code">
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="small fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/onBoarding/OnBoardingPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/onBoarding/OnBoardingPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/tournaments/tournamentService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/tournaments/tournamentService.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -389,15 +389,7 @@
       <workItem from="1791042027587" duration="2637000" />
       <workItem from="1791127746662" duration="5691000" />
       <workItem from="1791133559587" duration="1492000" />
-      <workItem from="1791191603402" duration="12803000" />
-    </task>
-    <task id="LOCAL-00053" summary="Structured headers for re-using and coerence, rebuilt teamCreation page to dived it into steps, like onboarding">
-      <option name="closed" value="true" />
-      <created>1787585487725</created>
-      <option name="number" value="00053" />
-      <option name="presentableId" value="LOCAL-00053" />
-      <option name="project" value="LOCAL" />
-      <updated>1787585487725</updated>
+      <workItem from="1791191603402" duration="14072000" />
     </task>
     <task id="LOCAL-00054" summary="Restructured folders for better managment">
       <option name="closed" value="true" />
@@ -783,7 +775,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791211884440</updated>
     </task>
-    <option name="localTasksCounter" value="102" />
+    <task id="LOCAL-00102" summary="small fix">
+      <option name="closed" value="true" />
+      <created>1791211934831</created>
+      <option name="number" value="00102" />
+      <option name="presentableId" value="LOCAL-00102" />
+      <option name="project" value="LOCAL" />
+      <updated>1791211934831</updated>
+    </task>
+    <option name="localTasksCounter" value="103" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -801,7 +801,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Minor fixes on team mod and deletion, initial setup on profile CRUD" />
     <MESSAGE value="Fixed image modification in team modification" />
     <MESSAGE value="Now team has a Sport" />
     <MESSAGE value="Restructured the component chain for visualizing and managing operations on entities, now it's cleaner, with distinct responsibilities and reusable components. &#10;As of now those changes are for the team entity only, next on the list is to apply those changes for users and tournaments" />
@@ -826,7 +825,8 @@
     <MESSAGE value="Small fix for port change of auth servfice" />
     <MESSAGE value="Deleted variants for solidButtons, &#10;Added btn styles to global variants" />
     <MESSAGE value="Refractored validation in a dedicated file to reduce boilerplate code" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refractored validation in a dedicated file to reduce boilerplate code" />
+    <MESSAGE value="small fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="small fix" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

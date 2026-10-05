@@ -16,11 +16,7 @@ export async function createTournament(
 ): Promise<TournamentDetails> {
 
     const {logo, rules, ...tournamentRequest} = request
-
-    console.log(tournamentRequest.endDate)
-    console.log(tournamentRequest.startDate)
-    console.log(request.endDate)
-    console.log(request.startDate)
+    
 
     const tournamentFile = new File(
         Paths.cache,
