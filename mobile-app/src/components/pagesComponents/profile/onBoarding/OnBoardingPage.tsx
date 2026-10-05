@@ -26,7 +26,7 @@ type OnBoardingPageProps = {
 };
 
 
-export default function OnBoardinPage({
+export default function OnBoardingPage({
                                           user,
                                           currentStep,
                                           fieldErrors,
@@ -118,7 +118,7 @@ export default function OnBoardinPage({
                         username={user.username}
                         avatar={user.avatar}
                         usernameError={fieldErrors.username}
-                        profileLogoError={fieldErrors.profileLogo}
+                        profileLogoError={fieldErrors.avatar}
                         onUsernameChange={value =>
                             onChangeField("username", value)
                         }
