@@ -120,7 +120,10 @@ export async function editTeam(
             }
         );
 
-        return await response.json() as TeamDetails;
+        const newTeam =  await response.json() as TeamDetails;
+
+
+        return enrichTeamMedia(newTeam);
 
     } finally {
         if (teamFile.exists) {
