@@ -30,7 +30,7 @@ export default function ModifyProfileScreen() {
         sports: oldProfile.sports,
         roles: oldProfile.roles,
         location: oldProfile.location,
-        avatar: oldProfile.avatar
+        avatar: undefined
     });
 
     const [currentStep, setCurrentStep] = useState<ProfileEditStep>(FIRST_STEP);
@@ -87,33 +87,25 @@ export default function ModifyProfileScreen() {
     }
 
     function toggleRole(sport: Sport, role: SportRole) {
-        if (submissionLock.current) return;
+        const isSelected = newProfile.roles.some(
+            selectedRole =>
+                selectedRole.sport === sport &&
+                selectedRole.role === role
+        );
 
-        setNewProfile(previous => {
-            if (!previous || !previous.sports.includes(sport)) {
-                return previous;
-            }
+        if (isSelected) {
+            return;
+        }
 
-            const selected = previous.roles.some(
-                item => item.sport === sport && item.role === role
-            );
-
-            return {
-                ...previous,
-                roles: selected
-                    ? previous.roles.filter(
-                        item => !(item.sport === sport && item.role === role)
-                    )
-                    : [...previous.roles, {sport, role}],
-            };
-        });
-
-        setFieldErrors(previous => ({
-            ...previous,
-            roles: undefined,
-        }));
-
-        setApiError("");
+        updateField(
+            "roles",
+            [
+                ...newProfile.roles.filter(
+                    selectedRole => selectedRole.sport !== sport
+                ),
+                {sport, role}
+            ]
+        );
     }
 
     // Validazione

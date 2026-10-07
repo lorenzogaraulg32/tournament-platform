@@ -121,7 +121,7 @@ export async function modUser(request: UserModRequest): Promise<UserInfo> {
         formData.append("user", userFile, userFile.name);
 
 
-        if (avatar) {
+        if (avatar !== undefined && avatar !== null) {
             const avatarFile = new File(avatar.uri);
 
             formData.append(

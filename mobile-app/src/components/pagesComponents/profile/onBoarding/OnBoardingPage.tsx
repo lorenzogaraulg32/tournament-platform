@@ -72,27 +72,19 @@ export default function OnBoardingPage({
         );
 
         if (isSelected) {
-            onChangeField(
-                "roles",
-                user.roles.filter(
-                    selectedRole =>
-                        !(
-                            selectedRole.sport === sport &&
-                            selectedRole.role === role
-                        )
-                )
-            );
-
             return;
         }
 
         onChangeField(
             "roles",
-            [...user.roles, {sport, role,},]
+            [
+                ...user.roles.filter(
+                    selectedRole => selectedRole.sport !== sport
+                ),
+                { sport, role }
+            ]
         );
     };
-
-
     function renderStep() {
         switch (currentStep) {
             case 0:

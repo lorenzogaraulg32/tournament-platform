@@ -115,7 +115,7 @@ export function validateUserSportsAndRoles(userData: UserModRequest | UserCreati
     );
 
     if (!everySportHasRole) {
-        return "Seleziona almeno un ruolo per ogni sport"
+        return "Seleziona un ruolo per ogni sport"
     }
 
     // Nessun ruolo deve appartenere a uno sport non selezionato

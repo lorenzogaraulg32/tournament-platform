@@ -64,11 +64,7 @@ export default function HeaderEntity({
 
 
                 {variant === "profile" ? (
-                    <View style={styles.subscriptionBadge}>
-                        <Text style={styles.subscriptionText}>
-                            Piano gratuito
-                        </Text>
-                    </View>
+                   <></>
                 ) : (
                     <InvitationCodeBadge
                         code={invitationCode}

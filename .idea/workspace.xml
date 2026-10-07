@@ -4,8 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="createdShortCut for modify team sport">
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/teams/teamService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/teams/teamService.ts" afterDir="false" />
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Fixed user mod form, implemented new rule, now just 1 role is allowed for every sport">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/forms/validator/validator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/forms/validator/validator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/headers/HeaderEntity.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/headers/HeaderEntity.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modify/ModifyProfileScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modify/ModifyProfileScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/onBoarding/OnBoardingPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/onBoarding/OnBoardingPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/users/userService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/users/userService.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -390,15 +395,7 @@
       <workItem from="1791133559587" duration="1492000" />
       <workItem from="1791191603402" duration="14072000" />
       <workItem from="1791376809973" duration="36000" />
-      <workItem from="1791386089791" duration="4335000" />
-    </task>
-    <task id="LOCAL-00056" summary="Big Improvements on frontend services, now they are more separated and with single responsabilty. Also reworked errors and errors parsing and managment">
-      <option name="closed" value="true" />
-      <created>1787847702244</created>
-      <option name="number" value="00056" />
-      <option name="presentableId" value="LOCAL-00056" />
-      <option name="project" value="LOCAL" />
-      <updated>1787847702244</updated>
+      <workItem from="1791386089791" duration="6025000" />
     </task>
     <task id="LOCAL-00057" summary="Improvements on exception handling of user_service">
       <option name="closed" value="true" />
@@ -784,7 +781,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791390393124</updated>
     </task>
-    <option name="localTasksCounter" value="105" />
+    <task id="LOCAL-00105" summary="hotfix for sport mod">
+      <option name="closed" value="true" />
+      <created>1791390502686</created>
+      <option name="number" value="00105" />
+      <option name="presentableId" value="LOCAL-00105" />
+      <option name="project" value="LOCAL" />
+      <updated>1791390502686</updated>
+    </task>
+    <option name="localTasksCounter" value="106" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -802,8 +807,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Restructured the component chain for visualizing and managing operations on entities, now it's cleaner, with distinct responsibilities and reusable components. &#10;As of now those changes are for the team entity only, next on the list is to apply those changes for users and tournaments" />
-    <MESSAGE value="Defined standard pattern for visualizing app pages, form etc. &#10;Restructured the entire frontend around that pattern&#10;Now every single page gets the colors from a common palette definition&#10;TODO: Fixing tournament view, user mod and delete" />
     <MESSAGE value="Now it's possible to modify user info, next up is auth info and user deletion, if possible as an atomic operation between user and auth services" />
     <MESSAGE value="Implemented field visualization for teams" />
     <MESSAGE value="Implemented formation persistence" />
@@ -827,7 +830,9 @@
     <MESSAGE value="small fix" />
     <MESSAGE value="Added sport badge for teams card" />
     <MESSAGE value="createdShortCut for modify team sport" />
-    <option name="LAST_COMMIT_MESSAGE" value="createdShortCut for modify team sport" />
+    <MESSAGE value="hotfix for sport mod" />
+    <MESSAGE value="Fixed user mod form, implemented new rule, now just 1 role is allowed for every sport" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed user mod form, implemented new rule, now just 1 role is allowed for every sport" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
