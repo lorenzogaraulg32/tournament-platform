@@ -17,7 +17,7 @@ import {
 } from "@/src/components/common/forms/validator/validator";
 
 // In questo componente
-// si recuperano i valori della squadra v
+// si recuperano i valori della squadra
 // si tiene traccia degli errori
 // collegamento con il service per modifica effettiva
 
