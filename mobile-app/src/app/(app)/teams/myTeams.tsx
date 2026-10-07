@@ -91,6 +91,7 @@ export default function MyTeams() {
                 id={team.id}
                 name={team.name}
                 image={team.logo}
+                sport={team.sport}
                 playersCount={team.playerIds.length}
             />
         ));

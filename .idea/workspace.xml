@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="small fix">
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/constants/BadgePaletteManager.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/tournaments/tournamentService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/tournaments/tournamentService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/myTeams.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/myTeams.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/teamCards/TeamCardHorizontal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/teamCards/TeamCardHorizontal.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +100,7 @@
     "Spring Boot.UserServiceApplication.executor": "Run",
     "jdk.selected.JAVA_MODULE": "21",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Lombax/Desktop/Progetto Gestione Tornei Calcetto/mobile-app/src/components/pagesComponents/teams/steps",
+    "last_opened_file_path": "C:/Users/Lombax/Desktop/Progetto Gestione Tornei Calcetto",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -390,6 +392,8 @@
       <workItem from="1791127746662" duration="5691000" />
       <workItem from="1791133559587" duration="1492000" />
       <workItem from="1791191603402" duration="14072000" />
+      <workItem from="1791376809973" duration="36000" />
+      <workItem from="1791386089791" duration="1992000" />
     </task>
     <task id="LOCAL-00054" summary="Restructured folders for better managment">
       <option name="closed" value="true" />
