@@ -1,4 +1,4 @@
-import {ScrollView, StyleSheet, Text, View} from "react-native";
+import {Alert, ScrollView, StyleSheet, Text, View} from "react-native";
 import PageLayout from "@/src/components/common/PageLayout";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import HeaderEntity from "@/src/components/common/headers/HeaderEntity";
@@ -7,16 +7,16 @@ import CardListContainer from "@/src/components/common/carousel&cards/CardListCo
 import PlayerCard from "@/src/components/common/carousel&cards/userCards/PlayerCard";
 import AdminCard from "@/src/components/common/carousel&cards/userCards/AdminCard";
 import {colors} from "@/src/constants/theme";
-import {TeamDetails, TeamFormation} from "@/src/services/teams/teamDTO";
+import {TeamDetails, TeamFormation, TeamUpdateRequest} from "@/src/services/teams/teamDTO";
 import {fetchUser} from "@/src/services/users/userService";
 import {Dispatch, SetStateAction, useCallback, useEffect, useRef, useState} from "react";
 import {normalizeApiRequestError} from "@/src/services/errorService";
-import {removeTeamAdmin, removeTeamPlayer, updateTeamFormation} from "@/src/services/teams/teamService";
+import {editTeam, removeTeamAdmin, removeTeamPlayer, updateTeamFormation} from "@/src/services/teams/teamService";
 import showAlert from "@/src/components/common/errors/Alert";
 import {useToast} from "@/src/components/common/Toast/ToastProvider";
 import FieldLineup from "@/src/components/pagesComponents/teams/field/FieldLineup";
 import FullPageModal from "@/src/components/common/FullPageModal";
-import { UserInfo } from "@/src/services/users/userDTO";
+import {Sport, UserInfo} from "@/src/services/users/userDTO";
 
 
 type TeamPageProps = {
@@ -110,6 +110,27 @@ export default function TeamPage({
         };
     }, [fetchTeamComponents]);
 
+
+    async function onSportChange(sport: Sport) {
+        if (sport === null) return
+        const modTeamData = {
+            sport: sport,
+        }
+
+        try {
+            const request: TeamUpdateRequest = {
+                ...modTeamData,
+            };
+
+            setTeam(await editTeam(String(team.id), request));
+        } catch (error) {
+            const apiError = normalizeApiRequestError(error);
+            Alert.alert(
+                "Errore",
+                apiError.message
+            );
+        }
+    }
 
     function canRemovePlayer(playerId: string): boolean {
         if (!team || currentUserId === null) {
@@ -347,6 +368,7 @@ export default function TeamPage({
                         <View></View>
                     )}
 
+
                     <View style={styles.fieldContainer}>
                         <FieldLineup
                             key={team.sport}
@@ -362,7 +384,7 @@ export default function TeamPage({
                                 isRemovingMember
                             }
                             onFormationSave={onFormationSave}
-                        />
+                            onSportChange={onSportChange}/>
                     </View>
 
 
@@ -395,7 +417,6 @@ export default function TeamPage({
                             orientation="vertical"
                         />
                     </FullPageModal>
-
 
                     <CollapsableSection
                         label="Admin"
@@ -442,8 +463,9 @@ export default function TeamPage({
                             );
                         }}
                     </CollapsableSection>
+                    <View style={{height: 20}}>
 
-
+                    </View>
                 </View>
             </ScrollView>
         </PageLayout>

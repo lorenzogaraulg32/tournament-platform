@@ -10,19 +10,21 @@ type LabelProps = {
 
 export default function InfoLabel({
                                       text,
-                                      labelIconName = "shield-outline",
+                                      labelIconName,
                                   }: LabelProps) {
     return (
 
         <View style={styles.externalLabelContainer}>
             <View style={styles.labelContainer}>
-                <View style={styles.iconContainer}>
-                    <Ionicons
-                        name={labelIconName}
-                        size={24}
-                        color={colors.label}
-                    />
-                </View>
+                {labelIconName &&
+                    <View style={styles.iconContainer}>
+                        <Ionicons
+                            name={labelIconName}
+                            size={24}
+                            color={colors.label}
+                        />
+                    </View>
+                }
                 <Text style={styles.label}>
                     {text}
                 </Text>

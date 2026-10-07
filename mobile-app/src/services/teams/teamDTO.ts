@@ -30,10 +30,10 @@ export type TeamCreationRequest = {
 
 
 export type TeamUpdateRequest = {
-    name: string;
+    name?: string;
     description?: string;
-    status: RecruitmentStatus;
-    location: GeoLocation | null;
+    status?: RecruitmentStatus;
+    location?: GeoLocation | null;
     sport: Sport,
     logo?: Media | null
     removeLogo?: boolean;

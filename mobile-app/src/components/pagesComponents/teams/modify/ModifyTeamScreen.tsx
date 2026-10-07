@@ -91,15 +91,15 @@ export default function ModifyTeamScreen() {
 
     async function validateNameAndDescription(): Promise<boolean> {
 
-        const trimmedName = modTeamData.name.trim();
+        const trimmedName = modTeamData.name?.trim() ?? "";
         const trimmedDescription = modTeamData.description?.trim() ?? "";
 
         let nameError = undefined;
 
 
         try {
-            if(trimmedName !== oldTeam.name.trim())
-            nameError = await validateUniqueName(trimmedName, checkTeamNameAlreadyExists)
+            if (trimmedName !== oldTeam.name.trim())
+                nameError = await validateUniqueName(trimmedName, checkTeamNameAlreadyExists)
         } catch (error) {
             const apiError = normalizeApiRequestError(error)
             setApiError(apiError.message);

@@ -11,6 +11,7 @@ import Sortable from "react-native-sortables";
 import {colors} from "@/src/constants/theme";
 import {TeamFormation} from "@/src/services/teams/teamDTO";
 import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
+import SportSelector from "@/src/components/pagesComponents/teams/field/SportSelector";
 
 
 type FieldLineupProps = {
@@ -21,6 +22,7 @@ type FieldLineupProps = {
     isSaving: boolean;
     disabled: boolean;
     onFormationSave: (formation: TeamFormation) => Promise<void>;
+    onSportChange: (sport: Sport) => void;
 };
 
 
@@ -35,6 +37,7 @@ export default function FieldLineup({
                                         isSaving,
                                         disabled,
                                         onFormationSave,
+                                        onSportChange
                                     }: FieldLineupProps) {
 
 
@@ -179,7 +182,15 @@ export default function FieldLineup({
 
     return (
         <View style={styles.container} pointerEvents={isInteractionDisabled ? "none" : "auto"}>
-            <FormationSelector sport={sport} onChange={onFormationChange} value={formationName}/>
+            <View style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between"
+            }}>
+                <FormationSelector sport={sport} onChange={onFormationChange} value={formationName}/>
+                <SportSelector sport={sport} onChange={onSportChange}/>
+            </View>
+
             <SportField sport={sport}>
                 {selectedFormation?.slots.map((slot) => {
 

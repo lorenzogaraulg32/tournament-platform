@@ -9,6 +9,7 @@ type OptionsMenuProps = {
     onLeave?: () => void;
     onManagePlayers?: () => void;
     onManageTeams?: () => void;
+
 };
 
 export default function OptionsMenu({
@@ -16,7 +17,8 @@ export default function OptionsMenu({
                                         onDelete,
                                         onLeave,
                                         onManagePlayers,
-                                        onManageTeams
+                                        onManageTeams,
+
                                     }: OptionsMenuProps) {
     const [isVisible, setIsVisible] = useState(false);
 
@@ -43,7 +45,7 @@ export default function OptionsMenu({
                                     ]}
                                 >
                                     <Ionicons
-                                        name="create-outline"
+                                        name="options-outline"
                                         size={20}
                                         color="#FFFFFF"
                                     />
