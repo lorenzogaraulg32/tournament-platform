@@ -6,11 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Fixed user mod form, implemented new rule, now just 1 role is allowed for every sport">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/forms/validator/validator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/forms/validator/validator.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/headers/HeaderEntity.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/headers/HeaderEntity.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modify/ModifyProfileScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modify/ModifyProfileScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/onBoarding/OnBoardingPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/onBoarding/OnBoardingPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/users/userService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/users/userService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/userCards/FieldPlayerCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/userCards/FieldPlayerCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/TeamPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/TeamPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/field/FieldLineup.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/field/FieldLineup.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -395,23 +393,7 @@
       <workItem from="1791133559587" duration="1492000" />
       <workItem from="1791191603402" duration="14072000" />
       <workItem from="1791376809973" duration="36000" />
-      <workItem from="1791386089791" duration="6025000" />
-    </task>
-    <task id="LOCAL-00057" summary="Improvements on exception handling of user_service">
-      <option name="closed" value="true" />
-      <created>1787925632604</created>
-      <option name="number" value="00057" />
-      <option name="presentableId" value="LOCAL-00057" />
-      <option name="project" value="LOCAL" />
-      <updated>1787925632605</updated>
-    </task>
-    <task id="LOCAL-00058" summary="refactor(frontend): standardize API error handling&#10;&#10;* centralize authenticated requests, timeouts and API error mapping&#10;* handle expired sessions consistently across protected flows&#10;* normalize loading and error states for onboarding, profiles and teams&#10;* map backend validation errors to the appropriate form steps&#10;* handle optional image upload failures without duplicating created resources">
-      <option name="closed" value="true" />
-      <created>1787933106102</created>
-      <option name="number" value="00058" />
-      <option name="presentableId" value="LOCAL-00058" />
-      <option name="project" value="LOCAL" />
-      <updated>1787933106102</updated>
+      <workItem from="1791386089791" duration="7281000" />
     </task>
     <task id="LOCAL-00059" summary="Fixed minor bugs on exceptionHandling of team_service">
       <option name="closed" value="true" />
@@ -789,7 +771,23 @@
       <option name="project" value="LOCAL" />
       <updated>1791390502686</updated>
     </task>
-    <option name="localTasksCounter" value="106" />
+    <task id="LOCAL-00106" summary="Fixed user mod form, implemented new rule, now just 1 role is allowed for every sport">
+      <option name="closed" value="true" />
+      <created>1791392240813</created>
+      <option name="number" value="00106" />
+      <option name="presentableId" value="LOCAL-00106" />
+      <option name="project" value="LOCAL" />
+      <updated>1791392240813</updated>
+    </task>
+    <task id="LOCAL-00107" summary="Fixed user mod form, implemented new rule, now just 1 role is allowed for every sport">
+      <option name="closed" value="true" />
+      <created>1791392373209</created>
+      <option name="number" value="00107" />
+      <option name="presentableId" value="LOCAL-00107" />
+      <option name="project" value="LOCAL" />
+      <updated>1791392373209</updated>
+    </task>
+    <option name="localTasksCounter" value="108" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

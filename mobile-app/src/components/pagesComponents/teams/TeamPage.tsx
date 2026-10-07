@@ -100,7 +100,9 @@ export default function TeamPage({
     const formationSaveInProgressRef = useRef(false);
     const [isRemovingMember, setIsRemovingMember] = useState(false);
     const [isSavingFormation, setIsSavingFormation] = useState(false);
-    const canEditFormation = isTeamAdmin || isTeamOwner;
+
+    const canEditFormation = isTeamAdmin || isTeamOwner
+
 
     useEffect(() => {
         void fetchTeamComponents();
@@ -384,7 +386,8 @@ export default function TeamPage({
                                 isRemovingMember
                             }
                             onFormationSave={onFormationSave}
-                            onSportChange={onSportChange}/>
+                            onSportChange={onSportChange}
+                            />
                     </View>
 
 
