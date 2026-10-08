@@ -10,9 +10,9 @@ import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import HeaderEntity from "@/src/components/common/headers/HeaderEntity";
 import CollapsableSection from "@/src/components/common/CollapsableSection";
 import CardListContainer from "@/src/components/common/carousel&cards/CardListContainer";
-import TeamCardVertical from "@/src/components/common/carousel&cards/teamCards/TeamCardVertical";
 import LoadingSection from "@/src/components/common/loading/LoadingSection";
 import ErrorSection from "@/src/components/common/errors/ErrorSection";
+import TeamCardHorizontal from "@/src/components/common/carousel&cards/teamCards/TeamCardHorizontal";
 
 type ProfilePageProps = {
     variant: Variant;
@@ -23,6 +23,8 @@ type ProfilePageProps = {
     loading: boolean,
     error?: string | null,
     onErrorRetry?: () => void
+    canLeaveTeam: (team: TeamDetails) => boolean
+    leaveTeam: (team: TeamDetails) => Promise<void>
 };
 
 export default function ProfilePage({
@@ -33,7 +35,9 @@ export default function ProfilePage({
                                         onLogout,
                                         loading,
                                         error,
-                                        onErrorRetry
+                                        onErrorRetry,
+                                        canLeaveTeam,
+                                        leaveTeam
                                     }: ProfilePageProps) {
     const {palette} = paletteVariants[variant];
 
@@ -77,9 +81,10 @@ export default function ProfilePage({
                 }} text={error} onRetry={onErrorRetry} variant={"error"}/>
 
             </PageLayout>
-        )}
+        )
+    }
 
-    if(!user){
+    if (!user) {
         return null;
     }
 
@@ -104,25 +109,43 @@ export default function ProfilePage({
                 contentContainerStyle={styles.content}
                 showsVerticalScrollIndicator={false}
             >
-                {!isOwnProfile && (
-                    <CollapsableSection
-                        label="Squadre"
-                        iconName="shirt-outline"
-                    >
-                        <CardListContainer
-                            items={userTeams?.map(team => (
-                                <TeamCardVertical
-                                    key={team.id}
-                                    teamDetails={team}
-                                />
-                            ))}
-                            isLoading={false}
-                            error={null}
-                            emptyMsg="Questo utente non fa parte di nessuna squadra"
-                            orientation="horizontal"
-                        />
-                    </CollapsableSection>
-                )}
+
+                <CollapsableSection
+                    label="Squadre"
+                    iconName="shirt-outline"
+                    canMod={isOwnProfile}
+                >
+                    {(isMod) => {
+                        const canLeave = isMod && isOwnProfile
+                        return (
+                            <CardListContainer
+                                items={(userTeams ?? [])
+                                    .filter(team => !isMod || canLeaveTeam(team))
+                                    .map(team => {
+
+                                        return (
+                                            <TeamCardHorizontal
+                                                key={team.id}
+                                                teamDetails={team}
+                                                onLeave={
+                                                    canLeave ? () => void leaveTeam(team) : undefined
+                                                }
+                                            />
+                                        )
+                                    })}
+                                isLoading={false}
+                                error={null}
+                                emptyMsg={
+                                    isMod ? "Nessuna squadra che puoi abbandonare"
+                                        : "Questo utente non fa parte di nessuna squadra"
+                                }
+                                orientation="vertical"
+                            />
+                        )
+                    }
+                    }
+
+                </CollapsableSection>
             </ScrollView>
 
             {isOwnProfile && (
@@ -152,6 +175,7 @@ export default function ProfilePage({
 
 const styles = StyleSheet.create({
     scroll: {
+        marginTop: 10,
         flex: 1,
     },
     content: {

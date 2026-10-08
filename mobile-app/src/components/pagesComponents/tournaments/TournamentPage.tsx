@@ -15,7 +15,7 @@ import CollapsableSection from "@/src/components/common/CollapsableSection";
 import AdminCard from "@/src/components/common/carousel&cards/userCards/AdminCard";
 import {colors} from "@/src/constants/theme";
 import TeamCardHorizontal from "@/src/components/common/carousel&cards/teamCards/TeamCardHorizontal";
-import { UserInfo } from "@/src/services/users/userDTO";
+import {UserInfo} from "@/src/services/users/userDTO";
 
 type TournamentPageProps = {
     tournament: TournamentDetails;
@@ -93,7 +93,7 @@ export default function TournamentPage({
                 const teamResults = await Promise.allSettled(
                     tournament.registeredTeamIds.map((id) => fetchTeam(id))
                 );
-                
+
                 const loadedTeams = teamResults
                     .filter(
                         (result): result is PromiseFulfilledResult<TeamDetails> =>
@@ -202,10 +202,7 @@ export default function TournamentPage({
                                 .map((team) => (
                                     <TeamCardHorizontal
                                         key={team.id}
-                                        id={team.id}
-                                        name={team.name}
-                                        image={team.logo}
-                                        playersCount={team.playerIds.length}
+                                        teamDetails={team}
                                         modify={() => {
                                             void removeTeam(
                                                 String(team.id)

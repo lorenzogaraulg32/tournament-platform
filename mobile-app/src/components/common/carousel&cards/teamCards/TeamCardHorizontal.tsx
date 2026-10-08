@@ -4,17 +4,13 @@ import {router, useSegments} from "expo-router";
 import Picture from "@/src/components/common/images/Picture";
 import HorizontalCardContainer from "@/src/components/common/carousel&cards/HorizontalCardContainer";
 import {teamCardColors} from "@/src/constants/CardPalettesManager";
-import {Media} from "@/src/services/mediaService";
-import {Sport, SPORT_LABELS} from "@/src/services/sportDTO";
+import {SPORT_LABELS} from "@/src/services/sportDTO";
 import {BadgePalette, rolePaletteMapper} from "@/src/constants/BadgePaletteManager";
+import {TeamDetails} from "@/src/services/teams/teamDTO";
 
 type TeamCardSmallProps = {
-    id: string
-    name: string;
-    playersCount: number;
-    image: Media | null;
-    sport?: Sport;
-    modify?: () => void
+    teamDetails: TeamDetails
+    onLeave?: () => void
 }
 
 const teamRoutes = {
@@ -29,27 +25,17 @@ function isTabName(value: string): value is keyof typeof teamRoutes {
 
 
 export default function TeamCardHorizontal({
-                                               id,
-                                               name,
-                                               image,
-                                               sport,
-                                               playersCount,
-                                               modify
+                                               teamDetails,
+                                               onLeave
                                            }: TeamCardSmallProps) {
 
 
     const segments: readonly string[] = useSegments();
 
-    const palette: BadgePalette | null = sport ? rolePaletteMapper[sport] : null
-    const sportLabel= sport ? SPORT_LABELS[sport] : null
+    const palette: BadgePalette = rolePaletteMapper[teamDetails.sport]
+    const sportLabel = SPORT_LABELS[teamDetails.sport]
 
     function handlePress() {
-
-        if (modify) {
-            modify();
-            return;
-        }
-
         const appIndex = segments.indexOf("(app)");
         const tab = segments[appIndex + 1];
 
@@ -60,7 +46,7 @@ export default function TeamCardHorizontal({
         router.push({
             pathname: teamRoutes[tab],
             params: {
-                teamId: String(id),
+                teamId: String(teamDetails.id),
             },
         });
     }
@@ -70,12 +56,20 @@ export default function TeamCardHorizontal({
         <HorizontalCardContainer
             variant={"team"}
             onPress={handlePress}
-            modify={modify ? modify : undefined}
+            action={
+                onLeave
+                    ? {
+                        onPress: onLeave,
+                        icon: "exit-outline",
+                        color: "#FF7474",
+                    }
+                    : undefined
+            }
             showArrow
         >
 
             <View style={styles.logoContainer}>
-                <Picture variant={"teams"} style={styles.logo} image={image}/>
+                <Picture variant={"teams"} style={styles.logo} image={teamDetails.logo}/>
             </View>
 
             <View style={styles.teamInfo}>
@@ -84,7 +78,7 @@ export default function TeamCardHorizontal({
                     numberOfLines={1}
                     ellipsizeMode="tail"
                 >
-                    {name}
+                    {teamDetails.name}
                 </Text>
 
                 <View style={styles.playersRow}>
@@ -95,22 +89,21 @@ export default function TeamCardHorizontal({
                     />
 
                     <Text style={styles.playersText}>
-                        {playersCount}{" "}
-                        {playersCount === 1 ? "giocatore" : "giocatori"}
+                        {teamDetails.playerIds.length}{" "}
+                        {teamDetails.playerIds.length === 1 ? "giocatore" : "giocatori"}
                     </Text>
                 </View>
             </View>
 
-            {sport &&
-                <View style={[styles.sportBadge,
-                    {
-                        backgroundColor: palette?.backgroundColor,
-                        borderColor: palette?.borderColor
-                    }]}>
-                    <Text
-                        style={[styles.sportBadgeText, {color: palette?.textColor}]}>{sportLabel}</Text>
-                </View>
-            }
+
+            <View style={[styles.sportBadge,
+                {
+                    backgroundColor: palette?.backgroundColor,
+                    borderColor: palette?.borderColor
+                }]}>
+                <Text
+                    style={[styles.sportBadgeText, {color: palette?.textColor}]}>{sportLabel}</Text>
+            </View>
 
 
         </HorizontalCardContainer>

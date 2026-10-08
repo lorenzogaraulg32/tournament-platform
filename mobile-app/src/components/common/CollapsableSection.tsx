@@ -129,6 +129,11 @@ export default function CollapsableSection({
 
 const styles = StyleSheet.create({
 
+    section: {
+        maxHeight: 280,
+
+    },
+
     collapsableContainer: {
         flex: 1,
 
@@ -183,9 +188,7 @@ const styles = StyleSheet.create({
         paddingBottom: 32,
     },
 
-    section: {
-        maxHeight: 280
-    },
+
 
     iconAndTitle: {
         flex: 1,

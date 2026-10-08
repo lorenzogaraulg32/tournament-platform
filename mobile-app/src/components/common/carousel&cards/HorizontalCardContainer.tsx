@@ -12,16 +12,22 @@ import {
 } from "@/src/constants/CardPalettesManager";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
+type CardAction = {
+    onPress: () => void;
+    icon: keyof typeof Ionicons.glyphMap;
+    color?: string;
+};
+
 type HorizontalCardContainerProps = {
-    onPress: () => void,
-    variant: "team" | "tournament" | "user" | "authority"
-    children: ReactNode,
-    style?: StyleProp<ViewStyle>
-    role?: SportRole
-    authority?: TeamAuthority
-    modify?: () => void
-    showArrow: boolean
-}
+    onPress: () => void;
+    variant: "team" | "tournament" | "user" | "authority";
+    children: ReactNode;
+    style?: StyleProp<ViewStyle>;
+    role?: SportRole;
+    authority?: TeamAuthority;
+    action?: CardAction;
+    showArrow: boolean;
+};
 
 
 export default function HorizontalCardContainer({
@@ -31,7 +37,7 @@ export default function HorizontalCardContainer({
                                                     style,
                                                     role,
                                                     authority,
-                                                    modify,
+                                                    action,
                                                     showArrow,
                                                 }:
                                                     HorizontalCardContainerProps) {
@@ -89,12 +95,12 @@ export default function HorizontalCardContainer({
                 (style && style) || styles.card,
                 pressed && styles.cardPressed,
             ]}
-            onPress={modify ? modify : onPress}
+            onPress={action ? action.onPress : onPress}
         >
             {renderBK()}
             {children}
 
-            {showArrow &&
+            {showArrow && (
                 <View
                     style={[
                         styles.arrowContainer,
@@ -103,23 +109,21 @@ export default function HorizontalCardContainer({
                         },
                     ]}
                 >
-
-                    {modify ? (
-                            <Ionicons
-                                name="trash-outline"
-                                size={17}
-                                color={"#FF7474"}
-                            />
-                        )
-                        : (
-                            <Ionicons
-                                name="chevron-forward"
-                                size={17}
-                                color={palette.accent}
-                            />
-                        )}
+                    {action ? (
+                        <Ionicons
+                            name={action.icon}
+                            size={17}
+                            color={action.color ?? "#FF7474"}
+                        />
+                    ) : (
+                        <Ionicons
+                            name="chevron-forward"
+                            size={17}
+                            color={palette.accent}
+                        />
+                    )}
                 </View>
-            }
+            )}
         </Pressable>
     )
 }

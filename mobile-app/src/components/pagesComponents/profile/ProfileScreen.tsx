@@ -4,13 +4,15 @@ import {router, useFocusEffect, useLocalSearchParams,} from "expo-router";
 
 import {handleLogout, loadCurrentUserId,} from "@/src/services/users/authService";
 import {fetchUser} from "@/src/services/users/userService";
-import {fetchUserTeams} from "@/src/services/teams/teamService";
+import {fetchUserTeams, leaveTeam} from "@/src/services/teams/teamService";
 import type {TeamDetails} from "@/src/services/teams/teamDTO";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import BackButton from "@/src/components/common/buttons/BackButton";
 import OptionsMenu from "@/src/components/common/OptionsMenu";
 import ProfilePage from "@/src/components/pagesComponents/profile/ProfilePage";
 import {UserInfo} from "@/src/services/users/userDTO";
+import {useToast} from "@/src/components/common/Toast/ToastProvider";
+import showAlert from "@/src/components/common/errors/Alert";
 
 type ProfileData = {
     user: UserInfo;
@@ -19,6 +21,8 @@ type ProfileData = {
 };
 
 export default function ProfileScreen() {
+
+    const {showToast} = useToast();
     const params = useLocalSearchParams<{ profileId?: string }>();
 
     const profileId = params.profileId;
@@ -53,9 +57,7 @@ export default function ProfileScreen() {
 
             const [user, teams] = await Promise.all([
                 fetchUser(userId),
-                isOwnProfile
-                    ? Promise.resolve<TeamDetails[]>([])
-                    : fetchUserTeams(userId),
+                fetchUserTeams(userId),
             ]);
 
             if (requestId !== requestIdRef.current) {
@@ -123,6 +125,54 @@ export default function ProfileScreen() {
         });
     }
 
+    function canLeaveTeam(team: TeamDetails): boolean {
+
+        if (!profile) {
+            return false;
+        }
+
+        const isOwner = String(team.creatorId) === String(profile.user.id);
+
+        const isPlayer = profile.teams.some(
+            currentTeam => String(currentTeam.id) === String(team.id)
+        );
+
+        return !isOwner && isPlayer
+    }
+
+    async function leaveUserTeam(team: TeamDetails) {
+
+        if (!profile) {
+            return
+        }
+        try {
+            await leaveTeam(team.id)
+
+
+            setProfile(previous => {
+                if (!previous) {
+                    return previous;
+                }
+
+                return {
+                    ...previous,
+                    teams: previous.teams.filter(
+                        currentTeam =>
+                            String(currentTeam.id) !== String(team.id)
+                    ),
+                };
+            });
+
+            showToast("Hai abbandonato la squadra", true)
+        } catch (error) {
+            const apiError = normalizeApiRequestError(error)
+            showAlert(
+                "Impossibile abbandonare la squadra",
+                apiError.message
+            );
+        }
+    }
+
 
     return (
         <>
@@ -145,6 +195,8 @@ export default function ProfileScreen() {
                 error={error}
                 loading={isLoading}
                 onErrorRetry={loadProfile}
+                canLeaveTeam={(team : TeamDetails) => canLeaveTeam(team)}
+                leaveTeam={(team : TeamDetails) => leaveUserTeam(team)}
             />
         </>
     );

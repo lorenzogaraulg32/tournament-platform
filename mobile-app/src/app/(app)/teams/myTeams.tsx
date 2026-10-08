@@ -88,11 +88,7 @@ export default function MyTeams() {
 
             <TeamCardHorizontal
                 key={team.id}
-                id={team.id}
-                name={team.name}
-                image={team.logo}
-                sport={team.sport}
-                playersCount={team.playerIds.length}
+                teamDetails={team}
             />
         ));
     }

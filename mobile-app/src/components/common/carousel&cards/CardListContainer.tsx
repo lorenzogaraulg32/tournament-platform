@@ -60,8 +60,7 @@ export default function CardListContainer({
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
-        borderRadius: 16,
-        paddingVertical: 8,
+        marginTop: 10
     },
 
     verticalContainer: {
