@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="auth-service" />
+        <module name="activity-service" />
         <module name="media-service" />
         <module name="api-gateway" />
         <module name="tournament-service" />
@@ -19,10 +20,13 @@
     <bytecodeTargetLevel>
       <module name="api-gateway.main" target="17" />
       <module name="api-gateway.test" target="17" />
+      <module name="media-service.main" target="17" />
+      <module name="media-service.test" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="activity-service" options="-parameters" />
       <module name="api-gateway" options="-parameters" />
       <module name="auth-service" options="-parameters" />
       <module name="media-service" options="-parameters" />

@@ -4,16 +4,55 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Now user Profile is accessible via teamPage">
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Now you can leave your teams from the profile">
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/TeamAuthorityController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/TeamMembershipController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/TeamModController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/TournamentAuthorityController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/TournamentModController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/TournamentPlacementsController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/request/TeamAuthorityActivityRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/request/TeamMembershipActivityRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/request/TeamModActivityRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/request/TournamentAuthorityActivityRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/request/TournamentModActivityRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/request/TournamentPlacementActivityRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/response/TeamAuthorityActivityResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/response/TeamMembershipActivityResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/response/TeamModActivityResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/response/TournamentAuthorityActivityResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/response/TournamentModActivityResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/response/TournamentPlacementActivityResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/entity/Activity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/entity/AuthorityActivities.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/entity/team_authority/TeamAuthorityActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/entity/team_membership/Sport.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/entity/team_membership/SportRole.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/entity/team_membership/TeamMembershipActivities.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/entity/team_membership/TeamMembershipActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/entity/team_mod/TeamModActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/entity/tournament_authorities/TournamentAuthorityActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/entity/tournament_mod/TournamentModActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/entity/tournament_placements/TournamentPlacementActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/mapper/ActivityMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/repository/TeamAuthorityRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/repository/TeamMembershipRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/repository/TeamModRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/repository/TournamentAuthorityRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/repository/TournamentModRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/repository/TournamentPlacementsRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/service/TeamAuthorityService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/service/TeamMembershipService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/service/TeamModService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/service/TournamentAuthorityService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/service/TournamentModService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/service/TournamentPlacementsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/myTeams.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/myTeams.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/CollapsableSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/CollapsableSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/CardListContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/CardListContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/HorizontalCardContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/HorizontalCardContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/teamCards/TeamCardHorizontal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/teamCards/TeamCardHorizontal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/headers/HeaderEntity.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/headers/HeaderEntity.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfilePage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfileScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfileScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/tournaments/TournamentPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/tournaments/TournamentPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,9 +70,17 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$/media-service">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
-            <expand />
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="media-service" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
             <select />
           </tree_state>
         </projects_view>
@@ -46,10 +93,10 @@
         <option value="Record" />
         <option value="TypeScript File" />
         <option value="TypeScript JSX File" />
-        <option value="Interface" />
-        <option value="Enum" />
         <option value="package-info" />
+        <option value="Enum" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -75,58 +122,59 @@
     <option name="sortByType" value="true" />
     <option name="sortKey" value="BY_TYPE" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
-    &quot;Gradle.Build media-service.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.TournamentApplication | #1.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.AuthControllerTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.AuthIntegrationTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.AuthServiceTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.JwtAuthenticationFilterTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.JwtSeriveTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.JwtServiceTest.executor&quot;: &quot;Run&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Spring Boot.ApiGatewayApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.AuthServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.MediaServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.ServiceRegistryApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.TeamServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.TournamentApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.UserServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;21&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Lombax/Desktop/Progetto Gestione Tornei Calcetto/mobile-app/src/components/pagesComponents/teams/field&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.35632184&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
-    &quot;service.view.auto.scroll.to.source&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Lombax\\Desktop\\Progetto Gestione Tornei Calcetto\\mobile-app\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Downloaded.Files.Path.Enabled": "false",
+    "Gradle.Build media-service.executor": "Run",
+    "HTTP Request.TournamentApplication | #1.executor": "Run",
+    "JUnit.AuthControllerTest.executor": "Run",
+    "JUnit.AuthIntegrationTest.executor": "Run",
+    "JUnit.AuthServiceTest.executor": "Run",
+    "JUnit.JwtAuthenticationFilterTest.executor": "Run",
+    "JUnit.JwtSeriveTest.executor": "Run",
+    "JUnit.JwtServiceTest.executor": "Run",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.ActivityServiceApplication.executor": "Run",
+    "Spring Boot.ApiGatewayApplication.executor": "Run",
+    "Spring Boot.AuthServiceApplication.executor": "Run",
+    "Spring Boot.MediaServiceApplication.executor": "Run",
+    "Spring Boot.ServiceRegistryApplication.executor": "Run",
+    "Spring Boot.TeamServiceApplication.executor": "Run",
+    "Spring Boot.TournamentApplication.executor": "Run",
+    "Spring Boot.UserServiceApplication.executor": "Run",
+    "jdk.selected.JAVA_MODULE": "21",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Lombax/Desktop/Progetto Gestione Tornei Calcetto/mobile-app/src/components/pagesComponents/teams/field",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.35632184",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "run.configurations.included.in.services": "true",
+    "service.view.auto.scroll.to.source": "true",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "C:\\Users\\Lombax\\Desktop\\Progetto Gestione Tornei Calcetto\\mobile-app\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ]
   }
-}</component>
+}]]></component>
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
   </component>
@@ -152,11 +200,11 @@
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\common\forms\commonSteps" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.tournamentplatform.apigateway.exception" />
-      <recent name="com.tournamentplatform.tournament.errorHandling.tournamentExceptions" />
-      <recent name="com.tournamentplatform.userservice.exceptions.userExceptions" />
-      <recent name="com.tournamentplatform.userservice.client.mediaService" />
-      <recent name="com.tournamentplatform.mediaservice.controller" />
+      <recent name="com.tournamentplatform.activityservice.service" />
+      <recent name="com.tournamentplatform.activityservice.repository" />
+      <recent name="com.tournamentplatform.activityservice.dto.response" />
+      <recent name="com.tournamentplatform.activityservice.dto.request" />
+      <recent name="com.tournamentplatform.activityservice.entity.tournament_mod" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -180,6 +228,13 @@
     </configuration>
     <configuration name="TournamentApplication | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/TournamentApplication.http" requestIdentifier="#1" runType="Run single request">
       <method v="2" />
+    </configuration>
+    <configuration name="ActivityServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="activity-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.tournamentplatform.activityservice.ActivityServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="ApiGatewayApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="api-gateway" />
@@ -297,6 +352,7 @@
     </configuration>
     <list>
       <item itemvalue="HTTP Request.TournamentApplication | #1" />
+      <item itemvalue="Spring Boot.ActivityServiceApplication" />
       <item itemvalue="Spring Boot.MediaServiceApplication" />
       <item itemvalue="Spring Boot.UserServiceApplication" />
       <item itemvalue="Spring Boot.TournamentApplication" />
@@ -399,15 +455,7 @@
       <workItem from="1791191603402" duration="14072000" />
       <workItem from="1791376809973" duration="36000" />
       <workItem from="1791386089791" duration="7608000" />
-      <workItem from="1791455762629" duration="5096000" />
-    </task>
-    <task id="LOCAL-00060" summary="Adjusted exceptions in tournament_service">
-      <option name="closed" value="true" />
-      <created>1788280352710</created>
-      <option name="number" value="00060" />
-      <option name="presentableId" value="LOCAL-00060" />
-      <option name="project" value="LOCAL" />
-      <updated>1788280352710</updated>
+      <workItem from="1791455762629" duration="14965000" />
     </task>
     <task id="LOCAL-00061" summary="Adjusted fallback for unavailable service, and made the ErrorScreen reusable and general">
       <option name="closed" value="true" />
@@ -793,7 +841,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791393678728</updated>
     </task>
-    <option name="localTasksCounter" value="109" />
+    <task id="LOCAL-00109" summary="Now you can leave your teams from the profile">
+      <option name="closed" value="true" />
+      <created>1791461023691</created>
+      <option name="number" value="00109" />
+      <option name="presentableId" value="LOCAL-00109" />
+      <option name="project" value="LOCAL" />
+      <updated>1791461023692</updated>
+    </task>
+    <option name="localTasksCounter" value="110" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -811,7 +867,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Implemented field visualization for teams" />
     <MESSAGE value="Implemented formation persistence" />
     <MESSAGE value="Implemented many formations for every sport, and created specific components for each" />
     <MESSAGE value="implemented role visual for field players" />
@@ -836,7 +891,8 @@
     <MESSAGE value="hotfix for sport mod" />
     <MESSAGE value="Fixed user mod form, implemented new rule, now just 1 role is allowed for every sport" />
     <MESSAGE value="Now user Profile is accessible via teamPage" />
-    <option name="LAST_COMMIT_MESSAGE" value="Now user Profile is accessible via teamPage" />
+    <MESSAGE value="Now you can leave your teams from the profile" />
+    <option name="LAST_COMMIT_MESSAGE" value="Now you can leave your teams from the profile" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

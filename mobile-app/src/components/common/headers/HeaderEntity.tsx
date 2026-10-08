@@ -50,17 +50,19 @@ export default function HeaderEntity({
                     {name}
                 </Text>
 
+                {email ? (
+                    <Text style={styles.secondaryText} numberOfLines={1}>
+                        {email}
+                    </Text>
+                ) : null}
+
+
                 {position ? (
                     <Text style={styles.secondaryText} numberOfLines={2}>
                         {formatLocationLabel(position)}
                     </Text>
                 ) : null}
 
-                {email ? (
-                    <Text style={styles.secondaryText} numberOfLines={1}>
-                        {email}
-                    </Text>
-                ) : null}
 
 
                 {variant === "profile" ? (

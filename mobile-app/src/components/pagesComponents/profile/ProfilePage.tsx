@@ -8,15 +8,14 @@ import type {TeamDetails} from "@/src/services/teams/teamDTO";
 import PageLayout from "@/src/components/common/PageLayout";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import HeaderEntity from "@/src/components/common/headers/HeaderEntity";
-import CollapsableSection from "@/src/components/common/CollapsableSection";
-import CardListContainer from "@/src/components/common/carousel&cards/CardListContainer";
 import LoadingSection from "@/src/components/common/loading/LoadingSection";
 import ErrorSection from "@/src/components/common/errors/ErrorSection";
-import TeamCardHorizontal from "@/src/components/common/carousel&cards/teamCards/TeamCardHorizontal";
+import {AuthInfo} from "@/src/services/users/authService";
 
 type ProfilePageProps = {
     variant: Variant;
     user?: UserInfo;
+    auth?: AuthInfo
     userTeams?: TeamDetails[];
     isOwnProfile?: boolean;
     onLogout: () => void;
@@ -30,6 +29,7 @@ type ProfilePageProps = {
 export default function ProfilePage({
                                         variant,
                                         user,
+                                        auth,
                                         userTeams,
                                         isOwnProfile,
                                         onLogout,
@@ -98,6 +98,7 @@ export default function ProfilePage({
                         image={user.avatar}
                         position={user.location?.label}
                         style={{paddingTop: 45}}
+                        email={auth?.email}
                     />
                 </HeaderContainer>
             }
@@ -110,7 +111,7 @@ export default function ProfilePage({
                 showsVerticalScrollIndicator={false}
             >
 
-                <CollapsableSection
+                {/* <CollapsableSection
                     label="Squadre"
                     iconName="shirt-outline"
                     canMod={isOwnProfile}
@@ -146,6 +147,7 @@ export default function ProfilePage({
                     }
 
                 </CollapsableSection>
+                */}
             </ScrollView>
 
             {isOwnProfile && (

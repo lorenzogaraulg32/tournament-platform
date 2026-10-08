@@ -2,7 +2,7 @@ import {useCallback, useRef, useState} from "react";
 import {router, useFocusEffect, useLocalSearchParams,} from "expo-router";
 
 
-import {handleLogout, loadCurrentUserId,} from "@/src/services/users/authService";
+import {AuthInfo, handleLogout, loadCurrentUserId, loadUserAuthInfo,} from "@/src/services/users/authService";
 import {fetchUser} from "@/src/services/users/userService";
 import {fetchUserTeams, leaveTeam} from "@/src/services/teams/teamService";
 import type {TeamDetails} from "@/src/services/teams/teamDTO";
@@ -16,6 +16,7 @@ import showAlert from "@/src/components/common/errors/Alert";
 
 type ProfileData = {
     user: UserInfo;
+    auth: AuthInfo;
     teams: TeamDetails[];
     isOwnProfile: boolean;
 };
@@ -55,9 +56,11 @@ export default function ProfileScreen() {
             const userId = profileId ?? String(currentUserId);
             const isOwnProfile = userId === String(currentUserId);
 
-            const [user, teams] = await Promise.all([
+            const [user, teams, auth] = await Promise.all([
                 fetchUser(userId),
                 fetchUserTeams(userId),
+                loadUserAuthInfo(userId)
+
             ]);
 
             if (requestId !== requestIdRef.current) {
@@ -66,6 +69,7 @@ export default function ProfileScreen() {
 
             setProfile({
                 user,
+                auth,
                 teams,
                 isOwnProfile,
             });
@@ -189,6 +193,7 @@ export default function ProfileScreen() {
             <ProfilePage
                 variant="profile"
                 user={profile?.user}
+                auth={profile?.auth}
                 userTeams={profile?.teams}
                 isOwnProfile={profile?.isOwnProfile}
                 onLogout={handleLogout}
