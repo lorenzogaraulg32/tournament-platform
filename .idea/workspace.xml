@@ -4,55 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Now you can leave your teams from the profile">
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/TeamAuthorityController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/TeamMembershipController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/TeamModController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/TournamentAuthorityController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/TournamentModController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/TournamentPlacementsController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/request/TeamAuthorityActivityRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/request/TeamMembershipActivityRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/request/TeamModActivityRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/request/TournamentAuthorityActivityRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/request/TournamentModActivityRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/request/TournamentPlacementActivityRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/response/TeamAuthorityActivityResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/response/TeamMembershipActivityResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/response/TeamModActivityResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/response/TournamentAuthorityActivityResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/response/TournamentModActivityResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/response/TournamentPlacementActivityResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/entity/Activity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/entity/AuthorityActivities.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/entity/team_authority/TeamAuthorityActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/entity/team_membership/Sport.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/entity/team_membership/SportRole.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/entity/team_membership/TeamMembershipActivities.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/entity/team_membership/TeamMembershipActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/entity/team_mod/TeamModActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/entity/tournament_authorities/TournamentAuthorityActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/entity/tournament_mod/TournamentModActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/entity/tournament_placements/TournamentPlacementActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/mapper/ActivityMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/repository/TeamAuthorityRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/repository/TeamMembershipRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/repository/TeamModRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/repository/TournamentAuthorityRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/repository/TournamentModRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/repository/TournamentPlacementsRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/service/TeamAuthorityService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/service/TeamMembershipService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/service/TeamModService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/service/TournamentAuthorityService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/service/TournamentModService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/service/TournamentPlacementsService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Started the creation of a new microservice called Activity-service, which job is to manage the history of promotions, placements, leave/join team, still WIP">
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/config/InternalServiceAuthenticationFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/security/CurrentUserProvider.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/security/SecurityConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/client/ActivityServiceClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/headers/HeaderEntity.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/headers/HeaderEntity.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfilePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfileScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfileScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/activity-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/activity-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/TeamAuthorityController.java" beforeDir="false" afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/TeamAuthorityController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/TeamMembershipController.java" beforeDir="false" afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/TeamMembershipController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/TeamModController.java" beforeDir="false" afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/TeamModController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/TournamentAuthorityController.java" beforeDir="false" afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/TournamentAuthorityController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/TournamentModController.java" beforeDir="false" afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/TournamentModController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/TournamentPlacementsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/TournamentPlacementsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/service/TeamMembershipService.java" beforeDir="false" afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/service/TeamMembershipService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/service/TeamModService.java" beforeDir="false" afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/service/TeamModService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/service/TournamentAuthorityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/service/TournamentAuthorityService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/service/TournamentModService.java" beforeDir="false" afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/service/TournamentModService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/service/TournamentPlacementsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/service/TournamentPlacementsService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -153,7 +122,7 @@
     "Spring Boot.UserServiceApplication.executor": "Run",
     "jdk.selected.JAVA_MODULE": "21",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Lombax/Desktop/Progetto Gestione Tornei Calcetto/mobile-app/src/components/pagesComponents/teams/field",
+    "last_opened_file_path": "C:/Users/Lombax/Desktop/Progetto Gestione Tornei Calcetto/activity-service/src/main/java/com/tournamentplatform/activityservice",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -186,11 +155,11 @@
       <recent name="com.tournamentplatform.tournament.DTO" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\activity-service\src\main\java\com\tournamentplatform\activityservice" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\pagesComponents\teams\field" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\pagesComponents\teams\steps" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\pagesComponents\tournaments\steps" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\tournament-service\src\main\java\com\tournamentplatform\tournament\client" />
-      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\media-service\src\main\java\com\tournamentplatform\mediaservice" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\common\forms\validator" />
@@ -455,23 +424,8 @@
       <workItem from="1791191603402" duration="14072000" />
       <workItem from="1791376809973" duration="36000" />
       <workItem from="1791386089791" duration="7608000" />
-      <workItem from="1791455762629" duration="14965000" />
-    </task>
-    <task id="LOCAL-00061" summary="Adjusted fallback for unavailable service, and made the ErrorScreen reusable and general">
-      <option name="closed" value="true" />
-      <created>1788282021884</created>
-      <option name="number" value="00061" />
-      <option name="presentableId" value="LOCAL-00061" />
-      <option name="project" value="LOCAL" />
-      <updated>1788282021884</updated>
-    </task>
-    <task id="LOCAL-00062" summary="Added progress bar for multipages forms&#10;Fixed a bug where an user couldnt upload pictures&#10;Made a general layout for form based pages">
-      <option name="closed" value="true" />
-      <created>1788358522547</created>
-      <option name="number" value="00062" />
-      <option name="presentableId" value="LOCAL-00062" />
-      <option name="project" value="LOCAL" />
-      <updated>1788358522547</updated>
+      <workItem from="1791455762629" duration="15865000" />
+      <workItem from="1791475118088" duration="2183000" />
     </task>
     <task id="LOCAL-00063" summary="Minor graphical modifications">
       <option name="closed" value="true" />
@@ -849,7 +803,23 @@
       <option name="project" value="LOCAL" />
       <updated>1791461023692</updated>
     </task>
-    <option name="localTasksCounter" value="110" />
+    <task id="LOCAL-00110" summary="Started the creation of a new microservice called Activity-service, which job is to manage the history of promotions, placements, leave/join team, still WIP">
+      <option name="closed" value="true" />
+      <created>1791472387404</created>
+      <option name="number" value="00110" />
+      <option name="presentableId" value="LOCAL-00110" />
+      <option name="project" value="LOCAL" />
+      <updated>1791472387404</updated>
+    </task>
+    <task id="LOCAL-00111" summary="Started the creation of a new microservice called Activity-service, which job is to manage the history of promotions, placements, leave/join team, still WIP">
+      <option name="closed" value="true" />
+      <created>1791472426053</created>
+      <option name="number" value="00111" />
+      <option name="presentableId" value="LOCAL-00111" />
+      <option name="project" value="LOCAL" />
+      <updated>1791472426053</updated>
+    </task>
+    <option name="localTasksCounter" value="112" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -867,7 +837,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Implemented formation persistence" />
     <MESSAGE value="Implemented many formations for every sport, and created specific components for each" />
     <MESSAGE value="implemented role visual for field players" />
     <MESSAGE value="Fixed tournament section, now it's structured like the other entities. Same thing for frontend representing tournament entity" />
@@ -892,7 +861,8 @@
     <MESSAGE value="Fixed user mod form, implemented new rule, now just 1 role is allowed for every sport" />
     <MESSAGE value="Now user Profile is accessible via teamPage" />
     <MESSAGE value="Now you can leave your teams from the profile" />
-    <option name="LAST_COMMIT_MESSAGE" value="Now you can leave your teams from the profile" />
+    <MESSAGE value="Started the creation of a new microservice called Activity-service, which job is to manage the history of promotions, placements, leave/join team, still WIP" />
+    <option name="LAST_COMMIT_MESSAGE" value="Started the creation of a new microservice called Activity-service, which job is to manage the history of promotions, placements, leave/join team, still WIP" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

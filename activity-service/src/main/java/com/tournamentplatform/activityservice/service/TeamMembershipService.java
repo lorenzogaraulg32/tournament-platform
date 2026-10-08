@@ -18,6 +18,11 @@ public class TeamMembershipService {
 
 
     public void postNewActivity(TeamMembershipActivityRequest request) {
+
+        if (repo.existsByEventId(request.eventId())) {
+            return;
+        }
+
         TeamMembershipActivity activity = ActivityMapper.toEntity(request);
         repo.save(activity);
     }

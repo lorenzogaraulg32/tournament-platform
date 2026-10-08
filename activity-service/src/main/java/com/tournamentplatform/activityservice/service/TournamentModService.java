@@ -1,13 +1,9 @@
 package com.tournamentplatform.activityservice.service;
 
-import com.tournamentplatform.activityservice.dto.request.TournamentAuthorityActivityRequest;
 import com.tournamentplatform.activityservice.dto.request.TournamentModActivityRequest;
-import com.tournamentplatform.activityservice.dto.response.TournamentAuthorityActivityResponse;
 import com.tournamentplatform.activityservice.dto.response.TournamentModActivityResponse;
-import com.tournamentplatform.activityservice.entity.tournament_authorities.TournamentAuthorityActivity;
 import com.tournamentplatform.activityservice.entity.tournament_mod.TournamentModActivity;
 import com.tournamentplatform.activityservice.mapper.ActivityMapper;
-import com.tournamentplatform.activityservice.repository.TeamModRepository;
 import com.tournamentplatform.activityservice.repository.TournamentModRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +17,11 @@ public class TournamentModService {
     private final TournamentModRepository repo;
 
     public void postNewActivity(TournamentModActivityRequest request) {
+
+        if (repo.existsByEventId(request.eventId())) {
+            return;
+        }
+
         TournamentModActivity activity = ActivityMapper.toEntity(request);
         repo.save(activity);
     }

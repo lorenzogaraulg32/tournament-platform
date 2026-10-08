@@ -18,6 +18,11 @@ public class TournamentPlacementsService {
 
 
     public void postNewActivity(TournamentPlacementActivityRequest request) {
+
+        if (repo.existsByEventId(request.eventId())) {
+            return;
+        }
+
         TournamentPlacementActivity activity = ActivityMapper.toEntity(request);
         repo.save(activity);
     }

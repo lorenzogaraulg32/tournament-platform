@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class TeamAuthorityController {
 
-    TeamAuthorityService service;
+    private final TeamAuthorityService service;
 
 
     @GetMapping("/user/{userId}")

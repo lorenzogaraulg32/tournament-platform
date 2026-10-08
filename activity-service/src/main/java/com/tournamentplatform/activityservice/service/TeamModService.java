@@ -22,6 +22,11 @@ public class TeamModService {
 
 
     public void postNewActivity(TeamModActivityRequest request) {
+
+        if (repo.existsByEventId(request.eventId())) {
+            return;
+        }
+
         TeamModActivity activity = ActivityMapper.toEntity(request);
         repo.save(activity);
     }

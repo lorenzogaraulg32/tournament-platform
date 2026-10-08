@@ -17,7 +17,12 @@ public class TournamentAuthorityService {
     private final TournamentAuthorityRepository repo;
 
     public void postNewActivity(TournamentAuthorityActivityRequest request) {
-        TournamentAuthorityActivity activity = ActivityMapper.toEntity(request);
+
+        if (repo.existsByEventId(request.eventId())) {
+            return;
+        }
+
+       TournamentAuthorityActivity activity = ActivityMapper.toEntity(request);
         repo.save(activity);
     }
 
