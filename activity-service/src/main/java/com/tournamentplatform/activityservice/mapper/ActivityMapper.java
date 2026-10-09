@@ -1,197 +1,154 @@
 package com.tournamentplatform.activityservice.mapper;
 
-import com.tournamentplatform.activityservice.dto.request.*;
-import com.tournamentplatform.activityservice.dto.response.*;
-import com.tournamentplatform.activityservice.entity.team_authority.TeamAuthorityActivity;
-import com.tournamentplatform.activityservice.entity.team_membership.TeamMembershipActivity;
-import com.tournamentplatform.activityservice.entity.team_mod.TeamModActivity;
-import com.tournamentplatform.activityservice.entity.tournament_authorities.TournamentAuthorityActivity;
-import com.tournamentplatform.activityservice.entity.tournament_mod.TournamentModActivity;
-import com.tournamentplatform.activityservice.entity.tournament_placements.TournamentPlacementActivity;
+import com.tournamentplatform.activityservice.dto.request.ActivityRequestPOST;
+import com.tournamentplatform.activityservice.dto.response.ActivityResponse;
+import com.tournamentplatform.activityservice.entity.Activity;
+import com.tournamentplatform.activityservice.entity.Activity.EntityReference;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.util.Objects;
+
 @Component
-public final class ActivityMapper {
+public class ActivityMapper {
 
-    private ActivityMapper() {
-    }
+    public ActivityResponse toResponse(Activity activity) {
+        Objects.requireNonNull(activity, "L'attività è obbligatoria");
 
-
-    // =========================================================
-    // TEAM MEMBERSHIP
-    // =========================================================
-
-    public static TeamMembershipActivity toEntity(
-            TeamMembershipActivityRequest request
-    ) {
-        return new TeamMembershipActivity(
-                request.userId(),
-                request.teamId(),
-                request.type(),
-                request.sportRole(),
-                request.eventId()
-        );
-    }
-
-
-    public static TeamMembershipActivityResponse toResponse(
-            TeamMembershipActivity activity
-    ) {
-        return new TeamMembershipActivityResponse(
+        return new ActivityResponse(
                 activity.getId(),
-                activity.getEventId(),
-                activity.getUserId(),
-                activity.getTeamId(),
-                activity.getType(),
-                activity.getSportRole(),
-                activity.getOccurredAt()
+                activity.getIssuedAt(),
+                buildLabel(activity)
         );
     }
 
+    public Activity toEntity(ActivityRequestPOST request) {
+        Objects.requireNonNull(request, "La richiesta è obbligatoria");
 
-    // =========================================================
-    // TEAM AUTHORITY
-    // =========================================================
+        Activity activity = new Activity();
 
-    public static TeamAuthorityActivity toEntity(
-            TeamAuthorityActivityRequest request
-    ) {
-        return new TeamAuthorityActivity(
-                request.userId(),
-                request.teamId(),
-                request.type(),
-                request.eventId()
+        activity.setIssuedAt(
+                request.issuedAt() != null
+                        ? request.issuedAt()
+                        : LocalDateTime.now()
         );
+
+        activity.setActor(request.actor());
+        activity.setSubject(request.subject());
+        activity.setContext(request.context());
+        activity.setAction(request.action());
+        activity.setDetails(request.details());
+
+        return activity;
     }
 
-
-    public static TeamAuthorityActivityResponse toResponse(
-            TeamAuthorityActivity activity
-    ) {
-        return new TeamAuthorityActivityResponse(
-                activity.getId(),
-                activity.getEventId(),
-                activity.getUserId(),
-                activity.getTeamId(),
-
-                // Entity: "tipo"
-                // DTO:    "type"
-                activity.getTipo(),
-
-                activity.getOccurredAt()
+    private String buildLabel(Activity activity) {
+        Objects.requireNonNull(
+                activity.getAction(),
+                "L'azione è obbligatoria"
         );
+
+        EntityReference actor = activity.getActor();
+        EntityReference subject = activity.getSubject();
+        EntityReference context = activity.getContext();
+
+        String label = switch (activity.getAction()) {
+
+            case JOINED_TEAM -> name(subject) + " è entrato nella squadra "
+                    + name(context);
+
+            case LEFT_TEAM -> name(subject) + " ha lasciato la squadra "
+                    + name(context);
+
+            case MODIFIED_TEAM -> name(actor) + " ha modificato la squadra "
+                    + name(subject);
+
+            case DELETED_TEAM -> name(actor) + " ha eliminato la squadra "
+                    + name(subject);
+
+            case CREATED_TEAM -> name(actor) + " ha creato la squadra "
+                    + name(subject);
+
+            case REFRESHED_INVITATION_TEAM -> name(actor)
+                    + " ha rigenerato il codice di invito della squadra "
+                    + name(subject);
+
+            case JOINED_TOURNAMENT -> "La squadra " + name(subject)
+                    + " si è iscritta al torneo "
+                    + name(context);
+
+            case LEFT_TOURNAMENT -> "La squadra " + name(subject)
+                    + " si è ritirata dal torneo "
+                    + name(context);
+
+            case REMOVED_TOURNAMENT_TEAM -> name(actor) + " ha rimosso la squadra "
+                    + name(subject) + " dal torneo "
+                    + name(context);
+
+            case CREATED_TOURNAMENT -> name(actor) + " ha creato il torneo "
+                    + name(subject);
+
+            case MODIFIED_TOURNAMENT -> name(actor) + " ha modificato il torneo "
+                    + name(subject);
+
+            case DELETE_TOURNAMENT -> name(actor) + " ha eliminato il torneo "
+                    + name(subject);
+
+            case UPDATED_TOURNAMENT_STATE -> name(actor) + " ha aggiornato lo stato del torneo "
+                    + name(subject);
+
+            case TOURNAMENT_PLACEMENT -> "La squadra " + name(subject)
+                    + " ha ottenuto un piazzamento nel torneo "
+                    + name(context);
+
+            case PROMOTED_ADMIN -> name(actor) + " ha nominato "
+                    + name(subject) + " amministratore"
+                    + contextSuffix(context);
+
+            case DEMOTED_ADMIN -> name(actor) + " ha revocato il ruolo di amministratore a "
+                    + name(subject)
+                    + contextSuffix(context);
+
+            case MODIFIED_PROFILE -> name(actor) + " ha modificato il profilo di "
+                    + name(subject);
+
+            case DELETED_PROFILE -> name(actor) + " ha eliminato il profilo di "
+                    + name(subject);
+        };
+
+        String details = activity.getDetails();
+
+        return details == null || details.isBlank()
+                ? label
+                : label + ": " + details.strip();
     }
 
+    private String name(EntityReference reference) {
+        if (reference == null
+                || reference.getEntityName() == null
+                || reference.getEntityName().isBlank()) {
 
-    // =========================================================
-    // TOURNAMENT AUTHORITY
-    // =========================================================
+            throw new IllegalArgumentException(
+                    "Manca il nome di un'entità richiesta dall'azione"
+            );
+        }
 
-    public static TournamentAuthorityActivity toEntity(
-            TournamentAuthorityActivityRequest request
-    ) {
-        return new TournamentAuthorityActivity(
-                request.userId(),
-                request.tournamentId(),
-                request.type(),
-                request.eventId()
-        );
+        return reference.getEntityName();
     }
 
+    private String contextSuffix(EntityReference context) {
+        if (context == null || context.getType() == null) {
+            throw new IllegalArgumentException(
+                    "Il contesto è obbligatorio per questa azione"
+            );
+        }
 
-    public static TournamentAuthorityActivityResponse toResponse(
-            TournamentAuthorityActivity activity
-    ) {
-        return new TournamentAuthorityActivityResponse(
-                activity.getId(),
-                activity.getEventId(),
-                activity.getUserId(),
-                activity.getTournamentId(),
-
-                // Entity: "tipo"
-                // DTO:    "type"
-                activity.getTipo(),
-
-                activity.getOccurredAt()
-        );
-    }
-
-
-    // =========================================================
-    // TOURNAMENT PLACEMENT
-    // =========================================================
-
-    public static TournamentPlacementActivity toEntity(
-            TournamentPlacementActivityRequest request
-    ) {
-        return new TournamentPlacementActivity(
-                request.teamId(),
-                request.tournamentId(),
-                request.eventId()
-        );
-    }
-
-
-    public static TournamentPlacementActivityResponse toResponse(
-            TournamentPlacementActivity activity
-    ) {
-        return new TournamentPlacementActivityResponse(
-                activity.getId(),
-                activity.getEventId(),
-                activity.getTeamId(),
-                activity.getTournamentId(),
-                activity.getOccurredAt()
-        );
-    }
-
-
-    // =========================================================
-// TEAM MOD
-// =========================================================
-
-    public static TeamModActivity toEntity(
-            TeamModActivityRequest request
-    ) {
-        return new TeamModActivity(
-                request.userId(),
-                request.teamId(),
-                request.eventId()
-        );
-    }
-
-    public static TeamModActivityResponse toResponse(
-            TeamModActivity activity
-    ) {
-        return new TeamModActivityResponse(
-                activity.getUserId(),
-                activity.getTeamId(),
-                activity.getOccurredAt()
-
-        );
-    }
-
-    // =========================================================
-// Tournament MOD
-// =========================================================
-
-    public static TournamentModActivity toEntity(
-            TournamentModActivityRequest request
-    ) {
-        return new TournamentModActivity(
-                request.userId(),
-                request.tournamentId(),
-                request.eventId()
-        );
-    }
-
-    public static TournamentModActivityResponse toResponse(
-            TournamentModActivity activity
-    ) {
-        return new TournamentModActivityResponse(
-                activity.getUserId(),
-                activity.getTournamentId(),
-                activity.getOccurredAt()
-
-        );
+        return switch (context.getType()) {
+            case TEAM -> " nella squadra " + name(context);
+            case TOURNAMENT -> " nel torneo " + name(context);
+            case USER -> throw new IllegalArgumentException(
+                    "Il contesto deve essere una squadra o un torneo"
+            );
+        };
     }
 }

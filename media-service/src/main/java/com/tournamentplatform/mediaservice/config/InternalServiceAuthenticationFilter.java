@@ -29,11 +29,13 @@ public class InternalServiceAuthenticationFilter
     }
 
     @Override
-    protected boolean shouldNotFilter(
-            HttpServletRequest request
-    ) {
-        return !request.getRequestURI()
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        boolean isMediaRequest = request.getServletPath()
                 .startsWith("/internal/media/");
+
+        boolean isGet = "GET".equals(request.getMethod());
+
+        return !isMediaRequest || isGet;
     }
 
     @Override
