@@ -13,6 +13,8 @@ import ProfilePage from "@/src/components/pagesComponents/profile/ProfilePage";
 import {UserInfo} from "@/src/services/users/userDTO";
 import {useToast} from "@/src/components/common/Toast/ToastProvider";
 import showAlert from "@/src/components/common/errors/Alert";
+import {fetchActivities} from "@/src/services/activities/activityService";
+import {ActivityResponse, EntityType} from "@/src/services/activities/ActivityDTO";
 
 type ProfileData = {
     user: UserInfo;
@@ -28,23 +30,26 @@ export default function ProfileScreen() {
 
     const profileId = params.profileId;
 
-    const requestIdRef = useRef(0);
+    const requestIdRefProfile = useRef(0);
+
 
     const [profile, setProfile] = useState<ProfileData | null>(null);
+    const [activities, setActivities] = useState<ActivityResponse[]>([])
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState("");
 
     const loadProfile = useCallback(async () => {
-        const requestId = ++requestIdRef.current;
+        const requestId = ++requestIdRefProfile.current;
 
         setIsLoading(true);
         setError("");
         setProfile(null);
+        setActivities([]);
 
         try {
             const currentUserId = await loadCurrentUserId();
 
-            if (requestId !== requestIdRef.current) {
+            if (requestId !== requestIdRefProfile.current) {
                 return;
             }
 
@@ -56,14 +61,14 @@ export default function ProfileScreen() {
             const userId = profileId ?? String(currentUserId);
             const isOwnProfile = userId === String(currentUserId);
 
-            const [user, teams, auth] = await Promise.all([
+            const [user, teams, auth,] = await Promise.all([
                 fetchUser(userId),
                 fetchUserTeams(userId),
-                loadUserAuthInfo(userId)
+                loadUserAuthInfo(userId),
 
             ]);
 
-            if (requestId !== requestIdRef.current) {
+            if (requestId !== requestIdRefProfile.current) {
                 return;
             }
 
@@ -73,8 +78,21 @@ export default function ProfileScreen() {
                 teams,
                 isOwnProfile,
             });
+
+            try {
+                const activities = await fetchActivities(userId, EntityType.USER)
+                setActivities(activities);
+            } catch (activitiesError) {
+                if (requestId !== requestIdRefProfile.current) {
+                    return;
+                }
+
+                console.log("Errore recupero attività utente")
+                console.log(activitiesError)
+            }
+
         } catch (error) {
-            if (requestId !== requestIdRef.current) {
+            if (requestId !== requestIdRefProfile.current) {
                 return;
             }
 
@@ -82,18 +100,19 @@ export default function ProfileScreen() {
             setError(apiError.message)
 
         } finally {
-            if (requestId === requestIdRef.current) {
+            if (requestId === requestIdRefProfile.current) {
                 setIsLoading(false);
             }
         }
     }, [profileId]);
+
 
     useFocusEffect(
         useCallback(() => {
             void loadProfile();
 
             return () => {
-                requestIdRef.current++;
+                requestIdRefProfile.current++;
             };
         }, [loadProfile]),
     );
@@ -150,7 +169,7 @@ export default function ProfileScreen() {
             return
         }
         try {
-            await leaveTeam(team.id)
+            await leaveTeam(team)
 
 
             setProfile(previous => {
@@ -194,14 +213,15 @@ export default function ProfileScreen() {
                 variant="profile"
                 user={profile?.user}
                 auth={profile?.auth}
+                activities={activities}
                 userTeams={profile?.teams}
                 isOwnProfile={profile?.isOwnProfile}
                 onLogout={handleLogout}
                 error={error}
                 loading={isLoading}
                 onErrorRetry={loadProfile}
-                canLeaveTeam={(team : TeamDetails) => canLeaveTeam(team)}
-                leaveTeam={(team : TeamDetails) => leaveUserTeam(team)}
+                canLeaveTeam={(team: TeamDetails) => canLeaveTeam(team)}
+                leaveTeam={(team: TeamDetails) => leaveUserTeam(team)}
             />
         </>
     );

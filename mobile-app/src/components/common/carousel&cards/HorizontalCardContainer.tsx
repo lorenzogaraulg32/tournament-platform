@@ -12,7 +12,7 @@ import {
 } from "@/src/constants/CardPalettesManager";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-type CardAction = {
+export type CardAction = {
     onPress: () => void;
     icon: keyof typeof Ionicons.glyphMap;
     color?: string;

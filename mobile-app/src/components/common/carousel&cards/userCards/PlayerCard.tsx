@@ -71,7 +71,11 @@ export default function PlayerCard({
             role={playerRole}
             style={styles.card}
             onPress={handlePress}
-            modify={modify ? modify : undefined}
+            action={modify ? {
+                onPress: modify,
+                icon: "create-outline",
+                color: "#FF7474"
+            } : undefined}
             showArrow={!onClick}
         >
             <View style={styles.content}>

@@ -1,7 +1,7 @@
 import {SPORT_ROLES, UserCreationRequest, UserModRequest} from "@/src/services/users/userDTO";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {GeoLocation} from "@/src/services/common";
-import {Media} from "@/src/services/mediaService";
+import {Media} from "@/src/services/media/mediaService";
 
 /**
  * Racchiude gran parte del boilerPlate code relativo alla validazione. Alcune validazioni sono troppo specifiche dei componenti,

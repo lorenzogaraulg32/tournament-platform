@@ -6,7 +6,7 @@ import FormLabel from "@/src/components/common/labels/FormLabel";
 import Picture from "@/src/components/common/images/Picture";
 import {paletteVariants, Variant} from "@/src/constants/PaletteManager";
 import {colors} from "@/src/constants/theme";
-import {Media} from "@/src/services/mediaService";
+import {Media} from "@/src/services/media/mediaService";
 
 const MAX_LOGO_SIZE = 2 * 1024 * 1024;
 

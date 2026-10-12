@@ -5,7 +5,7 @@ import * as IntentLauncher from "expo-intent-launcher";
 import FormLabel from "@/src/components/common/labels/FormLabel";
 import {paletteVariants, Variant} from "@/src/constants/PaletteManager";
 import {colors} from "@/src/constants/theme";
-import {Media} from "@/src/services/mediaService";
+import {Media} from "@/src/services/media/mediaService";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 

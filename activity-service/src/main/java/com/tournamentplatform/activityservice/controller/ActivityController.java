@@ -60,7 +60,7 @@ public class ActivityController {
     }
 
 
-    @PostMapping("/internal")
+    @PostMapping()
     public ResponseEntity<Void> postActivity(
             @RequestBody @Valid ActivityRequestPOST request
     ) {

@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 public record ActivityRequestPOST(
+
         LocalDateTime issuedAt,
 
         @NotNull(message = "L'autore è obbligatorio")

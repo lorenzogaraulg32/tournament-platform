@@ -1,7 +1,7 @@
 import {ImageStyle, StyleProp} from "react-native";
 import {Image} from "expo-image";
 import {paletteVariants, Variant} from "@/src/constants/PaletteManager";
-import {Media} from "@/src/services/mediaService";
+import {Media} from "@/src/services/media/mediaService";
 import {getAuthorizationHeader} from "@/src/services/users/sessionService";
 import {useEffect, useState} from "react";
 

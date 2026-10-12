@@ -142,7 +142,7 @@ export default function TeamScreen() {
         leavingInProgressRef.current = true;
 
         try {
-            await leaveTeam(String(team.id));
+            await leaveTeam(team);
 
             router.replace("/(app)/teams");
         } catch (error) {

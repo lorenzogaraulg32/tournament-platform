@@ -4,7 +4,7 @@ import {formatLocationLabel} from "@/src/services/common";
 import {colors} from "@/src/constants/theme";
 import {InvitationCodeBadge} from "@/src/components/common/InvitationCodeBadge";
 import {Variant} from "@/src/constants/PaletteManager";
-import {Media} from "@/src/services/mediaService";
+import {Media} from "@/src/services/media/mediaService";
 
 
 type HeaderEntityProps = {

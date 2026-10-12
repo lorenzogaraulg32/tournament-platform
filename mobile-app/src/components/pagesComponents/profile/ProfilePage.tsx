@@ -11,11 +11,14 @@ import HeaderEntity from "@/src/components/common/headers/HeaderEntity";
 import LoadingSection from "@/src/components/common/loading/LoadingSection";
 import ErrorSection from "@/src/components/common/errors/ErrorSection";
 import {AuthInfo} from "@/src/services/users/authService";
+import {ActivityResponse} from "@/src/services/activities/ActivityDTO";
+import {ActivitiesSection} from "@/src/components/common/ActivitiesSection";
 
 type ProfilePageProps = {
     variant: Variant;
     user?: UserInfo;
     auth?: AuthInfo
+    activities: ActivityResponse[],
     userTeams?: TeamDetails[];
     isOwnProfile?: boolean;
     onLogout: () => void;
@@ -24,12 +27,14 @@ type ProfilePageProps = {
     onErrorRetry?: () => void
     canLeaveTeam: (team: TeamDetails) => boolean
     leaveTeam: (team: TeamDetails) => Promise<void>
+
 };
 
 export default function ProfilePage({
                                         variant,
                                         user,
                                         auth,
+                                        activities,
                                         userTeams,
                                         isOwnProfile,
                                         onLogout,
@@ -110,6 +115,13 @@ export default function ProfilePage({
                 contentContainerStyle={styles.content}
                 showsVerticalScrollIndicator={false}
             >
+
+
+                <ActivitiesSection
+                    variant={"profile"}
+                    activities={activities}
+                ></ActivitiesSection>
+
 
                 {/* <CollapsableSection
                     label="Squadre"
@@ -204,4 +216,10 @@ const styles = StyleSheet.create({
         transform: [{scale: 0.98}],
         opacity: 0.9,
     },
+
+    activityRow: {
+        flexDirection: "row",
+        gap: 5
+    },
+
 });

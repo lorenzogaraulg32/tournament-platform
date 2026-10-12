@@ -60,6 +60,9 @@ public class ActivityMapper {
             case LEFT_TEAM -> name(subject) + " ha lasciato la squadra "
                     + name(context);
 
+            case REMOVED_FROM_TEAM -> name(subject) + " è stato rimosso dalla squadra " + name(context) + " da "
+                    + name(actor);
+
             case MODIFIED_TEAM -> name(actor) + " ha modificato la squadra "
                     + name(subject);
 
@@ -69,8 +72,15 @@ public class ActivityMapper {
             case CREATED_TEAM -> name(actor) + " ha creato la squadra "
                     + name(subject);
 
+            case MODIFIED_LINEUP -> name(actor) + " ha modificato la formazione della squadra "
+                    + name(subject);
+
             case REFRESHED_INVITATION_TEAM -> name(actor)
                     + " ha rigenerato il codice di invito della squadra "
+                    + name(subject);
+
+            case REFRESHED_INVITATION_TOURNAMENT -> name(actor)
+                    + " ha rigenerato il codice di invito del torneo "
                     + name(subject);
 
             case JOINED_TOURNAMENT -> "La squadra " + name(subject)
@@ -112,8 +122,6 @@ public class ActivityMapper {
             case MODIFIED_PROFILE -> name(actor) + " ha modificato il profilo di "
                     + name(subject);
 
-            case DELETED_PROFILE -> name(actor) + " ha eliminato il profilo di "
-                    + name(subject);
         };
 
         String details = activity.getDetails();

@@ -1,5 +1,5 @@
 import {GeoLocation, LocalDateString} from "@/src/services/common";
-import {Media} from "@/src/services/mediaService";
+import {Media} from "@/src/services/media/mediaService";
 import type {UserSportRole,} from "@/src/services/sportDTO";
 import {
     fallbackRoleBySport,

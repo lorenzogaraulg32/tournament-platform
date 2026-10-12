@@ -1,7 +1,7 @@
 import {router, useLocalSearchParams} from "expo-router";
 import {Text} from "react-native";
 import DeleteScreen from "@/src/components/common/DeleteScreen";
-import {deleteTeam} from "@/src/services/teams/teamService";
+import {deleteTeam, fetchTeam} from "@/src/services/teams/teamService";
 
 
 export default function DeleteTeamPage() {
@@ -16,7 +16,10 @@ export default function DeleteTeamPage() {
             throw new Error("ID della squadra mancante");
         }
 
-        await deleteTeam(id);
+        const team = await fetchTeam(id)
+
+
+        await deleteTeam(team);
 
         router.replace("/(app)/teams");
     }

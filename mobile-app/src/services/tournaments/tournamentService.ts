@@ -4,9 +4,12 @@ import {
     UserTournamentsResponse
 } from "@/src/services/tournaments/tournamentDTO";
 import {authenticatedFetch} from "@/src/services/fetchService";
-import {fetchUserTeams} from "@/src/services/teams/teamService";
-import {loadCurrentUserId} from "@/src/services/users/authService";
 import {File, Paths} from "expo-file-system";
+import {postActivity} from "@/src/services/activities/activityService";
+import {getLocalDateTime} from "@/src/services/common";
+import {Action, EntityType} from "@/src/services/activities/ActivityDTO";
+import {requestUserActor} from "@/src/services/users/userService";
+import {TeamDetails} from "@/src/services/teams/teamDTO";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -16,7 +19,7 @@ export async function createTournament(
 ): Promise<TournamentDetails> {
 
     const {logo, rules, ...tournamentRequest} = request
-    
+
 
     const tournamentFile = new File(
         Paths.cache,
@@ -61,7 +64,22 @@ export async function createTournament(
             }
         );
 
-        return await response.json() as TournamentDetails;
+        const tournament = await response.json() as TournamentDetails;
+
+        await postActivity({
+            issuedAt: getLocalDateTime(),
+            actor: await requestUserActor(),
+            subject: {
+                id: tournament.id,
+                entityName: tournament.name,
+                type: EntityType.TOURNAMENT
+            },
+            context: undefined,
+            action: Action.CREATED_TOURNAMENT,
+            details: undefined
+        })
+
+        return tournament
     } finally {
         if (tournamentFile.exists) {
             tournamentFile.delete();
@@ -71,10 +89,10 @@ export async function createTournament(
 
 
 export async function refreshCodeTournament(
-    teamId: string
+    tournamentId: string
 ): Promise<TournamentDetails> {
     const response = await authenticatedFetch(
-        `${API_URL}/tournaments/${teamId}/change_code`,
+        `${API_URL}/tournaments/${tournamentId}/change_code`,
         {
             method: "POST",
             headers: {
@@ -83,15 +101,28 @@ export async function refreshCodeTournament(
         }
     );
 
-    return await response.json() as TournamentDetails;
+    const tournament = await response.json() as TournamentDetails
+
+    await postActivity({
+        issuedAt: getLocalDateTime(),
+        actor: await requestUserActor(),
+        subject: {
+            id: tournament.id,
+            entityName: tournament.name,
+            type: EntityType.TOURNAMENT
+        },
+        context: undefined,
+        action: Action.REFRESHED_INVITATION_TOURNAMENT,
+        details: undefined
+    })
+
+    return tournament
 }
 
 
-export async function getCurrentUserTournaments():
+export async function getCurrentUserTournaments(myTeams: TeamDetails[]):
     Promise<UserTournamentsResponse> {
 
-    const myTeams =
-        await fetchUserTeams(await loadCurrentUserId());
 
     const queryParams = new URLSearchParams();
 
@@ -105,9 +136,7 @@ export async function getCurrentUserTournaments():
     const query = queryParams.toString();
 
     const response = await authenticatedFetch(
-        `${API_URL}/tournaments/my-tournaments${
-            query ? `?${query}` : ""
-        }`,
+        `${API_URL}/tournaments/my-tournaments${query ? `?${query}` : ""}`,
         {
             method: "GET",
             headers: {
@@ -133,7 +162,7 @@ export async function getCurrentUserTournaments():
 }
 
 
-export async function loadTournamentDetails(
+export async function fetchTournament(
     id: string
 ): Promise<TournamentDetails> {
 

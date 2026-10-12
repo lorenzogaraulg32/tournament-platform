@@ -5,7 +5,7 @@ import HorizontalCardContainer from "@/src/components/common/carousel&cards/Hori
 import {TournamentStatus} from "@/src/services/tournaments/tournamentDTO";
 import {router, useSegments} from "expo-router";
 import {tournamentCardColors} from "@/src/constants/CardPalettesManager";
-import {Media} from "@/src/services/mediaService";
+import {Media} from "@/src/services/media/mediaService";
 
 type TournamentCardHorizontalProps = {
     id: number

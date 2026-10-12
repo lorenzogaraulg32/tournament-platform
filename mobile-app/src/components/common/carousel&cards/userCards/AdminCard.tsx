@@ -64,7 +64,11 @@ export default function AdminCard({
             authority={authority}
             style={styles.card}
             onPress={handlePress}
-            modify={modify ? modify : undefined}
+            action={modify ? {
+                onPress: modify,
+                icon: "create-outline",
+                color: "#FF7474"
+            } : undefined}
             showArrow
         >
             <View style={styles.content}>

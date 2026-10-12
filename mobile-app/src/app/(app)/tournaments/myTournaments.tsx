@@ -8,6 +8,8 @@ import {getCurrentUserTournaments} from "@/src/services/tournaments/tournamentSe
 import LoadingSection from "@/src/components/common/loading/LoadingSection";
 import ErrorSection from "@/src/components/common/errors/ErrorSection";
 import {MyTournamentsSection} from "@/src/components/pagesComponents/tournaments/MyTournamentsSection";
+import {fetchUserTeams} from "@/src/services/teams/teamService";
+import {loadCurrentUserId} from "@/src/services/users/authService";
 
 
 /**
@@ -30,13 +32,12 @@ export default function MyTournaments() {
             setLoading(true);
             setError(null);
 
-            const loadedTournaments =
-                await getCurrentUserTournaments();
+            const loadedTournaments = await getCurrentUserTournaments(await fetchUserTeams(await loadCurrentUserId()));
 
             if (requestId !== requestIdRef.current) {
                 return;
             }
-            
+
             setTournamentsAdmin(loadedTournaments.managed);
             setTournamentsPlayer(loadedTournaments.participating);
         } catch (error) {

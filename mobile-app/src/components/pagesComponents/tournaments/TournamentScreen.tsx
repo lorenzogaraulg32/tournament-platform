@@ -1,7 +1,7 @@
 import {Redirect, router, useFocusEffect, useLocalSearchParams} from "expo-router";
 import {useCallback, useRef, useState} from "react";
 import {TournamentDetails} from "@/src/services/tournaments/tournamentDTO";
-import {loadTournamentDetails, refreshCodeTournament} from "@/src/services/tournaments/tournamentService";
+import {fetchTournament, refreshCodeTournament} from "@/src/services/tournaments/tournamentService";
 import {loadCurrentUserId} from "@/src/services/users/authService";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {Alert} from "react-native";
@@ -47,7 +47,7 @@ export default function TournamentScreen() {
 
         try {
             const [loadedTournament, loadedUserId] = await Promise.all([
-                loadTournamentDetails(tournamentId),
+                fetchTournament(tournamentId),
                 loadCurrentUserId(),
             ])
 

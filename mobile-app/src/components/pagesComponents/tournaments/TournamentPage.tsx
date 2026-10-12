@@ -203,10 +203,12 @@ export default function TournamentPage({
                                     <TeamCardHorizontal
                                         key={team.id}
                                         teamDetails={team}
-                                        modify={() => {
-                                            void removeTeam(
-                                                String(team.id)
-                                            );
+                                        action={{
+                                            onPress: () => {
+                                                void removeTeam(String(team.id));
+                                            },
+                                            icon: "trash-outline",
+                                            color: "#FF7474"
                                         }}
                                     />
                                 ))}

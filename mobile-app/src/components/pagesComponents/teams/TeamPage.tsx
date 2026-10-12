@@ -175,7 +175,7 @@ export default function TeamPage({
         setIsRemovingMember(true);
 
         try {
-            await removeTeamPlayer(String(team?.id), id);
+            await removeTeamPlayer(team, id);
 
 
             setTeamPlayers((previous) =>
@@ -251,7 +251,7 @@ export default function TeamPage({
         removalInProgressRef.current = true;
         setIsRemovingMember(true);
         try {
-            await removeTeamAdmin(String(team.id), id);
+            await removeTeamAdmin(team, id);
 
             setTeamAdmins((previous) =>
                 previous
@@ -307,7 +307,7 @@ export default function TeamPage({
 
         try {
             const savedFormation = await updateTeamFormation(
-                String(team.id),
+                team,
                 teamFormation
             );
 

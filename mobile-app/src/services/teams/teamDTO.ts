@@ -1,6 +1,6 @@
 import {GeoLocation, RecruitmentStatus} from "@/src/services/common";
 import {Sport} from "@/src/services/users/userDTO";
-import {Media} from "@/src/services/mediaService";
+import {Media} from "@/src/services/media/mediaService";
 
 
 export type TeamDetails = {

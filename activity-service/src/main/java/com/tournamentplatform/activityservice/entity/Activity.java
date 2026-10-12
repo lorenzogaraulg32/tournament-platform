@@ -20,6 +20,8 @@ public class Activity {
 
     @Id
     private String id;
+
+
     private LocalDateTime issuedAt;
 
     //entità coinvolte
@@ -53,24 +55,30 @@ public class Activity {
     }
 
     public enum Action {
+        // actor = USER
         JOINED_TEAM,
         LEFT_TEAM,
+        REMOVED_FROM_TEAM,
         MODIFIED_TEAM,
         DELETED_TEAM,
         CREATED_TEAM,
+        MODIFIED_LINEUP,
         REFRESHED_INVITATION_TEAM,
-        JOINED_TOURNAMENT,
-        LEFT_TOURNAMENT,
+        REFRESHED_INVITATION_TOURNAMENT,
         REMOVED_TOURNAMENT_TEAM,
         CREATED_TOURNAMENT,
         MODIFIED_TOURNAMENT,
         DELETE_TOURNAMENT,
         UPDATED_TOURNAMENT_STATE,
-        TOURNAMENT_PLACEMENT,
         PROMOTED_ADMIN,
         DEMOTED_ADMIN,
         MODIFIED_PROFILE,
-        DELETED_PROFILE,
+
+        // actor = TEAM
+        JOINED_TOURNAMENT,
+        LEFT_TOURNAMENT,
+        TOURNAMENT_PLACEMENT,
+
     }
 
 

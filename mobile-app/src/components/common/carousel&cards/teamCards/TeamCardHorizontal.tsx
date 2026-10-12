@@ -2,7 +2,7 @@ import {StyleSheet, Text, View} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {router, useSegments} from "expo-router";
 import Picture from "@/src/components/common/images/Picture";
-import HorizontalCardContainer from "@/src/components/common/carousel&cards/HorizontalCardContainer";
+import HorizontalCardContainer, {CardAction} from "@/src/components/common/carousel&cards/HorizontalCardContainer";
 import {teamCardColors} from "@/src/constants/CardPalettesManager";
 import {SPORT_LABELS} from "@/src/services/sportDTO";
 import {BadgePalette, rolePaletteMapper} from "@/src/constants/BadgePaletteManager";
@@ -10,7 +10,7 @@ import {TeamDetails} from "@/src/services/teams/teamDTO";
 
 type TeamCardSmallProps = {
     teamDetails: TeamDetails
-    onLeave?: () => void
+    action?: CardAction;
 }
 
 const teamRoutes = {
@@ -26,7 +26,7 @@ function isTabName(value: string): value is keyof typeof teamRoutes {
 
 export default function TeamCardHorizontal({
                                                teamDetails,
-                                               onLeave
+                                               action
                                            }: TeamCardSmallProps) {
 
 
@@ -56,15 +56,7 @@ export default function TeamCardHorizontal({
         <HorizontalCardContainer
             variant={"team"}
             onPress={handlePress}
-            action={
-                onLeave
-                    ? {
-                        onPress: onLeave,
-                        icon: "exit-outline",
-                        color: "#FF7474",
-                    }
-                    : undefined
-            }
+            action={action}
             showArrow
         >
 

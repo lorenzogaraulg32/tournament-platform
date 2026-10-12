@@ -1,7 +1,10 @@
 import {UserCreationRequest, UserInfo, UserModRequest} from "@/src/services/users/userDTO";
 import {authenticatedFetch} from "@/src/services/fetchService";
 import {File, Paths} from "expo-file-system";
-import {API_URL} from "@/src/services/common";
+import {API_URL, getLocalDateTime} from "@/src/services/common";
+import {postActivity} from "@/src/services/activities/activityService";
+import {Action, EntityReference, EntityType} from "@/src/services/activities/ActivityDTO";
+import {loadCurrentUserId} from "@/src/services/users/authService";
 
 
 export async function createUser(
@@ -56,7 +59,7 @@ export async function createUser(
 
 export async function checkUsernameAlreadyExists(trimmedName: string) {
     const response = await authenticatedFetch(
-        `${API_URL}/tournaments/nameCheck/${trimmedName}`,
+        `${API_URL}/users/nameCheck/${trimmedName}`,
         {
             method: "GET",
             headers: {
@@ -139,7 +142,24 @@ export async function modUser(request: UserModRequest): Promise<UserInfo> {
             }
         );
 
-        return await response.json() as UserInfo;
+        const user = await response.json() as UserInfo;
+
+        const actor = {
+            id: user.id,
+            entityName: user.username,
+            type: EntityType.USER
+        };
+
+        await postActivity({
+            issuedAt: getLocalDateTime(),
+            actor: actor,
+            subject: actor,
+            context: undefined,
+            action: Action.MODIFIED_PROFILE,
+            details: undefined
+        });
+
+        return user;
 
     } finally {
         if (userFile.exists) {
@@ -159,7 +179,18 @@ export async function deleteUser() {
             },
         }
     );
+
+
 }
 
 
+export async function requestUserActor(): Promise<EntityReference> {
+    const currentUserId = await loadCurrentUserId();
+    const currentUser = await fetchUser(currentUserId);
 
+    return {
+        id: currentUserId,
+        entityName: currentUser.username,
+        type: EntityType.USER
+    };
+}
