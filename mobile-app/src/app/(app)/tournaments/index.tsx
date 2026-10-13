@@ -1,9 +1,9 @@
 import {StyleSheet} from "react-native";
-import PageLayout from "@/src/components/common/PageLayout";
+import PageLayout from "@/src/components/common/layout/PageLayout";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import HeaderPage from "@/src/components/common/headers/HeaderPage";
 import {useState} from "react";
-import TabsContainer from "@/src/components/common/TabsContainer";
+import TabsContainer from "@/src/components/common/buttons/TabsContainer";
 import FindTournaments from "@/src/app/(app)/tournaments/findTournaments";
 import MyTournaments from "@/src/app/(app)/tournaments/myTournaments";
 

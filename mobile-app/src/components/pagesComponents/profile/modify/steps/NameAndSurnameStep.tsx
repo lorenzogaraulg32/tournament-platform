@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import type { Variant } from "@/src/constants/PaletteManager";
+import type { Variant } from "@/src/constants/palette/PaletteManager";
 import FormInputField from "@/src/components/common/forms/components/FormInputField";
 
 type NameAndSurnameStepProps = {

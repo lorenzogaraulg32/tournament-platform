@@ -5,7 +5,7 @@ import {
     redRoleCardColors,
     tealRoleCardColors,
     yellowRoleCardColors
-} from "@/src/constants/CardPalettesManager";
+} from "@/src/constants/palette/CardPalettesManager";
 
 export type FieldRole =
 // Calcio

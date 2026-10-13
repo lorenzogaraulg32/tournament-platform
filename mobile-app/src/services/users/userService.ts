@@ -2,9 +2,9 @@ import {UserCreationRequest, UserInfo, UserModRequest} from "@/src/services/user
 import {authenticatedFetch} from "@/src/services/fetchService";
 import {File, Paths} from "expo-file-system";
 import {API_URL, getLocalDateTime} from "@/src/services/common";
-import {postActivity} from "@/src/services/activities/activityService";
 import {Action, EntityReference, EntityType} from "@/src/services/activities/ActivityDTO";
 import {loadCurrentUserId} from "@/src/services/users/authService";
+import {postActivity} from "@/src/services/activities/activityService";
 
 
 export async function createUser(
@@ -86,6 +86,8 @@ export async function fetchUser(
 
     const user: UserInfo = await response.json() as UserInfo;
 
+
+
     return {
         ...user,
         avatar: {
@@ -93,6 +95,8 @@ export async function fetchUser(
         }
     }
 }
+
+
 
 
 export async function modUser(request: UserModRequest): Promise<UserInfo> {

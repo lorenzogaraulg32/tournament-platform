@@ -21,7 +21,7 @@ import {loadCurrentUserId} from "@/src/services/users/authService";
 import ErrorScreen from "@/src/components/common/errors/ErrorScreen";
 import LoadingScreen from "@/src/components/common/loading/LoadingScreen";
 
-import {paletteVariants, type Variant} from "@/src/constants/PaletteManager";
+import {paletteVariants, type Variant} from "@/src/constants/palette/PaletteManager";
 import ToastProvider from "@/src/components/common/Toast/ToastProvider";
 import {SafeAreaProvider} from "react-native-safe-area-context";
 import {DeletingStatus} from "@/src/services/users/userDTO";

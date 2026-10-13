@@ -3,7 +3,7 @@ import Picture from "@/src/components/common/images/Picture";
 import {formatLocationLabel} from "@/src/services/common";
 import {colors} from "@/src/constants/theme";
 import {InvitationCodeBadge} from "@/src/components/common/InvitationCodeBadge";
-import {Variant} from "@/src/constants/PaletteManager";
+import {Variant} from "@/src/constants/palette/PaletteManager";
 import {Media} from "@/src/services/media/mediaService";
 
 

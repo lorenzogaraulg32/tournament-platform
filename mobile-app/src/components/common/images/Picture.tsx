@@ -1,9 +1,10 @@
 import {ImageStyle, StyleProp} from "react-native";
 import {Image} from "expo-image";
-import {paletteVariants, Variant} from "@/src/constants/PaletteManager";
+import {paletteVariants, Variant} from "@/src/constants/palette/PaletteManager";
 import {Media} from "@/src/services/media/mediaService";
 import {getAuthorizationHeader} from "@/src/services/users/sessionService";
 import {useEffect, useState} from "react";
+import {authenticatedFetch} from "@/src/services/fetchService";
 
 type PictureProps = {
     image?: Media | null;
@@ -39,6 +40,9 @@ export default function Picture({
      * Recuperiamo il token solo per immagini remote.
      */
     useEffect(() => {
+
+
+
         if (!isRemote) {
             setAuthorization(null);
             return;
@@ -49,6 +53,9 @@ export default function Picture({
             .catch(() => setHasError(true));
 
     }, [isRemote, image?.uri]);
+
+
+
 
     /*
      * Nessuna immagine oppure errore:

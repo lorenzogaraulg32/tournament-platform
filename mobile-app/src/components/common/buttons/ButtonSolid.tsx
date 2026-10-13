@@ -1,5 +1,5 @@
 import {Pressable, PressableProps, StyleProp, StyleSheet, Text, ViewStyle} from "react-native";
-import {paletteVariants, Variant} from "@/src/constants/PaletteManager";
+import {paletteVariants, Variant} from "@/src/constants/palette/PaletteManager";
 
 
 type ButtonSolidProps = Omit<PressableProps, "style"> & {

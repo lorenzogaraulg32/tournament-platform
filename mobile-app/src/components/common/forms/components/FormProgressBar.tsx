@@ -1,6 +1,6 @@
 import {Fragment} from "react";
 import {StyleSheet, View} from "react-native";
-import {paletteVariants, type Variant} from "@/src/constants/PaletteManager";
+import {paletteVariants, type Variant} from "@/src/constants/palette/PaletteManager";
 
 type FormProgressBarProps = {
     step: number;

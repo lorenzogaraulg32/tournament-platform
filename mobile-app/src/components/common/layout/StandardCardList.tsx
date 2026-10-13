@@ -10,7 +10,18 @@ type CarouselContainerProps = {
     orientation?: "horizontal" | "vertical";
 }
 
-export default function CardListContainer({
+
+/**
+ * Contenitore di default per le card, possiamo dire che è un carosello on steroids
+ * @param items
+ * @param style
+ * @param isLoading
+ * @param error
+ * @param emptyMsg
+ * @param orientation
+ * @constructor
+ */
+export default function StandardCardList({
                                               items,
                                               style,
                                               isLoading,

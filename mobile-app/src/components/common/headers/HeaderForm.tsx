@@ -2,7 +2,7 @@ import {StyleSheet, Text, View} from "react-native";
 import {router} from "expo-router";
 
 import Picture from "@/src/components/common/images/Picture";
-import {paletteVariants, type Variant,} from "@/src/constants/PaletteManager";
+import {paletteVariants, type Variant,} from "@/src/constants/palette/PaletteManager";
 import BackButton from "@/src/components/common/buttons/BackButton";
 
 type HeaderFormProps = {

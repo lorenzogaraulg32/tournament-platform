@@ -5,16 +5,16 @@ import {fetchUser} from "@/src/services/users/userService";
 import {TeamDetails} from "@/src/services/teams/teamDTO";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {fetchTeam} from "@/src/services/teams/teamService";
-import PageLayout from "@/src/components/common/PageLayout";
+import PageLayout from "@/src/components/common/layout/PageLayout";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import HeaderEntity from "@/src/components/common/headers/HeaderEntity";
 import {ScrollView, StyleSheet, Text, View} from "react-native";
-import FullPageModal from "@/src/components/common/FullPageModal";
-import CardListContainer from "@/src/components/common/carousel&cards/CardListContainer";
-import CollapsableSection from "@/src/components/common/CollapsableSection";
-import AdminCard from "@/src/components/common/carousel&cards/userCards/AdminCard";
+import FullPageModal from "@/src/components/common/layout/FullPageModal";
+import StandardCardList from "@/src/components/common/layout/StandardCardList";
+import CollapsableSection from "@/src/components/common/layout/CollapsableSection";
+import AdminCard from "@/src/components/common/cards/userCards/AdminCard";
 import {colors} from "@/src/constants/theme";
-import TeamCardHorizontal from "@/src/components/common/carousel&cards/teamCards/TeamCardHorizontal";
+import TeamCardHorizontal from "@/src/components/common/cards/teamCards/TeamCardHorizontal";
 import {UserInfo} from "@/src/services/users/userDTO";
 
 type TournamentPageProps = {
@@ -191,25 +191,22 @@ export default function TournamentPage({
                         <View></View>
                     )}
 
+                    {/*todo: Inserire pulsante per abilitare modifica*/}
                     <FullPageModal
                         visible={isTournamentModalVisible}
                         onClose={() => setTournamentModalVisible(false)}
                         label="Gestisci squadre"
                         iconName="people-outline"
                     >
-                        <CardListContainer
+                        <StandardCardList
                             items={(teams ?? [])
                                 .map((team) => (
                                     <TeamCardHorizontal
                                         key={team.id}
                                         teamDetails={team}
-                                        action={{
-                                            onPress: () => {
-                                                void removeTeam(String(team.id));
-                                            },
-                                            icon: "trash-outline",
-                                            color: "#FF7474"
-                                        }}
+                                        onPress={() => void removeTeam(String(team.id))}
+                                        icon={"trash-outline"}
+                                        iconColor={"#FF7474"}
                                     />
                                 ))}
                             emptyMsg="Nessuna squadra che puoi rimuovere"
@@ -229,7 +226,7 @@ export default function TournamentPage({
                             const canRemove = isMod && isTournamentOwner;
 
                             return (
-                                <CardListContainer
+                                <StandardCardList
                                     items={(tournamentAdmins ?? [])
                                         .filter((admin) =>
                                             !canRemove ||
@@ -240,12 +237,16 @@ export default function TournamentPage({
                                                 key={admin.id}
                                                 admin={admin}
                                                 isOwner={isTournamentOwner}
-                                                modify={
-                                                    canRemove ? () => {
+                                                onPress={
+                                                    canRemove
+                                                        ? () => {
                                                             void removeAdmin(String(admin.id));
                                                         }
                                                         : undefined
                                                 }
+                                                icon={canRemove ? "exit-outline" : undefined}
+                                                iconColor={canRemove ? "#FF7474" : undefined}
+
                                             />
                                         ))}
                                     emptyMsg={

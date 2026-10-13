@@ -1,10 +1,10 @@
 import {StyleSheet, Text, View} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Picture from "@/src/components/common/images/Picture";
-import HorizontalCardContainer from "@/src/components/common/carousel&cards/HorizontalCardContainer";
+import CardContainerHorizontal from "@/src/components/common/cards/CardContainerHorizontal";
 import {TournamentStatus} from "@/src/services/tournaments/tournamentDTO";
 import {router, useSegments} from "expo-router";
-import {tournamentCardColors} from "@/src/constants/CardPalettesManager";
+import {tournamentCardColors} from "@/src/constants/palette/CardPalettesManager";
 import {Media} from "@/src/services/media/mediaService";
 
 type TournamentCardHorizontalProps = {
@@ -13,6 +13,13 @@ type TournamentCardHorizontalProps = {
     teamsCount: number;
     logo: Media | null;
     status: TournamentStatus;
+
+    // Funzione di pressione, se non è specificata il comportamento di default è il redirect al dettaglio del team
+    onPress?: () => void;
+
+    //Queste proprietà vengono poi passate al container, vengono modificate dall'esterno
+    icon?: keyof typeof Ionicons.glyphMap;
+    iconColor?: string;
 }
 
 const tournamentRoutes = {
@@ -33,12 +40,15 @@ export default function TournamentCardHorizontal({
                                                      logo,
                                                      name,
                                                      teamsCount,
-                                                     status
+                                                     status,
+                                                     onPress,
+                                                     icon,
+                                                     iconColor,
                                                  }: TournamentCardHorizontalProps) {
 
     const segments: readonly string[] = useSegments();
 
-    function handlePress() {
+    function gotoDetailsPage() {
         const appIndex = segments.indexOf("(app)");
 
         if (appIndex === -1) {
@@ -61,10 +71,12 @@ export default function TournamentCardHorizontal({
 
 
     return (
-        <HorizontalCardContainer
+        <CardContainerHorizontal
             variant={"tournament"}
-            onPress={handlePress}
-            showArrow={true}
+
+            onPress={onPress ? onPress : gotoDetailsPage}
+            icon={icon}
+            iconColor={iconColor}
         >
 
             <View style={styles.logoContainer}>
@@ -99,7 +111,7 @@ export default function TournamentCardHorizontal({
             </View>
 
 
-        </HorizontalCardContainer>
+        </CardContainerHorizontal>
     );
 }
 

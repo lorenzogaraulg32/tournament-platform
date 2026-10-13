@@ -5,49 +5,75 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Implemented activities frontend also, activites finished, required further testing">
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/common/ActivitiesSection.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/services/activities/ActivityDTO.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/services/activities/activityService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/common/cards/CardBackground.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/common/cards/CardContainerHorizontal.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/constants/palette/CardPalettesManager.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/constants/palette/PaletteStyles.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/constants/palette/RolePalette.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/activity-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/activity-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/ActivityController.java" beforeDir="false" afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/controller/ActivityController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/request/ActivityRequestPOST.java" beforeDir="false" afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/dto/request/ActivityRequestPOST.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/entity/Activity.java" beforeDir="false" afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/entity/Activity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/mapper/ActivityMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/activity-service/src/main/java/com/tournamentplatform/activityservice/mapper/ActivityMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/media-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/media-service/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/media-service/src/main/java/com/tournamentplatform/mediaservice/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/media-service/src/main/java/com/tournamentplatform/mediaservice/security/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/delete.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/delete.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/tournaments/myTournaments.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/tournaments/myTournaments.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/HorizontalCardContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/HorizontalCardContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/TournamentCardHorizontal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/TournamentCardHorizontal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/teamCards/TeamCardHorizontal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/teamCards/TeamCardHorizontal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/userCards/AdminCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/userCards/AdminCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/userCards/PlayerCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/userCards/PlayerCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/_layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/home/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/home/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/myTeams.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/myTeams.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/tournaments/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/tournaments/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/ActivitiesSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/ActivitiesSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/CollapsableSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/layout/CollapsableSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/DeleteScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/DeleteScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/FullPageModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/layout/FullPageModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/PageLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/layout/PageLayout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/TabsContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/buttons/TabsContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/buttons/ButtonSolid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/buttons/ButtonSolid.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/CardListContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/layout/StandardCardList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/HorizontalCardContainer.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/TournamentCardHorizontal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/cards/tournamentCards/TournamentCardHorizontal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/teamCards/TeamCardHorizontal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/cards/teamCards/TeamCardHorizontal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/teamCards/TeamCardVertical.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/userCards/AdminCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/cards/userCards/AdminCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/userCards/FieldPlayerCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/cards/userCards/FieldPlayerCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/carousel&amp;cards/userCards/PlayerCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/cards/userCards/PlayerCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/forms/ layout/FormContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/forms/ layout/FormContent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/forms/ layout/FormLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/forms/ layout/FormLayout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormDateField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormDateField.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormFileField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormFileField.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormImageField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormImageField.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/forms/validator/validator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/forms/validator/validator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormInputField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormInputField.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormPositionField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormPositionField.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormProgressBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormProgressBar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormSelectionButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormSelectionButton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormSpinnerField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormSpinnerField.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormSwitch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/forms/components/FormSwitch.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/headers/HeaderContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/headers/HeaderContainer.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/headers/HeaderEntity.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/headers/HeaderEntity.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/headers/HeaderForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/headers/HeaderForm.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/images/Picture.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/images/Picture.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/labels/FormLabel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/labels/FormLabel.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfilePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfileScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfileScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modify/steps/LocationStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modify/steps/LocationStep.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modify/steps/NameAndSurnameStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modify/steps/NameAndSurnameStep.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modify/steps/SportsAndRolesStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modify/steps/SportsAndRolesStep.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modify/steps/UsernameAndLogoStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modify/steps/UsernameAndLogoStep.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/onBoarding/steps/UsernameAndAvatarStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/onBoarding/steps/UsernameAndAvatarStep.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/onBoarding/steps/SportsAndRolesStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/onBoarding/steps/SportsAndRolesStep.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/TeamPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/TeamPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/TeamScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/TeamScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/field/FieldLineup.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/field/FieldLineup.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/field/FieldPaletteManager.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/field/FieldPaletteManager.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/steps/LogoStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/steps/LogoStep.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/steps/NameDescStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/steps/NameDescStep.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/steps/PositionStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/steps/PositionStep.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/steps/SportStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/steps/SportStep.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/tournaments/MyTournamentsSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/tournaments/MyTournamentsSection.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/tournaments/TournamentPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/tournaments/TournamentPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/tournaments/TournamentScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/tournaments/TournamentScreen.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/tournaments/steps/LogoAndRulesStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/tournaments/steps/LogoAndRulesStep.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/common.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/common.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/tournaments/steps/NameDescStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/tournaments/steps/NameDescStep.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/tournaments/steps/SportAndFormatStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/tournaments/steps/SportAndFormatStep.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/constants/BadgePaletteManager.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/constants/palette/BadgePaletteManager.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/constants/CardPalettesManager.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/constants/PaletteManager.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/constants/palette/PaletteManager.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/activities/activityService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/activities/activityService.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/services/mediaService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/media/mediaService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/teams/teamDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/teams/teamDTO.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/services/teams/teamService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/teams/teamService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/tournaments/tournamentDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/tournaments/tournamentDTO.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/tournaments/tournamentParticipationService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/tournaments/tournamentParticipationService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/tournaments/tournamentService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/tournaments/tournamentService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/users/userDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/users/userDTO.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/services/users/userService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/users/userService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/client/ActivityServiceClient.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,7 +130,7 @@
     <setting file="file://$PROJECT_DIR$/mobile-app/src/app/(auth)/login.tsx" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
@@ -130,6 +156,7 @@
     "JUnit.JwtSeriveTest.executor": "Run",
     "JUnit.JwtServiceTest.executor": "Run",
     "Maven.activity-service [clean,spring-boot:run].executor": "Run",
+    "Maven.activity-service [dependency:tree...].executor": "Run",
     "Maven.activity-service [dependency:tree].executor": "Run",
     "Repository.Attach.Annotations": "false",
     "Repository.Attach.JavaDocs": "false",
@@ -190,11 +217,11 @@
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\pagesComponents\teams\steps" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\common\cards" />
+      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\common\layout" />
+      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\common\Layout" />
+      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\common\buttons" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\common" />
-      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\services\media" />
-      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\common\forms\validator" />
-      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\pagesComponents\profile\onBoarding" />
-      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\pagesComponents\profile\onBoarding\misc" />
     </key>
     <key name="es6.move.members.recent.items">
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\components\pagesComponents\profile\ActivitiesSection.tsx" />
@@ -212,6 +239,7 @@
     <option name="myCommands">
       <command value="mvn dependency:tree" />
       <command value="mvn clean spring-boot:run" />
+      <command value="mvn dependency:tree &quot;-Dincludes=org.springframework.cloud:*&quot;" />
     </option>
   </component>
   <component name="RunDashboard">
@@ -229,7 +257,7 @@
     </option>
     <option name="openRunningConfigInTab" value="true" />
   </component>
-  <component name="RunManager" selected="Spring Boot.ActivityServiceApplication">
+  <component name="RunManager" selected="HTTP Request.TournamentApplication | #1">
     <configuration name="TournamentApplication | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/TournamentApplication.http" requestIdentifier="#1" runType="Run single request">
       <method v="2" />
     </configuration>
@@ -366,6 +394,7 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="HTTP Request.TournamentApplication | #1" />
       <item itemvalue="Spring Boot.ActivityServiceApplication" />
       <item itemvalue="Spring Boot.MediaServiceApplication" />
       <item itemvalue="Spring Boot.UserServiceApplication" />
@@ -468,6 +497,8 @@
       <workItem from="1791475118088" duration="3678000" />
       <workItem from="1791555124962" duration="6502000" />
       <workItem from="1791805666117" duration="12402000" />
+      <workItem from="1791892125663" duration="7902000" />
+      <workItem from="1791901416260" duration="4103000" />
     </task>
     <task id="LOCAL-00065" summary="Init Tournaments Section">
       <option name="closed" value="true" />

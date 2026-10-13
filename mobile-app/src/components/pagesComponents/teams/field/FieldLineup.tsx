@@ -4,9 +4,9 @@ import {Sport, UserInfo} from "@/src/services/users/userDTO";
 import {FORMATIONS_BY_SPORT} from "@/src/components/pagesComponents/teams/field/consts/FieldConst";
 import SportField from "@/src/components/pagesComponents/teams/field/SportField";
 import {Pressable, StyleSheet, Text, View} from "react-native";
-import FullPageModal from "@/src/components/common/FullPageModal";
-import PlayerCard from "@/src/components/common/carousel&cards/userCards/PlayerCard";
-import FieldPlayerCard from "@/src/components/common/carousel&cards/userCards/FieldPlayerCard";
+import FullPageModal from "@/src/components/common/layout/FullPageModal";
+import PlayerCard from "@/src/components/common/cards/userCards/PlayerCard";
+import FieldPlayerCard from "@/src/components/common/cards/userCards/FieldPlayerCard";
 import Sortable from "react-native-sortables";
 import {colors} from "@/src/constants/theme";
 import {TeamFormation} from "@/src/services/teams/teamDTO";
@@ -459,7 +459,7 @@ export default function FieldLineup({
                                     sport={sport}
                                     role={slot.role}
                                     roleLabel={slot.label}
-                                    onClick={
+                                    onPress={
                                         canModifyFormation
                                             ? () => openPlayerSelection(slot.role)
                                             : undefined
@@ -582,7 +582,7 @@ export default function FieldLineup({
                                     key={player.id}
                                     player={player}
                                     sport={sport}
-                                    onClick={() =>
+                                    onPress={() =>
                                         assignPlayerToSlot(
                                             String(player.id)
                                         )
@@ -691,7 +691,7 @@ export default function FieldLineup({
                                          * VISUALIZZAZIONE:
                                          * onClick non esiste -> profilo.
                                          */
-                                        onClick={
+                                        onPress={
                                             canModifyFormation
                                                 ? () => {}
                                                 : undefined

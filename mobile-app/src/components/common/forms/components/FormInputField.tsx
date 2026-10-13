@@ -2,7 +2,7 @@ import {useState} from "react";
 import {type StyleProp, StyleSheet, Text, TextInput, type TextInputProps, type TextStyle, View,} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import FormLabel from "@/src/components/common/labels/FormLabel";
-import {paletteVariants, type Variant} from "@/src/constants/PaletteManager";
+import {paletteVariants, type Variant} from "@/src/constants/palette/PaletteManager";
 import {colors} from "@/src/constants/theme";
 
 type FormInputFieldProps = TextInputProps & {

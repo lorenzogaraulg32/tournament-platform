@@ -3,16 +3,39 @@ import {ReactNode, useState} from "react";
 import InfoLabel from "@/src/components/common/labels/InfoLabel";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {colors} from "@/src/constants/theme";
-import FullPageModal from "@/src/components/common/FullPageModal";
+import FullPageModal from "@/src/components/common/layout/FullPageModal";
 
 type CollapsableSectionProps = {
     label: string,
     iconName: keyof typeof Ionicons.glyphMap,
-    children: ReactNode | ((isMod: boolean) => ReactNode),
+
+    /**
+     * Contenuto della sezione.
+     *
+     * ReactNode: contenuto che non dipende dalla modalità modifica.
+     * Funzione: riceve isMod e genera il contenuto appropriato.
+     */
+    children: ReactNode | ((isMod: boolean) => ReactNode);
+
+    // Abilita il pulsante per modificare il contenuto nella modale
     canMod?: boolean,
 }
 
-
+/**
+ * Componente che rappresenta una sezione espandibile,
+ * con possibilità di visualizzarne il contenuto in una modale.
+ *
+ * Gestisce internamente tre stati:
+ * - isExpanded: espansione della sezione.
+ * - isFullPageVisible: visibilità della modale.
+ * - isMod: modalità modifica della modale.
+ *
+ * Supporta il Render Props Pattern:
+ * - ReactNode: contenuto indipendente dalla modalità modifica.
+ * - Funzione: contenuto che riceve isMod e può adattarsi allo stato.
+ *
+ * La prop canMod determina se la modalità modifica è disponibile.
+ */
 export default function CollapsableSection({
                                                label,
                                                iconName,
@@ -34,6 +57,19 @@ export default function CollapsableSection({
         setMod(false);
     };
 
+
+    /**
+     * Restituisce il contenuto della sezione.
+     *
+     * children può essere:
+     * - ReactNode: contenuto statico, indipendente dalla modalità modifica.
+     * - Funzione: contenuto dinamico che riceve lo stato di modifica.
+     *
+     * Questa distinzione permette di utilizzare CollapsableSection
+     * sia per contenuti semplici sia per elenchi modificabili.
+     *
+     * @param modify indica se la modalità modifica è attiva.
+     */
     function renderContent(modify: boolean) {
         return typeof children === "function"
             ? children(modify)

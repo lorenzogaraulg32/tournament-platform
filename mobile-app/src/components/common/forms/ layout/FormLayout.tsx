@@ -1,8 +1,8 @@
 import {ReactNode} from "react";
-import PageLayout from "@/src/components/common/PageLayout";
+import PageLayout from "@/src/components/common/layout/PageLayout";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import {KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View} from "react-native";
-import {Variant} from "@/src/constants/PaletteManager";
+import {Variant} from "@/src/constants/palette/PaletteManager";
 
 type FormLayoutProps = {
     header: ReactNode

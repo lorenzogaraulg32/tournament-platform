@@ -1,6 +1,6 @@
 import FormPositionField from "@/src/components/common/forms/components/FormPositionField";
 import type { GeoLocation } from "@/src/services/common";
-import type { Variant } from "@/src/constants/PaletteManager";
+import type { Variant } from "@/src/constants/palette/PaletteManager";
 
 type PositionStepProps = {
     variant: Variant;

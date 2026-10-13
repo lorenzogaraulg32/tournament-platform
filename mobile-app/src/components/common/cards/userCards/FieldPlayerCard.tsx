@@ -1,16 +1,14 @@
 import {Pressable, StyleSheet, Text, View} from "react-native";
 import {UserInfo} from "@/src/services/users/userDTO";
 import {getRoleBySport, Sport} from "@/src/services/users/userDTO";
-import {
-    FieldCardBackground,
-    roleCardPalettes
-} from "@/src/constants/CardPalettesManager";
+
 import Picture from "@/src/components/common/images/Picture";
 import {
     FieldRole,
     fieldRoleCardPalettes
 } from "@/src/components/pagesComponents/teams/field/FieldPaletteManager";
 import {router, useSegments} from "expo-router";
+import {FieldCardBackground, roleCardPalettes} from "@/src/constants/palette/RolePalette";
 
 
 type FieldPlayerCardProps = {
@@ -18,13 +16,7 @@ type FieldPlayerCardProps = {
     sport: Sport;
     role?: FieldRole;
     roleLabel?: string;
-
-    /*
-     * Se presente, sostituisce il comportamento standard della card.
-     *
-     * Se assente, il click apre il profilo del giocatore.
-     */
-    onClick?: () => void;
+    onPress?: () => void;
 };
 
 
@@ -51,7 +43,7 @@ export default function FieldPlayerCard({
                                             sport,
                                             role,
                                             roleLabel,
-                                            onClick
+                                            onPress
                                         }: FieldPlayerCardProps) {
 
     const playerRole = getRoleBySport(player, sport);
@@ -67,29 +59,11 @@ export default function FieldPlayerCard({
     const segments: readonly string[] = useSegments();
 
 
-    function handlePress() {
+    function gotoDetailsPage() {
 
-        /*
-         * Se il componente padre specifica un comportamento,
-         * quello ha la precedenza.
-         *
-         * Esempio FieldLineup in modalità modifica:
-         * click -> selezione/sostituzione giocatore.
-         */
-        if (onClick) {
-            onClick();
-            return;
-        }
-
-
-        /*
-         * Comportamento standard:
-         * apertura del profilo del giocatore.
-         */
         const appIndex = segments.indexOf("(app)");
 
         const tab = segments[appIndex + 1];
-
 
         if (
             appIndex === -1 ||
@@ -112,7 +86,7 @@ export default function FieldPlayerCard({
     return (
 
         <Pressable
-            onPress={handlePress}
+            onPress={onPress ? onPress : gotoDetailsPage}
             accessibilityRole="button"
             accessibilityLabel={`Profilo di ${player.username}`}
             style={({pressed}) => [

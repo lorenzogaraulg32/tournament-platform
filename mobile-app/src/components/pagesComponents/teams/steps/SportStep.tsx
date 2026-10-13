@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View} from "react-native";
 import {Sport, SPORT_LABELS} from "@/src/services/users/userDTO";
 import {colors} from "@/src/constants/theme";
-import type {Variant} from "@/src/constants/PaletteManager";
+import type {Variant} from "@/src/constants/palette/PaletteManager";
 import FormLabel from "@/src/components/common/labels/FormLabel";
 import FormSelectionButton from "@/src/components/common/forms/components/FormSelectionButton";
 

@@ -3,15 +3,17 @@ import {UserInfo} from "@/src/services/users/userDTO";
 import {getRoleBySport, ROLE_LABELS, Sport} from "@/src/services/users/userDTO";
 import {router, useSegments} from "expo-router";
 
-import HorizontalCardContainer from "@/src/components/common/carousel&cards/HorizontalCardContainer";
-import {roleCardPalettes} from "@/src/constants/CardPalettesManager";
+import CardContainerHorizontal from "@/src/components/common/cards/CardContainerHorizontal";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import {roleCardPalettes} from "@/src/constants/palette/RolePalette";
 
 
 type PlayerCardProps = {
     player: UserInfo
     sport: Sport
-    modify?: () => void
-    onClick?: () => void
+    onPress?: () => void
+    icon?: keyof typeof Ionicons.glyphMap;
+    iconColor?: string;
 }
 
 const playerRoutes = {
@@ -27,28 +29,21 @@ function isTabName(value: string): value is keyof typeof playerRoutes {
 export default function PlayerCard({
                                        player,
                                        sport,
-                                       modify,
-                                       onClick,
+                                       onPress,
+                                       icon,
+                                       iconColor
                                    }: PlayerCardProps
 ) {
 
 
     const playerRole = getRoleBySport(player, sport);
-    const palette = roleCardPalettes[playerRole];
+    const rolePalette = roleCardPalettes[playerRole];
 
     const segments: readonly string[] = useSegments();
 
 
-    function handlePress() {
-        if (onClick) {
-            onClick()
-            return;
-        }
+    function gotoDetailsPage() {
 
-        if (modify) {
-            modify();
-            return;
-        }
 
         const appIndex = segments.indexOf("(app)");
         const tab = segments[appIndex + 1];
@@ -66,24 +61,19 @@ export default function PlayerCard({
     }
 
     return (
-        <HorizontalCardContainer
-            variant="user"
+        <CardContainerHorizontal
+            variant="player"
             role={playerRole}
-            style={styles.card}
-            onPress={handlePress}
-            action={modify ? {
-                onPress: modify,
-                icon: "create-outline",
-                color: "#FF7474"
-            } : undefined}
-            showArrow={!onClick}
+            onPress={onPress ? onPress : gotoDetailsPage}
+            icon={icon}
+            iconColor={iconColor}
         >
             <View style={styles.content}>
                 <Text
                     style={[
                         styles.name,
                         {
-                            color: palette.title,
+                            color: rolePalette.title,
                         },
                     ]}
                     numberOfLines={1}
@@ -96,8 +86,8 @@ export default function PlayerCard({
                     style={[
                         styles.roleBadge,
                         {
-                            backgroundColor: palette.badgeBackground,
-                            borderColor: palette.badgeBorder,
+                            backgroundColor: rolePalette.badgeBackground,
+                            borderColor: rolePalette.badgeBorder,
                         },
                     ]}
                 >
@@ -105,7 +95,7 @@ export default function PlayerCard({
                         style={[
                             styles.roleText,
                             {
-                                color: palette.badgeText,
+                                color: rolePalette.badgeText,
                             },
                         ]}
                         numberOfLines={1}
@@ -114,7 +104,7 @@ export default function PlayerCard({
                     </Text>
                 </View>
             </View>
-        </HorizontalCardContainer>
+        </CardContainerHorizontal>
     );
 }
 

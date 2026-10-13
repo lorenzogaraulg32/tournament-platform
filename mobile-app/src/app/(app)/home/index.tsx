@@ -1,5 +1,5 @@
 import {Alert, ScrollView, StyleSheet, View} from "react-native";
-import PageLayout from "@/src/components/common/PageLayout";
+import PageLayout from "@/src/components/common/layout/PageLayout";
 import {corners} from "@/src/constants/theme";
 import CodeInput from "@/src/components/pagesComponents/home/CodeInput";
 import {addPlayer} from "@/src/services/teams/teamService";

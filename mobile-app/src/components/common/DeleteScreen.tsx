@@ -4,7 +4,7 @@ import {SafeAreaView} from "react-native-safe-area-context";
 import {router, useFocusEffect} from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {normalizeApiRequestError} from "@/src/services/errorService";
-import {paletteVariants, type Variant,} from "@/src/constants/PaletteManager";
+import {paletteVariants, type Variant,} from "@/src/constants/palette/PaletteManager";
 import {colors} from "@/src/constants/theme";
 
 type DeleteScreenProps = {

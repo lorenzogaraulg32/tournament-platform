@@ -5,7 +5,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 import FormLabel from "@/src/components/common/labels/FormLabel";
 import {colors} from "@/src/constants/theme";
-import {paletteVariants, Variant} from "@/src/constants/PaletteManager";
+import {paletteVariants, Variant} from "@/src/constants/palette/PaletteManager";
 import {formatDateForBackend, parseDateForPicker} from "@/src/constants/helpers/parsingHelper";
 import {LocalDateString} from "@/src/services/common";
 

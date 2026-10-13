@@ -1,6 +1,6 @@
 import {ActivityResponse} from "@/src/services/activities/ActivityDTO";
-import {paletteVariants, Variant} from "@/src/constants/PaletteManager";
-import {StyleSheet, Text, View} from "react-native";
+import {paletteVariants, Variant} from "@/src/constants/palette/PaletteManager";
+import {ScrollView, StyleSheet, Text, View} from "react-native";
 import InfoLabel from "@/src/components/common/labels/InfoLabel";
 import { colors } from "@/src/constants/theme";
 
@@ -21,7 +21,7 @@ export function ActivitiesSection({
     return (
         <View>
             <InfoLabel text={"Attività"} labelIconName={"time-outline"}/>
-            <View style={[
+            <ScrollView style={[
                 styles.activitiesContainer,
                 {
                     backgroundColor: palette.defaultColorBK
@@ -30,14 +30,14 @@ export function ActivitiesSection({
             }>
                 {activities.length > 0 ? activities.map(activity => {
                         return (
-                            <View style={styles.activityRow}>
+                            <View style={styles.activityRow} key={activity.id}>
                                 <Text style={styles.text}>{activity.issuedAt}</Text>
                                 <Text style={styles.text} >{activity.label}</Text>
                             </View>
                         )
                     }) :
                     <Text style={styles.text} >Nessuna attività</Text>}
-            </View>
+            </ScrollView>
         </View>
     )
 }

@@ -3,7 +3,7 @@ import {StyleSheet, Text, View} from "react-native";
 import {FontAwesome6} from "@expo/vector-icons";
 import {TournamentDetails} from "@/src/services/tournaments/tournamentDTO";
 import {colors, corners} from "@/src/constants/theme";
-import TournamentCardHorizontal from "@/src/components/common/carousel&cards/TournamentCardHorizontal";
+import TournamentCardHorizontal from "@/src/components/common/cards/tournamentCards/TournamentCardHorizontal";
 
 type TournamentSectionProps = {
     title: string;

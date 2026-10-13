@@ -1,18 +1,19 @@
 import {StyleSheet, Text, View} from "react-native";
 import {router, useSegments} from "expo-router";
 
-import HorizontalCardContainer, {
-    authorityCardPalettes,
-    TeamAuthority
-} from "@/src/components/common/carousel&cards/HorizontalCardContainer";
-import { UserInfo } from "@/src/services/users/userDTO";
 
+import {UserInfo} from "@/src/services/users/userDTO";
+import {Authority, authorityCardPalettes} from "@/src/constants/palette/CardPalettesManager";
+import CardContainerHorizontal from "@/src/components/common/cards/CardContainerHorizontal";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 
 type AdminsCardProps = {
     admin: UserInfo;
     isOwner: boolean;
-    modify?: () => void
+    onPress?: () => void
+    icon?: keyof typeof Ionicons.glyphMap;
+    iconColor?: string;
 };
 
 const adminRoutes = {
@@ -26,22 +27,19 @@ function isTabName(value: string): value is keyof typeof adminRoutes {
 }
 
 export default function AdminCard({
-                                       admin,
-                                       isOwner,
-                                       modify
-                                   }: AdminsCardProps) {
-    const authority: TeamAuthority = isOwner ? "OWNER" : "ADMIN";
+                                      admin,
+                                      isOwner,
+                                      onPress,
+                                      icon,
+                                      iconColor
+                                  }: AdminsCardProps) {
+    const authority: Authority = isOwner ? "OWNER" : "ADMIN";
     const palette = authorityCardPalettes[authority];
 
     const segments: readonly string[] = useSegments();
 
 
-    function handlePress() {
-
-        if (modify) {
-            modify();
-            return;
-        }
+    function gotoDetailsPage() {
 
         const appIndex = segments.indexOf("(app)");
         const tab = segments[appIndex + 1];
@@ -59,17 +57,12 @@ export default function AdminCard({
     }
 
     return (
-        <HorizontalCardContainer
+        <CardContainerHorizontal
             variant="authority"
             authority={authority}
-            style={styles.card}
-            onPress={handlePress}
-            action={modify ? {
-                onPress: modify,
-                icon: "create-outline",
-                color: "#FF7474"
-            } : undefined}
-            showArrow
+            onPress={onPress ? onPress : gotoDetailsPage}
+            icon={icon}
+            iconColor={iconColor}
         >
             <View style={styles.content}>
                 <Text
@@ -109,7 +102,7 @@ export default function AdminCard({
                     </Text>
                 </View>
             </View>
-        </HorizontalCardContainer>
+        </CardContainerHorizontal>
     );
 }
 
@@ -120,7 +113,6 @@ const styles = StyleSheet.create({
         height: 46,
         flexDirection: "row",
         alignItems: "center",
-
         paddingHorizontal: 12,
     },
 

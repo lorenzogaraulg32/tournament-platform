@@ -5,7 +5,7 @@ import * as Location from "expo-location";
 import FormLabel from "@/src/components/common/labels/FormLabel";
 import {colors} from "@/src/constants/theme";
 import {GeoLocation} from "@/src/services/common";
-import {paletteVariants, Variant} from "@/src/constants/PaletteManager";
+import {paletteVariants, Variant} from "@/src/constants/palette/PaletteManager";
 
 type LocationSuggestion = {
     placeId: string;

@@ -2,16 +2,12 @@ import {StyleSheet, Text, View} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {router, useSegments} from "expo-router";
 import Picture from "@/src/components/common/images/Picture";
-import HorizontalCardContainer, {CardAction} from "@/src/components/common/carousel&cards/HorizontalCardContainer";
-import {teamCardColors} from "@/src/constants/CardPalettesManager";
+import CardContainerHorizontal from "@/src/components/common/cards/CardContainerHorizontal";
+import {teamCardColors} from "@/src/constants/palette/CardPalettesManager";
 import {SPORT_LABELS} from "@/src/services/sportDTO";
-import {BadgePalette, rolePaletteMapper} from "@/src/constants/BadgePaletteManager";
+import {BadgePalette, rolePaletteMapper} from "@/src/constants/palette/BadgePaletteManager";
 import {TeamDetails} from "@/src/services/teams/teamDTO";
 
-type TeamCardSmallProps = {
-    teamDetails: TeamDetails
-    action?: CardAction;
-}
 
 const teamRoutes = {
     teams: "/(app)/teams/[teamId]",
@@ -24,18 +20,32 @@ function isTabName(value: string): value is keyof typeof teamRoutes {
 }
 
 
+type TeamCardSmallProps = {
+    teamDetails: TeamDetails
+
+    // Funzione di pressione, se non è specificata il comportamento di default è il redirect al dettaglio del team
+    onPress?: () => void;
+
+    //Queste proprietà vengono poi passate al container, vengono modificate dall'esterno
+    icon?: keyof typeof Ionicons.glyphMap;
+    iconColor?: string;
+}
+
 export default function TeamCardHorizontal({
                                                teamDetails,
-                                               action
+                                               onPress,
+                                               icon,
+                                               iconColor,
                                            }: TeamCardSmallProps) {
 
-
+    // useSegments() è un hook di react che ci permette di conoscere la posizione attuale dell'utente nel sistema di navigazione
     const segments: readonly string[] = useSegments();
 
-    const palette: BadgePalette = rolePaletteMapper[teamDetails.sport]
+    const rolePalette: BadgePalette = rolePaletteMapper[teamDetails.sport]
     const sportLabel = SPORT_LABELS[teamDetails.sport]
 
-    function handlePress() {
+    // Pressione standard della card è il redirect alla pagina di dettaglio
+    function gotoDetailsPage() {
         const appIndex = segments.indexOf("(app)");
         const tab = segments[appIndex + 1];
 
@@ -53,11 +63,11 @@ export default function TeamCardHorizontal({
 
 
     return (
-        <HorizontalCardContainer
+        <CardContainerHorizontal
             variant={"team"}
-            onPress={handlePress}
-            action={action}
-            showArrow
+            onPress={onPress ? onPress : gotoDetailsPage}
+            icon={icon}
+            iconColor={iconColor}
         >
 
             <View style={styles.logoContainer}>
@@ -90,15 +100,15 @@ export default function TeamCardHorizontal({
 
             <View style={[styles.sportBadge,
                 {
-                    backgroundColor: palette?.backgroundColor,
-                    borderColor: palette?.borderColor
+                    backgroundColor: rolePalette.backgroundColor,
+                    borderColor: rolePalette.borderColor
                 }]}>
                 <Text
-                    style={[styles.sportBadgeText, {color: palette?.textColor}]}>{sportLabel}</Text>
+                    style={[styles.sportBadgeText, {color: rolePalette.textColor}]}>{sportLabel}</Text>
             </View>
 
 
-        </HorizontalCardContainer>
+        </CardContainerHorizontal>
     );
 }
 

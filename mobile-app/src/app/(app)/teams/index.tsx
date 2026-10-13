@@ -1,10 +1,10 @@
-import PageLayout from "@/src/components/common/PageLayout";
+import PageLayout from "@/src/components/common/layout/PageLayout";
 import {StyleSheet} from "react-native";
 import {useState} from "react";
 import MyTeams from "@/src/app/(app)/teams/myTeams";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import HeaderPage from "@/src/components/common/headers/HeaderPage";
-import TabsContainer from "@/src/components/common/TabsContainer";
+import TabsContainer from "@/src/components/common/buttons/TabsContainer";
 import FindTeams from "@/src/app/(app)/teams/findTeams";
 
 const TEAM_TABS = [

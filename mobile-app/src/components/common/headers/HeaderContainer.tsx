@@ -1,6 +1,6 @@
 import {ImageBackground, StyleSheet} from "react-native";
 import {ReactNode} from "react";
-import {type Variant, paletteVariants} from "@/src/constants/PaletteManager";
+import {type Variant, paletteVariants} from "@/src/constants/palette/PaletteManager";
 
 type PageHeaderProps = {
     variant: Variant;

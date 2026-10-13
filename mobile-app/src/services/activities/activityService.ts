@@ -6,24 +6,25 @@ import {normalizeApiRequestError, printApiRequestError} from "@/src/services/err
 
 export async function postActivity(request: ActivityRequest) {
 
-
-    const response = await authenticatedFetch(
-        API_URL + "/activities",
-        {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-            },
-            body: JSON.stringify(request)
-        }
-    )
-
-    if (!response.ok) {
-        //al momento le perdite dati in questo contesto sono consentite,
-        //se una richiesta di questo tipo fallisce non è un problema
-        const apiError = normalizeApiRequestError(response);
+    try {
+        await authenticatedFetch(
+            API_URL + "/activities",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                },
+                body: JSON.stringify(request)
+            }
+        )
+        console.log("Attività postata correttamente")
+    } catch (error) {
+        const apiError = normalizeApiRequestError(error);
         printApiRequestError(apiError)
+        console.log("Errore nel post attività")
     }
+
 }
 
 

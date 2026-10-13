@@ -1,11 +1,11 @@
 import {Alert, ScrollView, StyleSheet, Text, View} from "react-native";
-import PageLayout from "@/src/components/common/PageLayout";
+import PageLayout from "@/src/components/common/layout/PageLayout";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import HeaderEntity from "@/src/components/common/headers/HeaderEntity";
-import CollapsableSection from "@/src/components/common/CollapsableSection";
-import CardListContainer from "@/src/components/common/carousel&cards/CardListContainer";
-import PlayerCard from "@/src/components/common/carousel&cards/userCards/PlayerCard";
-import AdminCard from "@/src/components/common/carousel&cards/userCards/AdminCard";
+import CollapsableSection from "@/src/components/common/layout/CollapsableSection";
+import StandardCardList from "@/src/components/common/layout/StandardCardList";
+import PlayerCard from "@/src/components/common/cards/userCards/PlayerCard";
+import AdminCard from "@/src/components/common/cards/userCards/AdminCard";
 import {colors} from "@/src/constants/theme";
 import {TeamDetails, TeamFormation, TeamUpdateRequest} from "@/src/services/teams/teamDTO";
 import {fetchUser} from "@/src/services/users/userService";
@@ -15,7 +15,7 @@ import {editTeam, removeTeamAdmin, removeTeamPlayer, updateTeamFormation} from "
 import showAlert from "@/src/components/common/errors/Alert";
 import {useToast} from "@/src/components/common/Toast/ToastProvider";
 import FieldLineup from "@/src/components/pagesComponents/teams/field/FieldLineup";
-import FullPageModal from "@/src/components/common/FullPageModal";
+import FullPageModal from "@/src/components/common/layout/FullPageModal";
 import {Sport, UserInfo} from "@/src/services/users/userDTO";
 
 
@@ -387,17 +387,17 @@ export default function TeamPage({
                             }
                             onFormationSave={onFormationSave}
                             onSportChange={onSportChange}
-                            />
+                        />
                     </View>
 
-
+                    {/*todo: Inserire pulsante per abilitare modifica*/}
                     <FullPageModal
                         visible={isPlayerModalVisible}
                         onClose={() => setPlayerModalVisible(false)}
                         label="Gestisci giocatori"
                         iconName="people-outline"
                     >
-                        <CardListContainer
+                        <StandardCardList
                             items={(teamPlayers ?? [])
                                 .filter((player) =>
                                     canRemovePlayer(String(player.id))
@@ -407,11 +407,11 @@ export default function TeamPage({
                                         key={player.id}
                                         player={player}
                                         sport={team.sport}
-                                        modify={() => {
-                                            void removePlayerFromTeam(
-                                                String(player.id)
-                                            );
+                                        onPress={() => {
+                                            void removePlayerFromTeam(String(player.id));
                                         }}
+                                        icon={"exit-outline"}
+                                        iconColor={"#FF7474"}
                                     />
                                 ))}
                             emptyMsg="Nessun giocatore che puoi rimuovere"
@@ -430,7 +430,7 @@ export default function TeamPage({
                             const canRemove = isMod && isTeamOwner;
 
                             return (
-                                <CardListContainer
+                                <StandardCardList
                                     items={(teamAdmins ?? [])
                                         .filter((admin) =>
                                             !canRemove ||
@@ -443,15 +443,15 @@ export default function TeamPage({
                                                 isOwner={
                                                     String(team.creatorId) === String(admin.id)
                                                 }
-                                                modify={
+                                                onPress={
                                                     canRemove
                                                         ? () => {
-                                                            void removeAdminFromTeam(
-                                                                String(admin.id)
-                                                            );
+                                                            void removeAdminFromTeam(String(admin.id));
                                                         }
                                                         : undefined
                                                 }
+                                                icon={canRemove ? "exit-outline" : undefined}
+                                                iconColor={canRemove ? "#FF7474" : undefined}
                                             />
                                         ))}
                                     emptyMsg={

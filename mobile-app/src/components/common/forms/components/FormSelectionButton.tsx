@@ -1,5 +1,5 @@
 import {Pressable, StyleSheet, Text} from "react-native";
-import {paletteVariants, type Variant} from "@/src/constants/PaletteManager";
+import {paletteVariants, type Variant} from "@/src/constants/palette/PaletteManager";
 
 type FormSelectionButtonProps = {
     label: string;

@@ -1,11 +1,11 @@
 import {Pressable, ScrollView, StyleSheet} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-import {paletteVariants, type Variant,} from "@/src/constants/PaletteManager";
+import {paletteVariants, type Variant,} from "@/src/constants/palette/PaletteManager";
 import type {UserInfo} from "@/src/services/users/userDTO";
 import type {TeamDetails} from "@/src/services/teams/teamDTO";
 
-import PageLayout from "@/src/components/common/PageLayout";
+import PageLayout from "@/src/components/common/layout/PageLayout";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import HeaderEntity from "@/src/components/common/headers/HeaderEntity";
 import LoadingSection from "@/src/components/common/loading/LoadingSection";
@@ -13,6 +13,9 @@ import ErrorSection from "@/src/components/common/errors/ErrorSection";
 import {AuthInfo} from "@/src/services/users/authService";
 import {ActivityResponse} from "@/src/services/activities/ActivityDTO";
 import {ActivitiesSection} from "@/src/components/common/ActivitiesSection";
+import StandardCardList from "@/src/components/common/layout/StandardCardList";
+import TeamCardHorizontal from "@/src/components/common/cards/teamCards/TeamCardHorizontal";
+import CollapsableSection from "@/src/components/common/layout/CollapsableSection";
 
 type ProfilePageProps = {
     variant: Variant;
@@ -119,47 +122,56 @@ export default function ProfilePage({
 
                 <ActivitiesSection
                     variant={"profile"}
-                    activities={activities}
-                ></ActivitiesSection>
+                    activities={activities}/>
+
+                {/*La sezione delle squadre è visibile solo se non si è nel proprio profilo*/}
+                {!isOwnProfile &&
+                    <CollapsableSection
+                        label="Squadre"
+                        iconName="shirt-outline"
+                    >
+                        <StandardCardList
+                            items={(userTeams ?? [])
+                                .map(team => {
+                                    return (
+                                        <TeamCardHorizontal
+                                            key={team.id}
+                                            teamDetails={team}
+                                        />
+                                    )
+                                })}
+                            isLoading={false}
+                            error={null}
+                            emptyMsg={"Questo utente non fa parte di nessuna squadra"}
+                            orientation="vertical"
+                        />
+                    </CollapsableSection>}
 
 
-                {/* <CollapsableSection
-                    label="Squadre"
-                    iconName="shirt-outline"
-                    canMod={isOwnProfile}
-                >
-                    {(isMod) => {
-                        const canLeave = isMod && isOwnProfile
-                        return (
-                            <CardListContainer
-                                items={(userTeams ?? [])
-                                    .filter(team => !isMod || canLeaveTeam(team))
-                                    .map(team => {
-
-                                        return (
-                                            <TeamCardHorizontal
-                                                key={team.id}
-                                                teamDetails={team}
-                                                onLeave={
-                                                    canLeave ? () => void leaveTeam(team) : undefined
-                                                }
-                                            />
-                                        )
-                                    })}
-                                isLoading={false}
-                                error={null}
-                                emptyMsg={
-                                    isMod ? "Nessuna squadra che puoi abbandonare"
-                                        : "Questo utente non fa parte di nessuna squadra"
-                                }
-                                orientation="vertical"
-                            />
-                        )
-                    }
-                    }
-
-                </CollapsableSection>
-                */}
+                {/*La sezione dei tornei è visibile solo se non si è nel proprio profilo
+                                todo stessa cosa delle squadre*/}
+                {!isOwnProfile &&
+                    <CollapsableSection
+                        label="Tornei "
+                        iconName="shirt-outline"
+                    >
+                        <StandardCardList
+                            items={(userTeams ?? [])
+                                .map(team => {
+                                    return (
+                                        <TeamCardHorizontal
+                                            key={team.id}
+                                            teamDetails={team}
+                                        />
+                                    )
+                                })}
+                            isLoading={false}
+                            error={null}
+                            emptyMsg={"Questo utente non fa parte di nessuna squadra"}
+                            orientation="vertical"
+                        />
+                    </CollapsableSection>
+                }
             </ScrollView>
 
             {isOwnProfile && (

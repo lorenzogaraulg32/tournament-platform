@@ -11,7 +11,7 @@ import {
     type SportRole,
     type UserSportRole,
 } from "@/src/services/users/userDTO";
-import {Variant} from "@/src/constants/PaletteManager";
+import {Variant} from "@/src/constants/palette/PaletteManager";
 import FormSelectionButton from "@/src/components/common/forms/components/FormSelectionButton";
 
 type SportsAndRolesStepProps = {

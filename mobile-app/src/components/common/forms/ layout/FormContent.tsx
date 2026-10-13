@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View} from "react-native";
 import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
 import {ReactNode} from "react";
-import {Variant} from "@/src/constants/PaletteManager";
+import {Variant} from "@/src/constants/palette/PaletteManager";
 
 
 type FormContentProps = {
