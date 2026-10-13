@@ -49,6 +49,16 @@ export function isAfter(
     return end >= start;
 }
 
+export function formatLocalDateTime(
+    date: string | null | undefined
+): string {
+    if (!date) return "";
+
+    const [datePart, timePart] = date.split("T");
+    const [year, month, day] = datePart.split("-");
+
+    return `${day}/${month}/${year} ${timePart ?? ""}`.trim();
+}
 
 export function getLocalDateTime(): string {
     const now = new Date();

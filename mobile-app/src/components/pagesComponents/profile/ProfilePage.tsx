@@ -2,7 +2,6 @@ import {Pressable, ScrollView, StyleSheet} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import {paletteVariants, type Variant,} from "@/src/constants/palette/PaletteManager";
-import type {UserInfo} from "@/src/services/users/userDTO";
 import type {TeamDetails} from "@/src/services/teams/teamDTO";
 
 import PageLayout from "@/src/components/common/layout/PageLayout";
@@ -10,19 +9,16 @@ import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
 import HeaderEntity from "@/src/components/common/headers/HeaderEntity";
 import LoadingSection from "@/src/components/common/loading/LoadingSection";
 import ErrorSection from "@/src/components/common/errors/ErrorSection";
-import {AuthInfo} from "@/src/services/users/authService";
-import {ActivityResponse} from "@/src/services/activities/ActivityDTO";
 import {ActivitiesSection} from "@/src/components/common/ActivitiesSection";
 import StandardCardList from "@/src/components/common/layout/StandardCardList";
 import TeamCardHorizontal from "@/src/components/common/cards/teamCards/TeamCardHorizontal";
 import CollapsableSection from "@/src/components/common/layout/CollapsableSection";
+import {ProfileData} from "@/src/components/pagesComponents/profile/ProfileScreen";
+import TournamentCardHorizontal from "@/src/components/common/cards/tournamentCards/TournamentCardHorizontal";
 
 type ProfilePageProps = {
     variant: Variant;
-    user?: UserInfo;
-    auth?: AuthInfo
-    activities: ActivityResponse[],
-    userTeams?: TeamDetails[];
+    profile: ProfileData | null;
     isOwnProfile?: boolean;
     onLogout: () => void;
     loading: boolean,
@@ -35,17 +31,12 @@ type ProfilePageProps = {
 
 export default function ProfilePage({
                                         variant,
-                                        user,
-                                        auth,
-                                        activities,
-                                        userTeams,
+                                        profile,
                                         isOwnProfile,
                                         onLogout,
                                         loading,
                                         error,
                                         onErrorRetry,
-                                        canLeaveTeam,
-                                        leaveTeam
                                     }: ProfilePageProps) {
     const {palette} = paletteVariants[variant];
 
@@ -92,7 +83,7 @@ export default function ProfilePage({
         )
     }
 
-    if (!user) {
+    if (!profile) {
         return null;
     }
 
@@ -102,11 +93,11 @@ export default function ProfilePage({
                 <HeaderContainer variant={variant}>
                     <HeaderEntity
                         variant={variant}
-                        name={`${user.firstName} ${user.lastName}`}
-                        image={user.avatar}
-                        position={user.location?.label}
+                        name={`${profile.user.firstName} ${profile.user.lastName}`}
+                        image={profile.user.avatar}
+                        position={profile.user.location?.label}
                         style={{paddingTop: 45}}
-                        email={auth?.email}
+                        email={profile.auth?.email}
                     />
                 </HeaderContainer>
             }
@@ -118,20 +109,18 @@ export default function ProfilePage({
                 contentContainerStyle={styles.content}
                 showsVerticalScrollIndicator={false}
             >
-
-
                 <ActivitiesSection
                     variant={"profile"}
-                    activities={activities}/>
+                    activities={profile.activities}/>
 
-                {/*La sezione delle squadre è visibile solo se non si è nel proprio profilo*/}
+                {/* La sezione delle squadre è visibile solo se non si è nel proprio profilo */}
                 {!isOwnProfile &&
                     <CollapsableSection
                         label="Squadre"
                         iconName="shirt-outline"
                     >
                         <StandardCardList
-                            items={(userTeams ?? [])
+                            items={(profile.teams ?? [])
                                 .map(team => {
                                     return (
                                         <TeamCardHorizontal
@@ -148,26 +137,25 @@ export default function ProfilePage({
                     </CollapsableSection>}
 
 
-                {/*La sezione dei tornei è visibile solo se non si è nel proprio profilo
-                                todo stessa cosa delle squadre*/}
+                {/* La sezione dei tornei è visibile solo se non si è nel proprio profilo */}
                 {!isOwnProfile &&
                     <CollapsableSection
                         label="Tornei "
                         iconName="shirt-outline"
                     >
                         <StandardCardList
-                            items={(userTeams ?? [])
-                                .map(team => {
+                            items={(profile.tournaments ?? [])
+                                .map(tournament => {
                                     return (
-                                        <TeamCardHorizontal
-                                            key={team.id}
-                                            teamDetails={team}
+                                        <TournamentCardHorizontal
+                                            key={tournament.id}
+                                            tournament={tournament}
                                         />
                                     )
                                 })}
                             isLoading={false}
                             error={null}
-                            emptyMsg={"Questo utente non fa parte di nessuna squadra"}
+                            emptyMsg={"Questo utente non partecipa a nessun torneo"}
                             orientation="vertical"
                         />
                     </CollapsableSection>
@@ -204,8 +192,9 @@ const styles = StyleSheet.create({
         marginTop: 10,
         flex: 1,
     },
+
     content: {
-        gap: 10,
+        gap: 20,
         paddingBottom: 88,
     },
     logoutButton: {

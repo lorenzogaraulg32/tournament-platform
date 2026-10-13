@@ -2,17 +2,12 @@ import {StyleSheet, Text, View} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Picture from "@/src/components/common/images/Picture";
 import CardContainerHorizontal from "@/src/components/common/cards/CardContainerHorizontal";
-import {TournamentStatus} from "@/src/services/tournaments/tournamentDTO";
+import {TournamentDetails, TournamentStatus} from "@/src/services/tournaments/tournamentDTO";
 import {router, useSegments} from "expo-router";
 import {tournamentCardColors} from "@/src/constants/palette/CardPalettesManager";
-import {Media} from "@/src/services/media/mediaService";
 
 type TournamentCardHorizontalProps = {
-    id: number
-    name: string;
-    teamsCount: number;
-    logo: Media | null;
-    status: TournamentStatus;
+    tournament: TournamentDetails
 
     // Funzione di pressione, se non è specificata il comportamento di default è il redirect al dettaglio del team
     onPress?: () => void;
@@ -36,11 +31,7 @@ function isTabName(
 
 
 export default function TournamentCardHorizontal({
-                                                     id,
-                                                     logo,
-                                                     name,
-                                                     teamsCount,
-                                                     status,
+                                                     tournament,
                                                      onPress,
                                                      icon,
                                                      iconColor,
@@ -64,7 +55,7 @@ export default function TournamentCardHorizontal({
         router.push({
             pathname: tournamentRoutes[tab],
             params: {
-                tournamentId: String(id),
+                tournamentId: String(tournament.id),
             },
         });
     }
@@ -80,7 +71,7 @@ export default function TournamentCardHorizontal({
         >
 
             <View style={styles.logoContainer}>
-                <Picture variant={"tournaments"} style={styles.logo} image={logo}/>
+                <Picture variant={"tournaments"} style={styles.logo} image={tournament.logo}/>
             </View>
 
             <View style={styles.tournamentInfo}>
@@ -90,7 +81,7 @@ export default function TournamentCardHorizontal({
                         numberOfLines={1}
                         ellipsizeMode="tail"
                     >
-                        {name}
+                        {tournament.name}
                     </Text>
 
                     <View style={styles.teamsRow}>
@@ -101,13 +92,13 @@ export default function TournamentCardHorizontal({
                         />
 
                         <Text style={styles.teamsText}>
-                            {teamsCount}{" "}
-                            {teamsCount === 1 ? "squadra" : "squadre"}
+                            {tournament.registeredTeamIds?.length}{" "}
+                            {tournament.registeredTeamIds?.length === 1 ? "squadra" : "squadre"}
                         </Text>
                     </View>
                 </View>
 
-                <TournamentStatusBadge status={status as TournamentStatus}/>
+                <TournamentStatusBadge status={tournament.status}/>
             </View>
 
 

@@ -4,6 +4,7 @@ import {FontAwesome6} from "@expo/vector-icons";
 import {TournamentDetails} from "@/src/services/tournaments/tournamentDTO";
 import {colors, corners} from "@/src/constants/theme";
 import TournamentCardHorizontal from "@/src/components/common/cards/tournamentCards/TournamentCardHorizontal";
+import StandardCardList from "@/src/components/common/layout/StandardCardList";
 
 type TournamentSectionProps = {
     title: string;
@@ -48,16 +49,15 @@ export function MyTournamentsSection({
                     variant="warning"
                 />
             ) : (
-                tournaments.map((tournament) => (
-                    <TournamentCardHorizontal
-                        key={tournament.id}
-                        id={Number(tournament.id)}
-                        name={tournament.name}
-                        teamsCount={tournament.registeredTeamIds ? tournament.registeredTeamIds.length : 0}
-                        status={tournament.status}
-                        logo={tournament.logo}
-                    />
-                ))
+                <StandardCardList
+                    items={tournaments.map((tournament) => (
+                        <TournamentCardHorizontal
+                            key={tournament.id}
+                            tournament={tournament}
+                        />))}
+                    emptyMsg="Nessuna squadra"
+                    orientation={"vertical"}
+                />
             )}
         </View>
     );

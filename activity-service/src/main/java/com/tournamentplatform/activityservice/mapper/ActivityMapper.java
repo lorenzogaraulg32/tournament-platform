@@ -119,9 +119,7 @@ public class ActivityMapper {
                     + name(subject)
                     + contextSuffix(context);
 
-            case MODIFIED_PROFILE -> name(actor) + " ha modificato il profilo di "
-                    + name(subject);
-
+            case MODIFIED_PROFILE -> name(actor) + " ha modificato il suo profilo";
         };
 
         String details = activity.getDetails();

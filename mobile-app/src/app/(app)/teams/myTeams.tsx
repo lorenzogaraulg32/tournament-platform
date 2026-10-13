@@ -9,6 +9,7 @@ import ErrorSection from "@/src/components/common/errors/ErrorSection";
 import {TeamDetails} from "@/src/services/teams/teamDTO";
 import {fetchUserTeams} from "@/src/services/teams/teamService";
 import {loadCurrentUserId} from "@/src/services/users/authService";
+import StandardCardList from "@/src/components/common/layout/StandardCardList";
 
 
 /**
@@ -64,45 +65,36 @@ export default function MyTeams() {
     );
 
 
-    function renderUserTeams() {
-
-        if (isLoading) {
-            return (
-                <LoadingSection text={"Caricamento squadre..."}/>
-            )
-        }
-
-        if (error) {
-            return (
-                <ErrorSection text={error} onRetry={loadUserTeams} variant={"error"}/>
-            )
-        }
-
-        if (userTeams.length === 0) {
-            return (
-                <ErrorSection text={"Entra in una squadra con il codice invito"} variant={"warning"}/>
-            )
-        }
-
-        return userTeams.map((team) => (
-
-            <TeamCardHorizontal
-                key={team.id}
-                teamDetails={team}
-            />
-        ));
-    }
-
     return (
         <View style={styles.myTeamsContent}>
-            <ScrollView
-                style={styles.scroll}
-                contentContainerStyle={styles.content}
-                showsVerticalScrollIndicator
-                persistentScrollbar
-            >
-                {renderUserTeams()}
-            </ScrollView>
+
+            {isLoading ? (
+                <LoadingSection text="Caricamento squadre..." />
+            ) : error ? (
+                <ErrorSection
+                    text={error}
+                    onRetry={loadUserTeams}
+                    variant="error"
+                />
+            ) : userTeams.length === 0 ? (
+                <ErrorSection
+                    text="Entra in una squadra con il codice invito"
+                    variant="warning"
+                />
+            ) : (
+                <StandardCardList
+                    style={styles.scroll}
+                    items={userTeams.map(team => (
+                        <TeamCardHorizontal
+                            key={team.id}
+                            teamDetails={team}
+                        />
+                    ))}
+                    emptyMsg="Nessuna squadra"
+                    orientation={"vertical"}
+                />
+            )}
+
             <ButtonBackground
                 text="Crea nuova squadra"
                 onPress={() => router.push("/teams/create")}
@@ -110,7 +102,7 @@ export default function MyTeams() {
             />
 
         </View>
-    )
+    );
 }
 
 

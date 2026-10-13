@@ -15,11 +15,14 @@ import {useToast} from "@/src/components/common/Toast/ToastProvider";
 import showAlert from "@/src/components/common/errors/Alert";
 import {fetchActivities} from "@/src/services/activities/activityService";
 import {ActivityResponse, EntityType} from "@/src/services/activities/ActivityDTO";
+import {TournamentDetails} from "@/src/services/tournaments/tournamentDTO";
 
-type ProfileData = {
+export type ProfileData = {
     user: UserInfo;
     auth: AuthInfo;
     teams: TeamDetails[];
+    activities: ActivityResponse[];
+    tournaments: TournamentDetails[];
     isOwnProfile: boolean;
 };
 
@@ -34,17 +37,19 @@ export default function ProfileScreen() {
 
 
     const [profile, setProfile] = useState<ProfileData | null>(null);
-    const [activities, setActivities] = useState<ActivityResponse[]>([])
+
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState("");
 
+    /*todo: fetch tornei dell'utente
+       * In base alle squadre dell'utente recuperiamo i tornei a cui sono iscritte le squadre
+     * */
     const loadProfile = useCallback(async () => {
         const requestId = ++requestIdRefProfile.current;
 
         setIsLoading(true);
         setError("");
         setProfile(null);
-        setActivities([]);
 
         try {
             const currentUserId = await loadCurrentUserId();
@@ -76,12 +81,22 @@ export default function ProfileScreen() {
                 user,
                 auth,
                 teams,
-                isOwnProfile,
+                tournaments: [],
+                activities: [],
+                isOwnProfile
             });
 
             try {
                 const activities = await fetchActivities(userId, EntityType.USER)
-                setActivities(activities);
+                setProfile(prev => {
+                    if (prev === null) return null;
+
+                    return {
+                        ...prev,
+                        activities: activities,
+                    }
+                });
+
             } catch (activitiesError) {
                 if (requestId !== requestIdRefProfile.current) {
                     return;
@@ -211,10 +226,7 @@ export default function ProfileScreen() {
 
             <ProfilePage
                 variant="profile"
-                user={profile?.user}
-                auth={profile?.auth}
-                activities={activities}
-                userTeams={profile?.teams}
+                profile = {profile}
                 isOwnProfile={profile?.isOwnProfile}
                 onLogout={handleLogout}
                 error={error}

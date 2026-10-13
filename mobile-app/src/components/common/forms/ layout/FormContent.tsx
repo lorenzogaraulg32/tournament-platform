@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
 
     submitError: {
         marginBottom: 10,
+        marginTop: 20,
         color: "#B42318",
         fontSize: 14,
         textAlign: "center",

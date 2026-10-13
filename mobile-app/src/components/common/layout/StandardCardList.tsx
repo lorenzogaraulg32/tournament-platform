@@ -4,7 +4,7 @@ import {ActivityIndicator, ScrollView, StyleProp, StyleSheet, Text, View, ViewSt
 type CarouselContainerProps = {
     items?: ReactNode[];
     style?: StyleProp<ViewStyle>;
-    isLoading: boolean;
+    isLoading?: boolean;
     error?: string | null;
     emptyMsg: string;
     orientation?: "horizontal" | "vertical";
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
 
     verticalContent: {
         width: "100%",
-        gap: 8,
+        gap: 5,
     },
 
     emptyText: {
