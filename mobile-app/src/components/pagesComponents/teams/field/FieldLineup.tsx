@@ -391,6 +391,7 @@ export default function FieldLineup({
                         sport={sport}
                         onChange={onFormationChange}
                         value={formationName}
+                        visibleArrow={isModFormation}
                     />
                 </View>
 
@@ -405,6 +406,7 @@ export default function FieldLineup({
                     <SportSelector
                         sport={sport}
                         onChange={handleSportChange}
+                        visibleArrow={isModFormation}
                     />
                 </View>
 
@@ -787,12 +789,13 @@ const styles = StyleSheet.create({
         borderStyle: "dashed",
         borderColor: "#FFFFFF",
 
-        backgroundColor: "rgba(0, 0, 0, 0.20)",
+        backgroundColor: "rgba(0,0,0,0.6)",
     },
 
 
     slotLabel: {
         color: "#FFFFFF",
+        width: "90%",
         fontSize: 10,
         textAlign: "center",
     },

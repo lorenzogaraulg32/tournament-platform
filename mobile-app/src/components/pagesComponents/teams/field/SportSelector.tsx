@@ -1,16 +1,18 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import { useState } from "react";
-import { colors } from "@/src/constants/theme";
-import { Sport, SPORT_LABELS } from "@/src/services/users/userDTO";
+import {Pressable, StyleSheet, Text, View} from "react-native";
+import {useState} from "react";
+import {colors} from "@/src/constants/theme";
+import {Sport, SPORT_LABELS} from "@/src/services/users/userDTO";
 
 type SportSelectorProps = {
     sport: Sport;
     onChange: (sport: Sport) => void;
+    visibleArrow: boolean;
 };
 
 export default function SportSelector({
                                           sport,
                                           onChange,
+                                          visibleArrow,
                                       }: SportSelectorProps) {
 
     const [isSelectorOpen, setIsSelectorOpen] = useState(false);
@@ -40,10 +42,11 @@ export default function SportSelector({
                 <Text style={styles.selectorText}>
                     {selectedSport}
                 </Text>
-
-                <Text style={styles.selectorText}>
-                    {isSelectorOpen ? "▴" : "▾"}
-                </Text>
+                {visibleArrow &&
+                    <Text style={styles.selectorText}>
+                        {isSelectorOpen ? "▴" : "▾"}
+                    </Text>
+                }
             </Pressable>
 
             {isSelectorOpen && (
@@ -102,8 +105,8 @@ const styles = StyleSheet.create({
 
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: "rgba(8, 105, 72, 0.30)",
-        backgroundColor: colors.greenBK,
+        borderColor: colors.orangeBorder,
+        backgroundColor: colors.orangeDefaultBK,
     },
 
     moduleOptions: {
@@ -118,7 +121,7 @@ const styles = StyleSheet.create({
 
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: "rgba(8, 105, 72, 0.20)",
+        borderColor: colors.orangeBorder,
         backgroundColor: "#FFFFFF",
 
         shadowColor: "#000",
@@ -138,17 +141,17 @@ const styles = StyleSheet.create({
     },
 
     moduleOptionSelected: {
-        backgroundColor: "#086948",
+        backgroundColor: colors.orangeDefault,
     },
 
     selectorText: {
-        color: "#07543A",
+        color: colors.orangeDefault,
         fontSize: 13,
         fontWeight: "700",
     },
 
     optionText: {
-        color: "#07543A",
+        color: colors.orangeDefault,
         fontSize: 13,
         fontWeight: "600",
     },

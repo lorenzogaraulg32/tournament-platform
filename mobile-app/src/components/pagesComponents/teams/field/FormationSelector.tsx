@@ -9,10 +9,11 @@ type ModuleSelectorProps = {
     sport: Sport
     value: string | null
     onChange: (id: string) => void
+    visibleArrow: boolean
 }
 
 
-export default function FormationSelector({sport, value, onChange}: ModuleSelectorProps) {
+export default function FormationSelector({sport, value, onChange, visibleArrow,}: ModuleSelectorProps) {
 
     const formations = FORMATIONS_BY_SPORT[sport] ?? [];
 
@@ -40,10 +41,11 @@ export default function FormationSelector({sport, value, onChange}: ModuleSelect
                 <Text style={styles.selectorText}>
                     {selectedFormation?.label}
                 </Text>
-
-                <Text style={styles.selectorText}>
-                    {isSelectorOpen ? "▴" : "▾"}
-                </Text>
+                {visibleArrow &&
+                    <Text style={styles.selectorText}>
+                        {isSelectorOpen ? "▴" : "▾"}
+                    </Text>
+                }
             </Pressable>
 
             {isSelectorOpen && (
@@ -99,8 +101,8 @@ const styles = StyleSheet.create({
 
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: "rgba(8, 105, 72, 0.30)",
-        backgroundColor: colors.greenBK,
+        borderColor: colors.orangeBorder,
+        backgroundColor: colors.orangeDefaultBK,
     },
 
     moduleOptions: {
@@ -114,7 +116,7 @@ const styles = StyleSheet.create({
         gap: 2,
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: "rgba(8, 105, 72, 0.20)",
+        borderColor: colors.orangeBorder,
         backgroundColor: "#FFFFFF",
 
         shadowColor: "#000",
@@ -131,17 +133,17 @@ const styles = StyleSheet.create({
     },
 
     moduleOptionSelected: {
-        backgroundColor: "#086948",
+        backgroundColor: colors.orangeDefault,
     },
 
     selectorText: {
-        color: "#07543A",
+        color: colors.orangeDefault,
         fontSize: 13,
         fontWeight: "700",
     },
 
     optionText: {
-        color: "#07543A",
+        color: colors.orangeDefault,
         fontSize: 13,
         fontWeight: "600",
     },

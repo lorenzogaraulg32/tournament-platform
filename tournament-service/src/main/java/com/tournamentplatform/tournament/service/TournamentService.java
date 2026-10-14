@@ -99,10 +99,8 @@ public class TournamentService {
     }
 
     public UserTournamentsResponse getMyTournaments(
-            List<String> myTeamIds
+            String userId, List<String> myTeamIds
     ) {
-        String userId =
-                tournamentAuthorizationHelper.getCurrentUserId();
 
         List<Tournament> managedTournaments =
                 tournamentRepository.findManagedByUserId(userId);
@@ -133,6 +131,13 @@ public class TournamentService {
                 managedResponses,
                 participatingResponses
         );
+    }
+
+    public List<TournamentGetResponse> getTeamTournaments(String teamId) {
+
+        List<Tournament> tournaments = tournamentRepository.findParticipatedByTeamId(Long.valueOf(teamId));
+        return tournaments.stream().map(mapper::toTournamentGetResponse).toList();
+
     }
 
 

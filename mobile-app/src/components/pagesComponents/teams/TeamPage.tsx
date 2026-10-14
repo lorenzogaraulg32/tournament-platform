@@ -6,111 +6,61 @@ import CollapsableSection from "@/src/components/common/layout/CollapsableSectio
 import StandardCardList from "@/src/components/common/layout/StandardCardList";
 import PlayerCard from "@/src/components/common/cards/userCards/PlayerCard";
 import AdminCard from "@/src/components/common/cards/userCards/AdminCard";
-import {colors} from "@/src/constants/theme";
-import {TeamDetails, TeamFormation, TeamUpdateRequest} from "@/src/services/teams/teamDTO";
-import {fetchUser} from "@/src/services/users/userService";
-import {Dispatch, SetStateAction, useCallback, useEffect, useRef, useState} from "react";
+import {TeamFormation, TeamUpdateRequest} from "@/src/services/teams/teamDTO";
+import {Dispatch, SetStateAction, useRef, useState} from "react";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {editTeam, removeTeamAdmin, removeTeamPlayer, updateTeamFormation} from "@/src/services/teams/teamService";
 import showAlert from "@/src/components/common/errors/Alert";
 import {useToast} from "@/src/components/common/Toast/ToastProvider";
 import FieldLineup from "@/src/components/pagesComponents/teams/field/FieldLineup";
 import FullPageModal from "@/src/components/common/layout/FullPageModal";
-import {Sport, UserInfo} from "@/src/services/users/userDTO";
+import {Sport} from "@/src/services/users/userDTO";
+import TournamentCardHorizontal from "@/src/components/common/cards/tournamentCards/TournamentCardHorizontal";
+import {TeamProfile} from "@/src/components/pagesComponents/teams/TeamScreen";
+import InfoLabel from "@/src/components/common/labels/InfoLabel";
+import {HorizontalSeparator} from "@/src/components/common/HorizontalSeparator";
+import {ActivitiesSection} from "@/src/components/common/ActivitiesSection";
+import {EntityType} from "@/src/services/activities/ActivityDTO";
+import {fetchActivities} from "@/src/services/activities/activityService";
 
 
 type TeamPageProps = {
-    team: TeamDetails;
-    setTeam: Dispatch<SetStateAction<TeamDetails | null>>;
-    onRefreshCode: () => Promise<string | undefined>;
-    isTeamAdmin: boolean;
-    isTeamOwner: boolean;
-    currentUserId: string;
-    isPlayerModalVisible: boolean
-    setPlayerModalVisible: Dispatch<SetStateAction<boolean>>;
+    teamProfile: TeamProfile,
+    setTeamProfile: Dispatch<SetStateAction<TeamProfile | null>>,
+    onRefreshCode: () => Promise<string | undefined>,
+    isTeamAdmin: boolean,
+    isTeamOwner: boolean,
+    currentUserId: string,
+    isPlayerModalVisible: boolean,
+    setPlayerModalVisible: Dispatch<SetStateAction<boolean>>,
 };
 
 
 export default function TeamPage({
-                                     team,
-                                     setTeam,
+                                     teamProfile,
+                                     setTeamProfile,
                                      onRefreshCode,
                                      isTeamAdmin,
                                      isTeamOwner,
                                      currentUserId,
                                      isPlayerModalVisible,
-                                     setPlayerModalVisible
+                                     setPlayerModalVisible,
                                  }: TeamPageProps) {
 
 
     const {showToast} = useToast();
 
-    const [isLoading, setLoading] = useState<boolean>(true)
-    const [error, setError] = useState<string>("");
     //componenti team
-    const componentsRequestIdRef = useRef(0);
+
     const removalInProgressRef = useRef(false);
 
-    const [teamPlayers, setTeamPlayers] = useState<UserInfo[] | null>([])
-    const [teamAdmins, setTeamAdmins] = useState<UserInfo[] | null>([])
-    const fetchTeamComponents = useCallback(async () => {
-        const requestId = ++componentsRequestIdRef.current;
 
-        setLoading(true);
-        setError("");
-
-        try {
-            setTeamPlayers(null);
-            setTeamAdmins(null);
-
-            if (!team) {
-                return;
-            }
-
-            const [loadedPlayers, loadedAdmins] = await Promise.all([
-                Promise.all(team.playerIds.map((id) => fetchUser(id))),
-                Promise.all(team.adminIds.map((id) => fetchUser(id))),
-            ]);
-
-            if (requestId !== componentsRequestIdRef.current) {
-                return;
-            }
-
-
-            setTeamPlayers(loadedPlayers);
-            setTeamAdmins(loadedAdmins);
-        } catch (error) {
-            if (requestId !== componentsRequestIdRef.current) {
-                return;
-            }
-
-            const apiError = normalizeApiRequestError(error);
-
-            if (apiError.status !== 401) {
-                setError(apiError.message);
-            }
-
-        } finally {
-            if (requestId === componentsRequestIdRef.current) {
-                setLoading(false);
-            }
-        }
-    }, [team.playerIds, team.adminIds]);
     //formazione team
     const formationSaveInProgressRef = useRef(false);
     const [isRemovingMember, setIsRemovingMember] = useState(false);
     const [isSavingFormation, setIsSavingFormation] = useState(false);
 
     const canEditFormation = isTeamAdmin || isTeamOwner
-
-
-    useEffect(() => {
-        void fetchTeamComponents();
-
-        return () => {
-            componentsRequestIdRef.current++;
-        };
-    }, [fetchTeamComponents]);
 
 
     async function onSportChange(sport: Sport) {
@@ -124,7 +74,28 @@ export default function TeamPage({
                 ...modTeamData,
             };
 
-            setTeam(await editTeam(String(team.id), request));
+            const newTeam = await editTeam(String(teamProfile.team.id), request)
+
+            setTeamProfile(prev =>
+                prev ? {
+                    ...prev,
+                    team: newTeam
+                } : prev
+            )
+
+            const activities = await fetchActivities(
+                teamProfile.team.id,
+                EntityType.TEAM
+            );
+
+            setTeamProfile(previous =>
+                previous
+                    ? {
+                        ...previous,
+                        activities
+                    }
+                    : previous
+            );
         } catch (error) {
             const apiError = normalizeApiRequestError(error);
             Alert.alert(
@@ -135,7 +106,7 @@ export default function TeamPage({
     }
 
     function canRemovePlayer(playerId: string): boolean {
-        if (!team || currentUserId === null) {
+        if (!teamProfile.team || currentUserId === null) {
             return false;
         }
 
@@ -144,7 +115,7 @@ export default function TeamPage({
         // Non mostrare se stessi né il creatore tra i rimovibili.
         if (
             targetId === currentUserId ||
-            targetId === String(team.creatorId)
+            targetId === String(teamProfile.team.creatorId)
         ) {
             return false;
         }
@@ -157,7 +128,7 @@ export default function TeamPage({
         // Un admin può rimuovere soltanto giocatori non admin.
         return (
             Boolean(isTeamAdmin) &&
-            !team.adminIds.some((id) => String(id) === targetId)
+            !teamProfile.admins.some((id) => String(id) === targetId)
         );
     }
 
@@ -175,50 +146,64 @@ export default function TeamPage({
         setIsRemovingMember(true);
 
         try {
-            await removeTeamPlayer(team, id);
+            await removeTeamPlayer(teamProfile.team, id);
 
+            setTeamProfile(previous => {
+                if (!previous) return previous;
 
-            setTeamPlayers((previous) =>
-                previous
-                    ? previous.filter((player) => String(player.id) !== String(id))
-                    : previous
+                return {
+                    ...previous,
+
+                    players: previous.players.filter(
+                        player => String(player.id) !== String(id)
+                    ),
+
+                    admins: previous.admins.filter(
+                        admin => String(admin.id) !== String(id)
+                    ),
+
+                    team: {
+                        ...previous.team,
+
+                        adminIds: previous.team.adminIds.filter(
+                            adminId => String(adminId) !== String(id)
+                        ),
+
+                        playerIds: previous.team.playerIds.filter(
+                            playerId => String(playerId) !== String(id)
+                        ),
+
+                        formation: {
+                            ...previous.team.formation,
+
+                            slotAssignment: Object.fromEntries(
+                                Object.entries(
+                                    previous.team.formation.slotAssignment
+                                ).filter(
+                                    ([, playerId]) => String(playerId) !== String(id)
+                                )
+                            ),
+
+                            benchOrder: previous.team.formation.benchOrder.filter(
+                                playerId => String(playerId) !== String(id)
+                            )
+                        }
+                    }
+                };
+            });
+            const activities = await fetchActivities(
+                teamProfile.team.id,
+                EntityType.TEAM
             );
 
-
-            setTeamAdmins((previous) =>
-                previous
-                    ? previous.filter((admin) => String(admin.id) !== String(id))
-                    : previous
-            );
-
-
-            setTeam((previous) =>
+            setTeamProfile(previous =>
                 previous
                     ? {
                         ...previous,
-                        adminIds: previous.adminIds.filter(
-                            (adminId) => String(adminId) !== String(id)
-                        ),
-                        playerIds: previous.playerIds.filter(
-                            (playerId) => String(playerId) !== String(id)
-                        ),
-                        formation: {
-                            ...previous.formation,
-
-                            slotAssignment: Object.fromEntries(
-                                Object.entries(previous.formation.slotAssignment)
-                                    .filter(
-                                        ([, playerId]) => String(playerId) !== String(id)
-                                    )
-                            ),
-
-                            benchOrder: previous.formation.benchOrder.filter(
-                                (playerId) => String(playerId) !== String(id))
-                        },
+                        activities
                     }
                     : previous
             );
-
             showToast("Eliminazione completata", true);
         } catch (error) {
             const apiError = normalizeApiRequestError(error);
@@ -242,8 +227,8 @@ export default function TeamPage({
             removalInProgressRef.current ||
             formationSaveInProgressRef.current ||
             !isTeamOwner ||
-            !team ||
-            String(id) === String(team.creatorId)
+            !teamProfile.team ||
+            String(id) === String(teamProfile.team.creatorId)
         ) {
             return;
         }
@@ -251,22 +236,38 @@ export default function TeamPage({
         removalInProgressRef.current = true;
         setIsRemovingMember(true);
         try {
-            await removeTeamAdmin(team, id);
+            await removeTeamAdmin(teamProfile.team, id);
 
-            setTeamAdmins((previous) =>
-                previous
-                    ? previous.filter((admin) => String(admin.id) !== String(id))
-                    : previous
+            setTeamProfile(previous => {
+                if (!previous) return previous;
+
+                return {
+                    ...previous,
+
+                    admins: previous.admins.filter(
+                        admin => String(admin.id) !== String(id)
+                    ),
+
+                    team: {
+                        ...previous.team,
+
+                        adminIds: previous.team.adminIds.filter(
+                            adminId => String(adminId) !== String(id)
+                        )
+                    }
+                };
+            });
+
+            const activities = await fetchActivities(
+                teamProfile.team.id,
+                EntityType.TEAM
             );
 
-
-            setTeam((previous) =>
+            setTeamProfile(previous =>
                 previous
                     ? {
                         ...previous,
-                        adminIds: previous.adminIds.filter(
-                            (adminId) => String(adminId) !== String(id)
-                        ),
+                        activities
                     }
                     : previous
             );
@@ -288,17 +289,24 @@ export default function TeamPage({
         }
     }
 
-
     async function onFormationSave(teamFormation: TeamFormation) {
+
 
         if (
             !canEditFormation ||
             formationSaveInProgressRef.current ||
             removalInProgressRef.current ||
-            isLoading ||
-            Boolean(error) ||
-            teamPlayers === null
+            teamProfile.players === null
         ) {
+            return;
+        }
+
+        const isSameFormation =
+            JSON.stringify(teamProfile.team.formation) ===
+            JSON.stringify(teamFormation);
+
+        if (isSameFormation) {
+            showToast("Nessuna modifica alla formazione", true);
             return;
         }
 
@@ -307,15 +315,37 @@ export default function TeamPage({
 
         try {
             const savedFormation = await updateTeamFormation(
-                team,
+                teamProfile.team,
                 teamFormation
             );
 
-            setTeam((previous) =>
+            setTeamProfile(previous =>
                 previous
-                    ? {...previous, formation: savedFormation}
+                    ? {
+                        ...previous,
+
+                        team: {
+                            ...previous.team,
+                            formation: savedFormation
+                        }
+                    }
                     : previous
             );
+
+            const activities = await fetchActivities(
+                teamProfile.team.id,
+                EntityType.TEAM
+            );
+
+            setTeamProfile(previous =>
+                previous
+                    ? {
+                        ...previous,
+                        activities
+                    }
+                    : previous
+            );
+
 
             showToast("Formazione salvata", true);
         } catch (error) {
@@ -341,10 +371,10 @@ export default function TeamPage({
                 >
                     <HeaderEntity
                         variant={"teams"}
-                        name={team.name}
-                        image={team.logo}
-                        position={team.location?.label}
-                        invitationCode={team.invitationCode}
+                        name={teamProfile.team.name}
+                        image={teamProfile.team.logo}
+                        position={teamProfile.team.location?.label}
+                        invitationCode={teamProfile.team.invitationCode}
                         onRefreshCode={isTeamAdmin || isTeamOwner ? onRefreshCode : undefined}
                     />
                 </HeaderContainer>
@@ -356,41 +386,42 @@ export default function TeamPage({
                         showsVerticalScrollIndicator={false}>
                 <View style={styles.scrollContent}>
 
-                    {team?.description ? (
 
-                        <View style={styles.descriptionContainer}>
-                            <View style={styles.descriptionAccent}/>
+                    <InfoLabel
+                        text={"Descrizione"}
+                        labelIconName={"clipboard-outline"}
+                    />
+                    <HorizontalSeparator/>
 
-                            <Text style={styles.description}>
-                                {team.description}
-                            </Text>
+                    <Text style={styles.descriptionText}>
+                        {teamProfile.team.description || "Nessuna descrizione disponibile"}
+                    </Text>
+
+
+                    <CollapsableSection
+                        label="Formazione"
+                        iconName="shirt-outline"
+                        modal={false}
+                    >
+
+                        <View style={styles.fieldContainer}>
+                            <FieldLineup
+                                key={teamProfile.team.sport}
+                                sport={teamProfile.team.sport}
+                                players={teamProfile.players ?? []}
+                                formation={teamProfile.team.formation}
+                                canEdit={canEditFormation}
+                                isSaving={isSavingFormation}
+                                disabled={
+                                    teamProfile.players === null ||
+                                    isRemovingMember
+                                }
+                                onFormationSave={onFormationSave}
+                                onSportChange={onSportChange}
+                            />
                         </View>
+                    </CollapsableSection>
 
-                    ) : (
-                        <View></View>
-                    )}
-
-
-                    <View style={styles.fieldContainer}>
-                        <FieldLineup
-                            key={team.sport}
-                            sport={team.sport}
-                            players={teamPlayers ?? []}
-                            formation={team.formation}
-                            canEdit={canEditFormation}
-                            isSaving={isSavingFormation}
-                            disabled={
-                                isLoading ||
-                                Boolean(error) ||
-                                teamPlayers === null ||
-                                isRemovingMember
-                            }
-                            onFormationSave={onFormationSave}
-                            onSportChange={onSportChange}
-                        />
-                    </View>
-
-                    {/*todo: Inserire pulsante per abilitare modifica*/}
                     <FullPageModal
                         visible={isPlayerModalVisible}
                         onClose={() => setPlayerModalVisible(false)}
@@ -398,7 +429,7 @@ export default function TeamPage({
                         iconName="people-outline"
                     >
                         <StandardCardList
-                            items={(teamPlayers ?? [])
+                            items={(teamProfile.players ?? [])
                                 .filter((player) =>
                                     canRemovePlayer(String(player.id))
                                 )
@@ -406,7 +437,7 @@ export default function TeamPage({
                                     <PlayerCard
                                         key={player.id}
                                         player={player}
-                                        sport={team.sport}
+                                        sport={teamProfile.team.sport}
                                         onPress={() => {
                                             void removePlayerFromTeam(String(player.id));
                                         }}
@@ -415,11 +446,33 @@ export default function TeamPage({
                                     />
                                 ))}
                             emptyMsg="Nessun giocatore che puoi rimuovere"
-                            isLoading={isLoading}
-                            error={error}
                             orientation="vertical"
                         />
                     </FullPageModal>
+
+
+                    <ActivitiesSection
+                        variant={"profile"}
+                        activities={teamProfile.activities}/>
+
+                    <CollapsableSection
+                        label="Tornei "
+                        iconName="trophy-outline"
+                    >
+                        <StandardCardList
+                            items={(teamProfile.tournaments ?? [])
+                                .map(tournament => {
+                                    return (
+                                        <TournamentCardHorizontal
+                                            key={tournament.id}
+                                            tournament={tournament}/>
+                                    );
+                                })}
+                            isLoading={false}
+                            error={null}
+                            emptyMsg={"Questo utente non partecipa a nessun torneo"}
+                            orientation="vertical"/>
+                    </CollapsableSection>
 
                     <CollapsableSection
                         label="Admin"
@@ -431,17 +484,17 @@ export default function TeamPage({
 
                             return (
                                 <StandardCardList
-                                    items={(teamAdmins ?? [])
+                                    items={(teamProfile.admins ?? [])
                                         .filter((admin) =>
                                             !canRemove ||
-                                            String(admin.id) !== String(team.creatorId)
+                                            String(admin.id) !== String(teamProfile.team.creatorId)
                                         )
                                         .map((admin) => (
                                             <AdminCard
                                                 key={admin.id}
                                                 admin={admin}
                                                 isOwner={
-                                                    String(team.creatorId) === String(admin.id)
+                                                    String(teamProfile.team.creatorId) === String(admin.id)
                                                 }
                                                 onPress={
                                                     canRemove
@@ -459,16 +512,14 @@ export default function TeamPage({
                                             ? "Nessun admin che puoi rimuovere"
                                             : "Nessun admin nella squadra"
                                     }
-                                    isLoading={isLoading}
-                                    error={error}
                                     orientation="vertical"
                                 />
                             );
                         }}
                     </CollapsableSection>
-                    <View style={{height: 20}}>
 
-                    </View>
+
+                    <View style={{height: 20}}/>
                 </View>
             </ScrollView>
         </PageLayout>
@@ -480,6 +531,7 @@ export default function TeamPage({
 const styles = StyleSheet.create({
 
     scroll: {
+        marginTop: 20,
         flex: 1,
     },
 
@@ -489,29 +541,13 @@ const styles = StyleSheet.create({
     },
 
 
-    descriptionContainer: {
-        flexDirection: "row",
-        alignItems: "stretch",
-        paddingVertical: 12,
-        paddingHorizontal: 14,
-        backgroundColor: "rgba(102, 32, 150, 0.06)",
-        borderRadius: 12,
-    },
-
-    descriptionAccent: {
-        width: 4,
-        marginRight: 12,
-        borderRadius: 4,
-        backgroundColor: colors.orangeDefault,
-    },
-
-    description: {
-        flex: 1,
+    descriptionText: {
         fontSize: 16,
-        lineHeight: 23,
         fontWeight: "400",
-        color: "#3F3F46",
+        lineHeight: 24,
+        color: "#333333",
     },
+
 
     fieldContainer: {
         marginBottom: 20,

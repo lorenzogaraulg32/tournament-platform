@@ -32,7 +32,7 @@ export default function BeachVolleyField({
     );
 }
 
-const LINE_COLOR = "rgba(255, 255, 255, 0.50)";
+const LINE_COLOR = "rgba(255, 255, 255, 0.70)";
 
 const styles = StyleSheet.create({
     container: {
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         aspectRatio: 0.80,
         position: "relative",
 
-        backgroundColor: "rgba(210, 165, 80, 0.32)",
+        backgroundColor: "rgba(210, 165, 80, 0.70)",
         borderColor: "rgba(253, 224, 71, 0.42)",
         borderWidth: 1,
         borderRadius: 22,

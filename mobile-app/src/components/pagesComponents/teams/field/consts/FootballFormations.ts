@@ -17,12 +17,12 @@ export const rombo: Formation = {
         {
             role: "left_midfielder",
             label: "Laterale sinistro",
-            position: {x: 20, y: 45},
+            position: {x: 20, y: 40},
         },
         {
             role: "right_midfielder",
             label: "Laterale destro",
-            position: {x: 80, y: 45},
+            position: {x: 80, y: 40},
         },
         {
             role: "central_forward",

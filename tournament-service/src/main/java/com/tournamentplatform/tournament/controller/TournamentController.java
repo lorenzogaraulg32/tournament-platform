@@ -1,6 +1,9 @@
 package com.tournamentplatform.tournament.controller;
 
-import com.tournamentplatform.tournament.dto.tournaments.*;
+import com.tournamentplatform.tournament.dto.tournaments.TournamentCreationRequest;
+import com.tournamentplatform.tournament.dto.tournaments.TournamentGetResponse;
+import com.tournamentplatform.tournament.dto.tournaments.TournamentPatchRequest;
+import com.tournamentplatform.tournament.dto.tournaments.UserTournamentsResponse;
 import com.tournamentplatform.tournament.service.TournamentService;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -66,15 +69,19 @@ public class TournamentController {
     }
 
     @GetMapping("/my-tournaments")
-    public ResponseEntity<UserTournamentsResponse> getMyTournaments(
-            @RequestParam(required = false)
-            List<String> myTeamIds
+    public ResponseEntity<UserTournamentsResponse> getUserTournaments(
+            @RequestParam String userId,
+            @RequestParam(required = false) List<String> myTeamIds
     ) {
-        return ResponseEntity.ok(
-                tournamentService.getMyTournaments(
-                        myTeamIds != null ? myTeamIds : List.of()
-                )
+        return ResponseEntity.ok(tournamentService.getMyTournaments(userId, myTeamIds)
         );
+    }
+
+    @GetMapping("/team-tournaments")
+    public ResponseEntity<List<TournamentGetResponse>> getTeamTournaments(
+            @RequestParam String teamId
+    ) {
+        return ResponseEntity.ok(tournamentService.getTeamTournaments(teamId));
     }
 
 

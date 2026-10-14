@@ -1,7 +1,6 @@
 package com.tournamentplatform.tournament.repository;
 
 import com.tournamentplatform.tournament.entity.Tournament;
-import org.hibernate.internal.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -32,6 +31,15 @@ public interface TournamentRepository extends JpaRepository<Tournament, Long> {
                 WHERE teamId IN :teamIds
             """)
     List<Tournament> findParticipatedByTeamIds(@Param("teamIds") Set<Long> teamIds);
+
+
+    @Query("""
+                SELECT DISTINCT tournament
+                FROM Tournament tournament
+                JOIN tournament.registeredTeamIds teamId
+                WHERE teamId = :teamId
+            """)
+    List<Tournament> findParticipatedByTeamId(@Param("teamId") Long teamId);
 
     boolean existsByName(String name);
 

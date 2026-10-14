@@ -2,7 +2,6 @@ import {Pressable, ScrollView, StyleSheet} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import {paletteVariants, type Variant,} from "@/src/constants/palette/PaletteManager";
-import type {TeamDetails} from "@/src/services/teams/teamDTO";
 
 import PageLayout from "@/src/components/common/layout/PageLayout";
 import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
@@ -24,8 +23,6 @@ type ProfilePageProps = {
     loading: boolean,
     error?: string | null,
     onErrorRetry?: () => void
-    canLeaveTeam: (team: TeamDetails) => boolean
-    leaveTeam: (team: TeamDetails) => Promise<void>
 
 };
 
@@ -113,52 +110,56 @@ export default function ProfilePage({
                     variant={"profile"}
                     activities={profile.activities}/>
 
+
                 {/* La sezione delle squadre è visibile solo se non si è nel proprio profilo */}
                 {!isOwnProfile &&
-                    <CollapsableSection
-                        label="Squadre"
-                        iconName="shirt-outline"
-                    >
-                        <StandardCardList
-                            items={(profile.teams ?? [])
-                                .map(team => {
-                                    return (
-                                        <TeamCardHorizontal
-                                            key={team.id}
-                                            teamDetails={team}
-                                        />
-                                    )
-                                })}
-                            isLoading={false}
-                            error={null}
-                            emptyMsg={"Questo utente non fa parte di nessuna squadra"}
-                            orientation="vertical"
-                        />
-                    </CollapsableSection>}
+                    <>
+                        <CollapsableSection
+                            label="Squadre"
+                            iconName="shirt-outline"
+                        >
+                            <StandardCardList
+                                items={(profile.teams ?? [])
+                                    .map(team => {
+                                        return (
+                                            <TeamCardHorizontal
+                                                key={team.id}
+                                                teamDetails={team}/>
+                                        );
+                                    })}
+                                isLoading={false}
+                                error={null}
+                                emptyMsg={"Questo utente non fa parte di nessuna squadra"}
+                                orientation="vertical"/>
+                        </CollapsableSection>
+
+                    </>
+                }
 
 
                 {/* La sezione dei tornei è visibile solo se non si è nel proprio profilo */}
                 {!isOwnProfile &&
-                    <CollapsableSection
-                        label="Tornei "
-                        iconName="shirt-outline"
-                    >
-                        <StandardCardList
-                            items={(profile.tournaments ?? [])
-                                .map(tournament => {
-                                    return (
-                                        <TournamentCardHorizontal
-                                            key={tournament.id}
-                                            tournament={tournament}
-                                        />
-                                    )
-                                })}
-                            isLoading={false}
-                            error={null}
-                            emptyMsg={"Questo utente non partecipa a nessun torneo"}
-                            orientation="vertical"
-                        />
-                    </CollapsableSection>
+                    <>
+                        <CollapsableSection
+                            label="Tornei "
+                            iconName="shirt-outline"
+                        >
+                            <StandardCardList
+                                items={(profile.tournaments ?? [])
+                                    .map(tournament => {
+                                        return (
+                                            <TournamentCardHorizontal
+                                                key={tournament.id}
+                                                tournament={tournament}/>
+                                        );
+                                    })}
+                                isLoading={false}
+                                error={null}
+                                emptyMsg={"Questo utente non partecipa a nessun torneo"}
+                                orientation="vertical"/>
+                        </CollapsableSection>
+
+                    </>
                 }
             </ScrollView>
 

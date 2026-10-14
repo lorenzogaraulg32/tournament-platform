@@ -48,7 +48,7 @@ export default function BasketballField({
     );
 }
 
-const LINE_COLOR = "rgba(255, 255, 255, 0.38)";
+const LINE_COLOR = "rgba(255, 255, 255, 0.70)";
 
 const styles = StyleSheet.create({
     container: {
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
         aspectRatio: 0.80,
         position: "relative",
 
-        backgroundColor: "rgba(180, 96, 35, 0.32)",
+        backgroundColor: "rgba(180, 96, 35, 0.70)",
         borderColor: "rgba(251, 191, 36, 0.45)",
         borderWidth: 1,
         borderRadius: 22,

@@ -4,12 +4,12 @@ import {router, useFocusEffect} from "expo-router";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import ButtonBackground from "@/src/components/common/buttons/ButtonBackground";
 import {TournamentDetails} from "@/src/services/tournaments/tournamentDTO";
-import {getCurrentUserTournaments} from "@/src/services/tournaments/tournamentService";
 import LoadingSection from "@/src/components/common/loading/LoadingSection";
 import ErrorSection from "@/src/components/common/errors/ErrorSection";
 import {MyTournamentsSection} from "@/src/components/pagesComponents/tournaments/MyTournamentsSection";
 import {fetchUserTeams} from "@/src/services/teams/teamService";
 import {loadCurrentUserId} from "@/src/services/users/authService";
+import {fetchUserTournaments} from "@/src/services/tournaments/tournamentService";
 
 
 /**
@@ -32,7 +32,9 @@ export default function MyTournaments() {
             setLoading(true);
             setError(null);
 
-            const loadedTournaments = await getCurrentUserTournaments(await fetchUserTeams(await loadCurrentUserId()));
+            const currentUserId = await loadCurrentUserId()
+
+            const loadedTournaments = await fetchUserTournaments(await fetchUserTeams(currentUserId), currentUserId);
 
             if (requestId !== requestIdRef.current) {
                 return;

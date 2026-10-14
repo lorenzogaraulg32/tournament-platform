@@ -9,7 +9,7 @@ type OptionsMenuProps = {
     onLeave?: () => void;
     onManagePlayers?: () => void;
     onManageTeams?: () => void;
-
+    onEditAuth?: () => void
 };
 
 export default function OptionsMenu({
@@ -18,7 +18,7 @@ export default function OptionsMenu({
                                         onLeave,
                                         onManagePlayers,
                                         onManageTeams,
-
+                                        onEditAuth,
                                     }: OptionsMenuProps) {
     const [isVisible, setIsVisible] = useState(false);
 
@@ -55,7 +55,29 @@ export default function OptionsMenu({
                             </View>
                         )}
 
-                    {/*todo: forse da spostare in una collapsable section all'interno del torneo*/}
+                    {onEditAuth &&
+                        (
+                            <View>
+                                <View style={styles.divider}/>
+                                <Pressable
+                                    onPress={() => selectOption(onEditAuth)}
+                                    accessibilityRole="button"
+                                    style={({pressed}) => [
+                                        styles.item,
+                                        pressed && styles.itemPressed,
+                                    ]}
+                                >
+                                    <Ionicons
+                                        name="mail-outline"
+                                        size={20}
+                                        color="#FFFFFF"
+                                    />
+
+                                    <Text style={styles.label}>Modifica{"\n"}credenziali</Text>
+                                </Pressable>
+                            </View>
+                        )}
+
                     {onManageTeams && (
                         <View>
                             <View style={styles.divider}/>

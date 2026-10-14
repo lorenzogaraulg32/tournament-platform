@@ -10,9 +10,24 @@ import OptionsMenu from "@/src/components/common/OptionsMenu";
 import {Alert} from "react-native";
 import {loadCurrentUserId} from "@/src/services/users/authService";
 import ErrorScreen from "@/src/components/common/errors/ErrorScreen";
+import {TournamentDetails} from "@/src/services/tournaments/tournamentDTO";
+import { UserInfo } from "@/src/services/users/userDTO";
+import {fetchUser} from "@/src/services/users/userService";
+import {fetchTeamTournaments} from "@/src/services/tournaments/tournamentService";
+import {ActivityResponse, EntityType} from "@/src/services/activities/ActivityDTO";
+import {fetchActivities} from "@/src/services/activities/activityService";
+
 
 
 //qui sai fa il fetch del team e si ritorna il feedback corrispondente
+export type TeamProfile = {
+    team: TeamDetails,
+    tournaments: TournamentDetails[],
+    players: UserInfo[]
+    admins: UserInfo[]
+    activities: ActivityResponse[]
+}
+
 
 export default function TeamScreen() {
 
@@ -27,7 +42,7 @@ export default function TeamScreen() {
     const [isLoading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<string>("");
 
-    const [team, setTeam] = useState<TeamDetails | null>(null);
+    const [teamProfile, setTeamProfile] = useState<TeamProfile| null>(null);
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
     const fetchTeamDetails = useCallback(async () => {
@@ -40,13 +55,18 @@ export default function TeamScreen() {
 
         setLoading(true);
         setError("");
-        setTeam(null);
+        setTeamProfile(null);
         setCurrentUserId(null);
 
         try {
-            const [loadedTeam, loadedUserId] = await Promise.all([
-                fetchTeam(teamId),
+
+            const loadedTeam = await fetchTeam(teamId)
+
+            const [loadedUserId, tournaments, playersId, adminsId] = await Promise.all([
                 loadCurrentUserId(),
+                fetchTeamTournaments(loadedTeam.id),
+                Promise.all(loadedTeam.playerIds.map((id) => fetchUser(id))),
+                Promise.all(loadedTeam.adminIds.map((id) => fetchUser(id))),
             ]);
 
             if (requestId !== requestIdRef.current) {
@@ -58,7 +78,35 @@ export default function TeamScreen() {
                 return;
             }
 
-            setTeam(loadedTeam);
+            const teamProfile : TeamProfile = {
+                team: loadedTeam,
+                tournaments: tournaments,
+                players: playersId,
+                admins: adminsId,
+                activities: []
+            }
+
+            setTeamProfile(teamProfile);
+
+            try {
+                const activities = await fetchActivities(teamId, EntityType.TEAM)
+                setTeamProfile(prev => {
+                    if (prev === null) return null;
+                    return {
+                        ...prev,
+                        activities: activities,
+                    }
+                });
+
+            } catch (activitiesError) {
+                if (requestId !== requestIdRef.current) {
+                    return;
+                }
+                console.log("Errore recupero attività squadra")
+                console.log(activitiesError)
+            }
+
+
             setCurrentUserId(String(loadedUserId));
         } catch (error) {
             if (requestId !== requestIdRef.current) {
@@ -86,19 +134,19 @@ export default function TeamScreen() {
             return () => {
                 requestIdRef.current++;
             };
-        }, [fetchTeamDetails])
+        }, [fetchTeamDetails, ])
     );
 
     //autorizzazioni utente rispetto al team
     const isTeamOwner =
-        team !== null &&
+        teamProfile !== null &&
         currentUserId !== null &&
-        String(team.creatorId) === currentUserId;
+        String(teamProfile.team.creatorId) === currentUserId;
 
     const isTeamAdmin =
-        team !== null &&
+        teamProfile !== null &&
         currentUserId !== null &&
-        team.adminIds.some((id) => String(id) === currentUserId);
+        teamProfile.team.adminIds.some((id) => String(id) === currentUserId);
 
     const canEdit = isTeamOwner || isTeamAdmin;
 
@@ -112,37 +160,51 @@ export default function TeamScreen() {
     }
 
     async function onMod(): Promise<void> {
-        if (!team) {
+        if (!teamProfile) {
             return;
         }
 
         router.push({
             pathname: "/teams/modify",
             params: {
-                team: JSON.stringify(team),
+                team: JSON.stringify(teamProfile),
             },
         });
     }
 
     function canLeave(): boolean {
-        if (!team || currentUserId === null || isTeamOwner) {
+        if (!teamProfile || currentUserId === null || isTeamOwner) {
             return false;
         }
 
-        return team.playerIds.some(
+        return teamProfile.team.playerIds.some(
             (id) => String(id) === String(currentUserId)
         );
     }
 
     async function onLeave(): Promise<void> {
-        if (!team || !canLeave() || leavingInProgressRef.current) {
+        if (!teamProfile || !canLeave() || leavingInProgressRef.current) {
             return;
         }
 
         leavingInProgressRef.current = true;
 
         try {
-            await leaveTeam(team);
+            await leaveTeam(teamProfile.team);
+
+            const activities = await fetchActivities(
+                teamProfile.team.id,
+                EntityType.TEAM
+            );
+
+            setTeamProfile(previous =>
+                previous
+                    ? {
+                        ...previous,
+                        activities
+                    }
+                    : previous
+            );
 
             router.replace("/(app)/teams");
         } catch (error) {
@@ -161,24 +223,26 @@ export default function TeamScreen() {
 
     function onDelete() {
 
-        if (!team || !canEdit) {
+        if (!teamProfile || !canEdit) {
             return;
         }
 
+
+
         router.push({
             pathname: "/teams/delete",
-            params: {teamId: String(team?.id)},
+            params: {teamId: String(teamProfile?.team.id)},
         });
     }
 
     async function onRefreshCode() {
 
-        if (!team) {
+        if (!teamProfile) {
             throw new Error("La squadra non è disponibile.");
         }
 
         try{
-            const updatedTeam = await refreshInvitationCode(team.id);
+            const updatedTeam = await refreshInvitationCode(teamProfile.team.id);
 
             const newCode = updatedTeam.invitationCode;
 
@@ -186,14 +250,31 @@ export default function TeamScreen() {
                 throw new Error("Il server non ha restituito un codice di invito valido.");
             }
 
-            setTeam((previous) => {
-                if (!previous) return previous;
+            setTeamProfile(previous =>
+                previous
+                    ? {
+                        ...previous,
+                        team: {
+                            ...previous.team,
+                            invitationCode: newCode
+                        }
+                    }
+                    : previous
+            );
 
-                return {
-                    ...previous,
-                    invitationCode: newCode,
-                };
-            });
+            const activities = await fetchActivities(
+                teamProfile.team.id,
+                EntityType.TEAM
+            );
+
+            setTeamProfile(previous =>
+                previous
+                    ? {
+                        ...previous,
+                        activities
+                    }
+                    : previous
+            );
 
             return newCode;
 
@@ -237,7 +318,7 @@ export default function TeamScreen() {
     }
 
     //caso di errore gestito dall'alert, magari in futuro mettiamo uno schermo adhoc
-    if (!teamId || !team || !currentUserId) {
+    if (!teamId || !teamProfile || !currentUserId) {
         return null
     }
 
@@ -257,8 +338,8 @@ export default function TeamScreen() {
                 />
             )}
             <TeamPage
-                team={team}
-                setTeam={setTeam}
+                teamProfile={teamProfile}
+                setTeamProfile={setTeamProfile}
                 currentUserId={currentUserId}
                 onRefreshCode={onRefreshCode}
                 isTeamAdmin={isTeamAdmin}

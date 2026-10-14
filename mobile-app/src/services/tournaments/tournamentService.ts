@@ -120,11 +120,13 @@ export async function refreshCodeTournament(
 }
 
 
-export async function getCurrentUserTournaments(myTeams: TeamDetails[]):
+export async function fetchUserTournaments(myTeams: TeamDetails[], userId: string):
     Promise<UserTournamentsResponse> {
 
 
     const queryParams = new URLSearchParams();
+    queryParams.append("userId", userId)
+
 
     myTeams.forEach(team => {
         queryParams.append(
@@ -136,7 +138,7 @@ export async function getCurrentUserTournaments(myTeams: TeamDetails[]):
     const query = queryParams.toString();
 
     const response = await authenticatedFetch(
-        `${API_URL}/tournaments/my-tournaments${query ? `?${query}` : ""}`,
+        `${API_URL}/tournaments/my-tournaments?${query}`,
         {
             method: "GET",
             headers: {
@@ -159,6 +161,26 @@ export async function getCurrentUserTournaments(myTeams: TeamDetails[]):
             enrichTournamentMedia
         ),
     };
+}
+
+export async function fetchTeamTournaments(teamId: string){
+    const queryParams = new URLSearchParams();
+    queryParams.append("teamId", teamId)
+
+    const query = queryParams.toString();
+
+    const response = await authenticatedFetch(
+        `${API_URL}/tournaments/team-tournaments?${query}`,
+        {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+            },
+        }
+    );
+
+    return await response.json() as TournamentDetails[]
+
 }
 
 

@@ -4,7 +4,7 @@ import {router, useFocusEffect, useLocalSearchParams,} from "expo-router";
 
 import {AuthInfo, handleLogout, loadCurrentUserId, loadUserAuthInfo,} from "@/src/services/users/authService";
 import {fetchUser} from "@/src/services/users/userService";
-import {fetchUserTeams, leaveTeam} from "@/src/services/teams/teamService";
+import {fetchUserTeams} from "@/src/services/teams/teamService";
 import type {TeamDetails} from "@/src/services/teams/teamDTO";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import BackButton from "@/src/components/common/buttons/BackButton";
@@ -12,16 +12,17 @@ import OptionsMenu from "@/src/components/common/OptionsMenu";
 import ProfilePage from "@/src/components/pagesComponents/profile/ProfilePage";
 import {UserInfo} from "@/src/services/users/userDTO";
 import {useToast} from "@/src/components/common/Toast/ToastProvider";
-import showAlert from "@/src/components/common/errors/Alert";
 import {fetchActivities} from "@/src/services/activities/activityService";
 import {ActivityResponse, EntityType} from "@/src/services/activities/ActivityDTO";
 import {TournamentDetails} from "@/src/services/tournaments/tournamentDTO";
+import {fetchUserTournaments} from "@/src/services/tournaments/tournamentService";
 
 export type ProfileData = {
     user: UserInfo;
     auth: AuthInfo;
     teams: TeamDetails[];
     activities: ActivityResponse[];
+    //i tornei nella sezione profilo sono quelli gestiti dall'utente, non quelli a cui partecipa, quelli sono nella squadra
     tournaments: TournamentDetails[];
     isOwnProfile: boolean;
 };
@@ -66,11 +67,12 @@ export default function ProfileScreen() {
             const userId = profileId ?? String(currentUserId);
             const isOwnProfile = userId === String(currentUserId);
 
-            const [user, teams, auth,] = await Promise.all([
-                fetchUser(userId),
-                fetchUserTeams(userId),
-                loadUserAuthInfo(userId),
+            const teams = await fetchUserTeams(userId);
 
+            const [user, auth, tournaments] = await Promise.all([
+                fetchUser(userId),
+                loadUserAuthInfo(userId),
+                fetchUserTournaments(teams, userId)
             ]);
 
             if (requestId !== requestIdRefProfile.current) {
@@ -81,7 +83,7 @@ export default function ProfileScreen() {
                 user,
                 auth,
                 teams,
-                tournaments: [],
+                tournaments: tournaments.managed,
                 activities: [],
                 isOwnProfile
             });
@@ -153,6 +155,19 @@ export default function ProfileScreen() {
         });
     }
 
+    function onModAuth() {
+        if (!profile?.isOwnProfile) {
+            return;
+        }
+
+        router.push({
+            pathname: "/profile/modify-auth",
+            params: {
+                profile: JSON.stringify(profile.user),
+            },
+        });
+    }
+
     function onDelete() {
         if (!profile?.isOwnProfile) {
             return;
@@ -161,54 +176,6 @@ export default function ProfileScreen() {
         router.push({
             pathname: "/profile/delete",
         });
-    }
-
-    function canLeaveTeam(team: TeamDetails): boolean {
-
-        if (!profile) {
-            return false;
-        }
-
-        const isOwner = String(team.creatorId) === String(profile.user.id);
-
-        const isPlayer = profile.teams.some(
-            currentTeam => String(currentTeam.id) === String(team.id)
-        );
-
-        return !isOwner && isPlayer
-    }
-
-    async function leaveUserTeam(team: TeamDetails) {
-
-        if (!profile) {
-            return
-        }
-        try {
-            await leaveTeam(team)
-
-
-            setProfile(previous => {
-                if (!previous) {
-                    return previous;
-                }
-
-                return {
-                    ...previous,
-                    teams: previous.teams.filter(
-                        currentTeam =>
-                            String(currentTeam.id) !== String(team.id)
-                    ),
-                };
-            });
-
-            showToast("Hai abbandonato la squadra", true)
-        } catch (error) {
-            const apiError = normalizeApiRequestError(error)
-            showAlert(
-                "Impossibile abbandonare la squadra",
-                apiError.message
-            );
-        }
     }
 
 
@@ -221,19 +188,18 @@ export default function ProfileScreen() {
             {profile?.isOwnProfile && (
                 <OptionsMenu
                     onEdit={onMod}
+                    onEditAuth={onModAuth}
                     onDelete={onDelete}/>
             )}
 
             <ProfilePage
                 variant="profile"
-                profile = {profile}
+                profile={profile}
                 isOwnProfile={profile?.isOwnProfile}
                 onLogout={handleLogout}
                 error={error}
                 loading={isLoading}
                 onErrorRetry={loadProfile}
-                canLeaveTeam={(team: TeamDetails) => canLeaveTeam(team)}
-                leaveTeam={(team: TeamDetails) => leaveUserTeam(team)}
             />
         </>
     );

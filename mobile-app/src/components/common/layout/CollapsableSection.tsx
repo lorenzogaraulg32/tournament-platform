@@ -4,6 +4,7 @@ import InfoLabel from "@/src/components/common/labels/InfoLabel";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {colors} from "@/src/constants/theme";
 import FullPageModal from "@/src/components/common/layout/FullPageModal";
+import {HorizontalSeparator} from "@/src/components/common/HorizontalSeparator";
 
 type CollapsableSectionProps = {
     label: string,
@@ -19,6 +20,8 @@ type CollapsableSectionProps = {
 
     // Abilita il pulsante per modificare il contenuto nella modale
     canMod?: boolean,
+
+    modal?: boolean
 }
 
 /**
@@ -41,6 +44,7 @@ export default function CollapsableSection({
                                                iconName,
                                                children,
                                                canMod = false,
+                                               modal = true
                                            }: CollapsableSectionProps) {
 
     const [isExpanded, setExpanded] = useState<boolean>(true)
@@ -85,7 +89,7 @@ export default function CollapsableSection({
                             text={label}
                             labelIconName={iconName}
                         />
-                        <Pressable
+                        {modal && <Pressable
                             onPress={goToFullPage}
                             accessibilityRole="button"
                             accessibilityLabel={isExpanded ? `Comprimi ${label}` : `Espandi ${label}`}
@@ -102,6 +106,7 @@ export default function CollapsableSection({
                                 color={colors.label}
                             />
                         </Pressable>
+                        }
                     </View>
                     <Pressable
                         onPress={() => setExpanded((previous) => !previous)}
@@ -120,7 +125,9 @@ export default function CollapsableSection({
                             color={colors.label}
                         />
                     </Pressable>
+
                 </View>
+                <HorizontalSeparator/>
                 {isExpanded && (
                     <View style={styles.section}>
                         {renderContent(false)}
@@ -166,8 +173,7 @@ export default function CollapsableSection({
 const styles = StyleSheet.create({
 
     section: {
-        maxHeight: 280,
-
+        marginTop: 20,
     },
 
     collapsableContainer: {
@@ -179,6 +185,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
+        paddingBottom: 20,
     },
 
     leftContainer: {
@@ -223,7 +230,6 @@ const styles = StyleSheet.create({
         padding: 16,
         paddingBottom: 32,
     },
-
 
 
     iconAndTitle: {

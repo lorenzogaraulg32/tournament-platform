@@ -46,7 +46,7 @@ export default function FootballField({
     );
 }
 
-const LINE_COLOR = "rgba(255, 255, 255, 0.35)";
+const LINE_COLOR = "rgba(255,255,255,0.70)";
 
 const styles = StyleSheet.create({
 
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
         aspectRatio: 0.80,
         position: "relative",
 
-        backgroundColor: "rgba(8, 105, 72, 0.30)",
+        backgroundColor: "rgba(8,105,72,0.7)",
         borderColor: "rgba(110, 231, 183, 0.45)",
         borderWidth: 1,
         borderRadius: 22,

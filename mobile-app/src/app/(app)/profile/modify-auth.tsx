@@ -1,0 +1,1 @@
+export { default } from "@/src/components/pagesComponents/profile/modifyAuth/ModifyAuthScreen";

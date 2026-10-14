@@ -71,7 +71,6 @@ export default function StandardCardList({
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
-        marginTop: 10
     },
 
     verticalContainer: {

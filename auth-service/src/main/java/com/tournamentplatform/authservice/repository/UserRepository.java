@@ -1,5 +1,6 @@
 package com.tournamentplatform.authservice.repository;
 
+import com.tournamentplatform.authservice.entity.ExternalProvider;
 import com.tournamentplatform.authservice.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -11,4 +12,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByEmail(String email);
 
+    Optional<User> findByExternalProviderAndExternalSubject(
+            ExternalProvider externalProvider,
+            String externalSubject
+    );
 }
