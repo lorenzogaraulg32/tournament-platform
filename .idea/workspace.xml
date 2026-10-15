@@ -4,43 +4,65 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Front-end graphical improvements&#10;&#10;Started implementing login/register with external provider, first will be supported only google, then also apple">
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/controller/ExternalProviderAuthController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/dto/ModUserRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/exception/EmailAlreadyRegisteredExternalException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/exception/ExternalProviderNotLinkedException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/exception/InvalidCredentialsUpdateException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/exception/LastAuthMethodException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/service/ExternalProviderService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/assets/images/google-g.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/common/buttons/GoogleAuthButton.tsx" afterDir="false" />
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Implemented external auth provider&#10;&#10;Implemented login/register/link existing account via google&#10;&#10;Configured google cloud for oauth&#10;&#10;Created a devBuild&#10;&#10;Configured backend for credential patch&#10;&#10;Todo: create a modification form for auth-info, create the possibility to unlink an external provider">
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/debug.keystore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/proguard-rules.pro" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/debug/AndroidManifest.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/debugOptimized/AndroidManifest.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/java/com/joincup/app/MainActivity.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/java/com/joincup/app/MainApplication.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/drawable-hdpi/splashscreen_logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/drawable-mdpi/splashscreen_logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/drawable-xhdpi/splashscreen_logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/drawable-xxhdpi/splashscreen_logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/drawable-xxxhdpi/splashscreen_logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/drawable/ic_launcher_background.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/drawable/rn_edit_text_material.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-hdpi/ic_launcher.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-hdpi/ic_launcher_background.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-hdpi/ic_launcher_foreground.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-hdpi/ic_launcher_monochrome.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-hdpi/ic_launcher_round.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-mdpi/ic_launcher.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-mdpi/ic_launcher_background.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-mdpi/ic_launcher_foreground.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-mdpi/ic_launcher_monochrome.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-mdpi/ic_launcher_round.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-xhdpi/ic_launcher.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-xhdpi/ic_launcher_background.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-xhdpi/ic_launcher_foreground.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-xhdpi/ic_launcher_monochrome.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-xhdpi/ic_launcher_round.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_background.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_monochrome.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_background.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_monochrome.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/values-night/colors.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/values/colors.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/app/src/main/res/values/styles.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/gradle.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/android/settings.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/reanimated-error.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/controller/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/dto/RegisterRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/dto/RegisterRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/dto/RegisterResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/entity/VerifiedExternalIdentity.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/entity/ExternalProviderIdentity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/exception/AuthErrorCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/exception/AuthErrorCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/exception/GlobalExceptionHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/service/AuthService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/service/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/service/JwtService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/service/externalAuthService/ExternalTokenVerifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/service/externalAuthService/ExternalTokenVerifiers.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/service/externalAuthService/GoogleTokenVerifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/service/externalAuthService/GoogleTokenVerifier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/service/externalAuthService/ProviderTokenVerifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/service/externalAuthService/ProviderTokenVerifier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/resources/application.yml.example" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/resources/application.yml.example" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(auth)/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(auth)/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(auth)/login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(auth)/login.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/onBoarding/OnBoardingScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/onBoarding/OnBoardingScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/onBoarding/steps/BirthDateAndGenderStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/onBoarding/steps/BirthDateAndGenderStep.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/onBoarding/steps/LocationStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/onBoarding/steps/LocationStep.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/onBoarding/steps/NameAndSurnameStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/onBoarding/steps/NameAndSurnameStep.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/onBoarding/steps/SportsAndRolesStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/onBoarding/steps/SportsAndRolesStep.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/onBoarding/steps/UsernameAndAvatarStep.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/onBoarding/steps/UsernameAndAvatarStep.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/users/authService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/users/authService.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -468,15 +490,7 @@
       <workItem from="1791901416260" duration="6143000" />
       <workItem from="1791983084338" duration="12263000" />
       <workItem from="1792052270472" duration="7625000" />
-      <workItem from="1792070366409" duration="8669000" />
-    </task>
-    <task id="LOCAL-00067" summary="Now tabs change colors accordingly to the active tab&#10;Created and tested TournamentCardHorizontal.tsx&#10;Finished myTournaments.tsx Section">
-      <option name="closed" value="true" />
-      <created>1788971910217</created>
-      <option name="number" value="00067" />
-      <option name="presentableId" value="LOCAL-00067" />
-      <option name="project" value="LOCAL" />
-      <updated>1788971910217</updated>
+      <workItem from="1792070366409" duration="8843000" />
     </task>
     <task id="LOCAL-00068" summary="Added location, logo and invitation code to tournament, and adapted front-end">
       <option name="closed" value="true" />
@@ -862,7 +876,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791996556801</updated>
     </task>
-    <option name="localTasksCounter" value="116" />
+    <task id="LOCAL-00116" summary="Implemented external auth provider&#10;&#10;Implemented login/register/link existing account via google&#10;&#10;Configured google cloud for oauth&#10;&#10;Created a devBuild&#10;&#10;Configured backend for credential patch&#10;&#10;Todo: create a modification form for auth-info, create the possibility to unlink an external provider">
+      <option name="closed" value="true" />
+      <created>1792079226991</created>
+      <option name="number" value="00116" />
+      <option name="presentableId" value="LOCAL-00116" />
+      <option name="project" value="LOCAL" />
+      <updated>1792079226991</updated>
+    </task>
+    <option name="localTasksCounter" value="117" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -880,7 +902,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Implemented a new service whos responsible of managing media and files, todo: adapt old services" />
     <MESSAGE value="Adapted Team-service to the new media storage service" />
     <MESSAGE value="Adjusted Exception Handling for teamService" />
     <MESSAGE value="Migration for new storage service completed also for user service, todo: fix frontend" />
@@ -905,7 +926,8 @@
     <MESSAGE value="Implemented activities frontend also, activites finished, required further testing" />
     <MESSAGE value="Various bugfix and some refractoring&#10;Now the app is in an usable state" />
     <MESSAGE value="Front-end graphical improvements&#10;&#10;Started implementing login/register with external provider, first will be supported only google, then also apple" />
-    <option name="LAST_COMMIT_MESSAGE" value="Front-end graphical improvements&#10;&#10;Started implementing login/register with external provider, first will be supported only google, then also apple" />
+    <MESSAGE value="Implemented external auth provider&#10;&#10;Implemented login/register/link existing account via google&#10;&#10;Configured google cloud for oauth&#10;&#10;Created a devBuild&#10;&#10;Configured backend for credential patch&#10;&#10;Todo: create a modification form for auth-info, create the possibility to unlink an external provider" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented external auth provider&#10;&#10;Implemented login/register/link existing account via google&#10;&#10;Configured google cloud for oauth&#10;&#10;Created a devBuild&#10;&#10;Configured backend for credential patch&#10;&#10;Todo: create a modification form for auth-info, create the possibility to unlink an external provider" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
