@@ -9,9 +9,29 @@ public enum AuthErrorCode implements ErrorCode {
             "Dati di accesso non validi"
     ),
 
+    INVALID_CREDENTIALS_UPDATE(
+            "AUTH_INVALID_CREDENTIALS",
+            "Nessuna modifica specificata"
+    ),
+
     EMAIL_ALREADY_REGISTERED(
             "AUTH_EMAIL_ALREADY_REGISTERED",
             "L'indirizzo email è già registrato"
+    ),
+
+    EMAIL_ALREADY_REGISTERED_EXTERNAL(
+            "AUTH_EMAIL_ALREADY_REGISTERED_EXTERNAL",
+            "L'indirizzo email è già registrato, effettua il login e collegalo al provider esterno nella sezione profilo"
+    ),
+
+    EXTERNAL_PROVIDER_NOT_LINKED(
+            "EXTERNAL_PROVIDER_NOT_LINKED",
+            "Il profilo non ha un provider di autenticazione esterno associato al suo account"
+    ),
+
+    LAST_AUTH_METHOD(
+            "LAST_AUTH_METHOD",
+            "Il profilo non ha un altro metodo di autenticazione"
     ),
 
     USER_DISABLED(

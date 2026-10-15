@@ -37,7 +37,7 @@ export default function SportsAndRolesStep({
                                            }: SportsAndRolesStepProps) {
     return (
         <OnBoardingContainer
-            step={4}
+            step={3}
             label="Completa la registrazione"
             content={
                 <AuthContent style={styles.inputFieldsContainer}>

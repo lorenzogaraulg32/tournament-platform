@@ -91,6 +91,77 @@ export async function registerUser(
 }
 
 
+export async function authenticateWithGoogle(
+    idToken: string
+) {
+
+    const response = await fetchWithTimeout(
+        `${API_URL}/auth/external-provider`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                provider: "GOOGLE",
+                idToken,
+            }),
+        }
+    )
+
+    const loginRes = await readResponseBody(response)
+
+    if (!response.ok) {
+        throwApiRequestError(
+            response.status,
+            loginRes,
+            "Errore durante il login"
+        );
+    }
+
+
+    return loginRes as LoginResponse
+
+
+}
+
+
+export async function linkExistingAccountGoogle(
+    idToken: string,
+    accessToken: string,
+    tokenType: string
+) {
+
+    const response = await fetchWithTimeout(
+        `${API_URL}/auth/external-provider/link`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `${tokenType} ${accessToken}`,
+            },
+            body: JSON.stringify({
+                provider: "GOOGLE",
+                idToken,
+            }),
+        }
+    );
+
+    const loginRes = await readResponseBody(response)
+
+    if (!response.ok) {
+        throwApiRequestError(
+            response.status,
+            loginRes,
+            "Errore durante collegamento dell'account"
+        );
+    }
+
+    return loginRes as LoginResponse
+
+
+}
+
 export async function handleLogout() {
     await clearSession()
     router.replace("/(auth)");

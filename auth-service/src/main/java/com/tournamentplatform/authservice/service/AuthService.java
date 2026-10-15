@@ -1,21 +1,15 @@
-
 package com.tournamentplatform.authservice.service;
 
 import com.tournamentplatform.authservice.dto.*;
 import com.tournamentplatform.authservice.entity.User;
-import com.tournamentplatform.authservice.entity.VerifiedExternalIdentity;
-import com.tournamentplatform.authservice.exception.EmailAlreadyRegisteredException;
-import com.tournamentplatform.authservice.exception.InvalidCredentialsException;
-import com.tournamentplatform.authservice.exception.UserDisabledException;
-import com.tournamentplatform.authservice.exception.UserNotFoundException;
+import com.tournamentplatform.authservice.exception.*;
 import com.tournamentplatform.authservice.repository.UserRepository;
-import com.tournamentplatform.authservice.service.externalAuthService.ExternalTokenVerifier;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Locale;
 
 import static com.tournamentplatform.authservice.entity.GlobalRole.ROLE_USER;
 
@@ -26,17 +20,15 @@ public class AuthService {
     private final JwtService jwtService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ExternalTokenVerifier externalTokenVerifier;
 
 
-    public RegisterResponse register(RegisterRequest request) {
+    public void register(RegisterRequest request) {
 
         if (userRepository.existsByEmail(request.email())) {
             throw new EmailAlreadyRegisteredException();
         }
 
-        String passwordHash =
-                passwordEncoder.encode(request.password());
+        String passwordHash = passwordEncoder.encode(request.new());
 
         userRepository.save(
                 new User(
@@ -45,10 +37,6 @@ public class AuthService {
                         true,
                         ROLE_USER
                 )
-        );
-
-        return new RegisterResponse(
-                "Utente registrato correttamente"
         );
     }
 
@@ -69,58 +57,18 @@ public class AuthService {
             throw new UserDisabledException();
         }
 
-        return generateAuthResponse(user);
+        return jwtService.generateAuthResponse(user);
     }
 
+
+    /**
+     * Per il momento questo metodo non richiede verifiche di identità aggiuntive, si basa sul jwt che arriva con la request
+     *
+     * @param userId
+     * @param request
+     */
     @Transactional
-    public AuthResponse authenticateExternal(
-            ExternalAuthRequest request
-    ) {
-        VerifiedExternalIdentity identity =
-                externalTokenVerifier.verify(request);
-
-        User user = userRepository
-                .findByExternalProviderAndExternalSubject(
-                        identity.provider(),
-                        identity.subject()
-                )
-                .orElseGet(() -> registerExternal(identity));
-
-        if (!user.isEnabled()) {
-            throw new UserDisabledException();
-        }
-
-        return generateAuthResponse(user);
-    }
-
-    private User registerExternal(
-            VerifiedExternalIdentity identity
-    ) {
-        if (userRepository.existsByEmail(identity.email())) {
-            throw new EmailAlreadyRegisteredException();
-        }
-
-        User user = new User(
-                identity.email(),
-                null,
-                true,
-                ROLE_USER
-        );
-
-        user.setExternalProvider(identity.provider());
-        user.setExternalSubject(identity.subject());
-
-        return userRepository.save(user);
-    }
-
-    @Transactional
-    public void linkExternalProvider(
-            Long userId,
-            ExternalAuthRequest request
-    ) {
-        VerifiedExternalIdentity identity =
-                externalTokenVerifier.verify(request);
-
+    public void updateCredentials(Long userId, ModUserRequest request) {
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
@@ -128,40 +76,36 @@ public class AuthService {
             throw new UserDisabledException();
         }
 
-        if (user.hasExternalAuthentication()) {
-            boolean sameIdentity =
-                    user.getExternalProvider() == identity.provider()
-                            && user.getExternalSubject()
-                            .equals(identity.subject());
+        boolean updateEmail = request.email() != null;
+        boolean updatePassword = request.newPassword() != null;
 
-            if (sameIdentity) {
-                return;
+        if (!updateEmail && !updatePassword) {
+            throw new InvalidCredentialsUpdateException();
+        }
+
+        if (updateEmail) {
+
+            String newEmail = request.email()
+                    .trim()
+                    .toLowerCase(Locale.ROOT);
+
+            if (!newEmail.equals(user.getEmail())) {
+
+                if (userRepository.existsByEmail(newEmail)) {
+                    throw new EmailAlreadyRegisteredException();
+                }
+                user.setEmail(newEmail);
             }
+        }
 
-            throw new ResponseStatusException(
-                    HttpStatus.CONFLICT,
-                    "Un provider esterno è già collegato"
+
+        if (updatePassword) {
+            user.setPasswordHash(
+                    passwordEncoder.encode(request.newPassword())
             );
         }
 
-        boolean identityAlreadyLinked = userRepository
-                .findByExternalProviderAndExternalSubject(
-                        identity.provider(),
-                        identity.subject()
-                )
-                .isPresent();
 
-        if (identityAlreadyLinked) {
-            throw new ResponseStatusException(
-                    HttpStatus.CONFLICT,
-                    "Questo account esterno è già collegato"
-            );
-        }
-
-        user.setExternalProvider(identity.provider());
-        user.setExternalSubject(identity.subject());
-
-        userRepository.save(user);
     }
 
     public UserResponse getUserInfo(Long userId) {
@@ -177,14 +121,6 @@ public class AuthService {
         );
     }
 
-    private AuthResponse generateAuthResponse(User user) {
-
-        return new AuthResponse(
-                jwtService.generateToken(user),
-                "Bearer",
-                jwtService.getExpiresIn() / 1000
-        );
-    }
 
     @Transactional
     public void deleteUser(String userId) {
@@ -197,4 +133,6 @@ public class AuthService {
 
         userRepository.deleteById(id);
     }
+
+
 }

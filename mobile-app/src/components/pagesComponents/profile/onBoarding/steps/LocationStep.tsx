@@ -27,7 +27,7 @@ export default function LocationStep({
                                      }: LocationStepProps) {
     return (
         <OnBoardingContainer
-            step={5}
+            step={4}
             label="Completa la registrazione"
             content={
                 <AuthContent style={styles.inputFieldsContainer}>

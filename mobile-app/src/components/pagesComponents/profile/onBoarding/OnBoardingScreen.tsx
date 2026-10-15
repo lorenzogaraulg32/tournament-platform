@@ -236,7 +236,7 @@ export default function OnBoardingScreen() {
             setFieldErrors(
                 previous => ({
                     ...previous,
-                    roles: userSportAndRolesError
+                    sports: userSportAndRolesError
                 })
             )
             return false;

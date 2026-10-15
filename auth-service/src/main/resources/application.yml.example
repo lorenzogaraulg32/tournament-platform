@@ -28,3 +28,9 @@ eureka:
 internal:
   service:
     token: "un-secret-lungo-e-casuale"
+
+
+auth:
+  google:
+      client-id: "il_tuo_clientId"
+

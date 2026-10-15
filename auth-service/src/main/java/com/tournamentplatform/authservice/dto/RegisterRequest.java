@@ -4,21 +4,28 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import org.checkerframework.common.aliasing.qual.Unique;
 
 public record RegisterRequest(
-
-        @NotBlank(message = "L'email è obbligatoria")
-        @Email(message = "Formato email non valido")
+        @NotBlank
+        @Email(message = "Indirizzo email non valido")
+        @Size(max = 254, message = "Indirizzo email troppo lungo")
+        @Pattern(
+                regexp = "(?s).*\\S.*",
+                message = "L'email non può essere vuota"
+        )
         String email,
 
-        @NotBlank(message = "La password è obbligatoria")
-        @Size(min = 8, message = "La password deve avere almeno 8 caratteri")
-        @Pattern(
-                regexp = ".*\\d.*",
-                message = "La password deve contenere almeno un numero"
+        @NotBlank
+        @Size(
+                min = 8,
+                max = 64,
+                message = "La password deve contenere tra 8 e 64 caratteri"
         )
-        String password
+        @Pattern(
+                regexp = "(?s).*\\S.*",
+                message = "La password non può essere vuota"
+        )
+        String newPassword
 ) {
 
 }

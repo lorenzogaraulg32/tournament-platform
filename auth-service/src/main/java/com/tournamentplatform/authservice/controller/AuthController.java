@@ -20,9 +20,9 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request) {
-        RegisterResponse response = authService.register(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    public ResponseEntity<Void> register(@Valid @RequestBody RegisterRequest request) {
+        authService.register(request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping("/login")
@@ -43,6 +43,21 @@ public class AuthController {
     public ResponseEntity<UserResponse> getUserInfo(@PathVariable String userId) {
         UserResponse response = authService.getUserInfo(Long.valueOf(userId));
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PatchMapping("/credentials")
+    public ResponseEntity<Void> patchUserInfo(
+            Authentication authentication,
+            @Valid @RequestBody ModUserRequest request
+    ) {
+
+        Long userId = Long.valueOf(authentication.getName());
+
+        authService.updateCredentials(userId, request);
+
+        return ResponseEntity.ok().build();
+
+
     }
 
 

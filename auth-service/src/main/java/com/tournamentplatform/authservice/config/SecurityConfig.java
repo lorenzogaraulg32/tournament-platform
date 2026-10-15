@@ -80,7 +80,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/auth/register",
                                 "/auth/login",
-                                "/.well-known/jwks.json"
+                                "/.well-known/jwks.json",
+                                "/auth/external-provider"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

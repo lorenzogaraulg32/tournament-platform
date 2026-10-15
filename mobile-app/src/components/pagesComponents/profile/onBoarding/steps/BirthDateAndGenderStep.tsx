@@ -32,7 +32,7 @@ export default function BirthDateAndGenderStep({
 
     return (
         <OnBoardingContainer
-            step={3}
+            step={2}
             label="Completa la registrazione"
             content={
                 <AuthContent style={styles.inputFieldsContainer}>

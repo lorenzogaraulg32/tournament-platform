@@ -168,6 +168,20 @@ public class GlobalExceptionHandler {
         );
     }
 
+
+    @ExceptionHandler(EmailAlreadyRegisteredExternalException.class)
+    public ResponseEntity<ApiErrorResponse> handleConflictExternal(
+            EmailAlreadyRegisteredExternalException exception,
+            HttpServletRequest request
+    ) {
+        return buildResponse(
+                HttpStatus.CONFLICT,
+                exception,
+                request
+        );
+    }
+
+
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ApiErrorResponse> handleNotFound(
             UserNotFoundException exception,

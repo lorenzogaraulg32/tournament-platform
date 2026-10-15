@@ -1,5 +1,6 @@
 package com.tournamentplatform.authservice.service;
 
+import com.tournamentplatform.authservice.dto.AuthResponse;
 import com.tournamentplatform.authservice.entity.User;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,5 +55,15 @@ public class JwtService {
         return jwtEncoder.encode(
                 JwtEncoderParameters.from(header, claims)
         ).getTokenValue();
+    }
+
+
+    public AuthResponse generateAuthResponse(User user) {
+
+        return new AuthResponse(
+                generateToken(user),
+                "Bearer",
+                expiresIn / 1000
+        );
     }
 }

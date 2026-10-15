@@ -6,10 +6,11 @@ import AuthContent from "@/src/components/pagesComponents/auth/AuthContent";
 import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
 import {colors} from "@/src/constants/theme";
 import {useState} from "react";
-import {loginUser} from "@/src/services/users/authService";
+import { linkExistingAccountGoogle, loginUser} from "@/src/services/users/authService";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {saveSession} from "@/src/services/users/sessionService";
-import {router} from "expo-router";
+import {router, useLocalSearchParams} from "expo-router";
+import {GoogleOneTapSignIn, isCancelledResponse, isSuccessResponse} from "react-native-nitro-google-signin";
 
 type LoginFieldErrors = {
     email?: string;
@@ -26,6 +27,13 @@ export default function LoginPage() {
 
     const [apiError, setApiError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+
+
+    const {linkGoogle} = useLocalSearchParams<{
+        linkGoogle?: string;
+    }>();
+
+    const isLinkingGoogle = linkGoogle === "1";
 
     function validateLoginForm(): boolean {
         const errors: LoginFieldErrors = {};
@@ -79,28 +87,59 @@ export default function LoginPage() {
         setApiError("");
         setFieldErrors({});
 
-        /*
-            if (!validateLoginForm()) {
-                return
-            }
-        */
+
+        if (!validateLoginForm()) {
+            return
+        }
+
         try {
             setIsLoading(true);
-            /*
-                        const response = await loginUser({
-                            email: email.trim().toLowerCase(),
-                            password
-                        });
-              */
-
 
             const response = await loginUser({
-                email: "lorenzo.garau.lg32@gmail.com",
-                password: "Lombax99"
+                email: email.trim().toLowerCase(),
+                password
             });
 
+            if (isLinkingGoogle) {
+                const webClientId =
+                    process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID;
 
-            console.log("Token: " + response.accessToken)
+                if (!webClientId) {
+                    throw new Error("Google Client ID non configurato");
+                }
+
+                GoogleOneTapSignIn.configure({webClientId});
+
+                await GoogleOneTapSignIn.checkPlayServices();
+
+                // Richiediamo una nuova conferma dell'identità Google
+                const googleResponse =
+                    await GoogleOneTapSignIn.presentExplicitSignIn();
+
+                if (isCancelledResponse(googleResponse)) {
+                    setApiError(
+                        "Collegamento annullato. Riprova per completare."
+                    );
+                    return;
+                }
+
+                if (!isSuccessResponse(googleResponse)) {
+                    throw new Error("Autenticazione Google non riuscita");
+                }
+
+                const {idToken} = googleResponse.data;
+
+                if (!idToken) {
+                    throw new Error("ID token Google assente");
+                }
+
+                // 3. Colleghiamo Google all'utente JoinCup autenticato
+                await linkExistingAccountGoogle(
+                    idToken,
+                    response.accessToken,
+                    response.tokenType
+                );
+            }
 
             await saveSession(response.accessToken, response.tokenType);
 
@@ -124,9 +163,18 @@ export default function LoginPage() {
     return (
         <AuthContainer
             header={
-                <AuthHeader title={"JoinCup"}
-                            headline={"Bentornato"}
-                            subtitle={"Accedi per continuare"}
+                <AuthHeader
+                    title="JoinCup"
+                    headline={
+                        isLinkingGoogle
+                            ? "Collega il tuo account"
+                            : "Bentornato"
+                    }
+                    subtitle={
+                        isLinkingGoogle
+                            ? "Accedi con la tua password per collegare Google."
+                            : "Accedi per continuare"
+                    }
                 />
             }
             content={

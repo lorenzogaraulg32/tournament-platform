@@ -2,15 +2,17 @@
 package com.tournamentplatform.authservice.service.externalAuthService;
 
 import com.tournamentplatform.authservice.entity.ExternalProvider;
-import com.tournamentplatform.authservice.entity.VerifiedExternalIdentity;
+import com.tournamentplatform.authservice.entity.ExternalProviderIdentity;
 import com.tournamentplatform.authservice.exception.InvalidCredentialsException;
 
-import com.tournamentplatform.authservice.service.externalAuthService.ProviderTokenVerifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.core.*;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Component;
 
+/**
+ * Provider concreto tramite google, la chiave è ottenuta da google cloud console ed è salvata application.yml
+ */
 @Component
 public class GoogleTokenVerifier implements ProviderTokenVerifier {
 
@@ -65,7 +67,7 @@ public class GoogleTokenVerifier implements ProviderTokenVerifier {
     }
 
     @Override
-    public VerifiedExternalIdentity verify(String idToken) {
+    public ExternalProviderIdentity verify(String idToken) {
 
         if (idToken == null || idToken.isBlank()) {
             throw new InvalidCredentialsException();
@@ -91,7 +93,7 @@ public class GoogleTokenVerifier implements ProviderTokenVerifier {
             throw new InvalidCredentialsException();
         }
 
-        return new VerifiedExternalIdentity(
+        return new ExternalProviderIdentity(
                 ExternalProvider.GOOGLE,
                 subject,
                 email
