@@ -12,8 +12,8 @@ import {ActivitiesSection} from "@/src/components/common/ActivitiesSection";
 import StandardCardList from "@/src/components/common/layout/StandardCardList";
 import TeamCardHorizontal from "@/src/components/common/cards/teamCards/TeamCardHorizontal";
 import CollapsableSection from "@/src/components/common/layout/CollapsableSection";
-import {ProfileData} from "@/src/components/pagesComponents/profile/ProfileScreen";
 import TournamentCardHorizontal from "@/src/components/common/cards/tournamentCards/TournamentCardHorizontal";
+import {ProfileData} from "@/src/services/users/userService";
 
 type ProfilePageProps = {
     variant: Variant;
@@ -145,7 +145,7 @@ export default function ProfilePage({
                             iconName="shirt-outline"
                         >
                             <StandardCardList
-                                items={(profile.tournaments ?? [])
+                                items={(profile.managedTournaments ?? [])
                                     .map(tournament => {
                                         return (
                                             <TournamentCardHorizontal

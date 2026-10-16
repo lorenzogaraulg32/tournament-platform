@@ -43,6 +43,7 @@ public class User {
     @Column(name = "external_provider")
     private ExternalProvider externalProvider;
 
+    //identificativo univoco che il provider esterno assegna all'utente
     @Column(name = "external_subject")
     private String externalSubject;
 

@@ -1,4 +1,4 @@
-import {ScrollView, StyleSheet, View} from "react-native";
+import {StyleSheet, View} from "react-native";
 import TeamCardHorizontal from "@/src/components/common/cards/teamCards/TeamCardHorizontal";
 import {useCallback, useRef, useState} from "react";
 import {router, useFocusEffect} from "expo-router";
@@ -31,7 +31,15 @@ export default function MyTeams() {
             setIsLoading(true);
             setError(null);
 
-            const loadedTeams = await fetchUserTeams(await loadCurrentUserId());
+            const currentUserId = await loadCurrentUserId();
+
+            if (currentUserId === null) {
+                router.replace("/(auth)");
+                return null;
+            }
+
+
+            const loadedTeams = await fetchUserTeams(currentUserId);
 
             if (requestId === requestIdRef.current) {
                 setUserTeams(loadedTeams);
@@ -69,7 +77,7 @@ export default function MyTeams() {
         <View style={styles.myTeamsContent}>
 
             {isLoading ? (
-                <LoadingSection text="Caricamento squadre..." />
+                <LoadingSection text="Caricamento squadre..."/>
             ) : error ? (
                 <ErrorSection
                     text={error}

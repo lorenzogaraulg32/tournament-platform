@@ -2,6 +2,8 @@ import {throwApiRequestError} from "@/src/services/errorService";
 import {router} from "expo-router";
 import {authenticatedFetch, fetchWithTimeout, readResponseBody} from "@/src/services/fetchService";
 import {clearSession} from "@/src/services/users/sessionService";
+import {jwtDecode, JwtPayload} from "jwt-decode";
+import * as SecureStore from "expo-secure-store";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -29,10 +31,8 @@ export type AuthInfo = {
     id: string,
     email: string,
     enabled: boolean,
-    globalRole: GlobalRole
 }
 
-export type GlobalRole = "ROLE_ADMIN" | "ROLE_USER"
 
 
 export async function loginUser(
@@ -167,9 +167,31 @@ export async function handleLogout() {
     router.replace("/(auth)");
 }
 
-export async function loadCurrentUserId(): Promise<string> {
-    const userInfo = await loadCurrentUserAuthInfo();
-    return userInfo.id;
+export async function loadCurrentUserId(): Promise<string | null> {
+
+    const token = await SecureStore.getItemAsync("accessToken");
+
+    if (!token) {
+        return null;
+    }
+
+    try {
+        const decoded = jwtDecode<JwtPayload>(token);
+
+        if (!decoded.sub) {
+            return null;
+        }
+
+        if (decoded.exp && decoded.exp * 1000 <= Date.now()) {
+            return null;
+        }
+
+        return decoded.sub;
+
+    } catch (error) {
+        console.error("Errore decodifica JWT:", error);
+        return null;
+    }
 }
 
 export async function loadCurrentUserAuthInfo() {
@@ -190,7 +212,7 @@ export async function loadCurrentUserAuthInfo() {
 
 }
 
-export async function loadUserAuthInfo(id: string): Promise<AuthInfo> {
+export async function fetchAuthInfo(id: string): Promise<AuthInfo> {
     const response = await authenticatedFetch(
         `${API_URL}/auth/${id}`,
         {

@@ -1,4 +1,4 @@
-import {Redirect, usePathname, withLayoutContext} from "expo-router";
+import {Redirect, router, usePathname, withLayoutContext} from "expo-router";
 
 import {
     createMaterialTopTabNavigator,
@@ -23,7 +23,6 @@ import LoadingScreen from "@/src/components/common/loading/LoadingScreen";
 
 import {paletteVariants, type Variant} from "@/src/constants/palette/PaletteManager";
 import ToastProvider from "@/src/components/common/Toast/ToastProvider";
-import {SafeAreaProvider} from "react-native-safe-area-context";
 import {DeletingStatus} from "@/src/services/users/userDTO";
 import {clearSession} from "@/src/services/users/sessionService";
 
@@ -68,6 +67,11 @@ export default function RootLayout() {
         try {
 
             const id = await loadCurrentUserId();
+
+            if (id === null) {
+                router.replace("/(auth)");
+                return;
+            }
 
             const user = await fetchUser(id);
 
@@ -153,132 +157,132 @@ export default function RootLayout() {
 
     return (
 
-            <ToastProvider>
-                <SwipeTabs
-                    backBehavior="none"
-                    tabBarPosition="bottom"
-                    screenListeners={({navigation, route}: TabListenerArgs) => ({
-                        blur: () => {
-                            const tab = navigation
-                                .getState()
-                                .routes.find((item) => item.key === route.key);
+        <ToastProvider>
+            <SwipeTabs
+                backBehavior="none"
+                tabBarPosition="bottom"
+                screenListeners={({navigation, route}: TabListenerArgs) => ({
+                    blur: () => {
+                        const tab = navigation
+                            .getState()
+                            .routes.find((item) => item.key === route.key);
 
-                            const stack = tab?.state;
+                        const stack = tab?.state;
 
-                            if (
-                                stack?.type === "stack" &&
-                                stack.key &&
-                                (stack.index ?? 0) > 0
-                            ) {
-                                navigation.dispatch({
-                                    ...StackActions.popToTop(),
-                                    target: stack.key,
-                                });
-                            }
-                        },
-                    })}
-                    screenOptions={{
-                        swipeEnabled: isTabRoot,
-                        lazy: true,
+                        if (
+                            stack?.type === "stack" &&
+                            stack.key &&
+                            (stack.index ?? 0) > 0
+                        ) {
+                            navigation.dispatch({
+                                ...StackActions.popToTop(),
+                                target: stack.key,
+                            });
+                        }
+                    },
+                })}
+                screenOptions={{
+                    swipeEnabled: isTabRoot,
+                    lazy: true,
 
 
-                        tabBarShowIcon: true,
-                        tabBarShowLabel: false,
+                    tabBarShowIcon: true,
+                    tabBarShowLabel: false,
 
-                        tabBarActiveTintColor: "#ffffff",
-                        tabBarInactiveTintColor: "#ffffff",
+                    tabBarActiveTintColor: "#ffffff",
+                    tabBarInactiveTintColor: "#ffffff",
 
-                        tabBarStyle: styles.tabBarStyle,
+                    tabBarStyle: styles.tabBarStyle,
 
-                        tabBarItemStyle: styles.tabBarItemStyle,
+                    tabBarItemStyle: styles.tabBarItemStyle,
 
-                        tabBarIndicatorStyle: {
-                            height: 0,
-                        },
+                    tabBarIndicatorStyle: {
+                        height: 0,
+                    },
+                }}
+                tabBar={(props: MaterialTopTabBarProps) => {
+                    const route = props.state.routes[props.state.index];
+                    const config =
+                        paletteVariants[route.name as Variant] ?? paletteVariants.home;
+
+                    return (
+                        <ImageBackground
+                            source={config.background}
+                            resizeMode="cover"
+                            style={{
+                                paddingTop: 6,
+                                paddingBottom: 6,
+                                borderTopWidth: 1,
+                                borderTopColor: "rgba(255, 255, 255, 0.35)",
+                            }}
+                        >
+                            <View
+                                pointerEvents="none"
+                                style={styles.backgroundOverlay}
+                            />
+
+                            <MaterialTopTabBar {...props} />
+                        </ImageBackground>
+                    );
+                }}
+            >
+                <SwipeTabs.Screen
+                    name="home"
+                    options={{
+                        title: "Home",
+                        tabBarIcon: ({color, focused}) => (
+                            <Ionicons
+                                name={focused ? "home" : "home-outline"}
+                                size={28}
+                                color={color}
+                            />
+                        ),
                     }}
-                    tabBar={(props: MaterialTopTabBarProps) => {
-                        const route = props.state.routes[props.state.index];
-                        const config =
-                            paletteVariants[route.name as Variant] ?? paletteVariants.home;
+                />
 
-                        return (
-                            <ImageBackground
-                                source={config.background}
-                                resizeMode="cover"
-                                style={{
-                                    paddingTop: 6,
-                                    paddingBottom: 6,
-                                    borderTopWidth: 1,
-                                    borderTopColor: "rgba(255, 255, 255, 0.35)",
-                                }}
-                            >
-                                <View
-                                    pointerEvents="none"
-                                    style={styles.backgroundOverlay}
-                                />
-
-                                <MaterialTopTabBar {...props} />
-                            </ImageBackground>
-                        );
+                <SwipeTabs.Screen
+                    name="teams"
+                    options={{
+                        title: "Squadre",
+                        tabBarIcon: ({color, focused}) => (
+                            <Ionicons
+                                name={focused ? "people" : "people-outline"}
+                                size={28}
+                                color={color}
+                            />
+                        ),
                     }}
-                >
-                    <SwipeTabs.Screen
-                        name="home"
-                        options={{
-                            title: "Home",
-                            tabBarIcon: ({color, focused}) => (
-                                <Ionicons
-                                    name={focused ? "home" : "home-outline"}
-                                    size={28}
-                                    color={color}
-                                />
-                            ),
-                        }}
-                    />
+                />
 
-                    <SwipeTabs.Screen
-                        name="teams"
-                        options={{
-                            title: "Squadre",
-                            tabBarIcon: ({color, focused}) => (
-                                <Ionicons
-                                    name={focused ? "people" : "people-outline"}
-                                    size={28}
-                                    color={color}
-                                />
-                            ),
-                        }}
-                    />
+                <SwipeTabs.Screen
+                    name="tournaments"
+                    options={{
+                        title: "Tornei",
+                        tabBarIcon: ({color, focused}) => (
+                            <Ionicons
+                                name={focused ? "trophy" : "trophy-outline"}
+                                size={28}
+                                color={color}
+                            />
+                        ),
+                    }}
+                />
 
-                    <SwipeTabs.Screen
-                        name="tournaments"
-                        options={{
-                            title: "Tornei",
-                            tabBarIcon: ({color, focused}) => (
-                                <Ionicons
-                                    name={focused ? "trophy" : "trophy-outline"}
-                                    size={28}
-                                    color={color}
-                                />
-                            ),
-                        }}
-                    />
-
-                    <SwipeTabs.Screen
-                        name="profile"
-                        options={{
-                            title: "Profile",
-                            tabBarIcon: ({color, focused}) => (
-                                <Ionicons
-                                    name={focused ? "person" : "person-outline"}
-                                    size={28}
-                                    color={color}
-                                />
-                            ),
-                        }}
-                    />
-                </SwipeTabs>
-            </ToastProvider>
+                <SwipeTabs.Screen
+                    name="profile"
+                    options={{
+                        title: "Profile",
+                        tabBarIcon: ({color, focused}) => (
+                            <Ionicons
+                                name={focused ? "person" : "person-outline"}
+                                size={28}
+                                color={color}
+                            />
+                        ),
+                    }}
+                />
+            </SwipeTabs>
+        </ToastProvider>
     );
 }
 

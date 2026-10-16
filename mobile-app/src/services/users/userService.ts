@@ -2,9 +2,63 @@ import {UserCreationRequest, UserInfo, UserModRequest} from "@/src/services/user
 import {authenticatedFetch} from "@/src/services/fetchService";
 import {File, Paths} from "expo-file-system";
 import {API_URL, getLocalDateTime} from "@/src/services/common";
-import {Action, EntityReference, EntityType} from "@/src/services/activities/ActivityDTO";
-import {loadCurrentUserId} from "@/src/services/users/authService";
-import {postActivity} from "@/src/services/activities/activityService";
+import {Action, ActivityResponse, EntityReference, EntityType} from "@/src/services/activities/ActivityDTO";
+import {AuthInfo, fetchAuthInfo, loadCurrentUserId} from "@/src/services/users/authService";
+import {fetchActivities, postActivity} from "@/src/services/activities/activityService";
+import type {TeamDetails} from "@/src/services/teams/teamDTO";
+import {TournamentDetails} from "@/src/services/tournaments/tournamentDTO";
+import {router} from "expo-router";
+import {fetchUserTeams} from "@/src/services/teams/teamService";
+import {fetchUserTournaments} from "@/src/services/tournaments/tournamentService";
+
+
+export type ProfileData = {
+    user: UserInfo;
+    auth: AuthInfo;
+    teams: TeamDetails[];
+    activities: ActivityResponse[];
+    managedTournaments: TournamentDetails[];
+    isOwnProfile: boolean;
+};
+
+export async function fetchUserProfileData(profileId: string | undefined) : Promise <ProfileData | null> {
+
+    const currentUserId = await loadCurrentUserId();
+
+    if (currentUserId === null || currentUserId === undefined) {
+        router.replace("/(auth)");
+        return null;
+    }
+
+    const userId = profileId ?? String(currentUserId);
+    const isOwnProfile = userId === String(currentUserId);
+
+    const [teams, user, authInfo] = await Promise.all([
+        fetchUserTeams(userId),
+        fetchUser(userId),
+        fetchAuthInfo(userId),
+    ]);
+
+    const tournaments = await fetchUserTournaments(teams, userId);
+
+    //fetch attività, con fail gestito autonomamente
+    let activities: ActivityResponse[] = [];
+    try {
+        activities = await fetchActivities(userId, EntityType.USER)
+    } catch (activitiesError) {
+        console.log("Errore recupero attività utente")
+        console.log(activitiesError)
+    }
+
+    return {
+        user: user,
+        auth: authInfo,
+        teams: teams,
+        activities: activities,
+        managedTournaments: tournaments.managed,
+        isOwnProfile: isOwnProfile,
+    }
+}
 
 
 export async function createUser(
@@ -56,7 +110,6 @@ export async function createUser(
     }
 }
 
-
 export async function checkUsernameAlreadyExists(trimmedName: string) {
     const response = await authenticatedFetch(
         `${API_URL}/users/nameCheck/${trimmedName}`,
@@ -87,7 +140,6 @@ export async function fetchUser(
     const user: UserInfo = await response.json() as UserInfo;
 
 
-
     return {
         ...user,
         avatar: {
@@ -95,9 +147,6 @@ export async function fetchUser(
         }
     }
 }
-
-
-
 
 export async function modUser(request: UserModRequest): Promise<UserInfo> {
 
@@ -187,9 +236,13 @@ export async function deleteUser() {
 
 }
 
-
 export async function requestUserActor(): Promise<EntityReference> {
     const currentUserId = await loadCurrentUserId();
+
+    if (currentUserId === null) {
+        router.replace("/(auth)");
+        throw new Error("Utente non autenticato");
+    }
     const currentUser = await fetchUser(currentUserId);
 
     return {

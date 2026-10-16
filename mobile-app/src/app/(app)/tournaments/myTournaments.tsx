@@ -32,7 +32,12 @@ export default function MyTournaments() {
             setLoading(true);
             setError(null);
 
-            const currentUserId = await loadCurrentUserId()
+            const currentUserId = await loadCurrentUserId();
+
+            if (currentUserId === null) {
+                router.replace("/(auth)");
+                return null;
+            }
 
             const loadedTournaments = await fetchUserTournaments(await fetchUserTeams(currentUserId), currentUserId);
 
