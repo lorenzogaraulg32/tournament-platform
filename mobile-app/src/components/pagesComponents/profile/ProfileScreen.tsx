@@ -82,7 +82,7 @@ export default function ProfileScreen() {
         router.push({
             pathname: "/profile/modify",
             params: {
-                profile: JSON.stringify(profile.user),
+                auth: JSON.stringify(profile.auth),
             },
         });
     }

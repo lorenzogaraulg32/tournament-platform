@@ -117,7 +117,8 @@ public class AuthService {
                 user.getId(),
                 user.getEmail(),
                 user.isEnabled(),
-                user.getGlobalRole()
+                user.hasLocalAuthentication(),
+                user.getExternalProvider()
         );
     }
 

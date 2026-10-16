@@ -31,9 +31,18 @@ export type AuthInfo = {
     id: string,
     email: string,
     enabled: boolean,
+    hasLocalAuthentication: boolean;
+    externalProvider: ExternalProvider | null;
 }
 
+export type modAuthRequest = {
+    email: string,
+    password: string
+}
 
+export enum ExternalProvider {
+    GOOGLE = "GOOGLE",
+}
 
 export async function loginUser(
     request: LoginRequest

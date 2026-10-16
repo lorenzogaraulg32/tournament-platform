@@ -4,17 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Implemented external auth provider&#10;&#10;Implemented login/register/link existing account via google&#10;&#10;Configured google cloud for oauth&#10;&#10;Created a devBuild&#10;&#10;Configured backend for credential patch&#10;&#10;Todo: create a modification form for auth-info, create the possibility to unlink an external provider">
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Minor adjustments to userFetch">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/_layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/myTeams.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/teams/myTeams.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(app)/tournaments/myTournaments.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(app)/tournaments/myTournaments.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfilePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/dto/UserResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/dto/UserResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/service/AuthService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfileScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfileScreen.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modifyAuth/ModifyAuthScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modifyAuth/ModifyAuthScreen.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/services/users/authService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/users/authService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/users/userService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/users/userService.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -443,15 +439,7 @@
       <workItem from="1791983084338" duration="12263000" />
       <workItem from="1792052270472" duration="7625000" />
       <workItem from="1792070366409" duration="9211000" />
-      <workItem from="1792158710489" duration="2732000" />
-    </task>
-    <task id="LOCAL-00068" summary="Added location, logo and invitation code to tournament, and adapted front-end">
-      <option name="closed" value="true" />
-      <created>1788997855484</created>
-      <option name="number" value="00068" />
-      <option name="presentableId" value="LOCAL-00068" />
-      <option name="project" value="LOCAL" />
-      <updated>1788997855484</updated>
+      <workItem from="1792158710489" duration="3508000" />
     </task>
     <task id="LOCAL-00069" summary="Now PlayerCard redirect to profile on click">
       <option name="closed" value="true" />
@@ -837,7 +825,15 @@
       <option name="project" value="LOCAL" />
       <updated>1792079226991</updated>
     </task>
-    <option name="localTasksCounter" value="117" />
+    <task id="LOCAL-00117" summary="Minor adjustments to userFetch">
+      <option name="closed" value="true" />
+      <created>1792161554595</created>
+      <option name="number" value="00117" />
+      <option name="presentableId" value="LOCAL-00117" />
+      <option name="project" value="LOCAL" />
+      <updated>1792161554595</updated>
+    </task>
+    <option name="localTasksCounter" value="118" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -855,7 +851,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Adapted Team-service to the new media storage service" />
     <MESSAGE value="Adjusted Exception Handling for teamService" />
     <MESSAGE value="Migration for new storage service completed also for user service, todo: fix frontend" />
     <MESSAGE value="Front end fixed, now images are managed correctly, todo: finish tournament section" />
@@ -880,7 +875,8 @@
     <MESSAGE value="Various bugfix and some refractoring&#10;Now the app is in an usable state" />
     <MESSAGE value="Front-end graphical improvements&#10;&#10;Started implementing login/register with external provider, first will be supported only google, then also apple" />
     <MESSAGE value="Implemented external auth provider&#10;&#10;Implemented login/register/link existing account via google&#10;&#10;Configured google cloud for oauth&#10;&#10;Created a devBuild&#10;&#10;Configured backend for credential patch&#10;&#10;Todo: create a modification form for auth-info, create the possibility to unlink an external provider" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implemented external auth provider&#10;&#10;Implemented login/register/link existing account via google&#10;&#10;Configured google cloud for oauth&#10;&#10;Created a devBuild&#10;&#10;Configured backend for credential patch&#10;&#10;Todo: create a modification form for auth-info, create the possibility to unlink an external provider" />
+    <MESSAGE value="Minor adjustments to userFetch" />
+    <option name="LAST_COMMIT_MESSAGE" value="Minor adjustments to userFetch" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
