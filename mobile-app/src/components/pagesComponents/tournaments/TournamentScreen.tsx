@@ -197,19 +197,8 @@ export default function TournamentScreen() {
     }
 
     return (<>
-            {onBack && <BackButton onPress={onBack}/>}
-            {(canEdit || canLeave) && (
-                <OptionsMenu
-                    onEdit={canEdit ? onMod : undefined}
-                    onDelete={isTournamentOwner ? onDelete : undefined}
-                    onLeave={canLeave ? onLeave : undefined}
-                    onManageTeams={
-                        canEdit
-                            ? () => setIsTournamentModalVisible(true)
-                            : undefined
-                    }
-                />
-            )}
+
+
             <TournamentsPage
                 tournament={tournament}
                 setTournament={setTournament}
@@ -219,6 +208,23 @@ export default function TournamentScreen() {
                 currentUserId={currentUserId}
                 isTournamentModalVisible={isTournamentModalVisible}
                 setTournamentModalVisible={setIsTournamentModalVisible}
+                backBtn={
+                    <BackButton absolute onPress={onBack}/>
+                }
+                optionsBtn={
+                    (canEdit || canLeave) && (
+                        <OptionsMenu
+                            onEdit={canEdit ? onMod : undefined}
+                            onDelete={isTournamentOwner ? onDelete : undefined}
+                            onLeave={canLeave ? onLeave : undefined}
+                            onManageTeams={
+                                canEdit
+                                    ? () => setIsTournamentModalVisible(true)
+                                    : undefined
+                            }
+                        />
+                    )
+                }
             />
         </>
     )

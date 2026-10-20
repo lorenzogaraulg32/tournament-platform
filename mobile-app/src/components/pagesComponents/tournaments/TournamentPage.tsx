@@ -1,11 +1,10 @@
-import {Dispatch, SetStateAction, useCallback, useEffect, useRef, useState} from "react";
+import {Dispatch, ReactNode, SetStateAction, useCallback, useEffect, useRef, useState} from "react";
 import {TournamentDetails} from "@/src/services/tournaments/tournamentDTO";
 import {useToast} from "@/src/components/common/Toast/ToastProvider";
 import {fetchUser} from "@/src/services/users/userService";
 import {TeamDetails} from "@/src/services/teams/teamDTO";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {fetchTeam} from "@/src/services/teams/teamService";
-import PageLayout from "@/src/components/common/layout/PageLayout";
 import EntityHeader from "@/src/components/common/layout/headers/EntityHeader";
 import {StyleSheet, Text, View} from "react-native";
 import FullPageModal from "@/src/components/common/FullPageModal";
@@ -15,6 +14,7 @@ import AdminCard from "@/src/components/common/cards/userCards/AdminCard";
 import {colors} from "@/src/constants/theme";
 import TeamCardHorizontal from "@/src/components/common/cards/teamCards/TeamCardHorizontal";
 import {UserInfo} from "@/src/services/users/userDTO";
+import EntityLayout from "@/src/components/common/layout/EntityLayout";
 
 type TournamentPageProps = {
     tournament: TournamentDetails;
@@ -25,6 +25,8 @@ type TournamentPageProps = {
     currentUserId: string;
     isTournamentModalVisible: boolean
     setTournamentModalVisible: Dispatch<SetStateAction<boolean>>;
+    backBtn?: ReactNode,
+    optionsBtn?: ReactNode
 };
 
 
@@ -37,6 +39,8 @@ export default function TournamentPage({
                                            currentUserId,
                                            isTournamentModalVisible,
                                            setTournamentModalVisible,
+                                           backBtn,
+                                           optionsBtn
                                        }: TournamentPageProps) {
 
     const {showToast} = useToast();
@@ -151,7 +155,7 @@ export default function TournamentPage({
     }, [fetchTournamentComps]);
 
     return (
-        <PageLayout
+        <EntityLayout
             header={
                 <EntityHeader
                     variant={"tournaments"}
@@ -160,6 +164,8 @@ export default function TournamentPage({
                     position={tournament.location?.label}
                     invitationCode={tournament.invitationCode}
                     onRefreshCode={isTournamentAdmin || isTournamentOwner ? onRefreshCode : undefined}
+                    backBtn={backBtn}
+                    optionsBtn={optionsBtn}
                 />
             }
         >
@@ -248,7 +254,7 @@ export default function TournamentPage({
                     );
                 }}
             </CollapsableSection>
-        </PageLayout>
+        </EntityLayout>
     )
 
 }
