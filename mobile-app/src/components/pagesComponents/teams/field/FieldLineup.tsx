@@ -4,14 +4,14 @@ import {Sport, UserInfo} from "@/src/services/users/userDTO";
 import {FORMATIONS_BY_SPORT} from "@/src/components/pagesComponents/teams/field/consts/FieldConst";
 import SportField from "@/src/components/pagesComponents/teams/field/SportField";
 import {Pressable, StyleSheet, Text, View} from "react-native";
-import FullPageModal from "@/src/components/common/layout/FullPageModal";
+import FullPageModal from "@/src/components/common/FullPageModal";
 import PlayerCard from "@/src/components/common/cards/userCards/PlayerCard";
 import FieldPlayerCard from "@/src/components/common/cards/userCards/FieldPlayerCard";
 import Sortable from "react-native-sortables";
 import {colors} from "@/src/constants/theme";
 import {TeamFormation} from "@/src/services/teams/teamDTO";
-import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
 import SportSelector from "@/src/components/pagesComponents/teams/field/SportSelector";
+import ActionButton from "@/src/components/common/buttons/ActionButton";
 
 
 type FieldLineupProps = {
@@ -308,6 +308,7 @@ export default function FieldLineup({
 
     /* -------------------------------------------------------------------------- */
     /*                         Modifica / salvataggio                             */
+
     /* -------------------------------------------------------------------------- */
 
     function enableFormationModification() {
@@ -695,7 +696,8 @@ export default function FieldLineup({
                                          */
                                         onPress={
                                             canModifyFormation
-                                                ? () => {}
+                                                ? () => {
+                                                }
                                                 : undefined
                                         }
                                     />
@@ -718,14 +720,16 @@ export default function FieldLineup({
 
             {canEdit && (
 
-                <ButtonSolid
-                    variant="teams"
+                <ActionButton
+                    label={isSaving
+                        ? "Salvataggio…"
+                        : isModFormation
+                            ? "Salva formazione"
+                            : "Modifica formazione"
+                    }
+                    paletteVariant="teams"
                     disabled={isInteractionDisabled}
-                    accessibilityRole="button"
-                    accessibilityState={{
-                        disabled: isInteractionDisabled,
-                        busy: isSaving,
-                    }}
+                    loading={isSaving}
                     style={[
                         styles.saveBtn,
                         {
@@ -736,13 +740,7 @@ export default function FieldLineup({
                         },
                     ]}
                     onPress={handleFormationButtonPress}
-                    text={
-                        isSaving
-                            ? "Salvataggio…"
-                            : isModFormation
-                                ? "Salva formazione"
-                                : "Modifica formazione"
-                    }
+
                 />
 
             )}

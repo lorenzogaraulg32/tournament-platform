@@ -1,11 +1,9 @@
-import {Alert, ScrollView, StyleSheet, View} from "react-native";
+import {Alert, ScrollView, StyleSheet} from "react-native";
 import PageLayout from "@/src/components/common/layout/PageLayout";
-import {corners} from "@/src/constants/theme";
 import CodeInput from "@/src/components/pagesComponents/home/CodeInput";
 import {addPlayer} from "@/src/services/teams/teamService";
 import {router} from "expo-router";
-import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
-import HeaderPage from "@/src/components/common/headers/HeaderPage";
+import PageHeader from "@/src/components/common/layout/headers/PageHeader";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 
 export default function Homepage() {
@@ -43,13 +41,13 @@ export default function Homepage() {
 
         <PageLayout
             header={
-                <HeaderContainer variant="home">
-                    <HeaderPage label="Benvenuto in JoinCup"
-                                title="Entra in gioco."
-                                subtitle="Unisciti a una squadra o partecipa a un torneo."/>
-                </HeaderContainer>
+                <PageHeader label="Benvenuto in JoinCup"
+                            title="Entra in gioco."
+                            subtitle="Unisciti a una squadra o partecipa a un torneo."
+                            variant={"home"}
+                />
+
             }>
-            <View style={styles.scrollContainer}></View>
             <ScrollView
                 style={styles.scrollView}
                 contentContainerStyle={styles.scrollContent}
@@ -74,9 +72,6 @@ export default function Homepage() {
 
 const styles = StyleSheet.create({
 
-    scrollContainer: {
-        borderRadius: corners.standard,
-    },
 
     scrollView: {
         flex: 1,

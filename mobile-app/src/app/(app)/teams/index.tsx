@@ -2,9 +2,8 @@ import PageLayout from "@/src/components/common/layout/PageLayout";
 import {StyleSheet} from "react-native";
 import {useState} from "react";
 import MyTeams from "@/src/app/(app)/teams/myTeams";
-import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
-import HeaderPage from "@/src/components/common/headers/HeaderPage";
-import TabsContainer from "@/src/components/common/buttons/TabsContainer";
+import PageHeader from "@/src/components/common/layout/headers/PageHeader";
+import TabsContainer from "@/src/components/common/TabsContainer";
 import FindTeams from "@/src/app/(app)/teams/findTeams";
 
 const TEAM_TABS = [
@@ -27,15 +26,12 @@ export default function TeamsPage() {
     return (
         <PageLayout
             header={
-                <HeaderContainer variant="teams">
-                    <HeaderPage
-                        label="JoinCup"
-                        title="Squadre"
-                        subtitle="Gestisci le tue squadre e trovane di nuove."/>
-                </HeaderContainer>
-
-            }
-            contentStyle={styles.content}>
+                <PageHeader
+                    label="JoinCup"
+                    title="Squadre"
+                    subtitle="Gestisci le tue squadre e trovane di nuove."
+                    variant={"teams"}/>
+            }>
 
 
             <TabsContainer

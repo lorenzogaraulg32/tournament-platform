@@ -1,5 +1,4 @@
 import {Alert, StyleSheet, Text, View} from "react-native";
-import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
 import {router} from "expo-router";
 import AuthHeader from "@/src/components/pagesComponents/auth/AuthHeader";
 import AuthContent from "@/src/components/pagesComponents/auth/AuthContent";
@@ -12,19 +11,20 @@ import {useState} from "react";
 import {authenticateWithGoogle} from "@/src/services/users/authService";
 import {saveSession} from "@/src/services/users/sessionService";
 import {normalizeApiRequestError, printApiRequestError} from "@/src/services/errorService";
+import ActionButton from "@/src/components/common/buttons/ActionButton";
 
 
 export default function WelcomeScreen() {
     const insets = useSafeAreaInsets();
 
-    const [googleLoading, setGoogleLoading] = useState(false);
+    const [externalProviderLoading, setExternalProviderLoading] = useState(false);
     const [externalProviderError, setExternalProviderError] = useState("")
 
 
     const handleGoogleSignIn = async () => {
-        if (googleLoading) return;
+        if (externalProviderLoading) return;
 
-        setGoogleLoading(true);
+        setExternalProviderLoading(true);
         setExternalProviderError("")
         try {
 
@@ -103,7 +103,7 @@ export default function WelcomeScreen() {
             }
             printApiRequestError(apiError);
         } finally {
-            setGoogleLoading(false);
+            setExternalProviderLoading(false);
         }
     };
 
@@ -122,21 +122,23 @@ export default function WelcomeScreen() {
 
             content={
                 <AuthContent style={[styles.btnContainer, {paddingBottom: Math.max(insets.bottom, 24)}]}>
-                    <ButtonSolid
-                        variant="onBoarding"
+                    <ActionButton
+                        label={"Registrati"}
+                        paletteVariant={"onBoarding"}
                         onPress={() => {
                             router.push("/(auth)/register")
                         }}
-                        text={"Registrati"}>
-                    </ButtonSolid>
+                        disabled={externalProviderLoading}
+                    />
 
-                    <ButtonSolid
-                        variant="standard"
+                    <ActionButton
+                        label={"Accedi"}
+                        paletteVariant={"standard"}
                         onPress={() => {
                             router.push("/(auth)/login")
                         }}
-                        text={"Accedi"}>
-                    </ButtonSolid>
+                        disabled={externalProviderLoading}
+                    />
 
                     <View style={{
                         flexDirection: "row",
@@ -155,7 +157,7 @@ export default function WelcomeScreen() {
 
                     <GoogleAuthButton
                         onPress={handleGoogleSignIn}
-                        loading={googleLoading}
+                        loading={externalProviderLoading}
                     />
 
                     <Text style={styles.err}>{externalProviderError}</Text>

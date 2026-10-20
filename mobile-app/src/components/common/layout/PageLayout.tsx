@@ -1,32 +1,29 @@
 import {ReactNode} from "react";
-import {StyleProp, StyleSheet, View, ViewStyle} from "react-native";
+import {ScrollView, StyleProp, StyleSheet, View, ViewStyle} from "react-native";
 
 import {colors} from "@/src/constants/theme"
 
 type PageLayoutProps = {
     header: ReactNode,
     children: ReactNode,
-    headerStyle?: StyleProp<ViewStyle>;
-    contentStyle?: StyleProp<ViewStyle>;
 }
 
 export default function PageLayout({
                                        header,
                                        children,
-                                       headerStyle,
-                                       contentStyle
                                    }: PageLayoutProps) {
     return (
         <View style={styles.container}>
-
-            <View style={[styles.header, headerStyle]}>
                 {header}
+            <View style={styles.scrollContainer}>
+                <ScrollView
+                    style={styles.scroll}
+                    contentContainerStyle={styles.scrollContent}
+                    showsVerticalScrollIndicator={false}
+                >
+                    {children}
+                </ScrollView>
             </View>
-
-            <View style={[styles.content, contentStyle]}>
-                {children}
-            </View>
-
         </View>
     );
 }
@@ -39,24 +36,24 @@ const styles = StyleSheet.create({
         backgroundColor: colors.background,
     },
 
-    header: {
-        minHeight: 180,
+
+    scrollContainer: {
+        //Questo margine serve per coprire i buchi lasciati dagli angoli arrotondati
+        marginTop: -30,
+        flex: 1,
     },
 
-    content: {
-        flex: 1,
-
-        marginTop: -24,
-
-
+    scroll: {
         borderTopLeftRadius: 28,
         borderTopRightRadius: 28,
+    },
 
+    scrollContent: {
+        flexGrow: 1,
         backgroundColor: "#F8FAF9",
-
-        paddingTop: 10,
-        paddingHorizontal: 18,
-
+        paddingTop: 20,
+        paddingBottom: 20,
+        paddingHorizontal: 10,
         overflow: "hidden",
     },
 

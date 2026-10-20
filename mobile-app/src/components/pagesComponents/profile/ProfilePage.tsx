@@ -1,19 +1,18 @@
-import {Pressable, ScrollView, StyleSheet} from "react-native";
+import {Pressable, StyleSheet} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import {paletteVariants, type Variant,} from "@/src/constants/palette/PaletteManager";
-
-import PageLayout from "@/src/components/common/layout/PageLayout";
-import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
-import HeaderEntity from "@/src/components/common/headers/HeaderEntity";
+import EntityHeader from "@/src/components/common/layout/headers/EntityHeader";
 import LoadingSection from "@/src/components/common/loading/LoadingSection";
 import ErrorSection from "@/src/components/common/errors/ErrorSection";
 import {ActivitiesSection} from "@/src/components/common/ActivitiesSection";
-import StandardCardList from "@/src/components/common/layout/StandardCardList";
+import StandardCardList from "@/src/components/common/StandardCardList";
 import TeamCardHorizontal from "@/src/components/common/cards/teamCards/TeamCardHorizontal";
-import CollapsableSection from "@/src/components/common/layout/CollapsableSection";
+import CollapsableSection from "@/src/components/common/CollapsableSection";
 import TournamentCardHorizontal from "@/src/components/common/cards/tournamentCards/TournamentCardHorizontal";
 import {ProfileData} from "@/src/services/users/userService";
+import {ReactNode} from "react";
+import EntityLayout from "@/src/components/common/layout/EntityLayout";
 
 type ProfilePageProps = {
     variant: Variant;
@@ -23,7 +22,8 @@ type ProfilePageProps = {
     loading: boolean,
     error?: string | null,
     onErrorRetry?: () => void
-
+    backBtn?: ReactNode,
+    optionsBtn?: ReactNode
 };
 
 export default function ProfilePage({
@@ -34,49 +34,48 @@ export default function ProfilePage({
                                         loading,
                                         error,
                                         onErrorRetry,
+                                        backBtn,
+                                        optionsBtn
                                     }: ProfilePageProps) {
     const {palette} = paletteVariants[variant];
 
     if (loading) {
         return (
-            <PageLayout
+            <EntityLayout
                 header={
-                    <HeaderContainer variant={variant}>
-                        <HeaderEntity
-                            variant={variant}
-                            name={""}
-                            image={null}
-                            position={null}
-                            style={{paddingTop: 45}}
-                        />
-                    </HeaderContainer>
+                    <EntityHeader
+                        variant={variant}
+                        name={""}
+                        image={null}
+                        position={null}
+                        backBtn={backBtn}
+
+                    />
                 }
             >
                 <LoadingSection style={{marginTop: 20}} text={"Caricamento profilo..."}/>
-            </PageLayout>
+            </EntityLayout>
         )
     }
 
     if (error) {
         return (
-            <PageLayout
+            <EntityLayout
                 header={
-                    <HeaderContainer variant={variant}>
-                        <HeaderEntity
-                            variant={variant}
-                            name={""}
-                            image={null}
-                            position={""}
-                            style={{paddingTop: 45}}
-                        />
-                    </HeaderContainer>
+                    <EntityHeader
+                        variant={variant}
+                        name={""}
+                        image={null}
+                        position={""}
+                        backBtn={backBtn}
+                    />
                 }
             >
                 <ErrorSection style={{
                     marginTop: 20
                 }} text={error} onRetry={onErrorRetry} variant={"error"}/>
 
-            </PageLayout>
+            </EntityLayout>
         )
     }
 
@@ -85,83 +84,72 @@ export default function ProfilePage({
     }
 
     return (
-        <PageLayout
+        <EntityLayout
             header={
-                <HeaderContainer variant={variant}>
-                    <HeaderEntity
-                        variant={variant}
-                        name={`${profile.user.firstName} ${profile.user.lastName}`}
-                        image={profile.user.avatar}
-                        position={profile.user.location?.label}
-                        style={{paddingTop: 45}}
-                        email={profile.auth?.email}
-                    />
-                </HeaderContainer>
+                <EntityHeader
+                    variant={variant}
+                    name={`${profile.user.firstName} ${profile.user.lastName}`}
+                    image={profile.user.avatar}
+                    position={profile.user.location?.label}
+                    email={profile.auth?.email}
+                    backBtn={backBtn}
+                    optionsBtn={optionsBtn}
+                />
             }
         >
+            <ActivitiesSection
+                variant={"profile"}
+                activities={profile.activities}/>
 
 
-            <ScrollView
-                style={styles.scroll}
-                contentContainerStyle={styles.content}
-                showsVerticalScrollIndicator={false}
-            >
-                <ActivitiesSection
-                    variant={"profile"}
-                    activities={profile.activities}/>
+            {/* La sezione delle squadre è visibile solo se non si è nel proprio profilo */}
+            {!isOwnProfile &&
+
+                <CollapsableSection
+                    label="Squadre"
+                    iconName="shirt-outline"
+                >
+                    <StandardCardList
+                        items={(profile.teams ?? [])
+                            .map(team => {
+                                return (
+                                    <TeamCardHorizontal
+                                        key={team.id}
+                                        teamDetails={team}/>
+                                );
+                            })}
+                        isLoading={false}
+                        error={null}
+                        emptyMsg={"Questo utente non fa parte di nessuna squadra"}
+                        orientation="vertical"/>
+                </CollapsableSection>
+
+            }
+
+            {/* La sezione dei tornei è visibile solo se non si è nel proprio profilo */}
+            {!isOwnProfile &&
+
+                <CollapsableSection
+                    label="Tornei "
+                    iconName="trophy-outline"
+                >
+                    <StandardCardList
+                        items={(profile.managedTournaments ?? [])
+                            .map(tournament => {
+                                return (
+                                    <TournamentCardHorizontal
+                                        key={tournament.id}
+                                        tournament={tournament}/>
+                                );
+                            })}
+                        isLoading={false}
+                        error={null}
+                        emptyMsg={"Questo utente non gestisce nessun torneo"}
+                        orientation="vertical"/>
+                </CollapsableSection>
 
 
-                {/* La sezione delle squadre è visibile solo se non si è nel proprio profilo */}
-                {!isOwnProfile &&
-                    <>
-                        <CollapsableSection
-                            label="Squadre"
-                            iconName="shirt-outline"
-                        >
-                            <StandardCardList
-                                items={(profile.teams ?? [])
-                                    .map(team => {
-                                        return (
-                                            <TeamCardHorizontal
-                                                key={team.id}
-                                                teamDetails={team}/>
-                                        );
-                                    })}
-                                isLoading={false}
-                                error={null}
-                                emptyMsg={"Questo utente non fa parte di nessuna squadra"}
-                                orientation="vertical"/>
-                        </CollapsableSection>
-
-                    </>
-                }
-
-
-                {/* La sezione dei tornei è visibile solo se non si è nel proprio profilo */}
-                {!isOwnProfile &&
-                    <>
-                        <CollapsableSection
-                            label="Tornei "
-                            iconName="shirt-outline"
-                        >
-                            <StandardCardList
-                                items={(profile.managedTournaments ?? [])
-                                    .map(tournament => {
-                                        return (
-                                            <TournamentCardHorizontal
-                                                key={tournament.id}
-                                                tournament={tournament}/>
-                                        );
-                                    })}
-                                isLoading={false}
-                                error={null}
-                                emptyMsg={"Questo utente non partecipa a nessun torneo"}
-                                orientation="vertical"/>
-                        </CollapsableSection>
-
-                    </>
-                }
-            </ScrollView>
+            }
 
             {isOwnProfile && (
                 <Pressable
@@ -184,20 +172,13 @@ export default function ProfilePage({
                     />
                 </Pressable>
             )}
-        </PageLayout>
+        </EntityLayout>
     );
 }
 
 const styles = StyleSheet.create({
-    scroll: {
-        marginTop: 10,
-        flex: 1,
-    },
 
-    content: {
-        gap: 20,
-        paddingBottom: 88,
-    },
+
     logoutButton: {
         position: "absolute",
         bottom: 15,
@@ -217,11 +198,6 @@ const styles = StyleSheet.create({
     pressed: {
         transform: [{scale: 0.98}],
         opacity: 0.9,
-    },
-
-    activityRow: {
-        flexDirection: "row",
-        gap: 5
     },
 
 });

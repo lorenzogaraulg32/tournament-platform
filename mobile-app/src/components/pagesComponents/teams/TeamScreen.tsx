@@ -6,17 +6,16 @@ import {fetchTeam, leaveTeam, refreshInvitationCode,} from "@/src/services/teams
 import LoadingScreen from "@/src/components/common/loading/LoadingScreen";
 import TeamPage from "@/src/components/pagesComponents/teams/TeamPage";
 import BackButton from "@/src/components/common/buttons/BackButton";
-import OptionsMenu from "@/src/components/common/OptionsMenu";
 import {Alert} from "react-native";
 import {loadCurrentUserId} from "@/src/services/users/authService";
 import ErrorScreen from "@/src/components/common/errors/ErrorScreen";
 import {TournamentDetails} from "@/src/services/tournaments/tournamentDTO";
-import { UserInfo } from "@/src/services/users/userDTO";
+import {UserInfo} from "@/src/services/users/userDTO";
 import {fetchUser} from "@/src/services/users/userService";
 import {fetchTeamTournaments} from "@/src/services/tournaments/tournamentService";
 import {ActivityResponse, EntityType} from "@/src/services/activities/ActivityDTO";
 import {fetchActivities} from "@/src/services/activities/activityService";
-
+import OptionsMenu from "@/src/components/common/OptionsMenu";
 
 
 //qui sai fa il fetch del team e si ritorna il feedback corrispondente
@@ -42,7 +41,7 @@ export default function TeamScreen() {
     const [isLoading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<string>("");
 
-    const [teamProfile, setTeamProfile] = useState<TeamProfile| null>(null);
+    const [teamProfile, setTeamProfile] = useState<TeamProfile | null>(null);
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
     const fetchTeamDetails = useCallback(async () => {
@@ -78,7 +77,7 @@ export default function TeamScreen() {
                 return;
             }
 
-            const teamProfile : TeamProfile = {
+            const teamProfile: TeamProfile = {
                 team: loadedTeam,
                 tournaments: tournaments,
                 players: playersId,
@@ -134,7 +133,7 @@ export default function TeamScreen() {
             return () => {
                 requestIdRef.current++;
             };
-        }, [fetchTeamDetails, ])
+        }, [fetchTeamDetails,])
     );
 
     //autorizzazioni utente rispetto al team
@@ -167,7 +166,7 @@ export default function TeamScreen() {
         router.push({
             pathname: "/teams/modify",
             params: {
-                team: JSON.stringify(teamProfile),
+                team: JSON.stringify(teamProfile.team),
             },
         });
     }
@@ -228,7 +227,6 @@ export default function TeamScreen() {
         }
 
 
-
         router.push({
             pathname: "/teams/delete",
             params: {teamId: String(teamProfile?.team.id)},
@@ -241,7 +239,7 @@ export default function TeamScreen() {
             throw new Error("La squadra non è disponibile.");
         }
 
-        try{
+        try {
             const updatedTeam = await refreshInvitationCode(teamProfile.team.id);
 
             const newCode = updatedTeam.invitationCode;
@@ -278,7 +276,7 @@ export default function TeamScreen() {
 
             return newCode;
 
-        }catch (error){
+        } catch (error) {
             const apiError =
                 normalizeApiRequestError(error);
 
@@ -292,7 +290,6 @@ export default function TeamScreen() {
                 apiError.message,
             );
         }
-
 
 
     }
@@ -323,30 +320,35 @@ export default function TeamScreen() {
     }
 
 
-    return (<>
-            {onBack && <BackButton onPress={onBack}/>}
-            {(canEdit || canLeave()) && (
-                <OptionsMenu
-                    onEdit={canEdit ? onMod : undefined}
-                    onDelete={canEdit ? onDelete : undefined}
-                    onLeave={canLeave() ? onLeave : undefined}
-                    onManagePlayers={
-                        isTeamAdmin || isTeamOwner
-                            ? () => setIsPlayersModalVisible(true)
-                            : undefined
-                    }
-                />
-            )}
-            <TeamPage
-                teamProfile={teamProfile}
-                setTeamProfile={setTeamProfile}
-                currentUserId={currentUserId}
-                onRefreshCode={onRefreshCode}
-                isTeamAdmin={isTeamAdmin}
-                isTeamOwner={isTeamOwner}
-                isPlayerModalVisible={isPlayersModalVisible}
-                setPlayerModalVisible={setIsPlayersModalVisible}/>
-        </>
+    return (
+
+        <TeamPage
+            teamProfile={teamProfile}
+            setTeamProfile={setTeamProfile}
+            currentUserId={currentUserId}
+            onRefreshCode={onRefreshCode}
+            isTeamAdmin={isTeamAdmin}
+            isTeamOwner={isTeamOwner}
+            isPlayerModalVisible={isPlayersModalVisible}
+            setPlayerModalVisible={setIsPlayersModalVisible}
+            backBtn={
+                <BackButton absolute onPress={onBack}/>
+            }
+            optionsBtn={
+                (canEdit || canLeave()) && (
+                    <OptionsMenu
+                        onEdit={canEdit ? onMod : undefined}
+                        onDelete={canEdit ? onDelete : undefined}
+                        onLeave={canLeave() ? onLeave : undefined}
+                        onManagePlayers={
+                            isTeamAdmin || isTeamOwner
+                                ? () => setIsPlayersModalVisible(true)
+                                : undefined
+                        }
+                    />)
+            }
+        />
+
     )
 
 }

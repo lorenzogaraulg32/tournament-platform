@@ -82,7 +82,7 @@ export default function ProfileScreen() {
         router.push({
             pathname: "/profile/modify",
             params: {
-                auth: JSON.stringify(profile.auth),
+                profile: JSON.stringify(profile.user),
             },
         });
     }
@@ -95,7 +95,7 @@ export default function ProfileScreen() {
         router.push({
             pathname: "/profile/modify-auth",
             params: {
-                profile: JSON.stringify(profile.user),
+                auth: JSON.stringify(profile.auth),
             },
         });
     }
@@ -112,28 +112,27 @@ export default function ProfileScreen() {
 
 
     return (
-        <>
-            {profileId !== undefined && (
-                <BackButton onPress={onBack}/>
-            )}
+        <ProfilePage
+            variant="profile"
+            profile={profile}
+            isOwnProfile={profile?.isOwnProfile}
+            onLogout={handleLogout}
+            error={error}
+            loading={isLoading}
+            onErrorRetry={loadProfile}
+            backBtn={
+                <BackButton absolute onPress={onBack}/>
+            }
+            optionsBtn={
+                (profile?.isOwnProfile && (
+                    <OptionsMenu
+                        onEdit={onMod}
+                        onEditAuth={onModAuth}
+                        onDelete={onDelete}/>
+                ))
+            }
+        />
 
-            {profile?.isOwnProfile && (
-                <OptionsMenu
-                    onEdit={onMod}
-                    onEditAuth={onModAuth}
-                    onDelete={onDelete}/>
-            )}
-
-            <ProfilePage
-                variant="profile"
-                profile={profile}
-                isOwnProfile={profile?.isOwnProfile}
-                onLogout={handleLogout}
-                error={error}
-                loading={isLoading}
-                onErrorRetry={loadProfile}
-            />
-        </>
     );
 }
 

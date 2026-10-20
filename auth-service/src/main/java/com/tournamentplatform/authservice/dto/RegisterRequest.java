@@ -25,7 +25,7 @@ public record RegisterRequest(
                 regexp = "(?s).*\\S.*",
                 message = "La password non può essere vuota"
         )
-        String newPassword
+        String password
 ) {
 
 }

@@ -28,7 +28,7 @@ public class AuthService {
             throw new EmailAlreadyRegisteredException();
         }
 
-        String passwordHash = passwordEncoder.encode(request.newPassword());
+        String passwordHash = passwordEncoder.encode(request.password());
 
         userRepository.save(
                 new User(

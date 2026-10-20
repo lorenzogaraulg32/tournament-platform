@@ -2,7 +2,7 @@ import {KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View} from
 import {StatusBar} from "expo-status-bar";
 import {ReactNode} from "react";
 import {ImageBackground} from "expo-image";
-import FormProgressBar from "@/src/components/common/forms/components/FormProgressBar";
+import FormProgressBar from "@/src/components/common/forms/FormProgressBar";
 
 
 type OnBoardingProps = {
@@ -25,7 +25,7 @@ export default function OnBoardingContainer({label, content, step}: OnBoardingPr
                 imageStyle={StyleSheet.absoluteFill}
 
             >
-                <StatusBar style="light"/>
+
 
                 <KeyboardAvoidingView
                     style={styles.keyboardContainer}
@@ -69,11 +69,13 @@ const styles = StyleSheet.create({
 
     scrollContent: {
         flexGrow: 1,
+
     },
 
     contentSlot: {
         width: "100%",
         justifyContent: "flex-start",
+
     },
 
     labelContainer: {

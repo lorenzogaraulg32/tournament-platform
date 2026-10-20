@@ -1,6 +1,6 @@
 import {View} from "react-native";
-import FormInputField from "@/src/components/common/forms/components/FormInputField";
-import FormSwitch from "@/src/components/common/forms/components/FormSwitch";
+import FormInputField from "@/src/components/common/forms/fileds/FormInputField";
+import FormSwitch from "@/src/components/common/forms/fileds/FormSwitch";
 import type {Variant} from "@/src/constants/palette/PaletteManager";
 import {RecruitmentStatus} from "@/src/services/common";
 
@@ -43,9 +43,9 @@ export default function NameDescStep({
         <View>
             <FormInputField
                 variant={variant}
-                label="Nome Torneo"
+                label="Nome Squadra"
                 labelIconName="shield-outline"
-                placeholder="Es. Torneo della Piazzetta"
+                placeholder="Es. FC Bar ci Siamo"
                 value={nameValue}
                 onChangeText={onChangeName}
                 errorMessage={errorMsgName}
@@ -59,7 +59,7 @@ export default function NameDescStep({
                 label="Descrizione"
                 optional
                 labelIconName="chatbubble-ellipses-outline"
-                placeholder="Racconta qualcosa sul tuo torneo..."
+                placeholder="Racconta qualcosa sulla tua squadra..."
                 value={descValue}
                 onChangeText={onChangeDesc}
                 errorMessage={errorMsgDesc}

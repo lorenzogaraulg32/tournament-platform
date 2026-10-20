@@ -247,10 +247,13 @@ export default function ModifyProfileScreen() {
     }
 
     function handleBack() {
-        if (submissionLock.current || currentStep === FIRST_STEP) {
+        if (submissionLock.current) {
             return;
         }
 
+        if (currentStep === FIRST_STEP) {
+            router.back()
+        }
         setApiError("");
         setCurrentStep(previous => (previous - 1) as ProfileEditStep);
     }

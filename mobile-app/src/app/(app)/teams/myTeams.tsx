@@ -3,13 +3,14 @@ import TeamCardHorizontal from "@/src/components/common/cards/teamCards/TeamCard
 import {useCallback, useRef, useState} from "react";
 import {router, useFocusEffect} from "expo-router";
 import {normalizeApiRequestError} from "@/src/services/errorService";
-import ButtonBackground from "@/src/components/common/buttons/ButtonBackground";
 import LoadingSection from "@/src/components/common/loading/LoadingSection";
 import ErrorSection from "@/src/components/common/errors/ErrorSection";
 import {TeamDetails} from "@/src/services/teams/teamDTO";
 import {fetchUserTeams} from "@/src/services/teams/teamService";
 import {loadCurrentUserId} from "@/src/services/users/authService";
-import StandardCardList from "@/src/components/common/layout/StandardCardList";
+import StandardCardList from "@/src/components/common/StandardCardList";
+import ActionButton from "@/src/components/common/buttons/ActionButton";
+import {FontAwesome6} from "@expo/vector-icons";
 
 
 /**
@@ -103,10 +104,22 @@ export default function MyTeams() {
                 />
             )}
 
-            <ButtonBackground
-                text="Crea nuova squadra"
+            <ActionButton
+                label="Crea nuova squadra"
                 onPress={() => router.push("/teams/create")}
-                variant="orange"
+                paletteVariant={"teams"}
+                backgroundVariant={
+                    {
+                        variant: "image",
+                        imageSource: require("../../../../assets/images/backgrounds/orangeBackground.png"),
+                    }}
+                iconLeft={
+                    <FontAwesome6
+                        name="plus"
+                        size={19}
+                        color="#FFFFFF"
+                    />
+                }
             />
 
         </View>

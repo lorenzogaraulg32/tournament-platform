@@ -1,19 +1,17 @@
-import {Alert, ScrollView, StyleSheet, Text, View} from "react-native";
-import PageLayout from "@/src/components/common/layout/PageLayout";
-import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
-import HeaderEntity from "@/src/components/common/headers/HeaderEntity";
-import CollapsableSection from "@/src/components/common/layout/CollapsableSection";
-import StandardCardList from "@/src/components/common/layout/StandardCardList";
+import {Alert, StyleSheet, Text, View} from "react-native";
+import EntityHeader from "@/src/components/common/layout/headers/EntityHeader";
+import CollapsableSection from "@/src/components/common/CollapsableSection";
+import StandardCardList from "@/src/components/common/StandardCardList";
 import PlayerCard from "@/src/components/common/cards/userCards/PlayerCard";
 import AdminCard from "@/src/components/common/cards/userCards/AdminCard";
 import {TeamFormation, TeamUpdateRequest} from "@/src/services/teams/teamDTO";
-import {Dispatch, SetStateAction, useRef, useState} from "react";
+import {Dispatch, ReactNode, SetStateAction, useRef, useState} from "react";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {editTeam, removeTeamAdmin, removeTeamPlayer, updateTeamFormation} from "@/src/services/teams/teamService";
 import showAlert from "@/src/components/common/errors/Alert";
 import {useToast} from "@/src/components/common/Toast/ToastProvider";
 import FieldLineup from "@/src/components/pagesComponents/teams/field/FieldLineup";
-import FullPageModal from "@/src/components/common/layout/FullPageModal";
+import FullPageModal from "@/src/components/common/FullPageModal";
 import {Sport} from "@/src/services/users/userDTO";
 import TournamentCardHorizontal from "@/src/components/common/cards/tournamentCards/TournamentCardHorizontal";
 import {TeamProfile} from "@/src/components/pagesComponents/teams/TeamScreen";
@@ -22,6 +20,7 @@ import {HorizontalSeparator} from "@/src/components/common/HorizontalSeparator";
 import {ActivitiesSection} from "@/src/components/common/ActivitiesSection";
 import {EntityType} from "@/src/services/activities/ActivityDTO";
 import {fetchActivities} from "@/src/services/activities/activityService";
+import EntityLayout from "@/src/components/common/layout/EntityLayout";
 
 
 type TeamPageProps = {
@@ -33,6 +32,8 @@ type TeamPageProps = {
     currentUserId: string,
     isPlayerModalVisible: boolean,
     setPlayerModalVisible: Dispatch<SetStateAction<boolean>>,
+    backBtn?: ReactNode,
+    optionsBtn?: ReactNode
 };
 
 
@@ -45,6 +46,8 @@ export default function TeamPage({
                                      currentUserId,
                                      isPlayerModalVisible,
                                      setPlayerModalVisible,
+                                     backBtn,
+                                     optionsBtn
                                  }: TeamPageProps) {
 
 
@@ -364,165 +367,155 @@ export default function TeamPage({
     }
 
     return (
-        <PageLayout
+        <EntityLayout
             header={
-                <HeaderContainer
+                <EntityHeader
                     variant={"teams"}
-                >
-                    <HeaderEntity
-                        variant={"teams"}
-                        name={teamProfile.team.name}
-                        image={teamProfile.team.logo}
-                        position={teamProfile.team.location?.label}
-                        invitationCode={teamProfile.team.invitationCode}
-                        onRefreshCode={isTeamAdmin || isTeamOwner ? onRefreshCode : undefined}
-                    />
-                </HeaderContainer>
+                    name={teamProfile.team.name}
+                    image={teamProfile.team.logo}
+                    position={teamProfile.team.location?.label}
+                    invitationCode={teamProfile.team.invitationCode}
+                    onRefreshCode={isTeamAdmin || isTeamOwner ? onRefreshCode : undefined}
+                    backBtn={backBtn}
+                    optionsBtn={optionsBtn}
+                />
             }
         >
 
 
-            <ScrollView style={styles.scroll}
-                        showsVerticalScrollIndicator={false}>
-                <View style={styles.scrollContent}>
+                <InfoLabel
+                    text={"Descrizione"}
+                    labelIconName={"clipboard-outline"}
+                />
+                <HorizontalSeparator/>
+
+                <Text style={styles.descriptionText}>
+                    {teamProfile.team.description || "Nessuna descrizione disponibile"}
+                </Text>
 
 
-                    <InfoLabel
-                        text={"Descrizione"}
-                        labelIconName={"clipboard-outline"}
-                    />
-                    <HorizontalSeparator/>
+                <CollapsableSection
+                    label="Formazione"
+                    iconName="shirt-outline"
+                    modal={false}
+                    maxHeight={1000}
+                >
 
-                    <Text style={styles.descriptionText}>
-                        {teamProfile.team.description || "Nessuna descrizione disponibile"}
-                    </Text>
-
-
-                    <CollapsableSection
-                        label="Formazione"
-                        iconName="shirt-outline"
-                        modal={false}
-                    >
-
-                        <View style={styles.fieldContainer}>
-                            <FieldLineup
-                                key={teamProfile.team.sport}
-                                sport={teamProfile.team.sport}
-                                players={teamProfile.players ?? []}
-                                formation={teamProfile.team.formation}
-                                canEdit={canEditFormation}
-                                isSaving={isSavingFormation}
-                                disabled={
-                                    teamProfile.players === null ||
-                                    isRemovingMember
-                                }
-                                onFormationSave={onFormationSave}
-                                onSportChange={onSportChange}
-                            />
-                        </View>
-                    </CollapsableSection>
-
-                    <FullPageModal
-                        visible={isPlayerModalVisible}
-                        onClose={() => setPlayerModalVisible(false)}
-                        label="Gestisci giocatori"
-                        iconName="people-outline"
-                    >
-                        <StandardCardList
-                            items={(teamProfile.players ?? [])
-                                .filter((player) =>
-                                    canRemovePlayer(String(player.id))
-                                )
-                                .map((player) => (
-                                    <PlayerCard
-                                        key={player.id}
-                                        player={player}
-                                        sport={teamProfile.team.sport}
-                                        onPress={() => {
-                                            void removePlayerFromTeam(String(player.id));
-                                        }}
-                                        icon={"exit-outline"}
-                                        iconColor={"#FF7474"}
-                                    />
-                                ))}
-                            emptyMsg="Nessun giocatore che puoi rimuovere"
-                            orientation="vertical"
+                    <View style={styles.fieldContainer}>
+                        <FieldLineup
+                            key={teamProfile.team.sport}
+                            sport={teamProfile.team.sport}
+                            players={teamProfile.players ?? []}
+                            formation={teamProfile.team.formation}
+                            canEdit={canEditFormation}
+                            isSaving={isSavingFormation}
+                            disabled={
+                                teamProfile.players === null ||
+                                isRemovingMember
+                            }
+                            onFormationSave={onFormationSave}
+                            onSportChange={onSportChange}
                         />
-                    </FullPageModal>
+                    </View>
+                </CollapsableSection>
 
-
-                    <ActivitiesSection
-                        variant={"profile"}
-                        activities={teamProfile.activities}/>
-
-                    <CollapsableSection
-                        label="Tornei "
-                        iconName="trophy-outline"
-                    >
-                        <StandardCardList
-                            items={(teamProfile.tournaments ?? [])
-                                .map(tournament => {
-                                    return (
-                                        <TournamentCardHorizontal
-                                            key={tournament.id}
-                                            tournament={tournament}/>
-                                    );
-                                })}
-                            isLoading={false}
-                            error={null}
-                            emptyMsg={"Questo utente non partecipa a nessun torneo"}
-                            orientation="vertical"/>
-                    </CollapsableSection>
-
-                    <CollapsableSection
-                        label="Admin"
-                        iconName="shield-checkmark-outline"
-                        canMod={isTeamOwner}
-                    >
-                        {(isMod) => {
-                            const canRemove = isMod && isTeamOwner;
-
-                            return (
-                                <StandardCardList
-                                    items={(teamProfile.admins ?? [])
-                                        .filter((admin) =>
-                                            !canRemove ||
-                                            String(admin.id) !== String(teamProfile.team.creatorId)
-                                        )
-                                        .map((admin) => (
-                                            <AdminCard
-                                                key={admin.id}
-                                                admin={admin}
-                                                isOwner={
-                                                    String(teamProfile.team.creatorId) === String(admin.id)
-                                                }
-                                                onPress={
-                                                    canRemove
-                                                        ? () => {
-                                                            void removeAdminFromTeam(String(admin.id));
-                                                        }
-                                                        : undefined
-                                                }
-                                                icon={canRemove ? "exit-outline" : undefined}
-                                                iconColor={canRemove ? "#FF7474" : undefined}
-                                            />
-                                        ))}
-                                    emptyMsg={
-                                        canRemove
-                                            ? "Nessun admin che puoi rimuovere"
-                                            : "Nessun admin nella squadra"
-                                    }
-                                    orientation="vertical"
+                <FullPageModal
+                    visible={isPlayerModalVisible}
+                    onClose={() => setPlayerModalVisible(false)}
+                    label="Gestisci giocatori"
+                    iconName="people-outline"
+                >
+                    <StandardCardList
+                        items={(teamProfile.players ?? [])
+                            .filter((player) =>
+                                canRemovePlayer(String(player.id))
+                            )
+                            .map((player) => (
+                                <PlayerCard
+                                    key={player.id}
+                                    player={player}
+                                    sport={teamProfile.team.sport}
+                                    onPress={() => {
+                                        void removePlayerFromTeam(String(player.id));
+                                    }}
+                                    icon={"exit-outline"}
+                                    iconColor={"#FF7474"}
                                 />
-                            );
-                        }}
-                    </CollapsableSection>
+                            ))}
+                        emptyMsg="Nessun giocatore che puoi rimuovere"
+                        orientation="vertical"
+                    />
+                </FullPageModal>
 
 
-                    <View style={{height: 20}}/>
-                </View>
-            </ScrollView>
-        </PageLayout>
+                <ActivitiesSection
+                    variant={"profile"}
+                    activities={teamProfile.activities}/>
+
+                <CollapsableSection
+                    label="Tornei "
+                    iconName="trophy-outline"
+                >
+                    <StandardCardList
+                        items={(teamProfile.tournaments ?? [])
+                            .map(tournament => {
+                                return (
+                                    <TournamentCardHorizontal
+                                        key={tournament.id}
+                                        tournament={tournament}/>
+                                );
+                            })}
+                        isLoading={false}
+                        error={null}
+                        emptyMsg={"Questa squadra non partecipa a nessun torneo"}
+                        orientation="vertical"/>
+                </CollapsableSection>
+
+                <CollapsableSection
+                    label="Admin"
+                    iconName="shield-checkmark-outline"
+                    canMod={isTeamOwner}
+                >
+                    {(isMod) => {
+                        const canRemove = isMod && isTeamOwner;
+
+                        return (
+                            <StandardCardList
+                                items={(teamProfile.admins ?? [])
+                                    .filter((admin) =>
+                                        !canRemove ||
+                                        String(admin.id) !== String(teamProfile.team.creatorId)
+                                    )
+                                    .map((admin) => (
+                                        <AdminCard
+                                            key={admin.id}
+                                            admin={admin}
+                                            isOwner={
+                                                String(teamProfile.team.creatorId) === String(admin.id)
+                                            }
+                                            onPress={
+                                                canRemove
+                                                    ? () => {
+                                                        void removeAdminFromTeam(String(admin.id));
+                                                    }
+                                                    : undefined
+                                            }
+                                            icon={canRemove ? "exit-outline" : undefined}
+                                            iconColor={canRemove ? "#FF7474" : undefined}
+                                        />
+                                    ))}
+                                emptyMsg={
+                                    canRemove
+                                        ? "Nessun admin che puoi rimuovere"
+                                        : "Nessun admin nella squadra"
+                                }
+                                orientation="vertical"
+                            />
+                        );
+                    }}
+                </CollapsableSection>
+
+        </EntityLayout>
     )
 
 }
@@ -530,24 +523,12 @@ export default function TeamPage({
 
 const styles = StyleSheet.create({
 
-    scroll: {
-        marginTop: 20,
-        flex: 1,
-    },
-
-    scrollContent: {
-        gap: 20,
-        flex: 1,
-    },
-
-
     descriptionText: {
         fontSize: 16,
         fontWeight: "400",
         lineHeight: 24,
         color: "#333333",
     },
-
 
     fieldContainer: {
         marginBottom: 20,

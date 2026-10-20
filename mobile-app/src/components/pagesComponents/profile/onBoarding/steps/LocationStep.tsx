@@ -1,10 +1,12 @@
 import {ActivityIndicator, Text, View} from "react-native";
 import AuthContent from "@/src/components/pagesComponents/auth/AuthContent";
-import PositionField from "@/src/components/common/forms/components/FormPositionField";
+import PositionField from "@/src/components/common/forms/fileds/FormPositionField";
 import OnBoardingContainer from "@/src/components/pagesComponents/profile/onBoarding/OnBoardingContainer";
-import OnBoardingNavigationButtons from "@/src/components/pagesComponents/profile/onBoarding/misc/OnBoardingNavigationButtons";
-import {onboardingStepStyles as styles} from "@/src/components/pagesComponents/profile/onBoarding/misc/onboardingStepStyles"
+import {
+    onboardingStepStyles as styles
+} from "@/src/components/pagesComponents/profile/onBoarding/misc/onboardingStepStyles"
 import {GeoLocation} from "@/src/services/common";
+import FormStepNavigation from "@/src/components/common/forms/FormStepNavigation";
 
 type LocationStepProps = {
     location: GeoLocation | null;
@@ -61,12 +63,13 @@ export default function LocationStep({
                             </View>
                         )}
 
-                        <OnBoardingNavigationButtons
+                        <FormStepNavigation
                             onBack={onBack}
                             onNext={onNext}
-                            isLastStep
-                            disabled={isLoading}
-                        />
+                            nextVariant={"onBoarding"}
+                            loading={isLoading}
+                            nextLabel={"Termina"}/>
+
                     </View>
                 </AuthContent>
             }

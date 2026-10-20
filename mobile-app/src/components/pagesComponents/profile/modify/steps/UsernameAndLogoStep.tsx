@@ -1,8 +1,8 @@
 import {View} from "react-native";
 import type {Variant} from "@/src/constants/palette/PaletteManager";
 import type {Media} from "@/src/services/media/mediaService";
-import FormInputField from "@/src/components/common/forms/components/FormInputField";
-import FormImageField from "@/src/components/common/forms/components/FormImageField";
+import FormInputField from "@/src/components/common/forms/fileds/FormInputField";
+import FormImageField from "@/src/components/common/forms/fileds/FormImageField";
 
 type UsernameAndLogoStepProps = {
     variant: Variant;

@@ -1,4 +1,4 @@
-import FormPositionField from "@/src/components/common/forms/components/FormPositionField";
+import FormPositionField from "@/src/components/common/forms/fileds/FormPositionField";
 import type { GeoLocation } from "@/src/services/common";
 import type { Variant } from "@/src/constants/palette/PaletteManager";
 

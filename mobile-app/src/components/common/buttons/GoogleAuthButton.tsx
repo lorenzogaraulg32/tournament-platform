@@ -1,13 +1,5 @@
-
 import React from "react";
-import {
-    ActivityIndicator,
-    Image,
-    Pressable,
-    StyleSheet,
-    Text,
-    View,
-} from "react-native";
+import {ActivityIndicator, Image, Pressable, StyleSheet, Text, View,} from "react-native";
 
 type GoogleAuthButtonProps = {
     onPress: () => void;
@@ -29,8 +21,8 @@ export default function GoogleAuthButton({
             disabled={isDisabled}
             accessibilityRole="button"
             accessibilityLabel="Continua con Google"
-            accessibilityState={{ disabled: isDisabled, busy: loading }}
-            style={({ pressed }) => [
+            accessibilityState={{disabled: isDisabled, busy: loading}}
+            style={({pressed}) => [
                 styles.button,
                 pressed && !isDisabled && styles.pressed,
                 isDisabled && styles.disabled,
@@ -38,7 +30,7 @@ export default function GoogleAuthButton({
         >
             <Image
                 source={require(
-                    "../../../../assets/images/google-g.png"
+                    "../../../../assets/Buttons/google-g.png"
                 )}
                 style={styles.logo}
                 resizeMode="contain"
@@ -74,7 +66,7 @@ const styles = StyleSheet.create({
 
     pressed: {
         opacity: 0.92,
-        transform: [{ scale: 0.985 }],
+        transform: [{scale: 0.985}],
     },
 
     disabled: {

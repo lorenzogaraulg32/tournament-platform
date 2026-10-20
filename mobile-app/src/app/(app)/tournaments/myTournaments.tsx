@@ -2,7 +2,6 @@ import {ScrollView, StyleSheet, View} from "react-native";
 import {useCallback, useRef, useState} from "react";
 import {router, useFocusEffect} from "expo-router";
 import {normalizeApiRequestError} from "@/src/services/errorService";
-import ButtonBackground from "@/src/components/common/buttons/ButtonBackground";
 import {TournamentDetails} from "@/src/services/tournaments/tournamentDTO";
 import LoadingSection from "@/src/components/common/loading/LoadingSection";
 import ErrorSection from "@/src/components/common/errors/ErrorSection";
@@ -10,6 +9,8 @@ import {MyTournamentsSection} from "@/src/components/pagesComponents/tournaments
 import {fetchUserTeams} from "@/src/services/teams/teamService";
 import {loadCurrentUserId} from "@/src/services/users/authService";
 import {fetchUserTournaments} from "@/src/services/tournaments/tournamentService";
+import ActionButton from "@/src/components/common/buttons/ActionButton";
+import {FontAwesome6} from "@expo/vector-icons";
 
 
 /**
@@ -125,11 +126,24 @@ export default function MyTournaments() {
             >
                 {renderContent()}
             </ScrollView>
-            <ButtonBackground
-                text="Crea nuovo torneo"
-                onPress={() => router.push("/tournaments/create")}
-                variant="purple"
+            <ActionButton
+                label="Crea nuovo torneo"
+                onPress={() => router.push("/teams/create")}
+                paletteVariant={"tournaments"}
+                backgroundVariant={
+                    {
+                        variant: "image",
+                        imageSource: require("../../../../assets/images/backgrounds/purpleBackground.png")
+                    }}
+                iconLeft={
+                    <FontAwesome6
+                        name="plus"
+                        size={19}
+                        color="#FFFFFF"
+                    />
+                }
             />
+
 
         </View>
     )

@@ -54,7 +54,7 @@ type TabListenerArgs = {
     route: TabNavigationState<ParamListBase>["routes"][number];
 };
 
-
+//** qua voglio prendere e salvare tutte le info dell'utente per poterle riutilizzare in tutta l'applicazione
 export default function RootLayout() {
     const [profileState, setProfileState] = useState<ProfileState>("checking");
     const [isRetrying, setIsRetrying] = useState(false);
@@ -80,13 +80,10 @@ export default function RootLayout() {
                     "Account in eliminazione",
                     "Il tuo account è attualmente in fase di eliminazione."
                 );
-
                 await clearSession()
-
                 if (isMounted.current) {
                     setProfileState("deleting");
                 }
-
                 return;
             }
 
@@ -135,7 +132,7 @@ export default function RootLayout() {
 
     if (profileState === "missing") {
         return (
-            <Redirect href="/(onboarding)"/>
+            <Redirect href="/(auth)/onBoarding"/>
         );
     }
 
@@ -304,7 +301,6 @@ const styles = StyleSheet.create({
         ...StyleSheet.absoluteFill,
         backgroundColor: "rgba(0, 0, 0, 0.3)",
     },
-
 
     barLabel: {
         fontSize: 12,

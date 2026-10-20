@@ -1,9 +1,8 @@
 import {StyleSheet} from "react-native";
 import PageLayout from "@/src/components/common/layout/PageLayout";
-import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
-import HeaderPage from "@/src/components/common/headers/HeaderPage";
+import PageHeader from "@/src/components/common/layout/headers/PageHeader";
 import {useState} from "react";
-import TabsContainer from "@/src/components/common/buttons/TabsContainer";
+import TabsContainer from "@/src/components/common/TabsContainer";
 import FindTournaments from "@/src/app/(app)/tournaments/findTournaments";
 import MyTournaments from "@/src/app/(app)/tournaments/myTournaments";
 
@@ -29,14 +28,14 @@ export default function TournamentsPage() {
     return (
         <PageLayout
             header={
-                <HeaderContainer variant="tournaments">
-                    <HeaderPage
-                        label="JoinCup"
-                        title="Tornei"
-                        subtitle="Gestisci i tuoi tornei e partecipa a nuovi"/>
-                </HeaderContainer>
+                <PageHeader
+                    label="JoinCup"
+                    title="Tornei"
+                    subtitle="Gestisci i tuoi tornei e partecipa a nuovi"
+                    variant={"tournaments"}
+                />
             }
-            contentStyle={styles.content}>
+        >
 
 
             <TabsContainer

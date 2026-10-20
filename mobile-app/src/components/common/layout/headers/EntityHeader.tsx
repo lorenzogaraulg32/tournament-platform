@@ -1,10 +1,11 @@
-import {StyleProp, StyleSheet, Text, View, ViewStyle} from "react-native";
+import {ImageBackground, StyleSheet, Text, View} from "react-native";
 import Picture from "@/src/components/common/images/Picture";
 import {formatLocationLabel} from "@/src/services/common";
 import {colors} from "@/src/constants/theme";
 import {InvitationCodeBadge} from "@/src/components/common/InvitationCodeBadge";
-import {Variant} from "@/src/constants/palette/PaletteManager";
+import {paletteVariants, Variant} from "@/src/constants/palette/PaletteManager";
 import {Media} from "@/src/services/media/mediaService";
+import {ReactNode} from "react";
 
 
 type HeaderEntityProps = {
@@ -15,11 +16,16 @@ type HeaderEntityProps = {
     email?: string
     invitationCode?: string,
     onRefreshCode?: () => Promise<string | undefined>;
-    style?: StyleProp<ViewStyle>;
+
+    backBtn?: ReactNode,
+    optionsBtn?: ReactNode
+
+
 };
 
+export const HEADER_ENTITY_HEIGHT = 220
 
-export default function HeaderEntity({
+export default function EntityHeader({
                                          variant,
                                          name,
                                          image,
@@ -27,13 +33,22 @@ export default function HeaderEntity({
                                          email,
                                          invitationCode,
                                          onRefreshCode,
-                                         style,
-                                     }: HeaderEntityProps
-) {
+                                         backBtn,
+                                         optionsBtn
+                                     }: HeaderEntityProps) {
+
+    const config = paletteVariants[variant];
+
+
     return (
 
+        <ImageBackground
+            source={config.background}
+            style={styles.container}
+        >
+            {backBtn}
+            {optionsBtn}
 
-        <View style={[styles.container, style]}>
             <View style={styles.imageContainer}>
                 <Picture
                     variant={variant}
@@ -64,9 +79,8 @@ export default function HeaderEntity({
                 ) : null}
 
 
-
                 {variant === "profile" ? (
-                   <></>
+                    <></>
                 ) : (
                     <InvitationCodeBadge
                         code={invitationCode}
@@ -75,7 +89,7 @@ export default function HeaderEntity({
                     />
                 )}
             </View>
-        </View>
+        </ImageBackground>
     )
 }
 
@@ -83,37 +97,21 @@ export default function HeaderEntity({
 const styles = StyleSheet.create({
 
     container: {
+        height: HEADER_ENTITY_HEIGHT,
+        paddingHorizontal: 25,
+        paddingTop: 45,
         flexDirection: "row",
         alignItems: "center",
-        paddingTop: 30,
-        gap: 25,
-    },
-
-    feedbackContainer: {
-        minHeight: 120,
-        alignItems: "center",
-        justifyContent: "center",
-        paddingHorizontal: 24,
-        gap: 10,
-    },
-
-    feedbackText: {
-        color: "#FFFFFF",
-        fontSize: 15,
-        fontWeight: "600",
-        textAlign: "center",
+        gap: 20,
     },
 
     imageContainer: {
         width: 80,
         height: 80,
-
         borderRadius: 40,
         overflow: "hidden",
-
         borderWidth: 2.5,
         borderColor: "#FFFFFF",
-
         backgroundColor: colors.labelSecondary,
     },
 
@@ -132,31 +130,24 @@ const styles = StyleSheet.create({
     primaryText: {
         flexShrink: 1,
         color: "#FFFFFF",
-        fontSize: 22,
+        fontSize: 18,
         lineHeight: 28,
         fontWeight: "800",
     },
 
     secondaryText: {
-        marginTop: 3,
-        marginBottom: 12,
         color: colors.textOffWhite,
         fontSize: 12,
+        lineHeight: 18,
     },
 
 
     subscriptionBadge: {
         alignSelf: "flex-start",
-
-        marginTop: 10,
-
         paddingHorizontal: 10,
         paddingVertical: 5,
-
         borderRadius: 12,
-
         backgroundColor: "rgba(255,255,255,0.18)",
-
         borderWidth: 1,
         borderColor: "rgba(255,255,255,0.28)",
     },

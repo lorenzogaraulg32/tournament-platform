@@ -5,11 +5,11 @@ import AuthContainer from "@/src/components/pagesComponents/auth/AuthContainer";
 import AuthContent from "@/src/components/pagesComponents/auth/AuthContent";
 import {useState} from "react";
 import {router} from "expo-router";
-import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
 import {colors} from "@/src/constants/theme";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {loginUser, registerUser} from "@/src/services/users/authService";
 import {saveSession} from "@/src/services/users/sessionService";
+import ActionButton from "@/src/components/common/buttons/ActionButton";
 
 type RegisterFieldError = {
     email?: string;
@@ -41,6 +41,7 @@ export default function RegisterPage() {
             setIsLoading(true);
             const normalizedEmail = email.trim().toLowerCase();
 
+
             void await registerUser({
                 email: normalizedEmail,
                 password
@@ -57,7 +58,7 @@ export default function RegisterPage() {
                 loginResponse.tokenType
             );
 
-            router.replace("/(onboarding)");
+            router.push("/(auth)/onBoarding");
 
         } catch (error) {
             const apiError = normalizeApiRequestError(error)
@@ -170,15 +171,15 @@ export default function RegisterPage() {
                         <Text style={styles.apiError}>{apiError}</Text>
                     ) : null}
 
-                    <ButtonSolid
-                        variant="onBoarding"
+                    <ActionButton
+                        paletteVariant="onBoarding"
                         style={styles.registerBtn}
                         disabled={isLoading}
                         onPress={handleRegister}
-                        text={isLoading
+                        label={isLoading
                             ? "Registrazione in corso..."
                             : "Registrati"}>
-                    </ButtonSolid>
+                    </ActionButton>
 
 
                 </AuthContent>
@@ -194,13 +195,11 @@ export default function RegisterPage() {
 
 const styles = StyleSheet.create({
     inputFieldsContainer: {
-        marginTop: -100,
+        marginBottom: 60,
         gap: 10,
     },
 
     apiError: {
-        marginTop: 6,
-        marginLeft: 10,
         fontSize: 14,
         lineHeight: 18,
         fontWeight: 400,
@@ -209,6 +208,6 @@ const styles = StyleSheet.create({
     },
 
     registerBtn: {
-        marginTop: 10,
+        marginTop: 15,
     },
 })

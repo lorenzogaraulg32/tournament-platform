@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     wrapper: {
         width: "100%",
         paddingHorizontal: 20,
-        paddingVertical: 20,
+        paddingBottom: 20,
     },
 
     container: {

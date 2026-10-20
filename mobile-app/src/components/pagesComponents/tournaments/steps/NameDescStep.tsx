@@ -1,6 +1,6 @@
 import {View} from "react-native";
-import FormInputField from "@/src/components/common/forms/components/FormInputField";
-import FormSwitch from "@/src/components/common/forms/components/FormSwitch";
+import FormInputField from "@/src/components/common/forms/fileds/FormInputField";
+import FormSwitch from "@/src/components/common/forms/fileds/FormSwitch";
 import type {Variant} from "@/src/constants/palette/PaletteManager";
 import {RecruitmentStatus} from "@/src/services/common";
 

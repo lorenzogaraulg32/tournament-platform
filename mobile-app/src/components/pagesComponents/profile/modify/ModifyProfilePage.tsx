@@ -7,10 +7,9 @@ import UsernameAndLogoStep from "@/src/components/pagesComponents/profile/modify
 import LocationStep from "@/src/components/pagesComponents/profile/modify/steps/LocationStep";
 import SportsAndRolesStep from "@/src/components/pagesComponents/profile/modify/steps/SportsAndRolesStep";
 
-import FormLayout from "@/src/components/common/forms/ layout/FormLayout";
-import FormContent from "@/src/components/common/forms/ layout/FormContent";
-import HeaderForm from "@/src/components/common/headers/HeaderForm";
-import FormProgressBar from "@/src/components/common/forms/components/FormProgressBar";
+import FormLayout from "@/src/components/common/layout/FormLayout";
+import FormHeader from "@/src/components/common/layout/headers/FormHeader";
+import FormProgressBar from "@/src/components/common/forms/FormProgressBar";
 
 
 export type ProfileEditStep = 0 | 1 | 2 | 3;
@@ -120,42 +119,35 @@ export default function ModifyProfilePage({
         }
     }
 
-    const formStep =
-        currentStep === FIRST_STEP
-            ? "first"
-            : currentStep === LAST_STEP
-                ? "last"
-                : "middle";
+
+    const nextLabel =
+        currentStep === LAST_STEP
+            ? "Termina"
+            : "Continua";
 
     return (
         <FormLayout
+            step={currentStep}
+            totalSteps={STEPS.length}
             variant="profile"
             header={
-                <HeaderForm
+                <FormHeader
                     variant="profile"
                     title="Modifica il profilo"
                     subtitle="Aggiorna le tue informazioni e gli sport che pratichi."
                 />
             }
+            onNext={onNext}
+            nextLabel={nextLabel}
+            onBack={onBack}
+            error={currentStep === LAST_STEP ? apiError : ""}
+            loading={isSubmitting}
         >
-            <FormProgressBar
-                variant="profile"
-                step={currentStep}
-                totalSteps={STEPS.length}
-            />
 
-            <FormContent
-                handleBack={onBack}
-                handleNext={onNext}
-                isSubmitting={isSubmitting}
-                step={formStep}
-                apiError={apiError}
-                variant={"profile"}
-            >
-                <View pointerEvents={isSubmitting ? "none" : "auto"}>
-                    {renderStep()}
-                </View>
-            </FormContent>
+            <View pointerEvents={isSubmitting ? "none" : "auto"}>
+                {renderStep()}
+            </View>
+
         </FormLayout>
     );
 }

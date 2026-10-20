@@ -3,7 +3,7 @@ import {ReactNode, useState} from "react";
 import InfoLabel from "@/src/components/common/labels/InfoLabel";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {colors} from "@/src/constants/theme";
-import FullPageModal from "@/src/components/common/layout/FullPageModal";
+import FullPageModal from "@/src/components/common/FullPageModal";
 import {HorizontalSeparator} from "@/src/components/common/HorizontalSeparator";
 
 type CollapsableSectionProps = {
@@ -22,6 +22,9 @@ type CollapsableSectionProps = {
     canMod?: boolean,
 
     modal?: boolean
+
+    maxHeight?: number
+
 }
 
 /**
@@ -44,7 +47,8 @@ export default function CollapsableSection({
                                                iconName,
                                                children,
                                                canMod = false,
-                                               modal = true
+                                               modal = true,
+                                               maxHeight = 400,
                                            }: CollapsableSectionProps) {
 
     const [isExpanded, setExpanded] = useState<boolean>(true)
@@ -82,7 +86,9 @@ export default function CollapsableSection({
 
     return (
         <>
-            <ScrollView style={styles.collapsableContainer}>
+            <ScrollView style={[styles.collapsableContainer,
+                {maxHeight: maxHeight}]
+            }>
                 <View style={styles.labelContainer}>
                     <View style={styles.leftContainer}>
                         <InfoLabel
@@ -177,7 +183,7 @@ const styles = StyleSheet.create({
     },
 
     collapsableContainer: {
-        flex: 1,
+        flexGrow: 0,
 
     },
 

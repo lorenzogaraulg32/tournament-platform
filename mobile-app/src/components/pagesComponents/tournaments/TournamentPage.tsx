@@ -6,12 +6,11 @@ import {TeamDetails} from "@/src/services/teams/teamDTO";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {fetchTeam} from "@/src/services/teams/teamService";
 import PageLayout from "@/src/components/common/layout/PageLayout";
-import HeaderContainer from "@/src/components/common/headers/HeaderContainer";
-import HeaderEntity from "@/src/components/common/headers/HeaderEntity";
-import {ScrollView, StyleSheet, Text, View} from "react-native";
-import FullPageModal from "@/src/components/common/layout/FullPageModal";
-import StandardCardList from "@/src/components/common/layout/StandardCardList";
-import CollapsableSection from "@/src/components/common/layout/CollapsableSection";
+import EntityHeader from "@/src/components/common/layout/headers/EntityHeader";
+import {StyleSheet, Text, View} from "react-native";
+import FullPageModal from "@/src/components/common/FullPageModal";
+import StandardCardList from "@/src/components/common/StandardCardList";
+import CollapsableSection from "@/src/components/common/CollapsableSection";
 import AdminCard from "@/src/components/common/cards/userCards/AdminCard";
 import {colors} from "@/src/constants/theme";
 import TeamCardHorizontal from "@/src/components/common/cards/teamCards/TeamCardHorizontal";
@@ -154,117 +153,101 @@ export default function TournamentPage({
     return (
         <PageLayout
             header={
-                <HeaderContainer
+                <EntityHeader
                     variant={"tournaments"}
-
-                >
-                    {/*todo: Inserire immagine torneo*/}
-                    <HeaderEntity
-                        variant={"tournaments"}
-                        name={tournament.name}
-                        image={null}
-                        position={tournament.location?.label}
-                        invitationCode={tournament.invitationCode}
-                        onRefreshCode={isTournamentAdmin || isTournamentOwner ? onRefreshCode : undefined}
-                        style={styles.header}
-                    />
-                </HeaderContainer>
+                    name={tournament.name}
+                    image={null}
+                    position={tournament.location?.label}
+                    invitationCode={tournament.invitationCode}
+                    onRefreshCode={isTournamentAdmin || isTournamentOwner ? onRefreshCode : undefined}
+                />
             }
         >
 
+            {tournament?.description ? (
 
-            <ScrollView style={styles.scroll}
-                        showsVerticalScrollIndicator={false}>
-                <View style={styles.scrollContent}>
+                <View style={styles.descriptionContainer}>
+                    <View style={styles.descriptionAccent}/>
 
-                    {tournament?.description ? (
+                    <Text style={styles.description}>
+                        {tournament.description}
+                    </Text>
+                </View>
 
-                        <View style={styles.descriptionContainer}>
-                            <View style={styles.descriptionAccent}/>
+            ) : (
+                <View></View>
+            )}
 
-                            <Text style={styles.description}>
-                                {tournament.description}
-                            </Text>
-                        </View>
+            {/*todo: Inserire pulsante per abilitare modifica*/}
+            <FullPageModal
+                visible={isTournamentModalVisible}
+                onClose={() => setTournamentModalVisible(false)}
+                label="Gestisci squadre"
+                iconName="people-outline"
+            >
+                <StandardCardList
+                    items={(teams ?? [])
+                        .map((team) => (
+                            <TeamCardHorizontal
+                                key={team.id}
+                                teamDetails={team}
+                                onPress={() => void removeTeam(String(team.id))}
+                                icon={"trash-outline"}
+                                iconColor={"#FF7474"}
+                            />
+                        ))}
+                    emptyMsg="Nessuna squadra che puoi rimuovere"
+                    isLoading={isLoading}
+                    error={error}
+                    orientation="vertical"
+                />
+            </FullPageModal>
 
-                    ) : (
-                        <View></View>
-                    )}
 
-                    {/*todo: Inserire pulsante per abilitare modifica*/}
-                    <FullPageModal
-                        visible={isTournamentModalVisible}
-                        onClose={() => setTournamentModalVisible(false)}
-                        label="Gestisci squadre"
-                        iconName="people-outline"
-                    >
+            <CollapsableSection
+                label="Admin"
+                iconName="shield-checkmark-outline"
+                canMod={isTournamentOwner}
+            >
+                {(isMod) => {
+                    const canRemove = isMod && isTournamentOwner;
+
+                    return (
                         <StandardCardList
-                            items={(teams ?? [])
-                                .map((team) => (
-                                    <TeamCardHorizontal
-                                        key={team.id}
-                                        teamDetails={team}
-                                        onPress={() => void removeTeam(String(team.id))}
-                                        icon={"trash-outline"}
-                                        iconColor={"#FF7474"}
+                            items={(tournamentAdmins ?? [])
+                                .filter((admin) =>
+                                    !canRemove ||
+                                    String(admin.id) !== String(tournament.createdById)
+                                )
+                                .map((admin) => (
+                                    <AdminCard
+                                        key={admin.id}
+                                        admin={admin}
+                                        isOwner={isTournamentOwner}
+                                        onPress={
+                                            canRemove
+                                                ? () => {
+                                                    void removeAdmin(String(admin.id));
+                                                }
+                                                : undefined
+                                        }
+                                        icon={canRemove ? "exit-outline" : undefined}
+                                        iconColor={canRemove ? "#FF7474" : undefined}
+
                                     />
                                 ))}
-                            emptyMsg="Nessuna squadra che puoi rimuovere"
+                            emptyMsg={
+                                canRemove
+                                    ? "Nessun admin che puoi rimuovere"
+                                    : "Nessun admin nel torneo"
+                            }
                             isLoading={isLoading}
                             error={error}
                             orientation="vertical"
                         />
-                    </FullPageModal>
-
-
-                    <CollapsableSection
-                        label="Admin"
-                        iconName="shield-checkmark-outline"
-                        canMod={isTournamentOwner}
-                    >
-                        {(isMod) => {
-                            const canRemove = isMod && isTournamentOwner;
-
-                            return (
-                                <StandardCardList
-                                    items={(tournamentAdmins ?? [])
-                                        .filter((admin) =>
-                                            !canRemove ||
-                                            String(admin.id) !== String(tournament.createdById)
-                                        )
-                                        .map((admin) => (
-                                            <AdminCard
-                                                key={admin.id}
-                                                admin={admin}
-                                                isOwner={isTournamentOwner}
-                                                onPress={
-                                                    canRemove
-                                                        ? () => {
-                                                            void removeAdmin(String(admin.id));
-                                                        }
-                                                        : undefined
-                                                }
-                                                icon={canRemove ? "exit-outline" : undefined}
-                                                iconColor={canRemove ? "#FF7474" : undefined}
-
-                                            />
-                                        ))}
-                                    emptyMsg={
-                                        canRemove
-                                            ? "Nessun admin che puoi rimuovere"
-                                            : "Nessun admin nel torneo"
-                                    }
-                                    isLoading={isLoading}
-                                    error={error}
-                                    orientation="vertical"
-                                />
-                            );
-                        }}
-                    </CollapsableSection>
-
-
-                </View>
-            </ScrollView>
+                    );
+                }}
+            </CollapsableSection>
         </PageLayout>
     )
 

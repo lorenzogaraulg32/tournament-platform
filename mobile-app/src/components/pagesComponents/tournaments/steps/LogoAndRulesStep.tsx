@@ -1,7 +1,7 @@
-import FormImageField from "@/src/components/common/forms/components/FormImageField";
+import FormImageField from "@/src/components/common/forms/fileds/FormImageField";
 import {Media} from "@/src/services/media/mediaService";
 import type {Variant} from "@/src/constants/palette/PaletteManager";
-import FormFileField from "@/src/components/common/forms/components/FormFileField";
+import FormFileField from "@/src/components/common/forms/fileds/FormFileField";
 
 type LogoStepProps = {
     variant: Variant;

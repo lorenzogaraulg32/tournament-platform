@@ -4,11 +4,9 @@ import PositionStep from "@/src/components/pagesComponents/teams/steps/PositionS
 import LogoStep from "@/src/components/pagesComponents/teams/steps/LogoStep";
 import SportStep from "@/src/components/pagesComponents/teams/steps/SportStep";
 
-import FormLayout from "@/src/components/common/forms/ layout/FormLayout";
-import FormContent from "@/src/components/common/forms/ layout/FormContent";
-import HeaderForm from "@/src/components/common/headers/HeaderForm";
-import FormProgressBar from "@/src/components/common/forms/components/FormProgressBar";
+import FormHeader from "@/src/components/common/layout/headers/FormHeader";
 import NameDescStep from "@/src/components/pagesComponents/teams/steps/NameDescStep";
+import FormLayout from "@/src/components/common/layout/FormLayout";
 
 export type TeamCreationStep = 0 | 1 | 2 | 3;
 
@@ -18,7 +16,7 @@ export const STEPS: TeamCreationStep[] = [0, 1, 2, 3];
 
 type CreateTeamPageProps = {
     team: TeamCreationRequest;
-    currentStep: TeamCreationStep;
+    currentStep: number;
     fieldErrors: TeamFormErrors;
     apiError: string;
     isSubmitting: boolean;
@@ -104,42 +102,34 @@ export default function CreateTeamPage({
         }
     }
 
-    const formStep =
-        currentStep === FIRST_STEP
-            ? "first"
-            : currentStep === LAST_STEP
-                ? "last"
-                : "middle";
+    const nextLabel =
+        currentStep === LAST_STEP
+            ? "Termina"
+            : "Continua";
 
     return (
         <FormLayout
-            variant="teams"
+            step={currentStep}
+            totalSteps={STEPS.length}
+            variant={"teams"}
             header={
-                <HeaderForm
+                <FormHeader
                     title="Crea la tua squadra"
                     subtitle="Configura la squadra e preparati ad invitare i tuoi amici."
                     variant="teams"
                 />
             }
+            onNext={onNext}
+            nextLabel={nextLabel}
+            onBack={onBack}
+            error={currentStep === LAST_STEP ? apiError : ""}
+            loading={isSubmitting}
         >
-            <FormProgressBar
-                step={currentStep}
-                totalSteps={STEPS.length}
-                variant="teams"
-            />
+            <View pointerEvents={isSubmitting ? "none" : "auto"}>
+                {renderStep()}
+            </View>
 
-            <FormContent
-                handleBack={onBack}
-                handleNext={onNext}
-                isSubmitting={isSubmitting}
-                step={formStep}
-                apiError={apiError}
-
-                variant={"teams"}>
-                <View pointerEvents={isSubmitting ? "none" : "auto"}>
-                    {renderStep()}
-                </View>
-            </FormContent>
         </FormLayout>
+
     );
 }

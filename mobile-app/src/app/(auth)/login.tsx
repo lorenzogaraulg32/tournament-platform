@@ -3,14 +3,14 @@ import AuthTextField from "@/src/components/pagesComponents/auth/AuthTextField";
 import AuthHeader from "@/src/components/pagesComponents/auth/AuthHeader";
 import AuthContainer from "@/src/components/pagesComponents/auth/AuthContainer";
 import AuthContent from "@/src/components/pagesComponents/auth/AuthContent";
-import ButtonSolid from "@/src/components/common/buttons/ButtonSolid";
 import {colors} from "@/src/constants/theme";
 import {useState} from "react";
-import { linkExistingAccountGoogle, loginUser} from "@/src/services/users/authService";
+import {linkExistingAccountGoogle, loginUser} from "@/src/services/users/authService";
 import {normalizeApiRequestError} from "@/src/services/errorService";
 import {saveSession} from "@/src/services/users/sessionService";
 import {router, useLocalSearchParams} from "expo-router";
 import {GoogleOneTapSignIn, isCancelledResponse, isSuccessResponse} from "react-native-nitro-google-signin";
+import ActionButton from "@/src/components/common/buttons/ActionButton";
 
 type LoginFieldErrors = {
     email?: string;
@@ -209,13 +209,13 @@ export default function LoginPage() {
                         <Text style={styles.apiError}>{apiError}</Text>
                     ) : null}
 
-                    <ButtonSolid
-                        variant="onBoarding"
+                    <ActionButton
+                        paletteVariant="onBoarding"
                         style={styles.loginBtn}
                         disabled={isLoading}
                         onPress={handleLogin}
-                        text={isLoading ? "Accesso in corso..." : "Accedi"}>
-                    </ButtonSolid>
+                        label={isLoading ? "Accesso in corso..." : "Accedi"}>
+                    </ActionButton>
 
 
                 </AuthContent>
@@ -232,13 +232,11 @@ export default function LoginPage() {
 const styles = StyleSheet.create({
 
     inputFieldsContainer: {
-        marginTop: -50,
         gap: 8,
+        marginBottom: 60,
     },
 
     apiError: {
-        marginTop: 6,
-        marginLeft: 10,
         fontSize: 14,
         lineHeight: 18,
         fontWeight: 400,

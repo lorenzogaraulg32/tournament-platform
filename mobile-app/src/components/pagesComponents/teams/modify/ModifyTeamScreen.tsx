@@ -16,11 +16,6 @@ import {
     validateUniqueName
 } from "@/src/components/common/forms/validator/validator";
 
-// In questo componente
-// si recuperano i valori della squadra
-// si tiene traccia degli errori
-// collegamento con il service per modifica effettiva
-
 
 export default function ModifyTeamScreen() {
 
@@ -143,6 +138,7 @@ export default function ModifyTeamScreen() {
             return true
         }
 
+
         const logoError = validateMedia(modTeamData.logo, 5)
 
         if (logoError) {
@@ -193,8 +189,11 @@ export default function ModifyTeamScreen() {
     }
 
     function handleBack() {
-        if (submissionLock.current || currentStep === FIRST_STEP) {
+        if (submissionLock.current) {
             return;
+        }
+        if (currentStep === FIRST_STEP) {
+            router.back()
         }
 
         setApiError("");

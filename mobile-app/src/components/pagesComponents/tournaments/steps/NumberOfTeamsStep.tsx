@@ -1,4 +1,4 @@
-import FormSpinnerField from "@/src/components/common/forms/components/FormSpinnerField";
+import FormSpinnerField from "@/src/components/common/forms/fileds/FormSpinnerField";
 
 type NumberOfTeamsStepProps = {
     minTeams: number;

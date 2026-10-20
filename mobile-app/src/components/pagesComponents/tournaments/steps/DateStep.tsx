@@ -1,4 +1,4 @@
-import FormDateField from "@/src/components/common/forms/components/FormDateField";
+import FormDateField from "@/src/components/common/forms/fileds/FormDateField";
 import {parseDateForPicker} from "@/src/constants/helpers/parsingHelper";
 import {LocalDateString} from "@/src/services/common";
 

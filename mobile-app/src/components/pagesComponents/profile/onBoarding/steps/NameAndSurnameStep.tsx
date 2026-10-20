@@ -2,8 +2,10 @@ import {View} from "react-native";
 import AuthTextField from "@/src/components/pagesComponents/auth/AuthTextField";
 import AuthContent from "@/src/components/pagesComponents/auth/AuthContent";
 import OnBoardingContainer from "@/src/components/pagesComponents/profile/onBoarding/OnBoardingContainer";
-import OnBoardingNavigationButtons from "@/src/components/pagesComponents/profile/onBoarding/misc/OnBoardingNavigationButtons";
-import {onboardingStepStyles as styles} from "@/src/components/pagesComponents/profile/onBoarding/misc/onboardingStepStyles"
+import {
+    onboardingStepStyles as styles
+} from "@/src/components/pagesComponents/profile/onBoarding/misc/onboardingStepStyles"
+import FormStepNavigation from "@/src/components/common/forms/FormStepNavigation";
 
 type NameAndSurnameStepProps = {
     firstName: string;
@@ -16,14 +18,14 @@ type NameAndSurnameStepProps = {
 };
 
 export default function NameAndSurnameStep({
-    firstName,
-    lastName,
-    firstNameError,
-    lastNameError,
-    onFirstNameChange,
-    onLastNameChange,
-    onNext,
-}: NameAndSurnameStepProps) {
+                                               firstName,
+                                               lastName,
+                                               firstNameError,
+                                               lastNameError,
+                                               onFirstNameChange,
+                                               onLastNameChange,
+                                               onNext,
+                                           }: NameAndSurnameStepProps) {
     return (
         <OnBoardingContainer
             step={0}
@@ -52,11 +54,13 @@ export default function NameAndSurnameStep({
                         />
                     </View>
 
-                    <OnBoardingNavigationButtons
+                    <FormStepNavigation
                         onNext={onNext}
+                        nextVariant={"onBoarding"}
                     />
+
                 </AuthContent>
             }
-         />
+        />
     );
 }

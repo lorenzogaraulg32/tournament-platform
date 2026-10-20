@@ -1,8 +1,6 @@
 import {TournamentCreationRequest, TournamentErrorFields} from "@/src/services/tournaments/tournamentDTO";
-import FormLayout from "@/src/components/common/forms/ layout/FormLayout";
-import HeaderForm from "@/src/components/common/headers/HeaderForm";
-import FormProgressBar from "@/src/components/common/forms/components/FormProgressBar";
-import FormContent from "@/src/components/common/forms/ layout/FormContent";
+import FormLayout from "@/src/components/common/layout/FormLayout";
+import FormHeader from "@/src/components/common/layout/headers/FormHeader";
 import {View} from "react-native";
 import PositionStep from "@/src/components/pagesComponents/teams/steps/PositionStep";
 import LogoAndRulesStep from "@/src/components/pagesComponents/tournaments/steps/LogoAndRulesStep";
@@ -158,43 +156,35 @@ export default function CreateTournamentPage({
         }
     }
 
-    const formStep =
-        currentStep === FIRST_STEP
-            ? "first"
-            : currentStep === LAST_STEP
-                ? "last"
-                : "middle";
+
+    const nextLabel =
+        currentStep === LAST_STEP
+            ? "Termina"
+            : "Continua";
 
 
     return (
         <FormLayout
+            step={currentStep}
+            totalSteps={STEPS.length}
             variant="tournaments"
             header={
-                <HeaderForm
+                <FormHeader
                     title="Crea un torneo"
                     subtitle="Configura il torneo e invita subito le squadre ad iscriversi"
                     variant="tournaments"
                 />
             }
+            onNext={onNext}
+            nextLabel={nextLabel}
+            onBack={onBack}
+            error={currentStep === LAST_STEP ? apiError : ""}
+            loading={isSubmitting}
         >
-            <FormProgressBar
-                step={currentStep}
-                totalSteps={STEPS.length}
-                variant="tournaments"
-            />
+            <View pointerEvents={isSubmitting ? "none" : "auto"}>
+                {renderStep()}
+            </View>
 
-            <FormContent
-                handleBack={onBack}
-                handleNext={onNext}
-                isSubmitting={isSubmitting}
-                step={formStep}
-                apiError={apiError}
-                variant={"tournaments"}
-            >
-                <View pointerEvents={isSubmitting ? "none" : "auto"}>
-                    {renderStep()}
-                </View>
-            </FormContent>
         </FormLayout>
     );
 

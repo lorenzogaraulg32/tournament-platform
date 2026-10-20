@@ -10,7 +10,7 @@ import {
     type UserSportRole,
 } from "@/src/services/users/userDTO";
 import FormLabel from "@/src/components/common/labels/FormLabel";
-import FormSelectionButton from "@/src/components/common/forms/components/FormSelectionButton";
+import FormSelectionButton from "@/src/components/common/forms/fileds/FormSelectionButton";
 
 type ProfileSportsAndRolesStepProps = {
     variant: Variant;

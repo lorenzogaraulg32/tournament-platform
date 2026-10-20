@@ -24,7 +24,6 @@ export default function AuthContainer({header, content}: AuthContainerProps) {
                 imageStyle={StyleSheet.absoluteFill}
 
             >
-                <StatusBar style="light"/>
 
                 <KeyboardAvoidingView
                     style={styles.keyboardContainer}
@@ -66,7 +65,6 @@ const styles = StyleSheet.create({
     scrollContent: {
         flexGrow: 1,
         paddingTop: 150,
-        paddingBottom: 70,
         paddingHorizontal: 35
     },
 

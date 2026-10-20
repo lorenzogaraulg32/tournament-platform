@@ -1,11 +1,13 @@
 import {View} from "react-native";
 import AuthTextField from "@/src/components/pagesComponents/auth/AuthTextField";
 import AuthContent from "@/src/components/pagesComponents/auth/AuthContent";
-import FormImageField from "@/src/components/common/forms/components/FormImageField";
+import FormImageField from "@/src/components/common/forms/fileds/FormImageField";
 import OnBoardingContainer from "@/src/components/pagesComponents/profile/onBoarding/OnBoardingContainer";
-import OnBoardingNavigationButtons from "@/src/components/pagesComponents/profile/onBoarding/misc/OnBoardingNavigationButtons";
-import {onboardingStepStyles as styles} from "@/src/components/pagesComponents/profile/onBoarding/misc/onboardingStepStyles"
+import {
+    onboardingStepStyles as styles
+} from "@/src/components/pagesComponents/profile/onBoarding/misc/onboardingStepStyles"
 import {Media} from "@/src/services/media/mediaService";
+import FormStepNavigation from "@/src/components/common/forms/FormStepNavigation";
 
 type UsernameAndLogoStepProps = {
     username: string;
@@ -19,15 +21,15 @@ type UsernameAndLogoStepProps = {
 };
 
 export default function UsernameAndAvatarStep({
-                                                username,
-                                                avatar,
-                                                usernameError,
-                                                profileLogoError,
-                                                onUsernameChange,
-                                                onAvatarChange,
-                                                onBack,
-                                                onNext,
-                                            }: UsernameAndLogoStepProps) {
+                                                  username,
+                                                  avatar,
+                                                  usernameError,
+                                                  profileLogoError,
+                                                  onUsernameChange,
+                                                  onAvatarChange,
+                                                  onBack,
+                                                  onNext,
+                                              }: UsernameAndLogoStepProps) {
     return (
         <OnBoardingContainer
             step={1}
@@ -55,10 +57,12 @@ export default function UsernameAndAvatarStep({
                         />
                     </View>
 
-                    <OnBoardingNavigationButtons
-                        onBack={onBack}
+                    <FormStepNavigation
                         onNext={onNext}
+                        nextVariant={"onBoarding"}
+                        onBack={onBack}
                     />
+
                 </AuthContent>
             }
         />

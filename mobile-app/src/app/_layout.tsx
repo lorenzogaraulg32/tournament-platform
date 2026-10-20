@@ -1,7 +1,10 @@
 import {Stack} from "expo-router";
 import {GestureHandlerRootView} from "react-native-gesture-handler";
 
-
+/**
+ * Layout di base dell'applicazione, gestisce le opzioni dello schermo, come la navbar, status bar, le gesture ecc.
+ * @constructor
+ */
 export default function RootLayout() {
     return (
         <GestureHandlerRootView style={{flex: 1}}>
@@ -15,13 +18,7 @@ export default function RootLayout() {
             }}>
                 <Stack.Screen name="(auth)"/>
 
-                <Stack.Screen
-                    name="(onboarding)"
-                />
-
-                <Stack.Screen
-                    name="(app)"
-                />
+                <Stack.Screen name="(app)"/>
             </Stack>
         </GestureHandlerRootView>
     );

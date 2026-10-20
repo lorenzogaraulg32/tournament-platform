@@ -4,7 +4,7 @@ import {FontAwesome6} from "@expo/vector-icons";
 import {TournamentDetails} from "@/src/services/tournaments/tournamentDTO";
 import {colors, corners} from "@/src/constants/theme";
 import TournamentCardHorizontal from "@/src/components/common/cards/tournamentCards/TournamentCardHorizontal";
-import StandardCardList from "@/src/components/common/layout/StandardCardList";
+import StandardCardList from "@/src/components/common/StandardCardList";
 
 type TournamentSectionProps = {
     title: string;
