@@ -128,7 +128,7 @@ export default function MyTournaments() {
             </ScrollView>
             <ActionButton
                 label="Crea nuovo torneo"
-                onPress={() => router.push("/teams/create")}
+                onPress={() => router.push("/tournaments/create")}
                 paletteVariant={"tournaments"}
                 backgroundVariant={
                     {

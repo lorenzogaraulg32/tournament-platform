@@ -136,6 +136,7 @@ const styles = StyleSheet.create({
     myTeamsContent: {
         flex: 1,
         minHeight: 0,
+        justifyContent:"space-between"
     },
 
     content: {
