@@ -11,6 +11,7 @@ import {ReactNode} from "react";
 type HeaderEntityProps = {
     variant: Variant;
     name: string,
+    fullName?: string,
     image: Media | null
     position?: string | null
     email?: string
@@ -28,6 +29,7 @@ export const HEADER_ENTITY_HEIGHT = 220
 export default function EntityHeader({
                                          variant,
                                          name,
+                                         fullName,
                                          image,
                                          position,
                                          email,
@@ -61,9 +63,18 @@ export default function EntityHeader({
                 <Text
                     style={styles.primaryText}
                     numberOfLines={1}
+                    adjustsFontSizeToFit
+                    minimumFontScale={0.65}
+                    ellipsizeMode="tail"
                 >
                     {name}
                 </Text>
+
+                {fullName ? (
+                    <Text style={styles.secondaryText} numberOfLines={1}>
+                        {fullName}
+                    </Text>
+                ) : null}
 
                 {email ? (
                     <Text style={styles.secondaryText} numberOfLines={1}>
@@ -131,8 +142,8 @@ const styles = StyleSheet.create({
         flexShrink: 1,
         color: "#FFFFFF",
         fontSize: 18,
-        lineHeight: 28,
         fontWeight: "800",
+        maxWidth: "85%",
     },
 
     secondaryText: {

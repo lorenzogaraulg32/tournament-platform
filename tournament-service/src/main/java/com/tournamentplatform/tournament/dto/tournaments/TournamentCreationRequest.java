@@ -20,7 +20,7 @@ public class TournamentCreationRequest {
 
 
     @NotBlank(message = "Nome obbligatorio")
-    @Size(max = 20, min = 5, message = "La descrizione deve avere minimo 5 caratteri e al massimo 20 caratteri")
+    @Size(min = 5, max = 40, message = "Il nome deve avere tra 5 e 40 caratteri")
     private String name;
 
     @NotBlank(message = "Descrizione obbligatoria")

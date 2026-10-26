@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class TeamCreationRequest {
 
     @NotBlank(message = "Il nome della squadra è obbligatorio")
-    @Size(min = 5, max = 20, message = "Il nome deve avere tra 5 e 20 caratteri")
+    @Size(min = 5, max = 40, message = "Il nome deve avere tra 5 e 40 caratteri")
     private String name;
 
     @Size(

@@ -13,6 +13,7 @@ import {
     validateDescription,
     validateLocation,
     validateMedia,
+    validateNameLong,
     validateUniqueName
 } from "@/src/components/common/forms/validator/validator";
 
@@ -93,8 +94,12 @@ export default function ModifyTeamScreen() {
 
 
         try {
-            if (trimmedName !== oldTeam.name.trim())
-                nameError = await validateUniqueName(trimmedName, checkTeamNameAlreadyExists)
+            if (trimmedName !== oldTeam.name.trim()) {
+                nameError = validateNameLong(trimmedName)
+                if (!nameError) {
+                    nameError = await validateUniqueName(trimmedName, checkTeamNameAlreadyExists)
+                }
+            }
         } catch (error) {
             const apiError = normalizeApiRequestError(error)
             setApiError(apiError.message);

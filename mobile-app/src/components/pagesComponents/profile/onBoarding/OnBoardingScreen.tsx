@@ -4,7 +4,7 @@ import {ProfileFormErrors, UserCreationRequest} from "@/src/services/users/userD
 import {
     validateLocation,
     validateMedia,
-    validateStandardName,
+    validateNameShort,
     validateUniqueName,
     validateUserSportsAndRoles
 } from "@/src/components/common/forms/validator/validator";
@@ -145,8 +145,8 @@ export default function OnBoardingScreen() {
     function validateNameAndSurname(): boolean {
         const trimmedName = userData.firstName.trim()
         const trimmedLastName = userData.lastName.trim()
-        const nameError = validateStandardName(trimmedName);
-        const lastNameError = validateStandardName(trimmedLastName);
+        const nameError = validateNameShort(trimmedName);
+        const lastNameError = validateNameShort(trimmedLastName);
 
         if (nameError || lastNameError) {
             setFieldErrors(previous => ({
@@ -167,7 +167,12 @@ export default function OnBoardingScreen() {
         let usernameError = undefined;
 
         try {
-            usernameError = await validateUniqueName(trimmedUsername, checkUsernameAlreadyExists)
+
+            usernameError = validateNameShort(trimmedUsername)
+            if (!usernameError) {
+                usernameError = await validateUniqueName(trimmedUsername, checkUsernameAlreadyExists)
+            }
+
         } catch (error) {
             const apiError = normalizeApiRequestError(error)
             setApiError(apiError.message);

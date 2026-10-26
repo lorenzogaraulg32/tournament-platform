@@ -18,11 +18,7 @@ import lombok.Setter;
 public class TeamUpdateRequest {
 
     @Setter
-    @Size(
-            min = 5,
-            max = 20,
-            message = "Il nome deve avere tra 5 e 20 caratteri"
-    )
+    @Size(min = 5, max = 40, message = "Il nome deve avere tra 5 e 40 caratteri")
     @Pattern(
             regexp = "(?s).*\\S.*",
             message = "Il nome non può contenere solo spazi"

@@ -46,6 +46,7 @@ export default function ProfilePage({
                     <EntityHeader
                         variant={variant}
                         name={""}
+                        fullName={""}
                         image={null}
                         position={null}
                         backBtn={backBtn}
@@ -65,6 +66,7 @@ export default function ProfilePage({
                     <EntityHeader
                         variant={variant}
                         name={""}
+                        fullName={""}
                         image={null}
                         position={""}
                         backBtn={backBtn}
@@ -88,7 +90,8 @@ export default function ProfilePage({
             header={
                 <EntityHeader
                     variant={variant}
-                    name={`${profile.user.firstName} ${profile.user.lastName}`}
+                    name={profile.user.username}
+                    fullName={`${profile.user.firstName} ${profile.user.lastName}`}
                     image={profile.user.avatar}
                     position={profile.user.location?.label}
                     email={profile.auth?.email}

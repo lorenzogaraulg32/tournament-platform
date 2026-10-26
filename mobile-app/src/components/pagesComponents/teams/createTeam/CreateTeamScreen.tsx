@@ -15,6 +15,7 @@ import {
     validateDescription,
     validateLocation,
     validateMedia,
+    validateNameLong,
     validateUniqueName
 } from "@/src/components/common/forms/validator/validator";
 
@@ -93,7 +94,10 @@ export default function CreateTeamScreen() {
 
 
         try {
-            nameError = await validateUniqueName(trimmedName, checkTeamNameAlreadyExists)
+            nameError = validateNameLong(trimmedName)
+            if (!nameError) {
+                nameError = await validateUniqueName(trimmedName, checkTeamNameAlreadyExists)
+            }
         } catch (error) {
             const apiError = normalizeApiRequestError(error)
             setApiError(apiError.message);

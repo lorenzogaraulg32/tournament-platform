@@ -141,8 +141,10 @@ export default function FieldPlayerCard({
                             color: palette.title,
                         },
                     ]}
-                    numberOfLines={1}
+                    numberOfLines={2}
                     ellipsizeMode="tail"
+                    adjustsFontSizeToFit
+                    minimumFontScale={0.75}
                 >
                     {player.username}
                 </Text>
@@ -161,7 +163,7 @@ export default function FieldPlayerCard({
                                 roleBadgePalette?.badgeBorder,
                             },
                         ]}
-                        numberOfLines={1}
+                        numberOfLines={2}
                         ellipsizeMode="tail"
                     >
                         {roleLabel}
@@ -177,9 +179,9 @@ export default function FieldPlayerCard({
 }
 
 
-const LOGO_SIZE = 46;
-const CARD_WIDTH = 72;
-const CARD_HEIGHT = 48;
+const LOGO_SIZE = 51;
+const CARD_WIDTH = 77;
+const CARD_HEIGHT = 53;
 
 
 const styles = StyleSheet.create({
@@ -187,7 +189,6 @@ const styles = StyleSheet.create({
     container: {
         width: CARD_WIDTH,
         alignItems: "center",
-        gap: 5,
     },
 
 
@@ -244,21 +245,24 @@ const styles = StyleSheet.create({
     name: {
         position: "absolute",
 
-        bottom: LOGO_SIZE / 6,
+        top: LOGO_SIZE + 1,
+        bottom: 3,
+        left: 2,
+        right: 2,
 
-        width: "100%",
-
-        fontSize: 11,
+        fontSize: 10,
+        lineHeight: 11,
         fontWeight: "700",
+
         textAlign: "center",
+        textAlignVertical: "center",
+        includeFontPadding: false,
 
         textShadowColor: "rgba(0, 0, 0, 0.40)",
-
         textShadowOffset: {
             width: 0,
             height: 1,
         },
-
         textShadowRadius: 2,
     },
 
@@ -300,16 +304,17 @@ const styles = StyleSheet.create({
     roleLabel: {
         position: "absolute",
 
-        bottom: -25,
+        top: CARD_HEIGHT + LOGO_SIZE / 2 + 4,
 
         width: "100%",
+
 
         fontSize: 11,
         fontWeight: "700",
         textAlign: "center",
 
         paddingVertical: 2,
-        paddingHorizontal: 4,
+        paddingHorizontal: 6,
 
         textShadowColor: "rgba(0, 0, 0, 0.40)",
 
@@ -321,6 +326,8 @@ const styles = StyleSheet.create({
         textShadowRadius: 2,
 
         borderRadius: 20,
+
+        flexShrink: 1,
     },
 
 });

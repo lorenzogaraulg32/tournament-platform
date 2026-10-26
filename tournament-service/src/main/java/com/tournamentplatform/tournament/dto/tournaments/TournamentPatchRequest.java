@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @Setter
 public class TournamentPatchRequest {
 
+    @Size(min = 5, max = 40, message = "Il nome deve avere tra 5 e 40 caratteri")
     private String name;
 
     @Size(max = 500, message = "La descrizione può avere al massimo 1000 caratteri")

@@ -31,7 +31,7 @@ export type UserSportRole = {
 };
 export const SPORT_LABELS: Record<Sport, string> = {
     [Sport.FOOTBALL]: "Calcio",
-    [Sport.BEACH_VOLLEY]: "Beach Volley",
+    [Sport.BEACH_VOLLEY]: "Beach",
     [Sport.BASKETBALL]: "Basket",
 };
 export const SPORT_ROLES: Record<Sport, SportRole[]> = {

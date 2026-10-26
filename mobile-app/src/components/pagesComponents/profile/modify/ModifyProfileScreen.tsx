@@ -9,7 +9,7 @@ import ModifyProfilePage, {FIRST_STEP, LAST_STEP, type ProfileEditStep, STEPS,} 
 import {
     validateLocation,
     validateMedia,
-    validateStandardName,
+    validateNameShort,
     validateUniqueName,
     validateUserSportsAndRoles
 } from "@/src/components/common/forms/validator/validator";
@@ -128,8 +128,8 @@ export default function ModifyProfileScreen() {
     function validateNameAndSurname(): boolean {
         const trimmedName = newProfile.firstName.trim()
         const trimmedLastName = newProfile.lastName.trim()
-        const nameError = validateStandardName(trimmedName);
-        const lastNameError = validateStandardName(trimmedLastName);
+        const nameError = validateNameShort(trimmedName);
+        const lastNameError = validateNameShort(trimmedLastName);
 
         if (nameError || lastNameError) {
             setFieldErrors(previous => ({
@@ -150,9 +150,14 @@ export default function ModifyProfileScreen() {
 
 
         try {
+
             if (trimmedUsername !== oldProfile.username.trim()) {
-                usernameError = await validateUniqueName(trimmedUsername, checkUsernameAlreadyExists)
+                usernameError = validateNameShort(trimmedUsername)
+                if (!usernameError) {
+                    usernameError = await validateUniqueName(trimmedUsername, checkUsernameAlreadyExists)
+                }
             }
+
         } catch (error) {
             const apiError = normalizeApiRequestError(error)
             setApiError(apiError.message);

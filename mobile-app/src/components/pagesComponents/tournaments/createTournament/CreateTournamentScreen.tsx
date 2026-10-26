@@ -14,6 +14,7 @@ import {
     validateDescription,
     validateLocation,
     validateMedia,
+    validateNameLong,
     validateUniqueName
 } from "@/src/components/common/forms/validator/validator";
 
@@ -102,7 +103,10 @@ export default function CreateTournamentScreen() {
         let nameError = undefined;
 
         try {
-            nameError = await validateUniqueName(trimmedName, checkTournamentNameAlreadyExists)
+            nameError = validateNameLong(trimmedName)
+            if (!nameError) {
+                nameError = await validateUniqueName(trimmedName, checkTournamentNameAlreadyExists)
+            }
         } catch (error) {
             const apiError = normalizeApiRequestError(error)
             setApiError(apiError.message);

@@ -8,6 +8,20 @@ import {Media} from "@/src/services/media/mediaService";
  * per questo motive sono incluse nel componente "screen" relativo all'entità da validare
  */
 
+/*
+* team, tournament name = 40 max
+* username, firstname, lastname = 20 max
+*
+* */
+export const FIELD_LIMITS = {
+    longName: {
+        min: 5, max: 40
+    },
+    shortName: {
+        min: 5, max: 20,
+    },
+}
+
 
 type UniqueNameChecker = (name: string) => Promise<void>;
 
@@ -15,10 +29,6 @@ export async function validateUniqueName(uniqueName: string, uniqueChecker: Uniq
 
     if (!uniqueName) {
         return "Campo obbligatorio";
-    }
-
-    if (uniqueName.length > 20) {
-        return "Non può superare i 20 caratteri";
     }
 
     try {
@@ -35,17 +45,43 @@ export async function validateUniqueName(uniqueName: string, uniqueChecker: Uniq
     }
 }
 
-export function validateStandardName(name: string): string | undefined {
+export function validateNameShort(name: string): string | undefined {
 
     if (!name) {
         return "Campo obbligatorio";
     }
 
-    if (name.length > 20) {
-        return "Non può superare i 20 caratteri";
+    if (name.length > FIELD_LIMITS.shortName.max) {
+        return "Non può superare i " + FIELD_LIMITS.shortName.max + " caratteri";
     }
+
+
+    if (name.length < FIELD_LIMITS.shortName.min) {
+        return "Non può avere meno di " + FIELD_LIMITS.shortName.min + " caratteri";
+    }
+
     return
 }
+
+
+export function validateNameLong(name: string): string | undefined {
+
+    if (!name) {
+        return "Campo obbligatorio";
+    }
+
+    if (name.length > FIELD_LIMITS.longName.max) {
+        return "Non può superare i " + FIELD_LIMITS.longName.max + " caratteri";
+    }
+
+
+    if (name.length < FIELD_LIMITS.longName.min) {
+        return "Non può avere meno di " + FIELD_LIMITS.longName.min + " caratteri";
+    }
+
+    return
+}
+
 
 export function validateDescription(description: string): string | undefined {
 

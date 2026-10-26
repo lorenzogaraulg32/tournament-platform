@@ -80,6 +80,7 @@ export default function TeamCardHorizontal({
                     numberOfLines={1}
                     ellipsizeMode="tail"
                 >
+
                     {teamDetails.name}
                 </Text>
 
@@ -144,10 +145,12 @@ const styles = StyleSheet.create({
 
     teamName: {
         color: teamCardColors.title,
-        fontSize: 14,
+        fontSize: 13,
         lineHeight: 16,
         fontWeight: "800",
         letterSpacing: 0.2,
+        borderColor: "#fff",
+        marginRight: 5,
     },
 
     playersRow: {
@@ -165,7 +168,6 @@ const styles = StyleSheet.create({
     },
 
     sportBadge: {
-        marginRight: 10,
         paddingVertical: 4,
         paddingHorizontal: 5,
         borderWidth: 1,
@@ -173,7 +175,7 @@ const styles = StyleSheet.create({
     },
 
     sportBadgeText: {
-        fontSize: 11
+        fontSize: 10
     }
 
 
