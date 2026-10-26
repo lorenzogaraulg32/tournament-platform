@@ -52,6 +52,7 @@ export default function AdminCard({
             pathname: adminRoutes[tab],
             params: {
                 profileId: String(admin.id),
+                back: "1"
             },
         });
     }

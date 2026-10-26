@@ -12,9 +12,13 @@ import ProfilePage from "@/src/components/pagesComponents/profile/ProfilePage";
 
 export default function ProfileScreen() {
 
-    const params = useLocalSearchParams<{ profileId?: string }>();
+    const params = useLocalSearchParams<{
+        profileId?: string;
+        back?: string;
+    }>();
 
     const profileId = params.profileId;
+    const canGoBack = params.back === "1"
 
     const requestIdRefProfile = useRef(0);
 
@@ -121,6 +125,7 @@ export default function ProfileScreen() {
             loading={isLoading}
             onErrorRetry={loadProfile}
             backBtn={
+                canGoBack &&
                 <BackButton absolute onPress={onBack}/>
             }
             optionsBtn={

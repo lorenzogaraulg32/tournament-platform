@@ -1,6 +1,5 @@
 import {StyleSheet, Text, View} from "react-native";
-import {UserInfo} from "@/src/services/users/userDTO";
-import {getRoleBySport, ROLE_LABELS, Sport} from "@/src/services/users/userDTO";
+import {getRoleBySport, ROLE_LABELS, Sport, UserInfo} from "@/src/services/users/userDTO";
 import {router, useSegments} from "expo-router";
 
 import CardContainerHorizontal from "@/src/components/common/cards/CardContainerHorizontal";
@@ -56,6 +55,7 @@ export default function PlayerCard({
             pathname: playerRoutes[tab],
             params: {
                 profileId: String(player.id),
+                back: "1"
             },
         });
     }

@@ -25,7 +25,6 @@ export default function FormHeader({
             source={config.background}
             style={styles.container}
         >
-
             <View style={styles.textContainer}>
                 <Text style={styles.title}>
                     {title}

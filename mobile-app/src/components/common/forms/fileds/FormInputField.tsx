@@ -81,7 +81,7 @@ export default function FormInputField({
 
             <View style={styles.footer}>
                 <Text style={styles.error}>
-                    {errorMessage ?? ""}
+                    {errorMessage}
                 </Text>
 
                 {maxLength !== undefined && (
@@ -106,7 +106,6 @@ export default function FormInputField({
 const styles = StyleSheet.create({
     container: {
         width: "100%",
-        marginBottom: 20,
     },
 
     input: {
@@ -116,7 +115,7 @@ const styles = StyleSheet.create({
         borderWidth: 1.5,
         fontSize: 15,
         fontWeight: "500",
-        
+
     },
 
     footer: {
@@ -133,6 +132,7 @@ const styles = StyleSheet.create({
         color: colors.error,
         fontSize: 13,
         fontWeight: "500",
+        marginBottom: 10
     },
 
     counter: {

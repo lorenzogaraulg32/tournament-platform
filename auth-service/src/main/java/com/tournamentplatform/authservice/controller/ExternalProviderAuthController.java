@@ -17,6 +17,10 @@ public class ExternalProviderAuthController {
 
     private final ExternalProviderService externalProviderService;
 
+    /*
+        Questo endpoint è responsabile sia per la gestione del login che della registrazione
+
+     */
     @PostMapping()
     public ResponseEntity<AuthResponse> authenticate(
             @Valid @RequestBody ExternalAuthRequest request
@@ -25,6 +29,7 @@ public class ExternalProviderAuthController {
         return ResponseEntity.ok(response);
     }
 
+    //Nel futuro quando ci sono più provider potrebbe essere necessario includere quale provider nella richesta
     @PostMapping("/link")
     public ResponseEntity<Void> link(
             Authentication authentication,
@@ -37,7 +42,7 @@ public class ExternalProviderAuthController {
         return ResponseEntity.ok().build();
     }
 
-
+    //Nel futuro quando ci sono più provider potrebbe essere necessario includere quale provider nella richesta
     @DeleteMapping("/link")
     public ResponseEntity<Void> unlink(Authentication authentication) {
 

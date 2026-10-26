@@ -4,24 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="hotfix">
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Adjusted max sizes of entities names, usernames etc.&#10;Adjusted graphics for new sizes. Now the text font size changes dynamically">
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modifyAuth/ModifyAuthPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modifyAuth/sections/ChangeEmailSection.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modifyAuth/sections/ChangePasswordSection.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modifyAuth/sections/ExternalSection.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modifyAuth/sections/MainSection.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modifyAuth/sections/ProfilePasswordField.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/cards/CardContainerHorizontal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/cards/CardContainerHorizontal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/cards/teamCards/TeamCardHorizontal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/cards/teamCards/TeamCardHorizontal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/controller/ExternalProviderAuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/controller/ExternalProviderAuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/service/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/service/ExternalProviderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/service/ExternalProviderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/cards/userCards/AdminCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/cards/userCards/AdminCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/cards/userCards/FieldPlayerCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/cards/userCards/FieldPlayerCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/forms/validator/validator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/forms/validator/validator.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/layout/headers/EntityHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/layout/headers/EntityHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfilePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modify/ModifyProfileScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modify/ModifyProfileScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/onBoarding/OnBoardingScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/onBoarding/OnBoardingScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/createTeam/CreateTeamScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/createTeam/CreateTeamScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/modify/ModifyTeamScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/teams/modify/ModifyTeamScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/tournaments/createTournament/CreateTournamentScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/tournaments/createTournament/CreateTournamentScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/sportDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/sportDTO.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/dto/teamCreation/TeamCreationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/dto/teamCreation/TeamCreationRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/dto/teamModify/TeamUpdateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/team-service/src/main/java/com/tournamentplatform/teamservice/dto/teamModify/TeamUpdateRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/dto/tournaments/TournamentCreationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/dto/tournaments/TournamentCreationRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/dto/tournaments/TournamentPatchRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tournament-service/src/main/java/com/tournamentplatform/tournament/dto/tournaments/TournamentPatchRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/cards/userCards/PlayerCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/cards/userCards/PlayerCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/forms/FormStepNavigation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/forms/FormStepNavigation.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/forms/fileds/FormInputField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/forms/fileds/FormInputField.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/layout/FormLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/layout/FormLayout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/layout/headers/FormHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/layout/headers/FormHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfileScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/ProfileScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modifyAuth/ModifyAuthScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modifyAuth/ModifyAuthScreen.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,8 +66,8 @@
         <option value="package-info" />
         <option value="Enum" />
         <option value="Interface" />
-        <option value="Class" />
         <option value="Record" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -125,7 +127,7 @@
     "Spring Boot.UserServiceApplication.executor": "Run",
     "jdk.selected.JAVA_MODULE": "21",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/JoinCup",
+    "last_opened_file_path": "C:/JoinCup/mobile-app/src/components/pagesComponents/profile/modifyAuth/sections",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -158,11 +160,11 @@
       <recent name="com.tournamentplatform.tournament.DTO" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\JoinCup\mobile-app\src\components\pagesComponents\profile\modifyAuth\sections" />
       <recent name="C:\JoinCup\mobile-app\src\components\common\layout" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\mobile-app\src\app\(app)\profile" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\media-service\src\main\java\com\tournamentplatform\mediaservice" />
       <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\activity-service\src\main\resources" />
-      <recent name="C:\Users\Lombax\Desktop\Progetto Gestione Tornei Calcetto\activity-service\src\main\java\com\tournamentplatform\activityservice" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\JoinCup\mobile-app\src\components\common" />
@@ -455,15 +457,7 @@
       <workItem from="1792444464734" duration="4839000" />
       <workItem from="1792484547696" duration="15565000" />
       <workItem from="1792588040636" duration="43000" />
-      <workItem from="1793008739978" duration="4829000" />
-    </task>
-    <task id="LOCAL-00073" summary="fixed minor warning regarding layout">
-      <option name="closed" value="true" />
-      <created>1789057872168</created>
-      <option name="number" value="00073" />
-      <option name="presentableId" value="LOCAL-00073" />
-      <option name="project" value="LOCAL" />
-      <updated>1789057872168</updated>
+      <workItem from="1793008739978" duration="16117000" />
     </task>
     <task id="LOCAL-00074" summary="Implemented team modification and player list modification, next up is admin modification">
       <option name="closed" value="true" />
@@ -849,7 +843,15 @@
       <option name="project" value="LOCAL" />
       <updated>1792501692817</updated>
     </task>
-    <option name="localTasksCounter" value="122" />
+    <task id="LOCAL-00122" summary="Adjusted max sizes of entities names, usernames etc.&#10;Adjusted graphics for new sizes. Now the text font size changes dynamically">
+      <option name="closed" value="true" />
+      <created>1793015789122</created>
+      <option name="number" value="00122" />
+      <option name="presentableId" value="LOCAL-00122" />
+      <option name="project" value="LOCAL" />
+      <updated>1793015789124</updated>
+    </task>
+    <option name="localTasksCounter" value="123" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -867,7 +869,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Now api gateway knows which service is down when a service is down and throws a custom apiResponseError&#10;&#10;Now profile loading and error is standardized" />
     <MESSAGE value="Major bug fixes and improvements on error handling&#10;Now auth services is on port 8082 so frontend can run on 8081&#10;Now missing files exceptions are correctly ignored, since its a possible state" />
     <MESSAGE value="Small fix for port change of auth servfice" />
     <MESSAGE value="Deleted variants for solidButtons, &#10;Added btn styles to global variants" />
@@ -892,7 +893,8 @@
     <MESSAGE value="FrontEnd graphical Improvements and refractoring, todo tournament Section" />
     <MESSAGE value="did also tournamentPage" />
     <MESSAGE value="hotfix" />
-    <option name="LAST_COMMIT_MESSAGE" value="hotfix" />
+    <MESSAGE value="Adjusted max sizes of entities names, usernames etc.&#10;Adjusted graphics for new sizes. Now the text font size changes dynamically" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adjusted max sizes of entities names, usernames etc.&#10;Adjusted graphics for new sizes. Now the text font size changes dynamically" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

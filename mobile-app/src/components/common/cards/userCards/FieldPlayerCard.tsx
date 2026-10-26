@@ -78,6 +78,7 @@ export default function FieldPlayerCard({
             pathname: playerRoutes[tab],
             params: {
                 profileId: String(player.id),
+                back: "1"
             },
         });
     }

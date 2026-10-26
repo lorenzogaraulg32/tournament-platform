@@ -7,15 +7,15 @@ import PageLayout from "@/src/components/common/layout/PageLayout";
 
 
 type FormContentProps = {
-    step: number,
-    totalSteps: number,
+    step?: number,
+    totalSteps?: number,
     children: ReactNode
     error?: string,
 
     variant: Variant,
     header: ReactNode,
 
-    onNext: () => void,
+    onNext?: () => void,
     onBack?: () => void,
 
     nextLabel?: string
@@ -38,6 +38,13 @@ export default function FormLayout({
                                    }: FormContentProps) {
 
 
+    const isStep =
+        step !== undefined &&
+        totalSteps !== undefined &&
+        totalSteps > 0 &&
+        onNext !== undefined;
+
+
     return (
 
         <PageLayout header={header}>
@@ -54,16 +61,15 @@ export default function FormLayout({
                     automaticallyAdjustKeyboardInsets
                 >
                     <View>
-                        <FormProgressBar
-                            step={step}
-                            totalSteps={totalSteps}
-                            variant={variant}
-                        />
-
+                        {isStep &&
+                            <FormProgressBar
+                                step={step}
+                                totalSteps={totalSteps}
+                                variant={variant}
+                            />
+                        }
                         {children}
-
                     </View>
-
                     <View>
                         {error && (
                             <Text style={styles.submitError}>
@@ -71,14 +77,15 @@ export default function FormLayout({
                             </Text>
                         )}
 
-
-                        <FormStepNavigation
-                            onNext={onNext}
-                            nextLabel={nextLabel}
-                            nextVariant={variant}
-                            onBack={onBack}
-                            loading={loading}
-                        />
+                        {isStep &&
+                            <FormStepNavigation
+                                onNext={onNext}
+                                nextLabel={nextLabel}
+                                nextVariant={variant}
+                                onBack={onBack}
+                                loading={loading}
+                            />
+                        }
 
                     </View>
                 </ScrollView>
@@ -100,7 +107,7 @@ const styles = StyleSheet.create({
 
     scrollContent: {
         flexGrow: 1,
-        justifyContent:"space-between"
+        justifyContent: "space-between"
     },
 
 

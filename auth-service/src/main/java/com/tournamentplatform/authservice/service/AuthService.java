@@ -79,22 +79,38 @@ public class AuthService {
         boolean updateEmail = request.email() != null;
         boolean updatePassword = request.newPassword() != null;
 
+        //nessuna modifica, ignoro
         if (!updateEmail && !updatePassword) {
-            throw new InvalidCredentialsUpdateException();
+            return;
         }
 
+        // Il cambio della mail implica lo scollegamento dal provider esterno,
+        // In quanto il match fra le due email deve continuare ad'essere vero
         if (updateEmail) {
-
             String newEmail = request.email()
                     .trim()
                     .toLowerCase(Locale.ROOT);
 
             if (!newEmail.equals(user.getEmail())) {
 
+                //copra il caso in cui la modifica della mail scollega il provider esterno ma non è impostata una password interna
+                if (user.hasExternalAuthentication()
+                        && !user.hasLocalAuthentication()
+                        && !updatePassword) {
+                    throw new LastAuthMethodException();
+                }
+
                 if (userRepository.existsByEmail(newEmail)) {
                     throw new EmailAlreadyRegisteredException();
                 }
                 user.setEmail(newEmail);
+
+                if (user.hasExternalAuthentication()) {
+                    user.setExternalProvider(null);
+                    user.setExternalSubject(null);
+                }
+
+
             }
         }
 

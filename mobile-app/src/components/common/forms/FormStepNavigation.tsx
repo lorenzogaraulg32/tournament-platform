@@ -3,7 +3,7 @@ import ActionButton from "@/src/components/common/buttons/ActionButton";
 import {Variant} from "@/src/constants/palette/PaletteManager";
 
 interface stepNavigationProps {
-    onNext: () => void
+    onNext?: () => void
     onBack?: () => void
     nextVariant: Variant
     backVariant?: Variant
@@ -14,14 +14,14 @@ interface stepNavigationProps {
 
 
 export default function FormStepNavigation({
-                                           onNext,
-                                           onBack,
-                                           nextVariant,
-                                           backVariant = "standard",
-                                           nextLabel = "Continua",
-                                           backLabel = "Indietro",
-                                           loading = false
-                                       }: stepNavigationProps) {
+                                               onNext,
+                                               onBack,
+                                               nextVariant,
+                                               backVariant = "standard",
+                                               nextLabel = "Continua",
+                                               backLabel = "Indietro",
+                                               loading = false
+                                           }: stepNavigationProps) {
 
 
     return (
@@ -39,7 +39,7 @@ export default function FormStepNavigation({
                 </View>
             )}
 
-            <View style={styles.nextContainer}>
+            {onNext && <View style={styles.nextContainer}>
                 <ActionButton
                     label={nextLabel}
                     onPress={onNext}
@@ -47,6 +47,7 @@ export default function FormStepNavigation({
                     disabled={loading}
                 />
             </View>
+            }
 
         </View>
     )
