@@ -11,7 +11,7 @@ type ChangeEmailSectionProps = {
 
     oldEmail: string
     changeEmail: (email: string) => Promise<void>;
-
+    hasInternalPassword: boolean
 };
 
 export default function ChangeEmailSection({
@@ -19,7 +19,8 @@ export default function ChangeEmailSection({
                                                oldEmail,
                                                changeEmail,
                                                loading,
-                                               error
+                                               error,
+                                               hasInternalPassword
                                            }: ChangeEmailSectionProps) {
 
     const [email, setEmail] = useState("");
@@ -36,22 +37,43 @@ export default function ChangeEmailSection({
                     setEmail(email)
                 }}
                 errorMessage={error || ""}
-                autoCapitalize="words"
-                editable={true}
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="email-address"
+                editable={!loading}
             />
-            <View style={styles.infoContainer}>
-                <Text style={[
-                    styles.infoText,
-                    {color: palette.labelSecondaryColor}
-                ]}>
-                    Modificando il tuo indirizzo email, gli eventuali
-                    provider esterni collegati verranno automaticamente
-                    scollegati. Potrai collegarli nuovamente utilizzando
-                    un account con la stessa email.
-                </Text>
-            </View>
+            {hasInternalPassword ?
+                <View style={styles.infoContainer}>
+                    <Text style={[
+                        styles.infoText,
+                        {color: palette.labelSecondaryColor}
+                    ]}>
+                        Modificando il tuo indirizzo email, gli eventuali
+                        provider esterni collegati verranno automaticamente
+                        scollegati. Potrai collegarli nuovamente utilizzando
+                        un account con la stessa email.
+                    </Text>
+                </View>
+                :
+                <View style={styles.infoContainer}>
+                    <Text style={[
+                        styles.infoText,
+                        {color: palette.labelSecondaryColor}
+                    ]}>
+                        Per modificare l'indirizzo email devi prima impostare una password JoinCup, così potrai
+                        continuare ad accedere anche dopo la modifica.
+                    </Text>
+                </View>
+
+            }
             <FormStepNavigation
-                onNext={async () => await changeEmail(email)}
+                onNext={async () => {
+                    if (hasInternalPassword) {
+                        await changeEmail(email)
+                        onBack()
+                    }
+                }}
+
                 nextLabel={"Modifica"}
                 nextVariant={"profile"}
                 onBack={onBack}

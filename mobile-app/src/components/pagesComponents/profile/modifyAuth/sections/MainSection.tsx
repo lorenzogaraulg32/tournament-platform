@@ -1,5 +1,5 @@
 import {Pressable, StyleSheet, Text, View} from "react-native";
-import React, {Dispatch, SetStateAction} from "react";
+import React from "react";
 import {Ionicons} from "@expo/vector-icons";
 import {ModifyAuthSections} from "@/src/components/pagesComponents/profile/modifyAuth/ModifyAuthPage";
 import {paletteVariants} from "@/src/constants/palette/PaletteManager";
@@ -7,7 +7,7 @@ import FormStepNavigation from "@/src/components/common/forms/FormStepNavigation
 import {router} from "expo-router";
 
 type MainSectionProps = {
-    onChangeSection: Dispatch<SetStateAction<ModifyAuthSections>>;
+    onChangeSection: (section: ModifyAuthSections) => void;
 };
 
 type MenuItem = {

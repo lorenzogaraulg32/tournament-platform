@@ -1,7 +1,6 @@
 package com.tournamentplatform.authservice.dto;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
@@ -24,7 +23,10 @@ public record ModUserRequest(
                 regexp = "(?s).*\\S.*",
                 message = "La password non può essere vuota"
         )
-        String newPassword
+        String newPassword,
+
+
+        String oldPassword
 
 ) {
 }

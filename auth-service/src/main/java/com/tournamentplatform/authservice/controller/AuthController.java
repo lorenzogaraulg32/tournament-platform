@@ -31,13 +31,13 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @GetMapping("/me")
+    /* @GetMapping("/me")
     public ResponseEntity<UserResponse> getCurrentUserInfo(Authentication authentication) {
         Long userId = Long.valueOf(authentication.getName());
         UserResponse response = authService.getUserInfo(userId);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-
+     */
 
     @GetMapping("/{userId}")
     public ResponseEntity<UserResponse> getUserInfo(@PathVariable String userId) {
@@ -55,7 +55,7 @@ public class AuthController {
 
         authService.updateCredentials(userId, request);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
 
 
     }

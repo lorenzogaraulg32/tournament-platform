@@ -8,18 +8,17 @@ type ChangeEmailSectionProps = {
     error?: string;
     loading: boolean
     onBack: () => void;
-
-
     changePassword: (password: string, oldPassword: string) => Promise<void>;
-
+    hasInternalPassword: boolean
 };
 
-export default function ChangeEmailSection({
-                                               onBack,
-                                               loading,
-                                               error,
-                                               changePassword,
-                                           }: ChangeEmailSectionProps) {
+export default function ChangePasswordSection({
+                                                  onBack,
+                                                  loading,
+                                                  error,
+                                                  changePassword,
+                                                  hasInternalPassword,
+                                              }: ChangeEmailSectionProps) {
 
     const [oldPassword, setOldPassword] = useState("");
     const [password, setPassword] = useState("");
@@ -30,30 +29,47 @@ export default function ChangeEmailSection({
 
 
     function checkPasswordInternal(): boolean {
-        if (password !== confPassword) {
-            setInternalError("Le due password non coincidono")
+
+        if (hasInternalPassword && !oldPassword) {
+            setInternalError("Inserisci la password attuale");
             return false;
         }
+
+        if (password.length < 8 || password.length > 64) {
+            setInternalError("La password deve contenere tra 8 e 64 caratteri");
+            return false;
+        }
+
+        if (!/\S/.test(password)) {
+            setInternalError("La password non può contenere solo spazi");
+            return false;
+        }
+
+        if (password !== confPassword) {
+            setInternalError("Le due password non coincidono");
+            return false;
+        }
+
         return true;
     }
 
     return (
         <View>
-
-            <ProfilePasswordField
-                label="Vecchia Password"
-                placeholder="Inserisci la password vecchia"
-                value={oldPassword}
-                onChangeText={(pass) => {
-                    setOldPassword(pass)
-                    setInternalError("")
-                }}
-                errorMessage={""}
-                autoCapitalize="none"
-                autoCorrect={false}
-                editable={!loading}
-            />
-
+            {hasInternalPassword &&
+                <ProfilePasswordField
+                    label="Vecchia Password"
+                    placeholder="Inserisci la password vecchia"
+                    value={oldPassword}
+                    onChangeText={(pass) => {
+                        setOldPassword(pass)
+                        setInternalError("")
+                    }}
+                    errorMessage={""}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    editable={!loading}
+                />
+            }
             <ProfilePasswordField
                 label="Password"
                 placeholder="Inserisci la password"
@@ -87,6 +103,7 @@ export default function ChangeEmailSection({
                 onNext={async () => {
                     if (checkPasswordInternal()) {
                         await changePassword(password, oldPassword)
+                        onBack()
                     }
                 }}
                 nextLabel={"Modifica"}

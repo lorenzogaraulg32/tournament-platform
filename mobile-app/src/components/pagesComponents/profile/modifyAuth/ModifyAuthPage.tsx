@@ -15,7 +15,7 @@ type ModifyAuthProps = {
     oldEmail: string,
     changeEmail: (email: string) => Promise<void>;
     hasInternalPassword: boolean,
-    changePassword: (password: string, oldPassword : string) => Promise<void>;
+    changePassword: (password: string, oldPassword: string) => Promise<void>;
 }
 
 //Todo: ancora da fare completamente la sezione per scollegare o collegare un account esterno
@@ -31,47 +31,50 @@ export default function ModifyAuthPage({
 
     const [currentSection, setCurrentSection] = useState<ModifyAuthSections>("main");
 
+    function changeSection(section: ModifyAuthSections) {
+        setError(undefined);
+        setCurrentSection(section);
+    }
 
     function renderSection() {
-        setError(undefined);
         switch (currentSection) {
-            case "main" :
+            case "main":
                 return (
                     <MainSection
-                        onChangeSection={(value) => setCurrentSection(value)}
+                        onChangeSection={changeSection}
                     />
-                )
+                );
 
-            case "changeEmail" :
+            case "changeEmail":
                 return (
                     <ChangeEmailSection
-                        onBack={() => setCurrentSection("main")}
+                        onBack={() => changeSection("main")}
                         changeEmail={changeEmail}
                         oldEmail={oldEmail}
                         error={error}
-                        loading={loading}/>
-                )
+                        loading={loading}
+                        hasInternalPassword={hasInternalPassword}
+                    />
+                );
 
-            case "changePassword" :
+            case "changePassword":
                 return (
                     <ChangePasswordSection
-                        onBack={() => setCurrentSection("main")}
+                        onBack={() => changeSection("main")}
                         loading={loading}
                         changePassword={changePassword}
                         error={error}
+                        hasInternalPassword={hasInternalPassword}
                     />
-                )
+                );
 
-            case "external" :
+            case "external":
                 return (
                     <ExternalSection
-                        onBack={() => setCurrentSection("main")}
-
+                        onBack={() => changeSection("main")}
                     />
-                )
-
+                );
         }
-
     }
 
     return (

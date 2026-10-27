@@ -81,7 +81,7 @@ public class AuthService {
 
         //nessuna modifica, ignoro
         if (!updateEmail && !updatePassword) {
-            return;
+            throw new InvalidCredentialsUpdateException();
         }
 
         // Il cambio della mail implica lo scollegamento dal provider esterno,
@@ -116,6 +116,16 @@ public class AuthService {
 
 
         if (updatePassword) {
+            if (user.hasLocalAuthentication()) {
+
+                if (request.oldPassword() == null ||
+                        !passwordEncoder.matches(
+                                request.oldPassword(),
+                                user.getPasswordHash()
+                        )) {
+                    throw new InvalidCredentialsUpdateException();
+                }
+            }
             user.setPasswordHash(
                     passwordEncoder.encode(request.newPassword())
             );

@@ -1,25 +1,67 @@
 import {useLocalSearchParams} from "expo-router";
-import {AuthInfo} from "@/src/services/users/authService";
+import {AuthInfo, fetchAuthInfo, modUserAuthInfo} from "@/src/services/users/authService";
 import ModifyAuthPage from "@/src/components/pagesComponents/profile/modifyAuth/ModifyAuthPage";
-import {useState} from "react";
+import {useRef, useState} from "react";
+import {normalizeApiRequestError} from "@/src/services/errorService";
+import {useToast} from "@/src/components/common/Toast/ToastProvider";
 
 export default function modifyAuthScreen() {
 
     const params = useLocalSearchParams<{ auth: string }>()
-    const userAuthInfo = JSON.parse(params.auth) as AuthInfo
+    const [userAuthInfo, setUserAuthInfo] = useState<AuthInfo>(JSON.parse(params.auth) as AuthInfo)
 
     const [isLoading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<string | undefined>(undefined)
+    const submissionLock = useRef(false);
 
+
+    const {showToast} = useToast();
 
     async function changeEmail(email: string) {
-        //TODO: Collegare al backend tramite il service. la schermata è ok
-        console.log("Premuto cambia email")
+        if (submissionLock.current) return;
+        submissionLock.current = true;
+        setError(undefined);
+
+        try {
+            setLoading(true)
+            await modUserAuthInfo({
+                email: email,
+                newPassword: null,
+                oldPassword: null
+            })
+            await finishUpdate("Email modificata correttamente")
+        } catch (error) {
+            const apiError = normalizeApiRequestError(error)
+            setError(apiError.message)
+        } finally {
+            setLoading(false)
+        }
     }
 
+    // mi serve controllare prima se ha una password impostata oppure no.
+    // se non è impostata allora quella vecchia non va richiesta
+    // se c'è quella vecchia invece va richiesta e controllata backend
     async function changePassword(password: string, oldPassword: string) {
-        //TODO: Collegare al backend tramite il service, la schermata è ok
-        console.log("Premuto cambia password")
+        if (submissionLock.current) return;
+        submissionLock.current = true;
+        setError(undefined);
+        try {
+            if (isLoading) {
+                return;
+            }
+            setLoading(true)
+            await modUserAuthInfo({
+                email: null,
+                newPassword: password,
+                oldPassword: oldPassword
+            })
+            await finishUpdate("Password modificata correttamente")
+        } catch (error) {
+            const apiError = normalizeApiRequestError(error)
+            setError(apiError.message)
+        } finally {
+            setLoading(false)
+        }
     }
 
     async function unlinkExternalProvider() {
@@ -32,6 +74,20 @@ export default function modifyAuthScreen() {
     }
 
 
+    async function finishUpdate(message: string) {
+        try {
+            const updatedInfo = await fetchAuthInfo(userAuthInfo.id);
+            setUserAuthInfo(updatedInfo);
+
+            showToast(message, true);
+        } catch {
+            showToast(
+                `${message}. Impossibile aggiornare i dati visualizzati.`,
+                true
+            );
+        }
+    }
+
 
     return (
         <ModifyAuthPage
@@ -39,8 +95,8 @@ export default function modifyAuthScreen() {
             setError={setError}
             loading={isLoading}
             oldEmail={userAuthInfo.email}
-            changeEmail={changeEmail}
             hasInternalPassword={userAuthInfo.hasLocalAuthentication}
+            changeEmail={changeEmail}
             changePassword={changePassword}
         />
     )

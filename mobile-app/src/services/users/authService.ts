@@ -27,6 +27,12 @@ export type LoginResponse = {
     expiresIn: number;
 };
 
+export type ModUserAuthRequest = {
+    email: string | null,
+    newPassword: string | null
+    oldPassword: string | null
+};
+
 export type AuthInfo = {
     id: string,
     email: string,
@@ -35,10 +41,6 @@ export type AuthInfo = {
     externalProvider: ExternalProvider | null;
 }
 
-export type modAuthRequest = {
-    email: string,
-    password: string
-}
 
 export enum ExternalProvider {
     GOOGLE = "GOOGLE",
@@ -97,6 +99,23 @@ export async function registerUser(
     }
 
     return body as RegisterResponse;
+}
+
+
+export async function modUserAuthInfo(
+    request: ModUserAuthRequest
+) {
+
+    const response = await authenticatedFetch(
+        `${API_URL}/auth/credentials`,
+        {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(request),
+        }
+    )
 }
 
 
@@ -203,23 +222,26 @@ export async function loadCurrentUserId(): Promise<string | null> {
     }
 }
 
+/*
 export async function loadCurrentUserAuthInfo() {
 
-    const response = await authenticatedFetch(
-        `${API_URL}/auth/me`,
-        {
-            method: "GET",
-            headers: {
-                Accept: "application/json",
-            },
-        }
-    );
+const response = await authenticatedFetch(
+    `${API_URL}/auth/me`,
+    {
+        method: "GET",
+        headers: {
+            Accept: "application/json",
+        },
+    }
+);
 
 
-    return await response.json() as AuthInfo;
+return await response.json() as AuthInfo;
 
 
 }
+*/
+
 
 export async function fetchAuthInfo(id: string): Promise<AuthInfo> {
     const response = await authenticatedFetch(

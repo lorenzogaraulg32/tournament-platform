@@ -42,8 +42,13 @@ public enum AuthErrorCode implements ErrorCode {
     USER_NOT_FOUND(
             "AUTH_USER_NOT_FOUND",
             "Utente non trovato"
-    );
+    ),
 
+
+    INVALID_CURRENT_PASSWORD_MOD(
+            "INVALID_CURRENT_PASSWORD_MOD",
+            "La vecchia password non è corretta"
+    );
 
     private final String code;
     private final String message;
@@ -66,8 +71,6 @@ public enum AuthErrorCode implements ErrorCode {
     public String getMessage() {
         return message;
     }
-
-
 
 
 }

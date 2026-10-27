@@ -156,22 +156,28 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler(EmailAlreadyRegisteredException.class)
-    public ResponseEntity<ApiErrorResponse> handleConflict(
-            EmailAlreadyRegisteredException exception,
+    @ExceptionHandler({
+            InvalidCredentialsUpdateException.class,
+    })
+    public ResponseEntity<ApiErrorResponse> handleInvalidUpdate(
+            ApplicationException exception,
             HttpServletRequest request
     ) {
         return buildResponse(
-                HttpStatus.CONFLICT,
+                HttpStatus.BAD_REQUEST,
                 exception,
                 request
         );
     }
 
 
-    @ExceptionHandler(EmailAlreadyRegisteredExternalException.class)
-    public ResponseEntity<ApiErrorResponse> handleConflictExternal(
-            EmailAlreadyRegisteredExternalException exception,
+    @ExceptionHandler({
+            EmailAlreadyRegisteredException.class,
+            EmailAlreadyRegisteredExternalException.class,
+            LastAuthMethodException.class
+    })
+    public ResponseEntity<ApiErrorResponse> handleConflict(
+            ApplicationException exception,
             HttpServletRequest request
     ) {
         return buildResponse(
@@ -193,6 +199,23 @@ public class GlobalExceptionHandler {
                 request
         );
     }
+
+
+    @ExceptionHandler({
+            InvalidCurrentPasswordException.class,
+
+    })
+    public ResponseEntity<ApiErrorResponse> handleInvalidCurrentPasswordMod(
+            ApplicationException exception,
+            HttpServletRequest request
+    ) {
+        return buildResponse(
+                HttpStatus.BAD_REQUEST,
+                exception,
+                request
+        );
+    }
+
 
     /*----------------- Gestione eccezioni Spring e infrastrutturali  -------------------*/
 
