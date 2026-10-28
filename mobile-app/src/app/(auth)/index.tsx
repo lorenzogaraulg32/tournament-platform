@@ -4,11 +4,10 @@ import AuthHeader from "@/src/components/pagesComponents/auth/AuthHeader";
 import AuthContent from "@/src/components/pagesComponents/auth/AuthContent";
 import AuthContainer from "@/src/components/pagesComponents/auth/AuthContainer";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
-import {GoogleOneTapSignIn, isCancelledResponse, isSuccessResponse} from "react-native-nitro-google-signin";
 import {colors} from "@/src/constants/theme";
 import GoogleAuthButton from "@/src/components/common/buttons/GoogleAuthButton";
 import {useState} from "react";
-import {authenticateWithGoogle} from "@/src/services/users/authService";
+import {authenticateWithGoogle, requestGoogleIdToken} from "@/src/services/users/authService";
 import {saveSession} from "@/src/services/users/sessionService";
 import {normalizeApiRequestError, printApiRequestError} from "@/src/services/errorService";
 import ActionButton from "@/src/components/common/buttons/ActionButton";
@@ -25,43 +24,12 @@ export default function WelcomeScreen() {
         if (externalProviderLoading) return;
 
         setExternalProviderLoading(true);
-        setExternalProviderError("")
+        setExternalProviderError("");
+
         try {
+            const idToken = await requestGoogleIdToken();
 
-            //1 recupero id client we google cloud
-            const webClientId = process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID;
-
-            if (!webClientId) {
-                throw new Error("Google Client ID non configurato");
-            }
-
-            //2 config della libreria google
-            GoogleOneTapSignIn.configure({
-                webClientId,
-            });
-
-            //3 check dei google play services
-            await GoogleOneTapSignIn.checkPlayServices();
-
-            //4 procedura di login/register guidata da google
-            const response =
-                await GoogleOneTapSignIn.presentExplicitSignIn();
-
-            if (isCancelledResponse(response)) {
-                console.log("[GOOGLE] Autenticazione annullata");
-                return;
-            }
-
-            if (!isSuccessResponse(response)) {
-                console.warn("[GOOGLE] Risposta non riuscita");
-                return;
-            }
-
-            const {idToken} = response.data;
-
-            if (!idToken) {
-                throw new Error("ID token Google assente");
-            }
+            if (!idToken) return;
 
             const authResponse = await authenticateWithGoogle(idToken);
 

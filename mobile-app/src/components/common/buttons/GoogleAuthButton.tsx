@@ -2,12 +2,14 @@ import React from "react";
 import {ActivityIndicator, Image, Pressable, StyleSheet, Text, View,} from "react-native";
 
 type GoogleAuthButtonProps = {
+    label?: string
     onPress: () => void;
     loading?: boolean;
     disabled?: boolean;
 };
 
 export default function GoogleAuthButton({
+                                             label = "Continua con Google",
                                              onPress,
                                              loading = false,
                                              disabled = false,
@@ -20,7 +22,7 @@ export default function GoogleAuthButton({
             onPress={onPress}
             disabled={isDisabled}
             accessibilityRole="button"
-            accessibilityLabel="Continua con Google"
+            accessibilityLabel={label}
             accessibilityState={{disabled: isDisabled, busy: loading}}
             style={({pressed}) => [
                 styles.button,
@@ -37,7 +39,7 @@ export default function GoogleAuthButton({
             />
 
             <Text style={styles.text}>
-                Continua con Google
+                {label}
             </Text>
 
             {loading && (

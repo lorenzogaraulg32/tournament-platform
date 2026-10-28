@@ -38,6 +38,8 @@ export async function authenticatedFetch(
             body,
             "Errore durante la richiesta"
         );
+
+
     }
 
     return response;

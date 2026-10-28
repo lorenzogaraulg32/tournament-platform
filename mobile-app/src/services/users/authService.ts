@@ -4,6 +4,12 @@ import {authenticatedFetch, fetchWithTimeout, readResponseBody} from "@/src/serv
 import {clearSession} from "@/src/services/users/sessionService";
 import {jwtDecode, JwtPayload} from "jwt-decode";
 import * as SecureStore from "expo-secure-store";
+import {
+    GoogleOneTapSignIn,
+    isCancelledResponse,
+    isNoSavedCredentialFoundResponse,
+    isSuccessResponse
+} from "react-native-nitro-google-signin";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -153,6 +159,69 @@ export async function authenticateWithGoogle(
 
 }
 
+export async function linkWithGoogle(
+    idToken: string
+) {
+
+    const response = await authenticatedFetch(
+        `${API_URL}/auth/external-provider/link`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                provider: "GOOGLE",
+                idToken,
+            }),
+        }
+    )
+}
+
+export async function unLinkWithGoogle() {
+
+    const response = await authenticatedFetch(
+        `${API_URL}/auth/external-provider/link`,
+        {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }
+    )
+}
+
+export async function requestGoogleIdToken(): Promise<string | null> {
+    const webClientId = process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID;
+
+    if (!webClientId) {
+        throw new Error("Google Client ID non configurato");
+    }
+
+    GoogleOneTapSignIn.configure({
+        webClientId,
+    });
+
+    await GoogleOneTapSignIn.checkPlayServices();
+
+    const response = await GoogleOneTapSignIn.presentExplicitSignIn();
+
+    if (isCancelledResponse(response)) {
+        return null;
+    }
+
+    if (!isSuccessResponse(response)) {
+        throw new Error("Autenticazione Google non riuscita");
+    }
+
+    const {idToken} = response.data;
+
+    if (!idToken) {
+        throw new Error("ID token Google assente");
+    }
+
+    return idToken;
+}
 
 export async function linkExistingAccountGoogle(
     idToken: string,

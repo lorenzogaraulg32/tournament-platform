@@ -48,7 +48,14 @@ public enum AuthErrorCode implements ErrorCode {
     INVALID_CURRENT_PASSWORD_MOD(
             "INVALID_CURRENT_PASSWORD_MOD",
             "La vecchia password non è corretta"
+    ),
+
+    EMAIL_DOES_NOT_MATCH(
+            "EMAIL_DOES_NOT_MATCH",
+                    "La mail del provider esterno non corrisponde a quella che utilizza il tuo account."
     );
+
+
 
     private final String code;
     private final String message;

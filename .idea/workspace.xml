@@ -4,19 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Started implementing auth info mod">
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/exception/InvalidCurrentPasswordException.java" afterDir="false" />
+    <list default="true" id="7273c60f-efe1-43bb-a6d3-6c5431cb221f" name="Changes" comment="Now user can change internal auth info (email and password)">
+      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/exception/EmailDoesNotMatchException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/controller/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/dto/ModUserRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/dto/ModUserRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/exception/AuthErrorCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/exception/AuthErrorCode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/exception/GlobalExceptionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/service/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/service/ExternalProviderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/tournamentplatform/authservice/service/ExternalProviderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/app/(auth)/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/app/(auth)/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/common/buttons/GoogleAuthButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/common/buttons/GoogleAuthButton.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modifyAuth/ModifyAuthPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modifyAuth/ModifyAuthPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modifyAuth/ModifyAuthScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modifyAuth/ModifyAuthScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modifyAuth/sections/ChangeEmailSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modifyAuth/sections/ChangeEmailSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modifyAuth/sections/ChangePasswordSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modifyAuth/sections/ChangePasswordSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modifyAuth/sections/MainSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modifyAuth/sections/MainSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modifyAuth/sections/ExternalSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/components/pagesComponents/profile/modifyAuth/sections/ExternalSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile-app/src/services/fetchService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/fetchService.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile-app/src/services/users/authService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile-app/src/services/users/authService.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -452,15 +451,8 @@
       <workItem from="1792484547696" duration="15565000" />
       <workItem from="1792588040636" duration="43000" />
       <workItem from="1793008739978" duration="16401000" />
-      <workItem from="1793091986052" duration="4201000" />
-    </task>
-    <task id="LOCAL-00075" summary="Better visuals for users you canm remove from players and admins list&#10;now owner of a team can remove admins from admins list">
-      <option name="closed" value="true" />
-      <created>1789490126484</created>
-      <option name="number" value="00075" />
-      <option name="presentableId" value="LOCAL-00075" />
-      <option name="project" value="LOCAL" />
-      <updated>1789490126484</updated>
+      <workItem from="1793091986052" duration="4258000" />
+      <workItem from="1793202816460" duration="5047000" />
     </task>
     <task id="LOCAL-00076" summary="Now you can delete a torunament">
       <option name="closed" value="true" />
@@ -846,7 +838,15 @@
       <option name="project" value="LOCAL" />
       <updated>1793031653252</updated>
     </task>
-    <option name="localTasksCounter" value="124" />
+    <task id="LOCAL-00124" summary="Now user can change internal auth info (email and password)">
+      <option name="closed" value="true" />
+      <created>1793096568769</created>
+      <option name="number" value="00124" />
+      <option name="presentableId" value="LOCAL-00124" />
+      <option name="project" value="LOCAL" />
+      <updated>1793096568772</updated>
+    </task>
+    <option name="localTasksCounter" value="125" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -864,7 +864,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Small fix for port change of auth servfice" />
     <MESSAGE value="Deleted variants for solidButtons, &#10;Added btn styles to global variants" />
     <MESSAGE value="Refractored validation in a dedicated file to reduce boilerplate code" />
     <MESSAGE value="small fix" />
@@ -889,7 +888,8 @@
     <MESSAGE value="hotfix" />
     <MESSAGE value="Adjusted max sizes of entities names, usernames etc.&#10;Adjusted graphics for new sizes. Now the text font size changes dynamically" />
     <MESSAGE value="Started implementing auth info mod" />
-    <option name="LAST_COMMIT_MESSAGE" value="Started implementing auth info mod" />
+    <MESSAGE value="Now user can change internal auth info (email and password)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Now user can change internal auth info (email and password)" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

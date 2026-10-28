@@ -5,6 +5,7 @@ import MainSection from "@/src/components/pagesComponents/profile/modifyAuth/sec
 import ChangeEmailSection from "@/src/components/pagesComponents/profile/modifyAuth/sections/ChangeEmailSection";
 import ChangePasswordSection from "@/src/components/pagesComponents/profile/modifyAuth/sections/ChangePasswordSection";
 import ExternalSection from "@/src/components/pagesComponents/profile/modifyAuth/sections/ExternalSection";
+import {ExternalProvider} from "@/src/services/users/authService";
 
 export type ModifyAuthSections = "changeEmail" | "changePassword" | "external" | "main"
 
@@ -15,10 +16,12 @@ type ModifyAuthProps = {
     oldEmail: string,
     changeEmail: (email: string) => Promise<void>;
     hasInternalPassword: boolean,
+    externalProvider: ExternalProvider | null,
     changePassword: (password: string, oldPassword: string) => Promise<void>;
+    linkExternal: () => Promise<void>;
+    unlinkExternal: () => Promise<void>;
 }
 
-//Todo: ancora da fare completamente la sezione per scollegare o collegare un account esterno
 export default function ModifyAuthPage({
                                            loading,
                                            error,
@@ -26,7 +29,10 @@ export default function ModifyAuthPage({
                                            changeEmail,
                                            oldEmail,
                                            hasInternalPassword,
-                                           changePassword
+                                           externalProvider,
+                                           changePassword,
+                                           linkExternal,
+                                           unlinkExternal
                                        }: ModifyAuthProps) {
 
     const [currentSection, setCurrentSection] = useState<ModifyAuthSections>("main");
@@ -72,6 +78,10 @@ export default function ModifyAuthPage({
                 return (
                     <ExternalSection
                         onBack={() => changeSection("main")}
+                        externalProvider={externalProvider}
+                        linkExternal={linkExternal}
+                        unlinkExternal={unlinkExternal}
+                        error={error}
                     />
                 );
         }

@@ -174,7 +174,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({
             EmailAlreadyRegisteredException.class,
             EmailAlreadyRegisteredExternalException.class,
-            LastAuthMethodException.class
+            LastAuthMethodException.class,
+            EmailDoesNotMatchException.class
     })
     public ResponseEntity<ApiErrorResponse> handleConflict(
             ApplicationException exception,

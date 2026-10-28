@@ -9,24 +9,23 @@ import com.tournamentplatform.authservice.repository.UserRepository;
 import com.tournamentplatform.authservice.service.externalAuthService.ExternalTokenVerifiers;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import static com.tournamentplatform.authservice.entity.GlobalRole.ROLE_USER;
 
-/** REGOLE DI BUSINESS
- *
+/**
+ * REGOLE DI BUSINESS
+ * <p>
  * Un utente può avere 1 solo servizio esterno collegato per volta,
  * e può modificarli tramite link/unlink quando ha una password impostata nel servizio di auth interno.
- *
+ * <p>
  * Un utente registrato tramite provider esterno avrà impostata come mail quella del provider Esterno
- *
+ * <p>
  * Un utente registrato tramite processo interno,
  * se vuole collegare un account esterno deve o modificare la sua email per matchare quella dell'auth service esterno,
  * quindi le due email devono essere uguali.
- *
  */
 @Service
 @AllArgsConstructor
@@ -39,6 +38,7 @@ public class ExternalProviderService {
 
     /**
      * Se l'utente risulta già registrato lo registra, altrimenti login
+     *
      * @param request richiesta di auth da parte di un provider esterno
      * @return
      */
@@ -106,6 +106,7 @@ public class ExternalProviderService {
         validateEmailMatch(user, identity);
 
         //caso in cui l'utente è già collegato a un provider esterno (max 1 per volta)
+        //todo: eccezione custom, per ora è un caso limite
         if (user.hasExternalAuthentication()) {
             boolean sameIdentity =
                     user.getExternalProvider() == identity.provider()
@@ -122,6 +123,7 @@ public class ExternalProviderService {
             );
         }
 
+
         //caso in cui il provider esterno è già collegato a un account
         boolean identityAlreadyLinked = userRepository
                 .findByExternalProviderAndExternalSubject(
@@ -131,10 +133,8 @@ public class ExternalProviderService {
                 .isPresent();
 
         if (identityAlreadyLinked) {
-            throw new ResponseStatusException(
-                    HttpStatus.CONFLICT,
-                    "Questo account esterno è già collegato"
-            );
+            throw new EmailAlreadyRegisteredExternalException();
+
         }
 
         user.setExternalProvider(identity.provider());
@@ -176,10 +176,7 @@ public class ExternalProviderService {
             ExternalProviderIdentity identity
     ) {
         if (!user.getEmail().equalsIgnoreCase(identity.email())) {
-            throw new ResponseStatusException(
-                    HttpStatus.CONFLICT,
-                    "L'email del provider esterno non coincide con quella JoinCup"
-            );
+            throw new EmailDoesNotMatchException();
         }
     }
 

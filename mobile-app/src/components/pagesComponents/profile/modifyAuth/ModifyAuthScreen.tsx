@@ -1,5 +1,13 @@
 import {useLocalSearchParams} from "expo-router";
-import {AuthInfo, fetchAuthInfo, modUserAuthInfo} from "@/src/services/users/authService";
+import {
+    AuthInfo,
+    fetchAuthInfo,
+    handleLogout,
+    linkWithGoogle,
+    modUserAuthInfo,
+    requestGoogleIdToken,
+    unLinkWithGoogle
+} from "@/src/services/users/authService";
 import ModifyAuthPage from "@/src/components/pagesComponents/profile/modifyAuth/ModifyAuthPage";
 import {useRef, useState} from "react";
 import {normalizeApiRequestError} from "@/src/services/errorService";
@@ -32,6 +40,7 @@ export default function modifyAuthScreen() {
             await finishUpdate("Email modificata correttamente")
         } catch (error) {
             const apiError = normalizeApiRequestError(error)
+            console.log(apiError)
             setError(apiError.message)
         } finally {
             setLoading(false)
@@ -65,13 +74,44 @@ export default function modifyAuthScreen() {
     }
 
     async function unlinkExternalProvider() {
-        /*
-           comportamenti previsti:
-               - Possibilità di scollegarsi dal provider esterno
-               - In caso di scollegamento è necessario eseguire
-                 nuovamente il login per collegare l'utente
-           */
+        if (isLoading) return;
+
+        setLoading(true);
+
+        try {
+            await unLinkWithGoogle();
+            await finishUpdate("Account esterno scollegato correttamente")
+        } catch (error) {
+            const apiError = normalizeApiRequestError(error)
+            setError(apiError.message)
+        } finally {
+            setLoading(false);
+        }
+
+
+        await handleLogout();
     }
+
+    const linkExternalProvider = async () => {
+        if (isLoading) return;
+
+        setLoading(true);
+
+        try {
+            const idToken = await requestGoogleIdToken();
+
+            if (!idToken) return;
+
+            await linkWithGoogle(idToken);
+
+            await finishUpdate("Account esterno collegato correttamente")
+        } catch (error) {
+            const apiError = normalizeApiRequestError(error)
+            setError(apiError.message)
+        } finally {
+            setLoading(false);
+        }
+    };
 
 
     async function finishUpdate(message: string) {
@@ -96,8 +136,11 @@ export default function modifyAuthScreen() {
             loading={isLoading}
             oldEmail={userAuthInfo.email}
             hasInternalPassword={userAuthInfo.hasLocalAuthentication}
+            externalProvider={userAuthInfo.externalProvider}
             changeEmail={changeEmail}
             changePassword={changePassword}
+            linkExternal={linkExternalProvider}
+            unlinkExternal={unlinkExternalProvider}
         />
     )
 }
