@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
     },
 
     activitiesContainer: {
-        maxHeight: 260
     },
 
     activitiesContent: {

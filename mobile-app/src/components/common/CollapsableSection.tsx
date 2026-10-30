@@ -10,6 +10,8 @@ type CollapsableSectionProps = {
     label: string,
     iconName: keyof typeof Ionicons.glyphMap,
 
+    canExpand?: boolean
+
     /**
      * Contenuto della sezione.
      *
@@ -46,10 +48,12 @@ export default function CollapsableSection({
                                                label,
                                                iconName,
                                                children,
+                                               canExpand = true,
                                                canMod = false,
                                                modal = true,
                                                maxHeight = 400,
                                            }: CollapsableSectionProps) {
+
 
     const [isExpanded, setExpanded] = useState<boolean>(true)
     const [isFullPageVisible, setFullPageVisible] = useState(false);
@@ -114,7 +118,7 @@ export default function CollapsableSection({
                         </Pressable>
                         }
                     </View>
-                    <Pressable
+                    {canExpand && <Pressable
                         onPress={() => setExpanded((previous) => !previous)}
                         accessibilityRole="button"
                         accessibilityLabel={isExpanded ? `Comprimi ${label}` : `Espandi ${label}`}
@@ -131,10 +135,10 @@ export default function CollapsableSection({
                             color={colors.label}
                         />
                     </Pressable>
-
+                    }
                 </View>
                 <HorizontalSeparator/>
-                {isExpanded && (
+                {(isExpanded || !canExpand) && (
                     <View style={styles.section}>
                         {renderContent(false)}
                     </View>

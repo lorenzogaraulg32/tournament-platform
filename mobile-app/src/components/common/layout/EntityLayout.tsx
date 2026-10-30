@@ -1,16 +1,16 @@
 import {ReactNode} from "react";
 import {ScrollView, StyleSheet, View,} from "react-native";
 
-import {colors} from "@/src/constants/theme";
-
 type EntityLayoutProps = {
     header: ReactNode;
+    tabs?: ReactNode
     children: ReactNode;
 };
 
 
 export default function EntityLayout({
                                          header,
+                                         tabs,
                                          children
                                      }: EntityLayoutProps) {
     return (
@@ -21,7 +21,9 @@ export default function EntityLayout({
                 showsVerticalScrollIndicator={false}
             >
                 {header}
+                {tabs}
                 <View style={styles.content}>
+
                     {children}
                 </View>
             </ScrollView>
@@ -35,7 +37,7 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        backgroundColor: colors.background,
+        backgroundColor: "#fff",
     },
 
     content: {
@@ -45,12 +47,8 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         paddingBottom: 20,
         paddingHorizontal: 10,
-
-        borderTopLeftRadius: 28,
-        borderTopRightRadius: 28,
         overflow: "hidden",
 
-        marginTop: -30,
         zIndex: 1,
         gap: 20,
 
